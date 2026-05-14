@@ -1,0 +1,20 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Ambiente local
+.venv/
+venv/
+env/
+.env
+
+# Sistema/editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Saidas temporarias
+outputs/
+*.tmp
