@@ -19,6 +19,14 @@ def moeda(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+def classificar_risco_renal(pontos, egfr, albuminuria):
+    if egfr < 30 or albuminuria >= 300 or pontos >= 9:
+        return "Alto", "#b42318"
+    if egfr < 60 or albuminuria >= 30 or pontos >= 5:
+        return "Moderado", "#b54708"
+    return "Baixo", "#027a48"
+
+
 @st.cache_data
 def carregar_dados():
     mensal = pd.read_csv(DATA_DIR / "dialise_mensal_brasil_total.csv", parse_dates=["data"])
@@ -69,10 +77,11 @@ col2.metric("Quantidade aprovada", f"{qtd_total:,.0f}".replace(",", "."))
 col3.metric("Custo médio", moeda(custo_medio))
 col4.metric("Variação no período", f"{variacao_periodo:.2f}%")
 
-aba_historico, aba_grupos, aba_previsao, aba_dados = st.tabs([
+aba_historico, aba_grupos, aba_previsao, aba_triagem, aba_dados = st.tabs([
     "Histórico",
     "Grupos",
     "Previsão",
+    "Triagem de risco",
     "Dados",
 ])
 
@@ -161,6 +170,99 @@ with aba_previsao:
             title="Previsão mensal inicial para 2024",
         )
         st.plotly_chart(fig_prev, use_container_width=True)
+
+with aba_triagem:
+    st.subheader("Simulador educativo de risco renal")
+    st.warning(
+        "Esta tela é apenas educativa e não realiza diagnóstico. A avaliação de doença renal depende de consulta profissional e exames laboratoriais."
+    )
+
+    col_cli, col_lab = st.columns(2)
+    with col_cli:
+        st.markdown("**Dados clínicos e fatores de risco**")
+        idade = st.number_input("Idade", min_value=0, max_value=120, value=45, step=1)
+        diabetes = st.checkbox("Diabetes")
+        hipertensao = st.checkbox("Hipertensão arterial")
+        doenca_cardiovascular = st.checkbox("Doença cardiovascular")
+        historico_familiar = st.checkbox("Histórico familiar de doença renal")
+        obesidade = st.checkbox("Obesidade")
+        tabagismo = st.checkbox("Tabagismo atual ou prévio importante")
+        uso_antiinflamatorio = st.checkbox("Uso frequente de anti-inflamatórios sem acompanhamento")
+        lesao_renal_aguda = st.checkbox("Histórico de lesão renal aguda")
+
+    with col_lab:
+        st.markdown("**Sintomas e exames**")
+        inchaco = st.checkbox("Inchaço em pernas, pés ou rosto")
+        urina_espumosa = st.checkbox("Urina muito espumosa")
+        sangue_urina = st.checkbox("Sangue na urina")
+        alteracao_urina = st.checkbox("Redução importante ou alteração persistente da urina")
+        cansaco = st.checkbox("Cansaço persistente sem explicação")
+        egfr = st.number_input("eGFR/TFG estimada (mL/min/1,73m²)", min_value=0.0, max_value=150.0, value=90.0, step=1.0)
+        albuminuria = st.number_input("Albuminúria ou relação albumina/creatinina urinária (mg/g)", min_value=0.0, max_value=5000.0, value=10.0, step=5.0)
+
+    pontos = 0
+    fatores = []
+    if idade >= 60:
+        pontos += 1
+        fatores.append("idade igual ou superior a 60 anos")
+    for marcado, peso, nome in [
+        (diabetes, 3, "diabetes"),
+        (hipertensao, 3, "hipertensão arterial"),
+        (doenca_cardiovascular, 2, "doença cardiovascular"),
+        (historico_familiar, 2, "histórico familiar de doença renal"),
+        (obesidade, 1, "obesidade"),
+        (tabagismo, 1, "tabagismo"),
+        (uso_antiinflamatorio, 1, "uso frequente de anti-inflamatórios"),
+        (lesao_renal_aguda, 2, "histórico de lesão renal aguda"),
+        (inchaco, 1, "inchaço"),
+        (urina_espumosa, 1, "urina espumosa"),
+        (sangue_urina, 2, "sangue na urina"),
+        (alteracao_urina, 2, "alteração persistente da urina"),
+        (cansaco, 1, "cansaço persistente"),
+    ]:
+        if marcado:
+            pontos += peso
+            fatores.append(nome)
+
+    if egfr < 60:
+        pontos += 4
+        fatores.append("eGFR/TFG estimada abaixo de 60")
+    elif egfr < 90:
+        pontos += 1
+        fatores.append("eGFR/TFG estimada entre 60 e 89")
+
+    if albuminuria >= 300:
+        pontos += 4
+        fatores.append("albuminúria muito elevada")
+    elif albuminuria >= 30:
+        pontos += 3
+        fatores.append("albuminúria elevada")
+
+    risco, cor = classificar_risco_renal(pontos, egfr, albuminuria)
+    st.markdown(
+        f"<div style='border-left: 8px solid {cor}; padding: 1rem; background: #f8fafc;'>"
+        f"<h3 style='margin-top: 0;'>Classificação simulada: {risco}</h3>"
+        f"<p>Pontuação educativa: <strong>{pontos}</strong></p>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    if risco == "Alto":
+        st.error("Resultado de alerta: recomenda-se avaliação profissional e investigação laboratorial/nefrológica conforme contexto clínico.")
+    elif risco == "Moderado":
+        st.warning("Resultado intermediário: fatores de risco ou exames sugerem necessidade de acompanhamento e rastreio adequado.")
+    else:
+        st.success("Resultado baixo nesta simulação, sem excluir risco real. Pessoas com fatores de risco devem manter acompanhamento de rotina.")
+
+    if fatores:
+        st.markdown("**Fatores que mais contribuíram nesta simulação:**")
+        st.write(", ".join(fatores))
+    else:
+        st.write("Nenhum fator de risco foi marcado nesta simulação.")
+
+    st.caption(
+        "Base conceitual: fatores de risco reconhecidos para doença renal crônica incluem diabetes, hipertensão, doença cardiovascular, histórico familiar e alterações em exames de sangue e urina."
+    )
 
 with aba_dados:
     st.subheader("Base mensal consolidada")
