@@ -41,7 +41,7 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 │   ├── indicadores_anuais_brasil.csv
 │   ├── indicadores_grupo_brasil.csv
 │   ├── metricas_modelos_preditivos.csv
-│   ├── previsao_mensal_2024.csv
+│   ├── previsao_mensal_proximos_12m.csv
 │   └── serie_mensal_dashboard.csv
 ├── docs/
 │   ├── modelagem_preditiva.md
@@ -120,7 +120,7 @@ As interfaces permitem visualizar:
 - custo medio mensal;
 - comparacao por grupo de procedimento;
 - comparacao real x previsto;
-- previsao mensal inicial para 2024.
+- previsao mensal inicial para os 12 meses seguintes ao ultimo dado disponivel.
 
 ## Observacao metodologica
 

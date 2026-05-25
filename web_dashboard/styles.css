@@ -112,7 +112,7 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
-  margin-bottom: 22px;
+  margin: 0 0 22px;
 }
 .kpi {
   background: var(--panel);
@@ -135,6 +135,14 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 }
 .section-head h2 { margin: 0; font-size: 24px; }
 .section-head p { margin: 5px 0 0; color: var(--muted); }
+.note {
+  margin: -2px 0 14px;
+  color: #506368;
+  background: #eef7f4;
+  border: 1px solid #cce6df;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
 .segmented {
   display: flex;
   gap: 6px;
@@ -163,6 +171,7 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   display: block;
   width: 100%;
   height: 260px;
+  cursor: crosshair;
 }
 .chart-shell.large canvas { height: 340px; }
 .chart-shell.large { min-height: 0; }
@@ -219,6 +228,24 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 .risk-result.high { border-left-color: var(--coral); background: #fff7f4; }
 .risk-result.moderate { border-left-color: var(--gold); background: #fffbef; }
 .risk-result.low { border-left-color: var(--green); background: #f3fbf7; }
+.chart-tooltip {
+  position: fixed;
+  z-index: 50;
+  display: none;
+  max-width: 260px;
+  pointer-events: none;
+  background: #172124;
+  color: white;
+  border-radius: 8px;
+  padding: 9px 11px;
+  box-shadow: 0 12px 32px rgba(31, 42, 46, 0.22);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.chart-tooltip strong {
+  display: block;
+  margin-bottom: 2px;
+}
 @media (max-width: 960px) {
   .sidebar { position: static; width: auto; }
   .main { margin-left: 0; padding: 18px; }

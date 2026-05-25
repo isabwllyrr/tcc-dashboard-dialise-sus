@@ -1,10 +1,11 @@
 ﻿const paths = {
   mensal: "../dados_tratados/dialise_mensal_brasil_total.csv",
   grupo: "../dados_tratados/indicadores_grupo_brasil.csv",
-  forecast: "../dados_tratados/previsao_mensal_2024.csv",
+  forecast: "../dados_tratados/previsao_mensal_proximos_12m.csv",
 };
 
 const state = { mensal: [], grupo: [], forecast: [], yearStart: 2015, yearEnd: 2023, metric: "valor_aprovado" };
+const chartRegistry = new Map();
 
 const fmtMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const fmtNumber = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
@@ -36,6 +37,11 @@ async function loadCSV(path) {
 
 function numeric(row, key) { return Number(row[key] || 0); }
 function filteredMensal() { return state.mensal.filter(d => d.ano >= state.yearStart && d.ano <= state.yearEnd); }
+function formatMetricValue(key, value) {
+  if (key === "valor_aprovado" || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
+  if (key === "participacao_valor_pct") return `${fmtDecimal.format(value)}%`;
+  return fmtNumber.format(value);
+}
 
 function setupFilters() {
   const years = [...new Set(state.mensal.map(d => d.ano))];
@@ -101,6 +107,7 @@ function canvasBase(id) {
   const ctx = canvas.getContext("2d");
   ctx.scale(dpr, dpr);
   ctx.clearRect(0, 0, width, height);
+  chartRegistry.set(id, []);
   return { canvas, ctx, width, height };
 }
 
@@ -114,13 +121,33 @@ function drawLine(id, data, key, color, label, extraLine = null) {
   const x = i => pad.l + i * ((width - pad.l - pad.r) / Math.max(data.length - 1, 1));
   const y = v => height - pad.b - ((v - min) / (max - min || 1)) * (height - pad.t - pad.b);
   drawAxes(ctx, width, height, pad, min, max);
-  drawPath(ctx, data.map((d, i) => [x(i), y(d[key])]), color, false);
+  const points = data.map((d, i) => ({
+    x: x(i),
+    y: y(d[key]),
+    label: d.data ? d.data.slice(0, 7) : label,
+    value: d[key],
+    key,
+    series: label,
+    type: "point",
+  }));
+  drawPath(ctx, points.map(p => [p.x, p.y]), color, false);
   if (extraLine) {
     const startIndex = data.length - extraLine.length;
-    drawPath(ctx, extraLine.map((d, i) => [x(startIndex + i), y(d.value)]), "#d85b42", true);
+    const forecastPoints = extraLine.map((d, i) => ({
+      x: x(startIndex + i),
+      y: y(d.value),
+      label: d.data ? d.data.slice(0, 7) : "previsão",
+      value: d.value,
+      key: "valor_aprovado",
+      series: "Previsão",
+      type: "point",
+    }));
+    drawPath(ctx, forecastPoints.map(p => [p.x, p.y]), "#d85b42", true);
+    points.push(...forecastPoints);
   }
   ctx.fillStyle = "#69777b"; ctx.font = "12px Segoe UI"; ctx.fillText(label, pad.l, 14);
   drawLineLabels(ctx, data, x, height, pad);
+  chartRegistry.set(id, points);
 }
 
 function drawBar(id, rows, key, labels, color) {
@@ -131,12 +158,14 @@ function drawBar(id, rows, key, labels, color) {
   drawAxes(ctx, width, height, pad, 0, max);
   const gap = 8;
   const barW = (width - pad.l - pad.r - gap * (rows.length - 1)) / rows.length;
+  const items = [];
   rows.forEach((r, i) => {
     const h = (r[key] / max) * (height - pad.t - pad.b);
     const bx = pad.l + i * (barW + gap);
     const by = height - pad.b - h;
     ctx.fillStyle = color(i);
     ctx.fillRect(bx, by, Math.max(6, barW), h);
+    items.push({ type: "bar", x: bx, y: by, w: Math.max(6, barW), h, label: labels(r), value: r[key], key });
     ctx.fillStyle = "#69777b";
     ctx.font = "11px Segoe UI";
     ctx.save();
@@ -145,6 +174,7 @@ function drawBar(id, rows, key, labels, color) {
     ctx.fillText(labels(r), 0, 0);
     ctx.restore();
   });
+  chartRegistry.set(id, items);
 }
 
 function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
@@ -155,6 +185,7 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
   const trackW = width - pad.l - pad.r;
   const rowH = (height - pad.t - pad.b) / rows.length;
   ctx.font = "12px Segoe UI";
+  const items = [];
   rows.forEach((r, i) => {
     const y = pad.t + i * rowH + rowH * 0.24;
     const barH = Math.min(34, rowH * 0.5);
@@ -164,12 +195,15 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
     ctx.fillStyle = "#edf4f1";
     ctx.fillRect(pad.l, y, trackW, barH);
     ctx.fillStyle = colorFn(i);
-    ctx.fillRect(pad.l, y, Math.max(3, (r[key] / max) * trackW), barH);
+    const barW = Math.max(3, (r[key] / max) * trackW);
+    ctx.fillRect(pad.l, y, barW, barH);
+    items.push({ type: "bar", x: pad.l, y, w: barW, h: barH, label: labelFn(r), value: r[key], key });
     ctx.fillStyle = "#1f2a2e";
     ctx.textAlign = "left";
     ctx.fillText(`${fmtDecimal.format(r[key])}%`, pad.l + Math.max(8, (r[key] / max) * trackW + 8), y + barH * 0.75);
   });
   ctx.textAlign = "left";
+  chartRegistry.set(id, items);
 }
 
 function drawAxes(ctx, width, height, pad, min, max) {
@@ -237,14 +271,15 @@ function renderPeriods() {
   document.getElementById("periodCards").innerHTML = groups.map(g => `
     <article class="period-card"><h3>${g.name}</h3><strong>${fmtMoney.format(g.media_mensal)}</strong><span>média mensal de valor aprovado</span><p>Custo médio: ${fmtMoney.format(g.custo_medio)}</p></article>
   `).join("");
-  drawBar("periodChart", groups, "media_mensal", r => r.name, i => ["#0f766e", "#c2841a", "#d85b42"][i]);
+  drawHorizontalBars("periodChart", groups, "media_mensal", r => r.name, i => ["#0f766e", "#c2841a", "#d85b42"][i]);
 }
 
 function renderForecast() {
   const recent = state.mensal.filter(d => d.ano >= 2022);
   const forecastRows = state.forecast.map(d => ({ data: d.data, value: d.previsao_valor_aprovado }));
   const combined = [...recent, ...forecastRows.map(d => ({ data: d.data, valor_aprovado: d.value }))];
-  drawLine("forecastChart", combined, "valor_aprovado", "#3066be", "Real 2022-2023 + previsão 2024", forecastRows);
+  const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
+  drawLine("forecastChart", combined, "valor_aprovado", "#3066be", `Real até ${lastReal} + próximos 12 meses`, forecastRows);
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
 }
 
@@ -279,6 +314,38 @@ function scheduleRender() {
   requestAnimationFrame(() => requestAnimationFrame(render));
 }
 
+function setupChartTooltips() {
+  const tooltip = document.getElementById("chartTooltip");
+  document.querySelectorAll("canvas").forEach(canvas => {
+    canvas.addEventListener("mousemove", event => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const items = chartRegistry.get(canvas.id) || [];
+      let hit = null;
+      for (const item of items) {
+        if (item.type === "point") {
+          const distance = Math.hypot(item.x - x, item.y - y);
+          if (distance <= 12 && (!hit || distance < hit.distance)) hit = { ...item, distance };
+        } else if (x >= item.x && x <= item.x + item.w && y >= item.y && y <= item.y + item.h) {
+          hit = item;
+        }
+      }
+      if (!hit) {
+        tooltip.style.display = "none";
+        return;
+      }
+      tooltip.innerHTML = `<strong>${hit.label}</strong><span>${hit.series || "Indicador"}: ${formatMetricValue(hit.key, hit.value)}</span>`;
+      tooltip.style.left = `${event.clientX + 14}px`;
+      tooltip.style.top = `${event.clientY + 14}px`;
+      tooltip.style.display = "block";
+    });
+    canvas.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+    });
+  });
+}
+
 async function init() {
   const [mensal, grupo, forecast] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast)]);
   state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
@@ -290,7 +357,7 @@ async function init() {
     participacao_valor_pct: numeric(d, "participacao_valor_pct"),
   }));
   state.forecast = forecast.map(d => ({ ...d, previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado") }));
-  setupFilters(); setupNavigation(); setupRisk(); scheduleRender();
+  setupFilters(); setupNavigation(); setupRisk(); setupChartTooltips(); scheduleRender();
 }
 
 window.addEventListener("resize", scheduleRender);

@@ -50,14 +50,14 @@
         <div class="status-pill"><span></span> Dados públicos agregados</div>
       </header>
 
-      <section class="kpis" aria-label="Indicadores principais">
-        <article class="kpi"><span>Valor aprovado</span><strong id="kpiValue">-</strong><small id="kpiValueHint">-</small></article>
-        <article class="kpi"><span>Quantidade</span><strong id="kpiQty">-</strong><small>procedimentos aprovados</small></article>
-        <article class="kpi"><span>Custo médio</span><strong id="kpiAvg">-</strong><small>valor / quantidade</small></article>
-        <article class="kpi accent"><span>Variação</span><strong id="kpiGrowth">-</strong><small>primeiro x último ano filtrado</small></article>
-      </section>
-
       <section id="overview" class="tab-panel active">
+        <section class="kpis" aria-label="Indicadores principais">
+          <article class="kpi"><span>Valor aprovado</span><strong id="kpiValue">-</strong><small id="kpiValueHint">-</small></article>
+          <article class="kpi"><span>Quantidade</span><strong id="kpiQty">-</strong><small>procedimentos aprovados</small></article>
+          <article class="kpi"><span>Custo médio</span><strong id="kpiAvg">-</strong><small>valor / quantidade</small></article>
+          <article class="kpi accent"><span>Variação</span><strong id="kpiGrowth">-</strong><small>primeiro x último ano filtrado</small></article>
+        </section>
+
         <div class="section-head">
           <div>
             <h2>Série histórica</h2>
@@ -92,9 +92,10 @@
         <div class="section-head">
           <div>
             <h2>Previsão inicial</h2>
-            <p>Projeção mensal gerada por média móvel de 12 meses, usada como apoio exploratório.</p>
+            <p>Projeção dos 12 meses seguintes ao último mês disponível na base tratada.</p>
           </div>
         </div>
+        <p class="note">Com a base atual, o último mês completo tratado é dezembro de 2023; por isso a projeção aparece em 2024. Ao inserir dados completos de 2024-2026, a mesma lógica passa a projetar anos posteriores.</p>
         <div class="chart-shell large"><canvas id="forecastChart" height="320"></canvas></div>
         <table class="data-table" id="forecastTable"></table>
       </section>
@@ -153,6 +154,7 @@
         </div>
       </section>
     </main>
+    <div id="chartTooltip" class="chart-tooltip" role="status"></div>
     <script src="./app.js"></script>
   </body>
 </html>

@@ -33,7 +33,7 @@ def carregar_dados():
     grupo = pd.read_csv(DATA_DIR / "dialise_mensal_brasil_por_grupo.csv", parse_dates=["data"])
     anual = pd.read_csv(DATA_DIR / "indicadores_anuais_brasil.csv")
     metricas = pd.read_csv(DATA_DIR / "metricas_modelos_preditivos.csv")
-    previsao = pd.read_csv(DATA_DIR / "previsao_mensal_2024.csv", parse_dates=["data"])
+    previsao = pd.read_csv(DATA_DIR / "previsao_mensal_proximos_12m.csv", parse_dates=["data"])
     comparacao = pd.read_csv(DATA_DIR / "comparacao_real_previsto_2022_2023.csv", parse_dates=["data"])
     return mensal, grupo, anual, metricas, previsao, comparacao
 
@@ -167,7 +167,7 @@ with aba_previsao:
             y="previsao_valor_aprovado",
             markers=True,
             labels={"data": "Data", "previsao_valor_aprovado": "Previsão (R$)"},
-            title="Previsão mensal inicial para 2024",
+            title="Previsão mensal inicial para os próximos 12 meses",
         )
         st.plotly_chart(fig_prev, use_container_width=True)
 

@@ -96,7 +96,7 @@ def main():
 
     metricas_df.to_csv(DATA_DIR / "metricas_modelos_preditivos.csv", index=False, encoding="utf-8-sig")
     comparacao.to_csv(DATA_DIR / "comparacao_real_previsto_2022_2023.csv", index=False, encoding="utf-8-sig")
-    future.to_csv(DATA_DIR / "previsao_mensal_2024.csv", index=False, encoding="utf-8-sig")
+    future.to_csv(DATA_DIR / "previsao_mensal_proximos_12m.csv", index=False, encoding="utf-8-sig")
 
     linhas = [
         "# Modelagem preditiva inicial",
