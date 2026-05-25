@@ -25,6 +25,11 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 ├── dashboard/
 │   ├── app.py
 │   └── README.md
+├── web_dashboard/
+│   ├── app.js
+│   ├── index.html
+│   ├── README.md
+│   └── styles.css
 ├── dados_brutos/
 │   ├── qtd_mensal_dialise_brasil.csv
 │   └── valor_mensal_dialise_brasil.csv
@@ -78,10 +83,22 @@ python scripts/analise_exploratoria.py
 python scripts/modelagem_preditiva.py
 ```
 
-5. Abrir o dashboard:
+5. Abrir o dashboard Streamlit antigo/prototipo:
 
 ```bash
 streamlit run dashboard/app.py
+``` 
+
+6. Abrir o dashboard web customizado:
+
+```powershell
+.\.venv\Scripts\python.exe -m http.server 8080
+``` 
+
+Depois acesse:
+
+```text
+http://localhost:8080/web_dashboard/
 ```
 
 ## Resultados iniciais
@@ -92,9 +109,11 @@ streamlit run dashboard/app.py
 - Modelo preditivo inicial com melhor desempenho no teste: media movel de 12 meses.
 - MAPE do melhor modelo no periodo de teste de 2022 a 2023: aproximadamente 7,15%.
 
-## Dashboard
+## Dashboards
 
-O dashboard inicial permite visualizar:
+O projeto possui duas interfaces: uma versao inicial em Streamlit e uma versao web customizada em HTML/CSS/JS, com visual mais adequado para apresentacao do TCC.
+
+As interfaces permitem visualizar:
 
 - valor aprovado mensal;
 - quantidade aprovada mensal;
@@ -106,3 +125,4 @@ O dashboard inicial permite visualizar:
 ## Observacao metodologica
 
 A modelagem atual e uma etapa inicial e usa modelos simples, transparentes e adequados para uma primeira analise academica. Na escrita do TCC, as previsoes devem ser apresentadas como apoio exploratorio a gestao, nao como estimativas deterministicas do gasto futuro.
+

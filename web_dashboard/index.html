@@ -1,0 +1,158 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diálise no SUS | Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">SUS</span>
+        <div>
+          <strong>Diálise Brasil</strong>
+          <small>2015-2023</small>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <button class="nav-item active" data-tab="overview">Visão geral</button>
+        <button class="nav-item" data-tab="pandemic">Pandemia</button>
+        <button class="nav-item" data-tab="forecast">Previsão</button>
+        <button class="nav-item" data-tab="territory">Território</button>
+        <button class="nav-item" data-tab="risk">Triagem</button>
+      </nav>
+
+      <section class="filters" aria-label="Filtros">
+        <label for="yearStart">Ano inicial</label>
+        <select id="yearStart"></select>
+
+        <label for="yearEnd">Ano final</label>
+        <select id="yearEnd"></select>
+
+        <label for="metricSelect">Métrica principal</label>
+        <select id="metricSelect">
+          <option value="valor_aprovado">Valor aprovado</option>
+          <option value="qtd_aprovada">Quantidade aprovada</option>
+          <option value="custo_medio">Custo médio</option>
+        </select>
+      </section>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SIA/SUS - DATASUS</p>
+          <h1>Análise temporal dos procedimentos de diálise no SUS</h1>
+          <p class="subtitle">Monitoramento de utilização, custos e comportamento pré, durante e pós-pandemia.</p>
+        </div>
+        <div class="status-pill"><span></span> Dados públicos agregados</div>
+      </header>
+
+      <section class="kpis" aria-label="Indicadores principais">
+        <article class="kpi"><span>Valor aprovado</span><strong id="kpiValue">-</strong><small id="kpiValueHint">-</small></article>
+        <article class="kpi"><span>Quantidade</span><strong id="kpiQty">-</strong><small>procedimentos aprovados</small></article>
+        <article class="kpi"><span>Custo médio</span><strong id="kpiAvg">-</strong><small>valor / quantidade</small></article>
+        <article class="kpi accent"><span>Variação</span><strong id="kpiGrowth">-</strong><small>primeiro x último ano filtrado</small></article>
+      </section>
+
+      <section id="overview" class="tab-panel active">
+        <div class="section-head">
+          <div>
+            <h2>Série histórica</h2>
+            <p>O gráfico acompanha o comportamento mensal dos procedimentos selecionados de diálise.</p>
+          </div>
+          <div class="segmented" role="group" aria-label="Atalho de período">
+            <button data-range="pre">Pré-pandemia</button>
+            <button data-range="pandemic">Pandemia</button>
+            <button data-range="post">Pós-pandemia</button>
+            <button data-range="all" class="active">Tudo</button>
+          </div>
+        </div>
+        <div class="chart-shell large"><canvas id="mainChart" height="320"></canvas></div>
+        <div class="grid two">
+          <div class="chart-shell"><h3>Valor anual</h3><canvas id="annualBar" height="240"></canvas></div>
+          <div class="chart-shell"><h3>Participação por grupo</h3><canvas id="groupBar" height="240"></canvas></div>
+        </div>
+      </section>
+
+      <section id="pandemic" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Comparação por período</h2>
+            <p>Resumo entre pré-pandemia, pandemia e pós-pandemia.</p>
+          </div>
+        </div>
+        <div class="period-grid" id="periodCards"></div>
+        <div class="chart-shell large"><canvas id="periodChart" height="300"></canvas></div>
+      </section>
+
+      <section id="forecast" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Previsão inicial</h2>
+            <p>Projeção mensal gerada por média móvel de 12 meses, usada como apoio exploratório.</p>
+          </div>
+        </div>
+        <div class="chart-shell large"><canvas id="forecastChart" height="320"></canvas></div>
+        <table class="data-table" id="forecastTable"></table>
+      </section>
+
+      <section id="territory" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Análise territorial</h2>
+            <p>Área reservada para a próxima etapa: municípios e concentração dos atendimentos.</p>
+          </div>
+        </div>
+        <div class="empty-state">
+          <h3>Próximo dado necessário</h3>
+          <p>Para mostrar cidades, baixe no TabNet as bases de diálise com Linha = Município, Coluna = Ano ou Ano/mês, Conteúdo = Valor aprovado e Qtd.aprovada.</p>
+          <ul>
+            <li>Ranking de municípios por valor aprovado</li>
+            <li>Ranking por quantidade aprovada</li>
+            <li>Crescimento pré x pós-pandemia por município</li>
+            <li>Comparação Brasil x município selecionado</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="risk" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Simulador educativo de risco renal</h2>
+            <p>Ferramenta demonstrativa. Não realiza diagnóstico e não substitui avaliação profissional.</p>
+          </div>
+        </div>
+        <div class="risk-layout">
+          <form id="riskForm" class="risk-form">
+            <label>Idade <input id="riskAge" type="number" min="0" max="120" value="45" /></label>
+            <label>eGFR/TFG estimada <input id="riskEgfr" type="number" min="0" max="150" value="90" /></label>
+            <label>Albuminúria (mg/g) <input id="riskAlbumin" type="number" min="0" max="5000" value="10" /></label>
+            <div class="check-grid">
+              <label><input type="checkbox" value="3" data-label="diabetes" /> Diabetes</label>
+              <label><input type="checkbox" value="3" data-label="hipertensão" /> Hipertensão</label>
+              <label><input type="checkbox" value="2" data-label="doença cardiovascular" /> Doença cardiovascular</label>
+              <label><input type="checkbox" value="2" data-label="histórico familiar" /> Histórico familiar</label>
+              <label><input type="checkbox" value="1" data-label="obesidade" /> Obesidade</label>
+              <label><input type="checkbox" value="1" data-label="tabagismo" /> Tabagismo</label>
+              <label><input type="checkbox" value="1" data-label="uso frequente de anti-inflamatórios" /> Anti-inflamatórios frequentes</label>
+              <label><input type="checkbox" value="2" data-label="lesão renal aguda prévia" /> Lesão renal aguda prévia</label>
+              <label><input type="checkbox" value="1" data-label="inchaço" /> Inchaço</label>
+              <label><input type="checkbox" value="1" data-label="urina espumosa" /> Urina espumosa</label>
+              <label><input type="checkbox" value="2" data-label="sangue na urina" /> Sangue na urina</label>
+              <label><input type="checkbox" value="2" data-label="alteração urinária persistente" /> Alteração urinária</label>
+            </div>
+          </form>
+          <div class="risk-result" id="riskResult">
+            <span>Classificação simulada</span>
+            <strong>Baixo</strong>
+            <p>Preencha os fatores para visualizar o resultado educativo.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
