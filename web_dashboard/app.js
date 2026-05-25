@@ -45,9 +45,9 @@ function setupFilters() {
   }
   document.getElementById("yearStart").value = state.yearStart;
   document.getElementById("yearEnd").value = state.yearEnd;
-  document.getElementById("yearStart").addEventListener("change", e => { state.yearStart = Number(e.target.value); if (state.yearStart > state.yearEnd) state.yearEnd = state.yearStart; render(); });
-  document.getElementById("yearEnd").addEventListener("change", e => { state.yearEnd = Number(e.target.value); if (state.yearEnd < state.yearStart) state.yearStart = state.yearEnd; render(); });
-  document.getElementById("metricSelect").addEventListener("change", e => { state.metric = e.target.value; render(); });
+  document.getElementById("yearStart").addEventListener("change", e => { state.yearStart = Number(e.target.value); if (state.yearStart > state.yearEnd) state.yearEnd = state.yearStart; scheduleRender(); });
+  document.getElementById("yearEnd").addEventListener("change", e => { state.yearEnd = Number(e.target.value); if (state.yearEnd < state.yearStart) state.yearStart = state.yearEnd; scheduleRender(); });
+  document.getElementById("metricSelect").addEventListener("change", e => { state.metric = e.target.value; scheduleRender(); });
 }
 
 function setupNavigation() {
@@ -56,7 +56,7 @@ function setupNavigation() {
     document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).classList.add("active");
-    render();
+    scheduleRender();
   }));
   document.querySelectorAll("[data-range]").forEach(btn => btn.addEventListener("click", () => {
     const ranges = { pre: [2015, 2019], pandemic: [2020, 2021], post: [2022, 2023], all: [2015, 2023] };
@@ -65,7 +65,7 @@ function setupNavigation() {
     btn.classList.add("active");
     document.getElementById("yearStart").value = state.yearStart;
     document.getElementById("yearEnd").value = state.yearEnd;
-    render();
+    scheduleRender();
   }));
 }
 
@@ -91,14 +91,17 @@ function renderKPIs(data) {
 function canvasBase(id) {
   const canvas = document.getElementById(id);
   if (!canvas) return null;
+  if (!canvas.closest(".tab-panel.active")) return null;
   const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width * dpr;
-  canvas.height = canvas.getAttribute("height") * dpr;
+  const shell = canvas.parentElement;
+  const width = Math.max(canvas.clientWidth, shell.clientWidth - 36, 360);
+  const height = Number(canvas.getAttribute("height") || 280);
+  canvas.width = Math.floor(width * dpr);
+  canvas.height = Math.floor(height * dpr);
   const ctx = canvas.getContext("2d");
   ctx.scale(dpr, dpr);
-  ctx.clearRect(0, 0, rect.width, canvas.height);
-  return { canvas, ctx, width: rect.width, height: Number(canvas.getAttribute("height")) };
+  ctx.clearRect(0, 0, width, height);
+  return { canvas, ctx, width, height };
 }
 
 function drawLine(id, data, key, color, label, extraLine = null) {
@@ -117,6 +120,7 @@ function drawLine(id, data, key, color, label, extraLine = null) {
     drawPath(ctx, extraLine.map((d, i) => [x(startIndex + i), y(d.value)]), "#d85b42", true);
   }
   ctx.fillStyle = "#69777b"; ctx.font = "12px Segoe UI"; ctx.fillText(label, pad.l, 14);
+  drawLineLabels(ctx, data, x, height, pad);
 }
 
 function drawBar(id, rows, key, labels, color) {
@@ -143,6 +147,31 @@ function drawBar(id, rows, key, labels, color) {
   });
 }
 
+function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
+  const base = canvasBase(id); if (!base || !rows.length) return;
+  const { ctx, width, height } = base;
+  const pad = { l: 190, r: 90, t: 30, b: 24 };
+  const max = Math.max(...rows.map(r => r[key])) * 1.08;
+  const trackW = width - pad.l - pad.r;
+  const rowH = (height - pad.t - pad.b) / rows.length;
+  ctx.font = "12px Segoe UI";
+  rows.forEach((r, i) => {
+    const y = pad.t + i * rowH + rowH * 0.24;
+    const barH = Math.min(34, rowH * 0.5);
+    ctx.fillStyle = "#5f6f73";
+    ctx.textAlign = "right";
+    ctx.fillText(labelFn(r), pad.l - 12, y + barH * 0.75);
+    ctx.fillStyle = "#edf4f1";
+    ctx.fillRect(pad.l, y, trackW, barH);
+    ctx.fillStyle = colorFn(i);
+    ctx.fillRect(pad.l, y, Math.max(3, (r[key] / max) * trackW), barH);
+    ctx.fillStyle = "#1f2a2e";
+    ctx.textAlign = "left";
+    ctx.fillText(`${fmtDecimal.format(r[key])}%`, pad.l + Math.max(8, (r[key] / max) * trackW + 8), y + barH * 0.75);
+  });
+  ctx.textAlign = "left";
+}
+
 function drawAxes(ctx, width, height, pad, min, max) {
   ctx.strokeStyle = "#d9e2de"; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, height - pad.b); ctx.lineTo(width - pad.r, height - pad.b); ctx.stroke();
@@ -154,6 +183,19 @@ function drawAxes(ctx, width, height, pad, min, max) {
     ctx.strokeStyle = "#eef3f0";
     ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(width - pad.r, yy); ctx.stroke();
   }
+}
+
+function drawLineLabels(ctx, data, x, height, pad) {
+  if (!data.length) return;
+  const first = data[0].data.slice(0, 7);
+  const last = data[data.length - 1].data.slice(0, 7);
+  ctx.fillStyle = "#69777b";
+  ctx.font = "11px Segoe UI";
+  ctx.textAlign = "left";
+  ctx.fillText(first, pad.l, height - 16);
+  ctx.textAlign = "right";
+  ctx.fillText(last, x(data.length - 1), height - 16);
+  ctx.textAlign = "left";
 }
 
 function drawPath(ctx, points, color, dashed) {
@@ -178,7 +220,7 @@ function renderOverview(data) {
     return acc;
   }, {}));
   drawBar("annualBar", annual, "valor_aprovado", r => r.ano, () => "#3066be");
-  drawBar("groupBar", state.grupo, "valor_aprovado", r => r.grupo_procedimento.split(" ").slice(0,2).join(" "), i => ["#0f766e", "#d85b42", "#c2841a"][i % 3]);
+  drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#0f766e", "#d85b42", "#c2841a"][i % 3]);
 }
 
 function renderPeriods() {
@@ -233,13 +275,23 @@ function render() {
   renderRisk();
 }
 
+function scheduleRender() {
+  requestAnimationFrame(() => requestAnimationFrame(render));
+}
+
 async function init() {
   const [mensal, grupo, forecast] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast)]);
   state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
-  state.grupo = grupo.map(d => ({ ...d, valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
+  state.grupo = grupo.map(d => ({
+    ...d,
+    valor_aprovado: numeric(d, "valor_aprovado"),
+    qtd_aprovada: numeric(d, "qtd_aprovada"),
+    custo_medio: numeric(d, "custo_medio"),
+    participacao_valor_pct: numeric(d, "participacao_valor_pct"),
+  }));
   state.forecast = forecast.map(d => ({ ...d, previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado") }));
-  setupFilters(); setupNavigation(); setupRisk(); render();
+  setupFilters(); setupNavigation(); setupRisk(); scheduleRender();
 }
 
-window.addEventListener("resize", render);
+window.addEventListener("resize", scheduleRender);
 init().catch(err => { document.body.innerHTML = `<main class="main"><h1>Erro ao carregar dashboard</h1><p>${err.message}</p></main>`; });
