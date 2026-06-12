@@ -32,7 +32,8 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 │   └── styles.css
 ├── dados_brutos/
 │   ├── qtd_mensal_dialise_brasil.csv
-│   └── valor_mensal_dialise_brasil.csv
+│   ├── valor_mensal_dialise_brasil.csv
+│   └── valor_municipio_dialise_brasil.csv
 ├── dados_tratados/
 │   ├── comparacao_real_previsto_2022_2023.csv
 │   ├── dialise_anual_brasil_total.csv
@@ -40,8 +41,11 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 │   ├── dialise_mensal_brasil_total.csv
 │   ├── indicadores_anuais_brasil.csv
 │   ├── indicadores_grupo_brasil.csv
+│   ├── indicadores_municipio_valor_brasil.csv
 │   ├── metricas_modelos_preditivos.csv
 │   ├── previsao_mensal_proximos_12m.csv
+│   ├── valor_municipio_dialise_brasil_long.csv
+│   ├── valor_municipio_dialise_brasil_wide.csv
 │   └── serie_mensal_dashboard.csv
 ├── docs/
 │   ├── modelagem_preditiva.md
@@ -50,6 +54,7 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 ├── scripts/
 │   ├── analise_exploratoria.py
 │   ├── modelagem_preditiva.py
+│   ├── tratamento_municipio_dialise.py
 │   ├── tratamento_dialise.py
 │   └── tratamento_mensal_dialise.py
 ├── analise.ipynb
@@ -77,19 +82,25 @@ python scripts/tratamento_mensal_dialise.py
 python scripts/analise_exploratoria.py
 ```
 
-4. Rodar a modelagem preditiva inicial:
+4. Tratar a base territorial por município:
+
+```bash
+python scripts/tratamento_municipio_dialise.py
+```
+
+5. Rodar a modelagem preditiva inicial:
 
 ```bash
 python scripts/modelagem_preditiva.py
 ```
 
-5. Abrir o dashboard Streamlit antigo/prototipo:
+6. Abrir o dashboard Streamlit antigo/prototipo:
 
 ```bash
 streamlit run dashboard/app.py
 ``` 
 
-6. Abrir o dashboard web customizado:
+7. Abrir o dashboard web customizado:
 
 ```powershell
 .\.venv\Scripts\python.exe -m http.server 8080
@@ -119,6 +130,8 @@ As interfaces permitem visualizar:
 - quantidade aprovada mensal;
 - custo medio mensal;
 - comparacao por grupo de procedimento;
+- ranking de municípios por valor aprovado;
+- crescimento municipal pós-pandemia versus pré-pandemia;
 - comparacao real x previsto;
 - previsao mensal inicial para os 12 meses seguintes ao ultimo dado disponivel.
 

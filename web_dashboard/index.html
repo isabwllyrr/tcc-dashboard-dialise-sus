@@ -104,19 +104,19 @@
         <div class="section-head">
           <div>
             <h2>Análise territorial</h2>
-            <p>Área reservada para a próxima etapa: municípios e concentração dos atendimentos.</p>
+            <p>Distribuição municipal do valor aprovado em procedimentos de diálise no SUS.</p>
           </div>
         </div>
-        <div class="empty-state">
-          <h3>Próximo dado necessário</h3>
-          <p>Para mostrar cidades, baixe no TabNet as bases de diálise com Linha = Município, Coluna = Ano ou Ano/mês, Conteúdo = Valor aprovado e Qtd.aprovada.</p>
-          <ul>
-            <li>Ranking de municípios por valor aprovado</li>
-            <li>Ranking por quantidade aprovada</li>
-            <li>Crescimento pré x pós-pandemia por município</li>
-            <li>Comparação Brasil x município selecionado</li>
-          </ul>
+        <div class="territory-summary">
+          <article class="period-card"><h3>Municípios com atendimento</h3><strong id="municipalityCount">-</strong><span>com valor aprovado no período</span></article>
+          <article class="period-card"><h3>Maior concentração</h3><strong id="topMunicipality">-</strong><span id="topMunicipalityShare">-</span></article>
+          <article class="period-card"><h3>Top 10</h3><strong id="top10Share">-</strong><span>participação no valor nacional</span></article>
         </div>
+        <div class="grid two">
+          <div class="chart-shell"><h3>Top 15 por valor aprovado</h3><canvas id="municipalityValueChart" height="360"></canvas></div>
+          <div class="chart-shell"><h3>Maiores crescimentos pós-pandemia</h3><canvas id="municipalityGrowthChart" height="360"></canvas></div>
+        </div>
+        <table class="data-table" id="municipalityTable"></table>
       </section>
 
       <section id="risk" class="tab-panel">

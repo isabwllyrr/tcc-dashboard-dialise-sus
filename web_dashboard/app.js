@@ -2,9 +2,10 @@
   mensal: "../dados_tratados/dialise_mensal_brasil_total.csv",
   grupo: "../dados_tratados/indicadores_grupo_brasil.csv",
   forecast: "../dados_tratados/previsao_mensal_proximos_12m.csv",
+  municipios: "../dados_tratados/indicadores_municipio_valor_brasil.csv",
 };
 
-const state = { mensal: [], grupo: [], forecast: [], yearStart: 2015, yearEnd: 2023, metric: "valor_aprovado" };
+const state = { mensal: [], grupo: [], forecast: [], municipios: [], yearStart: 2015, yearEnd: 2023, metric: "valor_aprovado" };
 const chartRegistry = new Map();
 
 const fmtMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
@@ -38,8 +39,8 @@ async function loadCSV(path) {
 function numeric(row, key) { return Number(row[key] || 0); }
 function filteredMensal() { return state.mensal.filter(d => d.ano >= state.yearStart && d.ano <= state.yearEnd); }
 function formatMetricValue(key, value) {
-  if (key === "valor_aprovado" || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
-  if (key === "participacao_valor_pct") return `${fmtDecimal.format(value)}%`;
+  if (key.includes("valor") || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
+  if (key.includes("pct")) return `${fmtDecimal.format(value)}%`;
   return fmtNumber.format(value);
 }
 
@@ -283,6 +284,42 @@ function renderForecast() {
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
 }
 
+function renderTerritory() {
+  if (!state.municipios.length) return;
+  const municipios = [...state.municipios].sort((a, b) => b.valor_2015_2023 - a.valor_2015_2023);
+  const total = municipios.reduce((sum, row) => sum + row.valor_2015_2023, 0);
+  const top = municipios[0];
+  const top10 = municipios.slice(0, 10).reduce((sum, row) => sum + row.valor_2015_2023, 0);
+  document.getElementById("municipalityCount").textContent = fmtNumber.format(municipios.length);
+  document.getElementById("topMunicipality").textContent = top.municipio;
+  document.getElementById("topMunicipalityShare").textContent = `${fmtDecimal.format((top.valor_2015_2023 / total) * 100)}% do valor nacional`;
+  document.getElementById("top10Share").textContent = `${fmtDecimal.format((top10 / total) * 100)}%`;
+
+  const topValue = municipios.slice(0, 15);
+  drawHorizontalBars("municipalityValueChart", topValue, "valor_2015_2023", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#0f766e" : "#3066be");
+
+  const growthRows = state.municipios
+    .filter(r => Number.isFinite(r.crescimento_pos_vs_pre_pct) && r.media_pre_pandemia >= 1000000)
+    .sort((a, b) => b.crescimento_pos_vs_pre_pct - a.crescimento_pos_vs_pre_pct)
+    .slice(0, 15);
+  drawHorizontalBars("municipalityGrowthChart", growthRows, "crescimento_pos_vs_pre_pct", r => r.municipio, i => i < 5 ? "#d85b42" : "#c2841a");
+
+  document.getElementById("municipalityTable").innerHTML = `
+    <thead>
+      <tr><th>Rank</th><th>Município</th><th>Valor 2015-2023</th><th>Participação</th><th>Crescimento pós x pré</th></tr>
+    </thead>
+    <tbody>
+      ${municipios.slice(0, 25).map(r => `
+        <tr>
+          <td>${r.ranking_valor}</td>
+          <td>${r.municipio}</td>
+          <td>${fmtMoney.format(r.valor_2015_2023)}</td>
+          <td>${fmtDecimal.format(r.participacao_nacional_pct)}%</td>
+          <td>${Number.isFinite(r.crescimento_pos_vs_pre_pct) ? `${fmtDecimal.format(r.crescimento_pos_vs_pre_pct)}%` : "-"}</td>
+        </tr>
+      `).join("")}
+    </tbody>`;
+}
 function renderRisk() {
   const form = document.getElementById("riskForm"); if (!form) return;
   const age = Number(document.getElementById("riskAge").value || 0);
@@ -307,6 +344,7 @@ function render() {
   renderOverview(data);
   renderPeriods();
   renderForecast();
+  renderTerritory();
   renderRisk();
 }
 
@@ -347,7 +385,7 @@ function setupChartTooltips() {
 }
 
 async function init() {
-  const [mensal, grupo, forecast] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast)]);
+  const [mensal, grupo, forecast, municipios] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.municipios)]);
   state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
   state.grupo = grupo.map(d => ({
     ...d,
@@ -357,8 +395,21 @@ async function init() {
     participacao_valor_pct: numeric(d, "participacao_valor_pct"),
   }));
   state.forecast = forecast.map(d => ({ ...d, previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado") }));
+  state.municipios = municipios.map(d => ({
+    ...d,
+    ranking_valor: Number(d.ranking_valor),
+    valor_2015_2023: numeric(d, "valor_2015_2023"),
+    media_pre_pandemia: numeric(d, "media_pre_pandemia"),
+    media_pandemia: numeric(d, "media_pandemia"),
+    media_pos_pandemia: numeric(d, "media_pos_pandemia"),
+    crescimento_pos_vs_pre_pct: d.crescimento_pos_vs_pre_pct === "" ? NaN : numeric(d, "crescimento_pos_vs_pre_pct"),
+    participacao_nacional_pct: numeric(d, "participacao_nacional_pct"),
+  }));
   setupFilters(); setupNavigation(); setupRisk(); setupChartTooltips(); scheduleRender();
 }
 
 window.addEventListener("resize", scheduleRender);
 init().catch(err => { document.body.innerHTML = `<main class="main"><h1>Erro ao carregar dashboard</h1><p>${err.message}</p></main>`; });
+
+
+

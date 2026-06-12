@@ -182,6 +182,12 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   gap: 16px;
   margin-bottom: 16px;
 }
+.territory-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
 .period-card {
   background: white;
   border: 1px solid var(--line);
@@ -250,6 +256,6 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   .sidebar { position: static; width: auto; }
   .main { margin-left: 0; padding: 18px; }
   .topbar, .section-head { display: block; }
-  .kpis, .grid.two, .period-grid, .risk-layout { grid-template-columns: 1fr; }
+  .kpis, .grid.two, .period-grid, .territory-summary, .risk-layout { grid-template-columns: 1fr; }
   h1 { font-size: 28px; }
 }
