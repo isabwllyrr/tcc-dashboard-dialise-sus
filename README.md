@@ -10,7 +10,7 @@ Analise preditiva e monitoramento de custos da dialise no SUS: desenvolvimento d
 
 - Abrangencia geografica: Brasil.
 - Fonte dos dados: SIA/SUS - DATASUS/TabNet.
-- Periodo principal: janeiro de 2015 a dezembro de 2023.
+- Periodo principal: janeiro de 2015 a abril de 2026, com 2026 tratado como ano parcial.
 - Variaveis principais: valor aprovado, quantidade aprovada e custo medio.
 - Objeto: procedimentos relacionados a dialise no SUS.
 
@@ -36,7 +36,7 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 │   ├── valor_mensal_dialise_brasil.csv
 │   └── valor_municipio_dialise_brasil.csv
 ├── dados_tratados/
-│   ├── comparacao_real_previsto_2022_2023.csv
+│   ├── comparacao_real_previsto_2022_atual.csv
 │   ├── dialise_anual_brasil_total.csv
 │   ├── dialise_mensal_brasil_por_grupo.csv
 │   ├── dialise_mensal_brasil_total.csv
@@ -116,11 +116,11 @@ http://localhost:8080/web_dashboard/
 
 ## Resultados iniciais
 
-- Periodo analisado: 108 meses, de 2015 a 2023.
-- Valor aprovado total no periodo: aproximadamente R$ 28,34 bilhoes.
-- Crescimento do valor aprovado entre 2015 e 2023: aproximadamente 62,87%.
+- Periodo analisado: 136 meses, de janeiro de 2015 a abril de 2026.
+- Valor aprovado total no periodo: aproximadamente R$ 39,19 bilhoes.
+- Crescimento do valor aprovado entre 2015 e 2025, ultimo ano fechado: aproximadamente 88,61%.
 - Modelo preditivo inicial com melhor desempenho no teste: media movel de 12 meses.
-- MAPE do melhor modelo no periodo de teste de 2022 a 2023: aproximadamente 7,15%.
+- MAPE do melhor modelo no periodo de teste de 2022 ao ultimo mes disponivel: aproximadamente 5,52%.
 
 ## Dashboards
 

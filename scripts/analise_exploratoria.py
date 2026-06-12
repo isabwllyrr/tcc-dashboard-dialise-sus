@@ -43,6 +43,12 @@ def main():
     anual["custo_medio"] = anual["valor_aprovado"] / anual["qtd_aprovada"]
     anual["variacao_valor_pct"] = anual["valor_aprovado"].pct_change() * 100
     anual["variacao_qtd_pct"] = anual["qtd_aprovada"].pct_change() * 100
+    meses_por_ano = mensal.groupby("ano")["mes"].nunique()
+    anual["meses_disponiveis"] = anual["ano"].map(meses_por_ano).astype(int)
+    anual["ano_completo"] = anual["meses_disponiveis"] == 12
+    anual.loc[~anual["ano_completo"], ["variacao_valor_pct", "variacao_qtd_pct"]] = pd.NA
+    anos_completos = meses_por_ano[meses_por_ano == 12].index
+    ano_final_completo = int(anos_completos.max())
 
     grupo_total = (
         grupo.groupby("grupo_procedimento", as_index=False)
@@ -60,9 +66,10 @@ def main():
         "qtd_total": float(mensal["qtd_aprovada"].sum()),
         "custo_medio_periodo": float(mensal["valor_aprovado"].sum() / mensal["qtd_aprovada"].sum()),
         "valor_2015": float(anual.loc[anual["ano"] == 2015, "valor_aprovado"].iloc[0]),
-        "valor_2023": float(anual.loc[anual["ano"] == 2023, "valor_aprovado"].iloc[0]),
+        "valor_final_completo": float(anual.loc[anual["ano"] == ano_final_completo, "valor_aprovado"].iloc[0]),
+        "ano_final_completo": ano_final_completo,
     }
-    resumo["crescimento_2015_2023_pct"] = (resumo["valor_2023"] / resumo["valor_2015"] - 1) * 100
+    resumo["crescimento_periodo_pct"] = (resumo["valor_final_completo"] / resumo["valor_2015"] - 1) * 100
 
     mensal.assign(
         media_movel_12m=mensal["valor_aprovado"].rolling(12).mean(),
@@ -91,7 +98,8 @@ def main():
         f"Valor aprovado total: {moeda(resumo['valor_total'])}.",
         f"Quantidade aprovada total: {resumo['qtd_total']:,.0f}.".replace(",", "."),
         f"Custo medio no periodo: {moeda(resumo['custo_medio_periodo'])}.",
-        f"Crescimento do valor aprovado entre 2015 e 2023: {resumo['crescimento_2015_2023_pct']:.2f}%.",
+        f"Crescimento do valor aprovado entre 2015 e {resumo['ano_final_completo']} (ultimo ano fechado): {resumo['crescimento_periodo_pct']:.2f}%.",
+        "O ano de 2026 aparece na base como periodo parcial e deve ser interpretado separadamente.",
         "",
         "## Valor aprovado anual",
         "",
@@ -105,8 +113,8 @@ def main():
     (ROOT_DIR / "docs" / "resultados_exploratorios.md").write_text("\n".join(linhas), encoding="utf-8")
 
     print("Analise exploratoria gerada.")
-    print(f"Valor total 2015-2023: {moeda(resumo['valor_total'])}")
-    print(f"Crescimento 2015-2023: {resumo['crescimento_2015_2023_pct']:.2f}%")
+    print(f"Valor total {resumo['periodo_inicio']} a {resumo['periodo_fim']}: {moeda(resumo['valor_total'])}")
+    print(f"Crescimento 2015-{resumo['ano_final_completo']}: {resumo['crescimento_periodo_pct']:.2f}%")
 
 
 if __name__ == "__main__":

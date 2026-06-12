@@ -45,6 +45,8 @@ def previsao_tendencia_linear(datas_treino, treino, datas_pred):
 def main():
     df = pd.read_csv(INPUT, parse_dates=["data"]).sort_values("data").reset_index(drop=True)
     serie = df["valor_aprovado"].astype(float).to_numpy()
+    periodo_inicio = df["data"].min().strftime("%Y-%m")
+    periodo_fim = df["data"].max().strftime("%Y-%m")
 
     treino_df = df[df["data"] < "2022-01-01"].copy()
     teste_df = df[df["data"] >= "2022-01-01"].copy()
@@ -95,13 +97,14 @@ def main():
     future["modelo_usado"] = melhor
 
     metricas_df.to_csv(DATA_DIR / "metricas_modelos_preditivos.csv", index=False, encoding="utf-8-sig")
-    comparacao.to_csv(DATA_DIR / "comparacao_real_previsto_2022_2023.csv", index=False, encoding="utf-8-sig")
+    comparacao.to_csv(DATA_DIR / "comparacao_real_previsto_2022_atual.csv", index=False, encoding="utf-8-sig")
     future.to_csv(DATA_DIR / "previsao_mensal_proximos_12m.csv", index=False, encoding="utf-8-sig")
 
     linhas = [
         "# Modelagem preditiva inicial",
         "",
-        "A serie mensal de valor aprovado foi dividida em treino (2015 a 2021) e teste (2022 a 2023).",
+        f"A serie mensal de valor aprovado cobre {periodo_inicio} a {periodo_fim}.",
+        "A divisao inicial usa treino de 2015 a 2021 e teste de 2022 ate o ultimo mes disponivel.",
         "Foram avaliados tres modelos simples e transparentes: media movel de 12 meses, sazonal ingenuo de 12 meses e tendencia linear.",
         "",
         "## Metricas no periodo de teste",

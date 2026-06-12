@@ -82,7 +82,7 @@ def main():
         on=["data", "ano", "mes", "mes_nome", "grupo_procedimento"],
         how="outer",
     )
-    base = base[(base["ano"] >= 2015) & (base["ano"] <= 2023)].copy()
+    base = base[base["ano"] >= 2015].copy()
     base["valor_aprovado"] = base["valor_aprovado"].fillna(0)
     base["qtd_aprovada"] = base["qtd_aprovada"].fillna(0)
     base["custo_medio"] = np.where(
@@ -102,8 +102,12 @@ def main():
         total_mensal.groupby("ano", as_index=False)
         .agg(valor_aprovado=("valor_aprovado", "sum"), qtd_aprovada=("qtd_aprovada", "sum"))
     )
+    meses_por_ano = total_mensal.groupby("ano")["mes"].nunique().rename("meses_disponiveis")
+    total_anual = total_anual.merge(meses_por_ano, on="ano", how="left")
+    total_anual["ano_completo"] = total_anual["meses_disponiveis"] == 12
     total_anual["custo_medio"] = total_anual["valor_aprovado"] / total_anual["qtd_aprovada"]
     total_anual["variacao_valor_pct"] = total_anual["valor_aprovado"].pct_change() * 100
+    total_anual.loc[~total_anual["ano_completo"], "variacao_valor_pct"] = np.nan
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     base.to_csv(OUT_DIR / "dialise_mensal_brasil_por_grupo.csv", index=False, encoding="utf-8-sig")

@@ -5,7 +5,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
 };
 
-const state = { mensal: [], grupo: [], forecast: [], municipios: [], yearStart: 2015, yearEnd: 2023, metric: "valor_aprovado" };
+const state = { mensal: [], grupo: [], forecast: [], municipios: [], yearStart: 2015, yearEnd: 2026, metric: "valor_aprovado" };
 const chartRegistry = new Map();
 
 const fmtMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
@@ -38,6 +38,11 @@ async function loadCSV(path) {
 
 function numeric(row, key) { return Number(row[key] || 0); }
 function filteredMensal() { return state.mensal.filter(d => d.ano >= state.yearStart && d.ano <= state.yearEnd); }
+function monthsInYear(year) { return new Set(state.mensal.filter(d => d.ano === year).map(d => d.mes)).size; }
+function latestCompleteYear(maxYear = state.yearEnd) {
+  const completeYears = [...new Set(state.mensal.map(d => d.ano))].filter(year => year <= maxYear && monthsInYear(year) === 12);
+  return completeYears.length ? Math.max(...completeYears) : maxYear;
+}
 function formatMetricValue(key, value) {
   if (key.includes("valor") || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
   if (key.includes("pct")) return `${fmtDecimal.format(value)}%`;
@@ -48,7 +53,7 @@ function setupFilters() {
   const years = [...new Set(state.mensal.map(d => d.ano))];
   for (const id of ["yearStart", "yearEnd"]) {
     const select = document.getElementById(id);
-    select.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join("");
+    select.innerHTML = years.map(y => `<option value="${y}">${y}${monthsInYear(y) < 12 ? " parcial" : ""}</option>`).join("");
   }
   document.getElementById("yearStart").value = state.yearStart;
   document.getElementById("yearEnd").value = state.yearEnd;
@@ -66,7 +71,8 @@ function setupNavigation() {
     scheduleRender();
   }));
   document.querySelectorAll("[data-range]").forEach(btn => btn.addEventListener("click", () => {
-    const ranges = { pre: [2015, 2019], pandemic: [2020, 2021], post: [2022, 2023], all: [2015, 2023] };
+    const maxYear = Math.max(...state.mensal.map(d => d.ano));
+    const ranges = { pre: [2015, 2019], pandemic: [2020, 2021], post: [2022, maxYear], all: [2015, maxYear] };
     [state.yearStart, state.yearEnd] = ranges[btn.dataset.range];
     document.querySelectorAll("[data-range]").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
@@ -86,13 +92,15 @@ function renderKPIs(data) {
   const totalQty = data.reduce((s, d) => s + d.qtd_aprovada, 0);
   const avg = totalValue / totalQty;
   const first = data.filter(d => d.ano === state.yearStart).reduce((s, d) => s + d.valor_aprovado, 0);
-  const last = data.filter(d => d.ano === state.yearEnd).reduce((s, d) => s + d.valor_aprovado, 0);
+  const comparisonEnd = latestCompleteYear(state.yearEnd);
+  const last = data.filter(d => d.ano === comparisonEnd).reduce((s, d) => s + d.valor_aprovado, 0);
   const growth = first ? ((last / first) - 1) * 100 : 0;
   document.getElementById("kpiValue").textContent = fmtMoney.format(totalValue);
-  document.getElementById("kpiValueHint").textContent = `${state.yearStart} a ${state.yearEnd}`;
+  document.getElementById("kpiValueHint").textContent = `${state.yearStart} a ${state.yearEnd}${monthsInYear(state.yearEnd) < 12 ? " parcial" : ""}`;
   document.getElementById("kpiQty").textContent = fmtNumber.format(totalQty);
   document.getElementById("kpiAvg").textContent = fmtMoney.format(avg);
   document.getElementById("kpiGrowth").textContent = `${fmtDecimal.format(growth)}%`;
+  document.getElementById("kpiGrowthHint").textContent = `${state.yearStart} x ${comparisonEnd}${comparisonEnd !== state.yearEnd ? " (ano fechado)" : ""}`;
 }
 
 function canvasBase(id) {
@@ -280,32 +288,35 @@ function renderForecast() {
   const forecastRows = state.forecast.map(d => ({ data: d.data, value: d.previsao_valor_aprovado }));
   const combined = [...recent, ...forecastRows.map(d => ({ data: d.data, valor_aprovado: d.value }))];
   const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
+  document.getElementById("forecastNote").textContent = `A base tratada vai até ${lastReal}. Como 2026 ainda está parcial, a previsão abaixo mostra os 12 meses seguintes ao último mês disponível, não o ano fechado de 2027.`;
   drawLine("forecastChart", combined, "valor_aprovado", "#3066be", `Real até ${lastReal} + próximos 12 meses`, forecastRows);
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
 }
 
 function renderTerritory() {
   if (!state.municipios.length) return;
-  const municipios = [...state.municipios].sort((a, b) => b.valor_2015_2023 - a.valor_2015_2023);
-  const total = municipios.reduce((sum, row) => sum + row.valor_2015_2023, 0);
-  const totalQty = municipios.reduce((sum, row) => sum + row.qtd_2015_2023, 0);
+  const municipios = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo);
+  const total = municipios.reduce((sum, row) => sum + row.valor_periodo, 0);
+  const totalQty = municipios.reduce((sum, row) => sum + row.qtd_periodo, 0);
   const top = municipios[0];
-  const top10 = municipios.slice(0, 10).reduce((sum, row) => sum + row.valor_2015_2023, 0);
-  const topQty = [...state.municipios].sort((a, b) => b.qtd_2015_2023 - a.qtd_2015_2023)[0];
+  const top10 = municipios.slice(0, 10).reduce((sum, row) => sum + row.valor_periodo, 0);
+  const topQty = [...state.municipios].sort((a, b) => b.qtd_periodo - a.qtd_periodo)[0];
+  const periodLabel = state.municipios[0].periodo_analise?.replace("_", " a ") || "período";
   document.getElementById("municipalityCount").textContent = fmtNumber.format(municipios.length);
   document.getElementById("topMunicipality").textContent = top.municipio;
-  document.getElementById("topMunicipalityShare").textContent = `${fmtDecimal.format((top.valor_2015_2023 / total) * 100)}% do valor nacional`;
+  document.getElementById("topMunicipalityShare").textContent = `${fmtDecimal.format((top.valor_periodo / total) * 100)}% do valor nacional`;
   document.getElementById("top10Share").textContent = `${fmtDecimal.format((top10 / total) * 100)}%`;
   document.getElementById("territoryAvgCost").textContent = fmtMoney.format(total / totalQty);
   document.getElementById("territoryAvgCostHint").textContent = `maior volume: ${topQty.municipio}`;
+  document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
 
   const topValue = municipios.slice(0, 15);
-  drawHorizontalBars("municipalityValueChart", topValue, "valor_2015_2023", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#0f766e" : "#3066be");
+  drawHorizontalBars("municipalityValueChart", topValue, "valor_periodo", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#0f766e" : "#3066be");
 
   const topQtyRows = [...state.municipios]
-    .sort((a, b) => b.qtd_2015_2023 - a.qtd_2015_2023)
+    .sort((a, b) => b.qtd_periodo - a.qtd_periodo)
     .slice(0, 15);
-  drawHorizontalBars("municipalityQtyChart", topQtyRows, "qtd_2015_2023", r => `${r.ranking_qtd}. ${r.municipio}`, i => i < 5 ? "#d85b42" : "#c2841a");
+  drawHorizontalBars("municipalityQtyChart", topQtyRows, "qtd_periodo", r => `${r.ranking_qtd}. ${r.municipio}`, i => i < 5 ? "#d85b42" : "#c2841a");
 
   const growthRows = state.municipios
     .filter(r => Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) && r.media_qtd_pre_pandemia >= 10000)
@@ -315,16 +326,16 @@ function renderTerritory() {
 
   document.getElementById("municipalityTable").innerHTML = `
     <thead>
-      <tr><th>Rank valor</th><th>Município</th><th>Valor 2015-2023</th><th>Qtd. 2015-2023</th><th>Custo médio</th><th>Cresc. valor</th><th>Cresc. qtd.</th></tr>
+      <tr><th>Rank valor</th><th>Município</th><th>Valor no período</th><th>Qtd. no período</th><th>Custo médio</th><th>Cresc. valor</th><th>Cresc. qtd.</th></tr>
     </thead>
     <tbody>
       ${municipios.slice(0, 25).map(r => `
         <tr>
           <td>${r.ranking_valor}</td>
           <td>${r.municipio}</td>
-          <td>${fmtMoney.format(r.valor_2015_2023)}</td>
-          <td>${fmtNumber.format(r.qtd_2015_2023)}</td>
-          <td>${fmtMoney.format(r.custo_medio_2015_2023)}</td>
+          <td>${fmtMoney.format(r.valor_periodo)}</td>
+          <td>${fmtNumber.format(r.qtd_periodo)}</td>
+          <td>${fmtMoney.format(r.custo_medio_periodo)}</td>
           <td>${Number.isFinite(r.crescimento_valor_pos_vs_pre_pct) ? `${fmtDecimal.format(r.crescimento_valor_pos_vs_pre_pct)}%` : "-"}</td>
           <td>${Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) ? `${fmtDecimal.format(r.crescimento_qtd_pos_vs_pre_pct)}%` : "-"}</td>
         </tr>
@@ -398,6 +409,9 @@ function setupChartTooltips() {
 async function init() {
   const [mensal, grupo, forecast, municipios] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.municipios)]);
   state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
+  state.yearStart = Math.min(...state.mensal.map(d => d.ano));
+  state.yearEnd = Math.max(...state.mensal.map(d => d.ano));
+  document.getElementById("brandPeriod").textContent = `${state.yearStart}-${state.yearEnd}`;
   state.grupo = grupo.map(d => ({
     ...d,
     valor_aprovado: numeric(d, "valor_aprovado"),
@@ -410,9 +424,9 @@ async function init() {
     ...d,
     ranking_valor: Number(d.ranking_valor),
     ranking_qtd: Number(d.ranking_qtd),
-    valor_2015_2023: numeric(d, "valor_2015_2023"),
-    qtd_2015_2023: numeric(d, "qtd_2015_2023"),
-    custo_medio_2015_2023: numeric(d, "custo_medio_2015_2023"),
+    valor_periodo: numeric(d, "valor_periodo"),
+    qtd_periodo: numeric(d, "qtd_periodo"),
+    custo_medio_periodo: numeric(d, "custo_medio_periodo"),
     media_valor_pre_pandemia: numeric(d, "media_valor_pre_pandemia"),
     media_qtd_pre_pandemia: numeric(d, "media_qtd_pre_pandemia"),
     crescimento_valor_pos_vs_pre_pct: d.crescimento_valor_pos_vs_pre_pct === "" ? NaN : numeric(d, "crescimento_valor_pos_vs_pre_pct"),

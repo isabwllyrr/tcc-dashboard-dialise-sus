@@ -12,7 +12,7 @@
         <span class="brand-mark">SUS</span>
         <div>
           <strong>Diálise Brasil</strong>
-          <small>2015-2023</small>
+          <small id="brandPeriod">2015-2026</small>
         </div>
       </div>
 
@@ -55,7 +55,7 @@
           <article class="kpi"><span>Valor aprovado</span><strong id="kpiValue">-</strong><small id="kpiValueHint">-</small></article>
           <article class="kpi"><span>Quantidade</span><strong id="kpiQty">-</strong><small>procedimentos aprovados</small></article>
           <article class="kpi"><span>Custo médio</span><strong id="kpiAvg">-</strong><small>valor / quantidade</small></article>
-          <article class="kpi accent"><span>Variação</span><strong id="kpiGrowth">-</strong><small>primeiro x último ano filtrado</small></article>
+          <article class="kpi accent"><span>Variação</span><strong id="kpiGrowth">-</strong><small id="kpiGrowthHint">primeiro x último ano fechado</small></article>
         </section>
 
         <div class="section-head">
@@ -95,7 +95,7 @@
             <p>Projeção dos 12 meses seguintes ao último mês disponível na base tratada.</p>
           </div>
         </div>
-        <p class="note">Com a base atual, o último mês completo tratado é dezembro de 2023; por isso a projeção aparece em 2024. Ao inserir dados completos de 2024-2026, a mesma lógica passa a projetar anos posteriores.</p>
+        <p class="note" id="forecastNote">A previsão será calculada a partir do último mês disponível na base tratada.</p>
         <div class="chart-shell large"><canvas id="forecastChart" height="320"></canvas></div>
         <table class="data-table" id="forecastTable"></table>
       </section>
@@ -113,6 +113,7 @@
           <article class="period-card"><h3>Top 10</h3><strong id="top10Share">-</strong><span>participação no valor nacional</span></article>
           <article class="period-card"><h3>Custo médio nacional</h3><strong id="territoryAvgCost">-</strong><span id="territoryAvgCostHint">valor / quantidade</span></article>
         </div>
+        <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
         <div class="grid two">
           <div class="chart-shell"><h3>Top 15 por valor aprovado</h3><canvas id="municipalityValueChart" height="360"></canvas></div>
           <div class="chart-shell"><h3>Top 15 por quantidade aprovada</h3><canvas id="municipalityQtyChart" height="360"></canvas></div>
