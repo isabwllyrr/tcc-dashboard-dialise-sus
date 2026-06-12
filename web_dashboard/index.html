@@ -51,6 +51,15 @@
       </header>
 
       <section id="overview" class="tab-panel active">
+        <section class="analysis-brief" aria-label="Resumo executivo">
+          <div>
+            <p class="eyebrow">Leitura rápida</p>
+            <h2 id="briefTitle">Pressão assistencial e financeira em acompanhamento</h2>
+            <p id="briefText">Os indicadores serão calculados a partir dos filtros selecionados.</p>
+          </div>
+          <div class="brief-stats" id="briefStats"></div>
+        </section>
+
         <section class="kpis" aria-label="Indicadores principais">
           <article class="kpi"><span>Valor aprovado</span><strong id="kpiValue">-</strong><small id="kpiValueHint">-</small></article>
           <article class="kpi"><span>Quantidade</span><strong id="kpiQty">-</strong><small>procedimentos aprovados</small></article>
@@ -130,6 +139,7 @@
         </div>
         <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
         <div class="insight-strip" id="territoryInsight"></div>
+        <div class="chart-shell large"><h3>Comparação por região</h3><canvas id="regionChart" height="300"></canvas></div>
         <div class="grid two">
           <div class="chart-shell"><h3>Top 15 por valor aprovado</h3><canvas id="municipalityValueChart" height="360"></canvas></div>
           <div class="chart-shell"><h3>Top 15 por quantidade aprovada</h3><canvas id="municipalityQtyChart" height="360"></canvas></div>

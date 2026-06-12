@@ -312,6 +312,7 @@ function compact(v) {
 
 function renderOverview(data) {
   const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
+  renderBrief(data);
   drawLine("mainChart", data, state.metric, "#0f766e", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
@@ -322,11 +323,30 @@ function renderOverview(data) {
   drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#0f766e", "#d85b42", "#c2841a"][i % 3]);
 }
 
+function renderBrief(data) {
+  const completeEnd = latestCompleteYear(state.yearEnd);
+  const firstYear = data.filter(d => d.ano === state.yearStart).reduce((s, d) => s + d.valor_aprovado, 0);
+  const lastComplete = data.filter(d => d.ano === completeEnd).reduce((s, d) => s + d.valor_aprovado, 0);
+  const growth = firstYear ? (lastComplete / firstYear - 1) * 100 : 0;
+  const preQty = state.mensal.filter(d => d.ano >= 2015 && d.ano <= 2019).reduce((s, d) => s + d.qtd_aprovada, 0) / 5;
+  const postYears = [...new Set(state.mensal.map(d => d.ano))].filter(y => y >= 2022 && monthsInYear(y) === 12);
+  const postQty = state.mensal.filter(d => postYears.includes(d.ano)).reduce((s, d) => s + d.qtd_aprovada, 0) / Math.max(postYears.length, 1);
+  const qtyGrowth = preQty ? (postQty / preQty - 1) * 100 : 0;
+  document.getElementById("briefTitle").textContent = `Crescimento de ${fmtDecimal.format(growth)}% no valor aprovado até ${completeEnd}`;
+  document.getElementById("briefText").textContent = `A série indica aumento sustentado da utilização e dos custos dos procedimentos de diálise no SUS. Como 2026 está parcial, a leitura anual principal usa ${completeEnd} como último ano fechado.`;
+  document.getElementById("briefStats").innerHTML = `
+    <article><span>Demanda pós-pandemia</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>quantidade média anual pós x pré</small></article>
+    <article><span>Ano fechado de referência</span><strong>${completeEnd}</strong><small>comparações anuais</small></article>
+    <article><span>Último mês real</span><strong>${state.mensal[state.mensal.length - 1].data.slice(0, 7)}</strong><small>base SIA/SUS tratada</small></article>
+  `;
+}
+
 function renderPeriods() {
+  const completeEnd = latestCompleteYear(Math.max(...state.mensal.map(d => d.ano)));
   const groups = [
     { name: "Pré-pandemia", years: [2015, 2019] },
     { name: "Pandemia", years: [2020, 2021] },
-    { name: "Pós-pandemia", years: [2022, 2023] },
+    { name: "Pós-pandemia", years: [2022, completeEnd] },
   ].map(p => {
     const rows = state.mensal.filter(d => d.ano >= p.years[0] && d.ano <= p.years[1]);
     const value = rows.reduce((s, d) => s + d.valor_aprovado, 0);
@@ -360,7 +380,7 @@ function renderTerritory() {
   const totalQty = municipios.reduce((sum, row) => sum + row.qtd_periodo, 0);
   const top = municipios[0];
   const top10 = municipios.slice(0, 10).reduce((sum, row) => sum + row.valor_periodo, 0);
-  const topQty = [...state.municipios].sort((a, b) => b.qtd_periodo - a.qtd_periodo)[0];
+  const topQty = [...municipios].sort((a, b) => b.qtd_periodo - a.qtd_periodo)[0];
   const periodLabel = state.municipios[0].periodo_analise?.replace("_", " a ") || "período";
   document.getElementById("municipalityCount").textContent = fmtNumber.format(municipios.length);
   document.getElementById("topMunicipality").textContent = top.municipio;
@@ -370,6 +390,9 @@ function renderTerritory() {
   document.getElementById("territoryAvgCostHint").textContent = `maior volume: ${topQty.municipio}`;
   document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
   document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
+
+  const regionRows = aggregateRegions(municipios);
+  drawHorizontalBars("regionChart", regionRows, "valor_periodo", r => r.regiao, i => ["#0f766e", "#3066be", "#c2841a", "#d85b42", "#5f6f73"][i % 5]);
 
   const topValue = municipios.slice(0, 15);
   drawHorizontalBars("municipalityValueChart", topValue, "valor_periodo", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#0f766e" : "#3066be");
@@ -439,13 +462,22 @@ function renderEmptyTerritory() {
   document.getElementById("territoryAvgCostHint").textContent = "ajuste os filtros";
   document.getElementById("territoryInsight").innerHTML = `<article><span>Sem resultado</span><strong>Nenhum município encontrado</strong><small>Revise região, UF ou busca.</small></article>`;
   document.getElementById("municipalityTable").innerHTML = "";
-  ["municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
+  ["regionChart", "municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
     const base = canvasBase(id);
     if (base) {
       base.ctx.fillStyle = "#69777b";
       base.ctx.fillText("Sem dados para o filtro atual", 24, 42);
     }
   });
+}
+
+function aggregateRegions(rows) {
+  return Object.values(rows.reduce((acc, row) => {
+    acc[row.regiao] ||= { regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0 };
+    acc[row.regiao].valor_periodo += row.valor_periodo;
+    acc[row.regiao].qtd_periodo += row.qtd_periodo;
+    return acc;
+  }, {})).sort((a, b) => b.valor_periodo - a.valor_periodo);
 }
 function renderRisk() {
   const form = document.getElementById("riskForm"); if (!form) return;

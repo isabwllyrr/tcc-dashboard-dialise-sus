@@ -1,5 +1,5 @@
 ﻿:root {
-  --bg: #f4f7f5;
+  --bg: #eef3f1;
   --panel: #ffffff;
   --ink: #1f2a2e;
   --muted: #69777b;
@@ -9,7 +9,7 @@
   --coral: #d85b42;
   --gold: #c2841a;
   --blue: #3066be;
-  --shadow: 0 18px 45px rgba(31, 42, 46, 0.1);
+  --shadow: 0 16px 38px rgba(31, 42, 46, 0.08);
 }
 
 * { box-sizing: border-box; }
@@ -26,8 +26,8 @@ button, input, select { font: inherit; }
   inset: 0 auto 0 0;
   width: 276px;
   padding: 24px 18px;
-  background: #fbfdfb;
-  border-right: 1px solid var(--line);
+  background: #172124;
+  border-right: 1px solid #263336;
   overflow-y: auto;
 }
 .brand {
@@ -47,29 +47,30 @@ button, input, select { font: inherit; }
   font-weight: 800;
 }
 .brand strong { display: block; font-size: 18px; }
-.brand small { color: var(--muted); }
+.brand strong { color: white; }
+.brand small { color: #b7c5c1; }
 .nav { display: grid; gap: 8px; margin-bottom: 26px; }
 .nav-item {
   text-align: left;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--muted);
+  color: #b7c5c1;
   padding: 11px 12px;
   border-radius: 8px;
   cursor: pointer;
 }
 .nav-item:hover, .nav-item.active {
-  color: var(--ink);
-  background: #e7f3ef;
-  border-color: #b9dcd3;
+  color: white;
+  background: #213033;
+  border-color: #37545a;
 }
 .filters {
   display: grid;
   gap: 8px;
   padding-top: 18px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid #304044;
 }
-.filters label { margin-top: 10px; color: var(--muted); font-size: 13px; font-weight: 700; }
+.filters label { margin-top: 10px; color: #b7c5c1; font-size: 13px; font-weight: 700; }
 .filters select, .risk-form input {
   width: 100%;
   border: 1px solid var(--line);
@@ -104,13 +105,18 @@ button, input, select { font: inherit; }
   padding: 10px 12px;
   color: var(--ink);
 }
-.main { margin-left: 276px; padding: 28px; }
+.main { margin-left: 276px; padding: 30px; }
 .topbar {
   display: flex;
   justify-content: space-between;
   gap: 24px;
   align-items: flex-start;
   margin-bottom: 24px;
+  padding: 22px 24px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(31, 42, 46, 0.05);
 }
 .eyebrow {
   margin: 0 0 6px;
@@ -145,11 +151,61 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 18px;
-  box-shadow: 0 8px 24px rgba(31,42,46,.05);
+  box-shadow: 0 8px 22px rgba(31,42,46,.045);
 }
 .kpi span, .kpi small { display: block; color: var(--muted); }
 .kpi strong { display: block; margin: 8px 0 6px; font-size: 25px; }
+.kpi::before {
+  content: "";
+  display: block;
+  width: 38px;
+  height: 4px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: var(--teal);
+}
 .kpi.accent { border-color: #f1c6b9; background: #fff8f4; }
+.kpi.accent::before { background: var(--coral); }
+.analysis-brief {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+  margin-bottom: 18px;
+  padding: 22px;
+  color: white;
+  background: #172124;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+.analysis-brief .eyebrow { color: #8ed8c9; }
+.analysis-brief h2 { margin: 0; font-size: 28px; }
+.analysis-brief p:not(.eyebrow) {
+  margin: 10px 0 0;
+  color: #cbd9d5;
+  max-width: 780px;
+}
+.brief-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.brief-stats article {
+  padding: 14px;
+  background: #223033;
+  border: 1px solid #35484d;
+  border-radius: 8px;
+}
+.brief-stats span,
+.brief-stats small {
+  display: block;
+  color: #b7c5c1;
+}
+.brief-stats strong {
+  display: block;
+  margin: 7px 0 4px;
+  font-size: 22px;
+}
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 .section-head {
@@ -219,6 +275,7 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 18px;
+  box-shadow: 0 8px 22px rgba(31,42,46,.045);
 }
 .period-card h3 { margin: 0 0 10px; }
 .period-card strong { display: block; font-size: 24px; margin-bottom: 4px; }
@@ -311,6 +368,6 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   .sidebar { position: static; width: auto; }
   .main { margin-left: 0; padding: 18px; }
   .topbar, .section-head { display: block; }
-  .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .risk-layout { grid-template-columns: 1fr; }
+  .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .analysis-brief, .brief-stats, .risk-layout { grid-template-columns: 1fr; }
   h1 { font-size: 28px; }
 }
