@@ -5,8 +5,31 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
 };
 
-const state = { mensal: [], grupo: [], forecast: [], municipios: [], yearStart: 2015, yearEnd: 2026, metric: "valor_aprovado" };
+const state = {
+  mensal: [],
+  grupo: [],
+  forecast: [],
+  municipios: [],
+  yearStart: 2015,
+  yearEnd: 2026,
+  metric: "valor_aprovado",
+  region: "all",
+  uf: "all",
+  citySearch: "",
+};
 const chartRegistry = new Map();
+
+const ufMeta = {
+  "11": { uf: "RO", region: "Norte" }, "12": { uf: "AC", region: "Norte" }, "13": { uf: "AM", region: "Norte" },
+  "14": { uf: "RR", region: "Norte" }, "15": { uf: "PA", region: "Norte" }, "16": { uf: "AP", region: "Norte" },
+  "17": { uf: "TO", region: "Norte" }, "21": { uf: "MA", region: "Nordeste" }, "22": { uf: "PI", region: "Nordeste" },
+  "23": { uf: "CE", region: "Nordeste" }, "24": { uf: "RN", region: "Nordeste" }, "25": { uf: "PB", region: "Nordeste" },
+  "26": { uf: "PE", region: "Nordeste" }, "27": { uf: "AL", region: "Nordeste" }, "28": { uf: "SE", region: "Nordeste" },
+  "29": { uf: "BA", region: "Nordeste" }, "31": { uf: "MG", region: "Sudeste" }, "32": { uf: "ES", region: "Sudeste" },
+  "33": { uf: "RJ", region: "Sudeste" }, "35": { uf: "SP", region: "Sudeste" }, "41": { uf: "PR", region: "Sul" },
+  "42": { uf: "SC", region: "Sul" }, "43": { uf: "RS", region: "Sul" }, "50": { uf: "MS", region: "Centro-Oeste" },
+  "51": { uf: "MT", region: "Centro-Oeste" }, "52": { uf: "GO", region: "Centro-Oeste" }, "53": { uf: "DF", region: "Centro-Oeste" },
+};
 
 const fmtMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const fmtNumber = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
@@ -80,6 +103,39 @@ function setupNavigation() {
     document.getElementById("yearEnd").value = state.yearEnd;
     scheduleRender();
   }));
+}
+
+function setupTerritoryFilters() {
+  const regionSelect = document.getElementById("regionFilter");
+  const ufSelect = document.getElementById("ufFilter");
+  const cityInput = document.getElementById("citySearch");
+  const regions = ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"];
+  regionSelect.innerHTML = `<option value="all">Brasil</option>${regions.map(r => `<option value="${r}">${r}</option>`).join("")}`;
+  populateUfFilter();
+  regionSelect.addEventListener("change", e => {
+    state.region = e.target.value;
+    state.uf = "all";
+    populateUfFilter();
+    scheduleRender();
+  });
+  ufSelect.addEventListener("change", e => {
+    state.uf = e.target.value;
+    scheduleRender();
+  });
+  cityInput.addEventListener("input", e => {
+    state.citySearch = e.target.value.trim().toLocaleUpperCase("pt-BR");
+    scheduleRender();
+  });
+}
+
+function populateUfFilter() {
+  const ufSelect = document.getElementById("ufFilter");
+  const ufs = Object.entries(ufMeta)
+    .filter(([, meta]) => state.region === "all" || meta.region === state.region)
+    .map(([code, meta]) => ({ code, ...meta }))
+    .sort((a, b) => a.uf.localeCompare(b.uf));
+  ufSelect.innerHTML = `<option value="all">Todas</option>${ufs.map(item => `<option value="${item.code}">${item.uf}</option>`).join("")}`;
+  ufSelect.value = state.uf;
 }
 
 function setupRisk() {
@@ -295,7 +351,11 @@ function renderForecast() {
 
 function renderTerritory() {
   if (!state.municipios.length) return;
-  const municipios = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo);
+  const municipios = filteredMunicipios().sort((a, b) => b.valor_periodo - a.valor_periodo);
+  if (!municipios.length) {
+    renderEmptyTerritory();
+    return;
+  }
   const total = municipios.reduce((sum, row) => sum + row.valor_periodo, 0);
   const totalQty = municipios.reduce((sum, row) => sum + row.qtd_periodo, 0);
   const top = municipios[0];
@@ -309,16 +369,17 @@ function renderTerritory() {
   document.getElementById("territoryAvgCost").textContent = fmtMoney.format(total / totalQty);
   document.getElementById("territoryAvgCostHint").textContent = `maior volume: ${topQty.municipio}`;
   document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
+  document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
 
   const topValue = municipios.slice(0, 15);
   drawHorizontalBars("municipalityValueChart", topValue, "valor_periodo", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#0f766e" : "#3066be");
 
-  const topQtyRows = [...state.municipios]
+  const topQtyRows = [...municipios]
     .sort((a, b) => b.qtd_periodo - a.qtd_periodo)
     .slice(0, 15);
   drawHorizontalBars("municipalityQtyChart", topQtyRows, "qtd_periodo", r => `${r.ranking_qtd}. ${r.municipio}`, i => i < 5 ? "#d85b42" : "#c2841a");
 
-  const growthRows = state.municipios
+  const growthRows = municipios
     .filter(r => Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) && r.media_qtd_pre_pandemia >= 10000)
     .sort((a, b) => b.crescimento_qtd_pos_vs_pre_pct - a.crescimento_qtd_pos_vs_pre_pct)
     .slice(0, 15);
@@ -326,13 +387,15 @@ function renderTerritory() {
 
   document.getElementById("municipalityTable").innerHTML = `
     <thead>
-      <tr><th>Rank valor</th><th>Município</th><th>Valor no período</th><th>Qtd. no período</th><th>Custo médio</th><th>Cresc. valor</th><th>Cresc. qtd.</th></tr>
+      <tr><th>Rank valor</th><th>Município</th><th>UF</th><th>Região</th><th>Valor no período</th><th>Qtd. no período</th><th>Custo médio</th><th>Cresc. valor</th><th>Cresc. qtd.</th></tr>
     </thead>
     <tbody>
       ${municipios.slice(0, 25).map(r => `
         <tr>
           <td>${r.ranking_valor}</td>
           <td>${r.municipio}</td>
+          <td>${r.uf}</td>
+          <td>${r.regiao}</td>
           <td>${fmtMoney.format(r.valor_periodo)}</td>
           <td>${fmtNumber.format(r.qtd_periodo)}</td>
           <td>${fmtMoney.format(r.custo_medio_periodo)}</td>
@@ -341,6 +404,48 @@ function renderTerritory() {
         </tr>
       `).join("")}
     </tbody>`;
+}
+
+function filteredMunicipios() {
+  return state.municipios.filter(row => {
+    const matchesRegion = state.region === "all" || row.regiao === state.region;
+    const matchesUf = state.uf === "all" || row.uf_ibge === state.uf;
+    const matchesCity = !state.citySearch || row.municipio.includes(state.citySearch);
+    return matchesRegion && matchesUf && matchesCity;
+  });
+}
+
+function territoryInsight(rows, totalValue, totalQty) {
+  const top = rows[0];
+  const regionText = state.uf !== "all"
+    ? `UF ${ufMeta[state.uf]?.uf || state.uf}`
+    : state.region !== "all" ? `região ${state.region}` : "Brasil";
+  const growthRows = rows.filter(r => Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct));
+  const topGrowth = growthRows.sort((a, b) => b.crescimento_qtd_pos_vs_pre_pct - a.crescimento_qtd_pos_vs_pre_pct)[0];
+  return `
+    <article><span>Recorte</span><strong>${regionText}</strong><small>${fmtNumber.format(rows.length)} municípios</small></article>
+    <article><span>Valor acumulado</span><strong>${fmtMoney.format(totalValue)}</strong><small>${fmtNumber.format(totalQty)} procedimentos</small></article>
+    <article><span>Maior polo</span><strong>${top.municipio} - ${top.uf}</strong><small>${fmtDecimal.format(top.participacao_valor_nacional_pct)}% do valor nacional</small></article>
+    <article><span>Maior alta de quantidade</span><strong>${topGrowth ? `${topGrowth.municipio} - ${topGrowth.uf}` : "-"}</strong><small>${topGrowth ? `${fmtDecimal.format(topGrowth.crescimento_qtd_pos_vs_pre_pct)}% pós x pré` : "sem base comparável"}</small></article>
+  `;
+}
+
+function renderEmptyTerritory() {
+  document.getElementById("municipalityCount").textContent = "0";
+  document.getElementById("topMunicipality").textContent = "-";
+  document.getElementById("topMunicipalityShare").textContent = "sem municípios no filtro";
+  document.getElementById("top10Share").textContent = "-";
+  document.getElementById("territoryAvgCost").textContent = "-";
+  document.getElementById("territoryAvgCostHint").textContent = "ajuste os filtros";
+  document.getElementById("territoryInsight").innerHTML = `<article><span>Sem resultado</span><strong>Nenhum município encontrado</strong><small>Revise região, UF ou busca.</small></article>`;
+  document.getElementById("municipalityTable").innerHTML = "";
+  ["municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
+    const base = canvasBase(id);
+    if (base) {
+      base.ctx.fillStyle = "#69777b";
+      base.ctx.fillText("Sem dados para o filtro atual", 24, 42);
+    }
+  });
 }
 function renderRisk() {
   const form = document.getElementById("riskForm"); if (!form) return;
@@ -422,6 +527,8 @@ async function init() {
   state.forecast = forecast.map(d => ({ ...d, previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado") }));
   state.municipios = municipios.map(d => ({
     ...d,
+    uf: ufMeta[d.uf_ibge]?.uf || d.uf_ibge,
+    regiao: ufMeta[d.uf_ibge]?.region || "Não identificado",
     ranking_valor: Number(d.ranking_valor),
     ranking_qtd: Number(d.ranking_qtd),
     valor_periodo: numeric(d, "valor_periodo"),
@@ -434,7 +541,7 @@ async function init() {
     participacao_valor_nacional_pct: numeric(d, "participacao_valor_nacional_pct"),
     participacao_qtd_nacional_pct: numeric(d, "participacao_qtd_nacional_pct"),
   }));
-  setupFilters(); setupNavigation(); setupRisk(); setupChartTooltips(); scheduleRender();
+  setupFilters(); setupNavigation(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); scheduleRender();
 }
 
 window.addEventListener("resize", scheduleRender);

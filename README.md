@@ -134,6 +134,7 @@ As interfaces permitem visualizar:
 - comparacao por grupo de procedimento;
 - ranking de municípios por valor aprovado;
 - ranking de municípios por quantidade aprovada;
+- filtros territoriais por regiao, UF e municipio;
 - custo medio municipal;
 - crescimento municipal pós-pandemia versus pré-pandemia;
 - comparacao real x previsto;

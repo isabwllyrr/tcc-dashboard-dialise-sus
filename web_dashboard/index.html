@@ -107,6 +107,21 @@
             <p>Distribuição municipal de valor aprovado, quantidade e custo médio nos procedimentos de diálise no SUS.</p>
           </div>
         </div>
+        <div class="territory-controls" aria-label="Filtros territoriais">
+          <label>Região
+            <select id="regionFilter">
+              <option value="all">Brasil</option>
+            </select>
+          </label>
+          <label>UF
+            <select id="ufFilter">
+              <option value="all">Todas</option>
+            </select>
+          </label>
+          <label>Município
+            <input id="citySearch" type="search" placeholder="Buscar município" />
+          </label>
+        </div>
         <div class="territory-summary">
           <article class="period-card"><h3>Municípios com atendimento</h3><strong id="municipalityCount">-</strong><span>com valor aprovado no período</span></article>
           <article class="period-card"><h3>Maior concentração</h3><strong id="topMunicipality">-</strong><span id="topMunicipalityShare">-</span></article>
@@ -114,12 +129,13 @@
           <article class="period-card"><h3>Custo médio nacional</h3><strong id="territoryAvgCost">-</strong><span id="territoryAvgCostHint">valor / quantidade</span></article>
         </div>
         <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
+        <div class="insight-strip" id="territoryInsight"></div>
         <div class="grid two">
           <div class="chart-shell"><h3>Top 15 por valor aprovado</h3><canvas id="municipalityValueChart" height="360"></canvas></div>
           <div class="chart-shell"><h3>Top 15 por quantidade aprovada</h3><canvas id="municipalityQtyChart" height="360"></canvas></div>
         </div>
         <div class="chart-shell large"><h3>Maiores crescimentos de quantidade pós-pandemia</h3><canvas id="municipalityGrowthChart" height="360"></canvas></div>
-        <table class="data-table" id="municipalityTable"></table>
+        <div class="table-wrap"><table class="data-table" id="municipalityTable"></table></div>
       </section>
 
       <section id="risk" class="tab-panel">

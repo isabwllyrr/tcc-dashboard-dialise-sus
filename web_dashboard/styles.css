@@ -78,6 +78,32 @@ button, input, select { font: inherit; }
   padding: 10px 12px;
   color: var(--ink);
 }
+.territory-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px;
+  background: #fbfdfb;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.territory-controls label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.territory-controls select,
+.territory-controls input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--ink);
+}
 .main { margin-left: 276px; padding: 28px; }
 .topbar {
   display: flex;
@@ -197,8 +223,37 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 .period-card h3 { margin: 0 0 10px; }
 .period-card strong { display: block; font-size: 24px; margin-bottom: 4px; }
 .period-card span { color: var(--muted); }
+.insight-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+}
+.insight-strip article {
+  padding: 14px 16px;
+  background: #172124;
+  color: white;
+  border-radius: 8px;
+}
+.insight-strip span,
+.insight-strip small {
+  display: block;
+  color: #b9c7c3;
+}
+.insight-strip strong {
+  display: block;
+  margin: 6px 0 4px;
+  font-size: 18px;
+}
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
 .data-table {
   width: 100%;
+  min-width: 860px;
   border-collapse: collapse;
   background: white;
   border: 1px solid var(--line);
@@ -256,6 +311,6 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   .sidebar { position: static; width: auto; }
   .main { margin-left: 0; padding: 18px; }
   .topbar, .section-head { display: block; }
-  .kpis, .grid.two, .period-grid, .territory-summary, .risk-layout { grid-template-columns: 1fr; }
+  .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .risk-layout { grid-template-columns: 1fr; }
   h1 { font-size: 28px; }
 }
