@@ -32,6 +32,7 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 │   └── styles.css
 ├── dados_brutos/
 │   ├── qtd_mensal_dialise_brasil.csv
+│   ├── qtd_municipio_dialise_brasil.csv
 │   ├── valor_mensal_dialise_brasil.csv
 │   └── valor_municipio_dialise_brasil.csv
 ├── dados_tratados/
@@ -41,10 +42,11 @@ Desenvolver uma solucao de analise e visualizacao de dados capaz de monitorar a 
 │   ├── dialise_mensal_brasil_total.csv
 │   ├── indicadores_anuais_brasil.csv
 │   ├── indicadores_grupo_brasil.csv
-│   ├── indicadores_municipio_valor_brasil.csv
+│   ├── indicadores_municipio_brasil.csv
 │   ├── metricas_modelos_preditivos.csv
+│   ├── municipio_dialise_brasil_long.csv
 │   ├── previsao_mensal_proximos_12m.csv
-│   ├── valor_municipio_dialise_brasil_long.csv
+│   ├── qtd_municipio_dialise_brasil_wide.csv
 │   ├── valor_municipio_dialise_brasil_wide.csv
 │   └── serie_mensal_dashboard.csv
 ├── docs/
@@ -131,6 +133,8 @@ As interfaces permitem visualizar:
 - custo medio mensal;
 - comparacao por grupo de procedimento;
 - ranking de municípios por valor aprovado;
+- ranking de municípios por quantidade aprovada;
+- custo medio municipal;
 - crescimento municipal pós-pandemia versus pré-pandemia;
 - comparacao real x previsto;
 - previsao mensal inicial para os 12 meses seguintes ao ultimo dado disponivel.

@@ -104,18 +104,20 @@
         <div class="section-head">
           <div>
             <h2>Análise territorial</h2>
-            <p>Distribuição municipal do valor aprovado em procedimentos de diálise no SUS.</p>
+            <p>Distribuição municipal de valor aprovado, quantidade e custo médio nos procedimentos de diálise no SUS.</p>
           </div>
         </div>
         <div class="territory-summary">
           <article class="period-card"><h3>Municípios com atendimento</h3><strong id="municipalityCount">-</strong><span>com valor aprovado no período</span></article>
           <article class="period-card"><h3>Maior concentração</h3><strong id="topMunicipality">-</strong><span id="topMunicipalityShare">-</span></article>
           <article class="period-card"><h3>Top 10</h3><strong id="top10Share">-</strong><span>participação no valor nacional</span></article>
+          <article class="period-card"><h3>Custo médio nacional</h3><strong id="territoryAvgCost">-</strong><span id="territoryAvgCostHint">valor / quantidade</span></article>
         </div>
         <div class="grid two">
           <div class="chart-shell"><h3>Top 15 por valor aprovado</h3><canvas id="municipalityValueChart" height="360"></canvas></div>
-          <div class="chart-shell"><h3>Maiores crescimentos pós-pandemia</h3><canvas id="municipalityGrowthChart" height="360"></canvas></div>
+          <div class="chart-shell"><h3>Top 15 por quantidade aprovada</h3><canvas id="municipalityQtyChart" height="360"></canvas></div>
         </div>
+        <div class="chart-shell large"><h3>Maiores crescimentos de quantidade pós-pandemia</h3><canvas id="municipalityGrowthChart" height="360"></canvas></div>
         <table class="data-table" id="municipalityTable"></table>
       </section>
 
