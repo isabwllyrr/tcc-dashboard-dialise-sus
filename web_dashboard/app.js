@@ -457,18 +457,36 @@ function renderTerritory() {
   drawHorizontalBars("regionChart", regionRows, "valor_periodo", r => r.regiao, i => ["#2dd4bf", "#60a5fa", "#f0b94d", "#f97362", "#94a3b8"][i % 5]);
 
   const topValue = municipios.slice(0, 15);
-  drawHorizontalBars("municipalityValueChart", topValue, "valor_periodo", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#2dd4bf" : "#60a5fa");
+  renderRankingList("municipalityValueChart", topValue, {
+    key: "valor_periodo",
+    label: r => `${r.municipio} - ${r.uf}`,
+    value: r => fmtMoney.format(r.valor_periodo),
+    rank: r => r.ranking_valor,
+    color: i => i < 5 ? "#2dd4bf" : "#60a5fa",
+  });
 
   const topQtyRows = [...municipios]
     .sort((a, b) => b.qtd_periodo - a.qtd_periodo)
     .slice(0, 15);
-  drawHorizontalBars("municipalityQtyChart", topQtyRows, "qtd_periodo", r => `${r.ranking_qtd}. ${r.municipio}`, i => i < 5 ? "#f97362" : "#f0b94d");
+  renderRankingList("municipalityQtyChart", topQtyRows, {
+    key: "qtd_periodo",
+    label: r => `${r.municipio} - ${r.uf}`,
+    value: r => fmtNumber.format(r.qtd_periodo),
+    rank: r => r.ranking_qtd,
+    color: i => i < 5 ? "#f97362" : "#f0b94d",
+  });
 
   const growthRows = municipios
     .filter(r => Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) && r.media_qtd_pre_pandemia >= 10000)
     .sort((a, b) => b.crescimento_qtd_pos_vs_pre_pct - a.crescimento_qtd_pos_vs_pre_pct)
     .slice(0, 15);
-  drawHorizontalBars("municipalityGrowthChart", growthRows, "crescimento_qtd_pos_vs_pre_pct", r => r.municipio, i => i < 5 ? "#2dd4bf" : "#60a5fa");
+  renderRankingList("municipalityGrowthChart", growthRows, {
+    key: "crescimento_qtd_pos_vs_pre_pct",
+    label: r => `${r.municipio} - ${r.uf}`,
+    value: r => `${fmtDecimal.format(r.crescimento_qtd_pos_vs_pre_pct)}%`,
+    rank: (_r, i) => i + 1,
+    color: i => i < 5 ? "#2dd4bf" : "#60a5fa",
+  });
 
   document.getElementById("municipalityTable").innerHTML = `
     <thead>
@@ -636,7 +654,11 @@ function renderEmptyTerritory() {
   document.getElementById("brazilMap").innerHTML = "";
   document.getElementById("ufMapLegend").innerHTML = "";
   document.getElementById("municipalityTable").innerHTML = "";
-  ["regionChart", "municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
+  ["municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
+    const element = document.getElementById(id);
+    if (element) element.innerHTML = `<div class="ranking-empty">Sem dados para o filtro atual</div>`;
+  });
+  ["regionChart"].forEach(id => {
     const base = canvasBase(id);
     if (base) {
       base.ctx.fillStyle = "#9fb3ad";
@@ -653,6 +675,34 @@ function aggregateRegions(rows) {
     return acc;
   }, {})).sort((a, b) => b.valor_periodo - a.valor_periodo);
 }
+
+function renderRankingList(id, rows, config) {
+  const element = document.getElementById(id);
+  if (!element) return;
+  if (!rows.length) {
+    element.innerHTML = `<div class="ranking-empty">Sem dados para o filtro atual</div>`;
+    return;
+  }
+  const max = Math.max(...rows.map(row => row[config.key]), 1);
+  element.innerHTML = rows.map((row, index) => {
+    const width = Math.max(3, (row[config.key] / max) * 100);
+    const label = config.label(row);
+    const rank = config.rank(row, index);
+    return `
+      <article class="ranking-row" title="${label}: ${config.value(row)}">
+        <div class="ranking-name">
+          <span class="ranking-rank">${rank}</span>
+          <span class="ranking-label">${label}</span>
+        </div>
+        <div class="ranking-track" aria-hidden="true">
+          <span class="ranking-fill" style="--bar-width:${width.toFixed(2)}%; --bar-color:${config.color(index)}"></span>
+        </div>
+        <strong class="ranking-value">${config.value(row)}</strong>
+      </article>
+    `;
+  }).join("");
+}
+
 function renderRisk() {
   const form = document.getElementById("riskForm"); if (!form) return;
   const age = Number(document.getElementById("riskAge").value || 0);

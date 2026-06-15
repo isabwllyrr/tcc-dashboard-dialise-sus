@@ -276,6 +276,7 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 }
 .chart-shell { padding: 18px; margin-bottom: 16px; }
 .chart-shell h3 { margin: 0 0 10px; }
+.leaderboard-shell h3 { margin-bottom: 16px; }
 .chart-shell canvas {
   display: block;
   width: 100%;
@@ -285,6 +286,82 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 .chart-shell.large canvas { height: 340px; }
 .chart-shell.large { min-height: 0; }
 .grid.two { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
+.ranking-list {
+  display: grid;
+  gap: 10px;
+}
+.ranking-row {
+  display: grid;
+  grid-template-columns: minmax(160px, .72fr) minmax(180px, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  min-height: 34px;
+}
+.ranking-name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  color: #dce8e5;
+  font-size: 13px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+.ranking-rank {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 24px;
+  border: 1px solid #32494e;
+  border-radius: 6px;
+  color: var(--muted);
+  background: #10181a;
+  font-size: 11px;
+  font-weight: 800;
+}
+.ranking-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ranking-track {
+  position: relative;
+  height: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #203235;
+}
+.ranking-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--bar-width, 0%);
+  min-width: 6px;
+  border-radius: inherit;
+  background: var(--bar-color, var(--teal));
+}
+.ranking-value {
+  justify-self: end;
+  color: #eef7f4;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ranking-list.roomy {
+  gap: 11px;
+}
+.ranking-list.roomy .ranking-row {
+  grid-template-columns: minmax(190px, .45fr) minmax(260px, 1fr) auto;
+  min-height: 36px;
+}
+.ranking-empty {
+  padding: 18px;
+  color: var(--muted);
+  background: #10181a;
+  border: 1px dashed #32494e;
+  border-radius: 8px;
+}
 .territory-map-shell {
   display: grid;
   grid-template-columns: .42fr .58fr;
@@ -471,5 +548,13 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   .topbar, .section-head { display: block; }
   .sidebar-toggle { margin-bottom: 14px; }
   .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .analysis-brief, .brief-stats, .risk-layout, .territory-map-shell { grid-template-columns: 1fr; }
+  .ranking-row,
+  .ranking-list.roomy .ranking-row {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .ranking-value {
+    justify-self: start;
+  }
   h1 { font-size: 28px; }
 }
