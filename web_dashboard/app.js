@@ -207,10 +207,10 @@ function drawLine(id, data, key, color, label, extraLine = null) {
       series: "Previsão",
       type: "point",
     }));
-    drawPath(ctx, forecastPoints.map(p => [p.x, p.y]), "#d85b42", true);
+    drawPath(ctx, forecastPoints.map(p => [p.x, p.y]), "#f97362", true);
     points.push(...forecastPoints);
   }
-  ctx.fillStyle = "#69777b"; ctx.font = "12px Segoe UI"; ctx.fillText(label, pad.l, 14);
+  ctx.fillStyle = "#9fb3ad"; ctx.font = "12px Segoe UI"; ctx.fillText(label, pad.l, 14);
   drawLineLabels(ctx, data, x, height, pad);
   chartRegistry.set(id, points);
 }
@@ -231,7 +231,7 @@ function drawBar(id, rows, key, labels, color) {
     ctx.fillStyle = color(i);
     ctx.fillRect(bx, by, Math.max(6, barW), h);
     items.push({ type: "bar", x: bx, y: by, w: Math.max(6, barW), h, label: labels(r), value: r[key], key });
-    ctx.fillStyle = "#69777b";
+    ctx.fillStyle = "#9fb3ad";
     ctx.font = "11px Segoe UI";
     ctx.save();
     ctx.translate(bx + barW / 2, height - 38);
@@ -254,16 +254,16 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
   rows.forEach((r, i) => {
     const y = pad.t + i * rowH + rowH * 0.24;
     const barH = Math.min(34, rowH * 0.5);
-    ctx.fillStyle = "#5f6f73";
+    ctx.fillStyle = "#cbd9d5";
     ctx.textAlign = "right";
     ctx.fillText(labelFn(r), pad.l - 12, y + barH * 0.75);
-    ctx.fillStyle = "#edf4f1";
+    ctx.fillStyle = "#223033";
     ctx.fillRect(pad.l, y, trackW, barH);
     ctx.fillStyle = colorFn(i);
     const barW = Math.max(3, (r[key] / max) * trackW);
     ctx.fillRect(pad.l, y, barW, barH);
     items.push({ type: "bar", x: pad.l, y, w: barW, h: barH, label: labelFn(r), value: r[key], key });
-    ctx.fillStyle = "#1f2a2e";
+    ctx.fillStyle = "#eef7f4";
     ctx.textAlign = "left";
     ctx.fillText(formatMetricValue(key, r[key]), pad.l + Math.max(8, (r[key] / max) * trackW + 8), y + barH * 0.75);
   });
@@ -272,14 +272,14 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
 }
 
 function drawAxes(ctx, width, height, pad, min, max) {
-  ctx.strokeStyle = "#d9e2de"; ctx.lineWidth = 1;
+  ctx.strokeStyle = "#2a3a3e"; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, height - pad.b); ctx.lineTo(width - pad.r, height - pad.b); ctx.stroke();
-  ctx.fillStyle = "#69777b"; ctx.font = "11px Segoe UI";
+  ctx.fillStyle = "#9fb3ad"; ctx.font = "11px Segoe UI";
   for (let i = 0; i <= 4; i++) {
     const yy = pad.t + i * ((height - pad.t - pad.b) / 4);
     const val = max - i * ((max - min) / 4);
     ctx.fillText(compact(val), 8, yy + 4);
-    ctx.strokeStyle = "#eef3f0";
+    ctx.strokeStyle = "#223033";
     ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(width - pad.r, yy); ctx.stroke();
   }
 }
@@ -288,7 +288,7 @@ function drawLineLabels(ctx, data, x, height, pad) {
   if (!data.length) return;
   const first = data[0].data.slice(0, 7);
   const last = data[data.length - 1].data.slice(0, 7);
-  ctx.fillStyle = "#69777b";
+  ctx.fillStyle = "#9fb3ad";
   ctx.font = "11px Segoe UI";
   ctx.textAlign = "left";
   ctx.fillText(first, pad.l, height - 16);
@@ -313,14 +313,14 @@ function compact(v) {
 function renderOverview(data) {
   const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
   renderBrief(data);
-  drawLine("mainChart", data, state.metric, "#0f766e", labels[state.metric]);
+  drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
     acc[d.ano].valor_aprovado += d.valor_aprovado;
     return acc;
   }, {}));
-  drawBar("annualBar", annual, "valor_aprovado", r => r.ano, () => "#3066be");
-  drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#0f766e", "#d85b42", "#c2841a"][i % 3]);
+  drawBar("annualBar", annual, "valor_aprovado", r => r.ano, () => "#60a5fa");
+  drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#2dd4bf", "#f97362", "#f0b94d"][i % 3]);
 }
 
 function renderBrief(data) {
@@ -356,7 +356,7 @@ function renderPeriods() {
   document.getElementById("periodCards").innerHTML = groups.map(g => `
     <article class="period-card"><h3>${g.name}</h3><strong>${fmtMoney.format(g.media_mensal)}</strong><span>média mensal de valor aprovado</span><p>Custo médio: ${fmtMoney.format(g.custo_medio)}</p></article>
   `).join("");
-  drawHorizontalBars("periodChart", groups, "media_mensal", r => r.name, i => ["#0f766e", "#c2841a", "#d85b42"][i]);
+  drawHorizontalBars("periodChart", groups, "media_mensal", r => r.name, i => ["#2dd4bf", "#f0b94d", "#f97362"][i]);
 }
 
 function renderForecast() {
@@ -365,7 +365,7 @@ function renderForecast() {
   const combined = [...recent, ...forecastRows.map(d => ({ data: d.data, valor_aprovado: d.value }))];
   const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
   document.getElementById("forecastNote").textContent = `A base tratada vai até ${lastReal}. Como 2026 ainda está parcial, a previsão abaixo mostra os 12 meses seguintes ao último mês disponível, não o ano fechado de 2027.`;
-  drawLine("forecastChart", combined, "valor_aprovado", "#3066be", `Real até ${lastReal} + próximos 12 meses`, forecastRows);
+  drawLine("forecastChart", combined, "valor_aprovado", "#60a5fa", `Real até ${lastReal} + próximos 12 meses`, forecastRows);
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
 }
 
@@ -392,21 +392,21 @@ function renderTerritory() {
   document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
 
   const regionRows = aggregateRegions(municipios);
-  drawHorizontalBars("regionChart", regionRows, "valor_periodo", r => r.regiao, i => ["#0f766e", "#3066be", "#c2841a", "#d85b42", "#5f6f73"][i % 5]);
+  drawHorizontalBars("regionChart", regionRows, "valor_periodo", r => r.regiao, i => ["#2dd4bf", "#60a5fa", "#f0b94d", "#f97362", "#94a3b8"][i % 5]);
 
   const topValue = municipios.slice(0, 15);
-  drawHorizontalBars("municipalityValueChart", topValue, "valor_periodo", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#0f766e" : "#3066be");
+  drawHorizontalBars("municipalityValueChart", topValue, "valor_periodo", r => `${r.ranking_valor}. ${r.municipio}`, i => i < 5 ? "#2dd4bf" : "#60a5fa");
 
   const topQtyRows = [...municipios]
     .sort((a, b) => b.qtd_periodo - a.qtd_periodo)
     .slice(0, 15);
-  drawHorizontalBars("municipalityQtyChart", topQtyRows, "qtd_periodo", r => `${r.ranking_qtd}. ${r.municipio}`, i => i < 5 ? "#d85b42" : "#c2841a");
+  drawHorizontalBars("municipalityQtyChart", topQtyRows, "qtd_periodo", r => `${r.ranking_qtd}. ${r.municipio}`, i => i < 5 ? "#f97362" : "#f0b94d");
 
   const growthRows = municipios
     .filter(r => Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) && r.media_qtd_pre_pandemia >= 10000)
     .sort((a, b) => b.crescimento_qtd_pos_vs_pre_pct - a.crescimento_qtd_pos_vs_pre_pct)
     .slice(0, 15);
-  drawHorizontalBars("municipalityGrowthChart", growthRows, "crescimento_qtd_pos_vs_pre_pct", r => r.municipio, i => i < 5 ? "#0f766e" : "#3066be");
+  drawHorizontalBars("municipalityGrowthChart", growthRows, "crescimento_qtd_pos_vs_pre_pct", r => r.municipio, i => i < 5 ? "#2dd4bf" : "#60a5fa");
 
   document.getElementById("municipalityTable").innerHTML = `
     <thead>
@@ -465,7 +465,7 @@ function renderEmptyTerritory() {
   ["regionChart", "municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
     const base = canvasBase(id);
     if (base) {
-      base.ctx.fillStyle = "#69777b";
+      base.ctx.fillStyle = "#9fb3ad";
       base.ctx.fillText("Sem dados para o filtro atual", 24, 42);
     }
   });
