@@ -29,6 +29,7 @@ button, input, select { font: inherit; }
   background: #10181a;
   border-right: 1px solid #263336;
   overflow-y: auto;
+  transition: transform .22s ease;
 }
 .brand {
   display: flex;
@@ -105,10 +106,16 @@ button, input, select { font: inherit; }
   padding: 10px 12px;
   color: var(--ink);
 }
-.main { margin-left: 276px; padding: 30px; }
+.main {
+  margin-left: 276px;
+  padding: 30px;
+  transition: margin-left .22s ease;
+}
+body.sidebar-collapsed .sidebar { transform: translateX(-100%); }
+body.sidebar-collapsed .main { margin-left: 0; }
 .topbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 24px;
   align-items: flex-start;
   margin-bottom: 24px;
@@ -118,6 +125,26 @@ button, input, select { font: inherit; }
   border-radius: 8px;
   box-shadow: 0 12px 32px rgba(31, 42, 46, 0.05);
 }
+.sidebar-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #10181a;
+  cursor: pointer;
+}
+.sidebar-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  margin: 2px 0;
+  background: #cbd9d5;
+  border-radius: 999px;
+}
+.sidebar-toggle:hover { border-color: #3f565b; background: #182529; }
 .eyebrow {
   margin: 0 0 6px;
   color: var(--teal);
@@ -367,7 +394,10 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 @media (max-width: 960px) {
   .sidebar { position: static; width: auto; }
   .main { margin-left: 0; padding: 18px; }
+  body.sidebar-collapsed .sidebar { display: none; }
+  body.sidebar-collapsed .main { margin-left: 0; }
   .topbar, .section-head { display: block; }
+  .sidebar-toggle { margin-bottom: 14px; }
   .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .analysis-brief, .brief-stats, .risk-layout { grid-template-columns: 1fr; }
   h1 { font-size: 28px; }
 }

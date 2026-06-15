@@ -105,6 +105,17 @@ function setupNavigation() {
   }));
 }
 
+function setupSidebarToggle() {
+  const button = document.getElementById("sidebarToggle");
+  if (!button) return;
+  button.addEventListener("click", () => {
+    const collapsed = document.body.classList.toggle("sidebar-collapsed");
+    button.setAttribute("aria-expanded", String(!collapsed));
+    button.setAttribute("aria-label", collapsed ? "Mostrar filtros" : "Ocultar filtros");
+    scheduleRender();
+  });
+}
+
 function setupTerritoryFilters() {
   const regionSelect = document.getElementById("regionFilter");
   const ufSelect = document.getElementById("ufFilter");
@@ -573,7 +584,7 @@ async function init() {
     participacao_valor_nacional_pct: numeric(d, "participacao_valor_nacional_pct"),
     participacao_qtd_nacional_pct: numeric(d, "participacao_qtd_nacional_pct"),
   }));
-  setupFilters(); setupNavigation(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); scheduleRender();
+  setupFilters(); setupNavigation(); setupSidebarToggle(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); scheduleRender();
 }
 
 window.addEventListener("resize", scheduleRender);

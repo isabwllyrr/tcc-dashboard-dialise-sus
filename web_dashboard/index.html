@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260615-layout" />
   </head>
   <body>
     <aside class="sidebar">
@@ -42,6 +42,11 @@
 
     <main class="main">
       <header class="topbar">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Ocultar filtros" aria-expanded="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <div>
           <p class="eyebrow">SIA/SUS - DATASUS</p>
           <h1>Análise temporal dos procedimentos de diálise no SUS</h1>
@@ -184,6 +189,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js"></script>
+    <script src="./app.js?v=20260615-layout"></script>
   </body>
 </html>
