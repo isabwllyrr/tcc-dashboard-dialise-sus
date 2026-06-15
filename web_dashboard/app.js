@@ -3,6 +3,7 @@
   grupo: "../dados_tratados/indicadores_grupo_brasil.csv",
   forecast: "../dados_tratados/previsao_mensal_proximos_12m.csv",
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
+  mapa: "./assets/brazil-states.geojson",
 };
 
 const state = {
@@ -10,6 +11,7 @@ const state = {
   grupo: [],
   forecast: [],
   municipios: [],
+  mapa: null,
   yearStart: 2015,
   yearEnd: 2026,
   metric: "valor_aprovado",
@@ -29,16 +31,6 @@ const ufMeta = {
   "33": { uf: "RJ", region: "Sudeste" }, "35": { uf: "SP", region: "Sudeste" }, "41": { uf: "PR", region: "Sul" },
   "42": { uf: "SC", region: "Sul" }, "43": { uf: "RS", region: "Sul" }, "50": { uf: "MS", region: "Centro-Oeste" },
   "51": { uf: "MT", region: "Centro-Oeste" }, "52": { uf: "GO", region: "Centro-Oeste" }, "53": { uf: "DF", region: "Centro-Oeste" },
-};
-
-const ufTileLayout = {
-  RR: [0, 2], AP: [0, 5],
-  AM: [1, 1], PA: [1, 4], MA: [1, 6], CE: [1, 8], RN: [1, 9],
-  AC: [2, 0], RO: [2, 1], MT: [2, 3], TO: [2, 5], PI: [2, 7], PB: [2, 9],
-  MS: [3, 3], GO: [3, 4], BA: [3, 6], PE: [3, 8],
-  PR: [4, 3], SP: [4, 4], MG: [4, 5], ES: [4, 7], AL: [4, 8], SE: [4, 9],
-  SC: [5, 3], DF: [5, 4], RJ: [5, 5],
-  RS: [6, 3],
 };
 
 const fmtMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
@@ -67,6 +59,12 @@ async function loadCSV(path) {
   const response = await fetch(path);
   if (!response.ok) throw new Error(`Falha ao carregar ${path}`);
   return parseCSV(await response.text());
+}
+
+async function loadJSON(path) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Falha ao carregar ${path}`);
+  return response.json();
 }
 
 function numeric(row, key) { return Number(row[key] || 0); }
@@ -229,8 +227,9 @@ function drawLine(id, data, key, color, label, extraLine = null) {
   const pad = { l: 62, r: 22, t: 22, b: 42 };
   const values = data.map(d => d[key]);
   if (extraLine) values.push(...extraLine.map(d => d.value));
+  const totalCount = data.length + (extraLine?.length || 0);
   const min = Math.min(...values) * 0.96, max = Math.max(...values) * 1.04;
-  const x = i => pad.l + i * ((width - pad.l - pad.r) / Math.max(data.length - 1, 1));
+  const x = i => pad.l + i * ((width - pad.l - pad.r) / Math.max(totalCount - 1, 1));
   const y = v => height - pad.b - ((v - min) / (max - min || 1)) * (height - pad.t - pad.b);
   drawAxes(ctx, width, height, pad, min, max);
   const points = data.map((d, i) => ({
@@ -245,9 +244,20 @@ function drawLine(id, data, key, color, label, extraLine = null) {
   drawPath(ctx, points.map(p => [p.x, p.y]), color, false);
   drawPointMarkers(ctx, points, color);
   if (extraLine) {
-    const startIndex = data.length - extraLine.length;
+    const boundaryX = x(data.length - 1);
+    ctx.strokeStyle = "#37545a";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 5]);
+    ctx.beginPath();
+    ctx.moveTo(boundaryX, pad.t);
+    ctx.lineTo(boundaryX, height - pad.b);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = "#f97362";
+    ctx.font = "12px Segoe UI";
+    ctx.fillText("previsão", boundaryX + 8, pad.t + 14);
     const forecastPoints = extraLine.map((d, i) => ({
-      x: x(startIndex + i),
+      x: x(data.length + i),
       y: y(d.value),
       label: d.data ? d.data.slice(0, 7) : "previsão",
       value: d.value,
@@ -260,7 +270,7 @@ function drawLine(id, data, key, color, label, extraLine = null) {
     points.push(...forecastPoints);
   }
   ctx.fillStyle = "#9fb3ad"; ctx.font = "12px Segoe UI"; ctx.fillText(label, pad.l, 14);
-  drawLineLabels(ctx, data, x, height, pad);
+  drawLineLabels(ctx, [...data, ...(extraLine || []).map(d => ({ data: d.data }))], x, height, pad);
   chartRegistry.set(id, points);
 }
 
@@ -413,10 +423,10 @@ function renderPeriods() {
 function renderForecast() {
   const recent = state.mensal.filter(d => d.ano >= 2022);
   const forecastRows = state.forecast.map(d => ({ data: d.data, value: d.previsao_valor_aprovado }));
-  const combined = [...recent, ...forecastRows.map(d => ({ data: d.data, valor_aprovado: d.value }))];
   const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
-  document.getElementById("forecastNote").textContent = `A base tratada vai até ${lastReal}. Como 2026 ainda está parcial, a previsão abaixo mostra os 12 meses seguintes ao último mês disponível, não o ano fechado de 2027.`;
-  drawLine("forecastChart", combined, "valor_aprovado", "#60a5fa", `Real até ${lastReal} + próximos 12 meses`, forecastRows);
+  const firstContext = recent[0]?.data?.slice(0, 7) || "2022";
+  document.getElementById("forecastNote").textContent = `A linha azul mostra o histórico recente desde ${firstContext}; a linha tracejada mostra os 12 meses previstos após ${lastReal}. Como 2026 ainda está parcial, isto não representa o ano fechado de 2027.`;
+  drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Histórico real (${firstContext} a ${lastReal})`, forecastRows);
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
 }
 
@@ -441,7 +451,7 @@ function renderTerritory() {
   document.getElementById("territoryAvgCostHint").textContent = `maior volume: ${topQty.municipio}`;
   document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
   document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
-  renderUfTileMap(municipios);
+  renderBrazilMap(municipios);
 
   const regionRows = aggregateRegions(municipios);
   drawHorizontalBars("regionChart", regionRows, "valor_periodo", r => r.regiao, i => ["#2dd4bf", "#60a5fa", "#f0b94d", "#f97362", "#94a3b8"][i % 5]);
@@ -490,42 +500,38 @@ function filteredMunicipios() {
   });
 }
 
-function renderUfTileMap(rows) {
-  const map = document.getElementById("ufTileMap");
+function renderBrazilMap(rows) {
+  const map = document.getElementById("brazilMap");
   const legend = document.getElementById("ufMapLegend");
-  if (!map) return;
+  if (!map || !state.mapa) return;
   const ufRows = aggregateUfs(rows);
-  const byUf = Object.fromEntries(ufRows.map(row => [row.uf, row]));
-  const byTile = Object.fromEntries(Object.entries(ufTileLayout).map(([uf, pos]) => [`${pos[0]}-${pos[1]}`, uf]));
+  const byCode = Object.fromEntries(ufRows.map(row => [row.uf_ibge, row]));
   const max = Math.max(...ufRows.map(row => row.valor_periodo), 0);
-  const ufCodeBySigla = Object.fromEntries(Object.entries(ufMeta).map(([code, meta]) => [meta.uf, code]));
-  let html = "";
+  const { project, width, height } = geoProjector(state.mapa, 620, 600, 18);
+  const paths = state.mapa.features.map(feature => {
+    const code = String(feature.properties.codigo_ibg);
+    const sigla = feature.properties.sigla;
+    const data = byCode[code];
+    const active = state.uf === code ? " active" : "";
+    const dim = data ? "" : " dim";
+    const value = data?.valor_periodo || 0;
+    const qty = data?.qtd_periodo || 0;
+    const title = `${sigla} - ${feature.properties.name}: ${fmtMoney.format(value)} | ${fmtNumber.format(qty)} procedimentos`;
+    return `<path class="map-state${active}${dim}" data-uf-code="${code}" d="${geoPath(feature.geometry, project)}" fill="${ufMapColor(value, max)}"><title>${title}</title></path>`;
+  }).join("");
+  const labels = state.mapa.features.map(feature => {
+    const centroid = featureCentroid(feature.geometry, project);
+    if (!centroid) return "";
+    return `<text class="map-label" x="${centroid[0]}" y="${centroid[1]}">${feature.properties.sigla}</text>`;
+  }).join("");
 
-  for (let row = 0; row < 7; row++) {
-    for (let col = 0; col < 10; col++) {
-      const uf = byTile[`${row}-${col}`];
-      if (!uf) {
-        html += `<span class="uf-tile empty"></span>`;
-        continue;
-      }
-      const data = byUf[uf];
-      const code = ufCodeBySigla[uf];
-      const active = state.uf === code ? " active" : "";
-      const dim = data ? "" : " dim";
-      const value = data?.valor_periodo || 0;
-      const qty = data?.qtd_periodo || 0;
-      const title = `${uf}: ${fmtMoney.format(value)} | ${fmtNumber.format(qty)} procedimentos`;
-      html += `<button class="uf-tile${active}${dim}" type="button" data-uf-code="${code}" title="${title}" style="--tile-bg:${ufTileColor(value, max)}">${uf}</button>`;
-    }
-  }
-
-  map.innerHTML = html;
+  map.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Mapa do Brasil por UF">${paths}${labels}</svg>`;
   if (legend) {
     legend.innerHTML = `<span>menor valor</span><span class="map-scale"></span><span>maior valor</span>`;
   }
-  map.querySelectorAll(".uf-tile[data-uf-code]").forEach(tile => {
-    tile.addEventListener("click", () => {
-      const code = tile.dataset.ufCode;
+  map.querySelectorAll(".map-state[data-uf-code]").forEach(shape => {
+    shape.addEventListener("click", () => {
+      const code = shape.dataset.ufCode;
       if (!code) return;
       state.uf = state.uf === code ? "all" : code;
       state.region = state.uf === "all" ? "all" : ufMeta[state.uf].region;
@@ -535,6 +541,52 @@ function renderUfTileMap(rows) {
       scheduleRender();
     });
   });
+}
+
+function geoProjector(geojson, width, height, pad) {
+  const coords = [];
+  geojson.features.forEach(feature => collectCoordinates(feature.geometry.coordinates, coords));
+  const lons = coords.map(coord => coord[0]);
+  const lats = coords.map(coord => coord[1]);
+  const minLon = Math.min(...lons), maxLon = Math.max(...lons);
+  const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+  const scale = Math.min((width - pad * 2) / (maxLon - minLon), (height - pad * 2) / (maxLat - minLat));
+  const xOffset = (width - (maxLon - minLon) * scale) / 2;
+  const yOffset = (height - (maxLat - minLat) * scale) / 2;
+  return {
+    width,
+    height,
+    project: ([lon, lat]) => [
+      xOffset + (lon - minLon) * scale,
+      yOffset + (maxLat - lat) * scale,
+    ],
+  };
+}
+
+function collectCoordinates(input, output) {
+  if (typeof input?.[0] === "number") {
+    output.push(input);
+    return;
+  }
+  input.forEach(item => collectCoordinates(item, output));
+}
+
+function geoPath(geometry, project) {
+  const polygons = geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
+  return polygons.map(polygon => polygon.map(ring => ring.map((coord, i) => {
+    const [x, y] = project(coord);
+    return `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ") + " Z").join(" ")).join(" ");
+}
+
+function featureCentroid(geometry, project) {
+  const coords = [];
+  collectCoordinates(geometry.coordinates, coords);
+  if (!coords.length) return null;
+  const projected = coords.map(project);
+  const x = projected.reduce((sum, coord) => sum + coord[0], 0) / projected.length;
+  const y = projected.reduce((sum, coord) => sum + coord[1], 0) / projected.length;
+  return [x.toFixed(1), y.toFixed(1)];
 }
 
 function aggregateUfs(rows) {
@@ -547,7 +599,7 @@ function aggregateUfs(rows) {
   }, {})).sort((a, b) => b.valor_periodo - a.valor_periodo);
 }
 
-function ufTileColor(value, max) {
+function ufMapColor(value, max) {
   if (!value || !max) return "#1b282b";
   const t = Math.max(0.18, Math.min(1, value / max));
   const start = [27, 58, 61];
@@ -581,7 +633,7 @@ function renderEmptyTerritory() {
   document.getElementById("territoryAvgCost").textContent = "-";
   document.getElementById("territoryAvgCostHint").textContent = "ajuste os filtros";
   document.getElementById("territoryInsight").innerHTML = `<article><span>Sem resultado</span><strong>Nenhum município encontrado</strong><small>Revise região, UF ou busca.</small></article>`;
-  document.getElementById("ufTileMap").innerHTML = "";
+  document.getElementById("brazilMap").innerHTML = "";
   document.getElementById("ufMapLegend").innerHTML = "";
   document.getElementById("municipalityTable").innerHTML = "";
   ["regionChart", "municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
@@ -666,7 +718,8 @@ function setupChartTooltips() {
 }
 
 async function init() {
-  const [mensal, grupo, forecast, municipios] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.municipios)]);
+  const [mensal, grupo, forecast, municipios, mapa] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.municipios), loadJSON(paths.mapa)]);
+  state.mapa = mapa;
   state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
   state.yearStart = Math.min(...state.mensal.map(d => d.ano));
   state.yearEnd = Math.max(...state.mensal.map(d => d.ano));
