@@ -136,6 +136,17 @@
             <input id="citySearch" type="search" placeholder="Buscar município" />
           </label>
         </div>
+        <div class="territory-map-shell">
+          <div>
+            <p class="eyebrow">Mapa do Brasil</p>
+            <h3>Distribuição por UF</h3>
+            <p>Quanto mais forte a cor, maior o valor aprovado acumulado no recorte filtrado. Clique em um estado para filtrar a análise territorial.</p>
+          </div>
+          <div>
+            <div class="brazil-map" id="brazilMap" aria-label="Mapa coroplético do Brasil por UF"></div>
+            <div class="map-legend" id="ufMapLegend"></div>
+          </div>
+        </div>
         <div class="territory-summary">
           <article class="period-card"><h3>Municípios com atendimento</h3><strong id="municipalityCount">-</strong><span>com valor aprovado no período</span></article>
           <article class="period-card"><h3>Maior concentração</h3><strong id="topMunicipality">-</strong><span id="topMunicipalityShare">-</span></article>
@@ -144,20 +155,7 @@
         </div>
         <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
         <div class="insight-strip" id="territoryInsight"></div>
-        <div class="grid two territory-map-grid">
-          <div class="territory-map-shell">
-            <div>
-              <p class="eyebrow">Mapa do Brasil</p>
-              <h3>Distribuição por UF</h3>
-              <p>Quanto mais forte a cor, maior o valor aprovado acumulado no recorte filtrado.</p>
-            </div>
-            <div>
-              <div class="brazil-map" id="brazilMap" aria-label="Mapa coroplético do Brasil por UF"></div>
-              <div class="map-legend" id="ufMapLegend"></div>
-            </div>
-          </div>
-          <div class="chart-shell"><h3>Comparação por região</h3><canvas id="regionChart" height="300"></canvas></div>
-        </div>
+        <div class="chart-shell large"><h3>Comparação por região</h3><canvas id="regionChart" height="300"></canvas></div>
         <div class="grid two">
           <div class="chart-shell"><h3>Top 15 por valor aprovado</h3><canvas id="municipalityValueChart" height="360"></canvas></div>
           <div class="chart-shell"><h3>Top 15 por quantidade aprovada</h3><canvas id="municipalityQtyChart" height="360"></canvas></div>
