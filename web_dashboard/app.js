@@ -31,6 +31,16 @@ const ufMeta = {
   "51": { uf: "MT", region: "Centro-Oeste" }, "52": { uf: "GO", region: "Centro-Oeste" }, "53": { uf: "DF", region: "Centro-Oeste" },
 };
 
+const ufTileLayout = {
+  RR: [0, 2], AP: [0, 5],
+  AM: [1, 1], PA: [1, 4], MA: [1, 6], CE: [1, 8], RN: [1, 9],
+  AC: [2, 0], RO: [2, 1], MT: [2, 3], TO: [2, 5], PI: [2, 7], PB: [2, 9],
+  MS: [3, 3], GO: [3, 4], BA: [3, 6], PE: [3, 8],
+  PR: [4, 3], SP: [4, 4], MG: [4, 5], ES: [4, 7], AL: [4, 8], SE: [4, 9],
+  SC: [5, 3], DF: [5, 4], RJ: [5, 5],
+  RS: [6, 3],
+};
+
 const fmtMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const fmtNumber = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
 const fmtDecimal = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -187,6 +197,32 @@ function canvasBase(id) {
   return { canvas, ctx, width, height };
 }
 
+function fillRoundRect(ctx, x, y, w, h, radius) {
+  const r = Math.min(radius, Math.abs(w) / 2, Math.abs(h) / 2);
+  if (ctx.roundRect) {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+    ctx.fill();
+    return;
+  }
+  ctx.fillRect(x, y, w, h);
+}
+
+function drawPointMarkers(ctx, points, color) {
+  if (!points.length) return;
+  const step = Math.max(1, Math.ceil(points.length / 12));
+  ctx.fillStyle = color;
+  ctx.strokeStyle = "#0f1719";
+  ctx.lineWidth = 2;
+  points.forEach((point, index) => {
+    if (index % step !== 0 && index !== points.length - 1) return;
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  });
+}
+
 function drawLine(id, data, key, color, label, extraLine = null) {
   const base = canvasBase(id); if (!base || !data.length) return;
   const { ctx, width, height } = base;
@@ -207,6 +243,7 @@ function drawLine(id, data, key, color, label, extraLine = null) {
     type: "point",
   }));
   drawPath(ctx, points.map(p => [p.x, p.y]), color, false);
+  drawPointMarkers(ctx, points, color);
   if (extraLine) {
     const startIndex = data.length - extraLine.length;
     const forecastPoints = extraLine.map((d, i) => ({
@@ -219,6 +256,7 @@ function drawLine(id, data, key, color, label, extraLine = null) {
       type: "point",
     }));
     drawPath(ctx, forecastPoints.map(p => [p.x, p.y]), "#f97362", true);
+    drawPointMarkers(ctx, forecastPoints, "#f97362");
     points.push(...forecastPoints);
   }
   ctx.fillStyle = "#9fb3ad"; ctx.font = "12px Segoe UI"; ctx.fillText(label, pad.l, 14);
@@ -239,8 +277,10 @@ function drawBar(id, rows, key, labels, color) {
     const h = (r[key] / max) * (height - pad.t - pad.b);
     const bx = pad.l + i * (barW + gap);
     const by = height - pad.b - h;
+    ctx.fillStyle = "#223033";
+    fillRoundRect(ctx, bx, pad.t, Math.max(6, barW), height - pad.t - pad.b, 5);
     ctx.fillStyle = color(i);
-    ctx.fillRect(bx, by, Math.max(6, barW), h);
+    fillRoundRect(ctx, bx, by, Math.max(6, barW), h, 5);
     items.push({ type: "bar", x: bx, y: by, w: Math.max(6, barW), h, label: labels(r), value: r[key], key });
     ctx.fillStyle = "#9fb3ad";
     ctx.font = "11px Segoe UI";
@@ -269,10 +309,10 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
     ctx.textAlign = "right";
     ctx.fillText(labelFn(r), pad.l - 12, y + barH * 0.75);
     ctx.fillStyle = "#223033";
-    ctx.fillRect(pad.l, y, trackW, barH);
+    fillRoundRect(ctx, pad.l, y, trackW, barH, 999);
     ctx.fillStyle = colorFn(i);
     const barW = Math.max(3, (r[key] / max) * trackW);
-    ctx.fillRect(pad.l, y, barW, barH);
+    fillRoundRect(ctx, pad.l, y, barW, barH, 999);
     items.push({ type: "bar", x: pad.l, y, w: barW, h: barH, label: labelFn(r), value: r[key], key });
     ctx.fillStyle = "#eef7f4";
     ctx.textAlign = "left";
@@ -401,6 +441,7 @@ function renderTerritory() {
   document.getElementById("territoryAvgCostHint").textContent = `maior volume: ${topQty.municipio}`;
   document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
   document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
+  renderUfTileMap(municipios);
 
   const regionRows = aggregateRegions(municipios);
   drawHorizontalBars("regionChart", regionRows, "valor_periodo", r => r.regiao, i => ["#2dd4bf", "#60a5fa", "#f0b94d", "#f97362", "#94a3b8"][i % 5]);
@@ -449,6 +490,74 @@ function filteredMunicipios() {
   });
 }
 
+function renderUfTileMap(rows) {
+  const map = document.getElementById("ufTileMap");
+  const legend = document.getElementById("ufMapLegend");
+  if (!map) return;
+  const ufRows = aggregateUfs(rows);
+  const byUf = Object.fromEntries(ufRows.map(row => [row.uf, row]));
+  const byTile = Object.fromEntries(Object.entries(ufTileLayout).map(([uf, pos]) => [`${pos[0]}-${pos[1]}`, uf]));
+  const max = Math.max(...ufRows.map(row => row.valor_periodo), 0);
+  const ufCodeBySigla = Object.fromEntries(Object.entries(ufMeta).map(([code, meta]) => [meta.uf, code]));
+  let html = "";
+
+  for (let row = 0; row < 7; row++) {
+    for (let col = 0; col < 10; col++) {
+      const uf = byTile[`${row}-${col}`];
+      if (!uf) {
+        html += `<span class="uf-tile empty"></span>`;
+        continue;
+      }
+      const data = byUf[uf];
+      const code = ufCodeBySigla[uf];
+      const active = state.uf === code ? " active" : "";
+      const dim = data ? "" : " dim";
+      const value = data?.valor_periodo || 0;
+      const qty = data?.qtd_periodo || 0;
+      const title = `${uf}: ${fmtMoney.format(value)} | ${fmtNumber.format(qty)} procedimentos`;
+      html += `<button class="uf-tile${active}${dim}" type="button" data-uf-code="${code}" title="${title}" style="--tile-bg:${ufTileColor(value, max)}">${uf}</button>`;
+    }
+  }
+
+  map.innerHTML = html;
+  if (legend) {
+    legend.innerHTML = `<span>menor valor</span><span class="map-scale"></span><span>maior valor</span>`;
+  }
+  map.querySelectorAll(".uf-tile[data-uf-code]").forEach(tile => {
+    tile.addEventListener("click", () => {
+      const code = tile.dataset.ufCode;
+      if (!code) return;
+      state.uf = state.uf === code ? "all" : code;
+      state.region = state.uf === "all" ? "all" : ufMeta[state.uf].region;
+      document.getElementById("regionFilter").value = state.region;
+      populateUfFilter();
+      document.getElementById("ufFilter").value = state.uf;
+      scheduleRender();
+    });
+  });
+}
+
+function aggregateUfs(rows) {
+  return Object.values(rows.reduce((acc, row) => {
+    acc[row.uf_ibge] ||= { uf_ibge: row.uf_ibge, uf: row.uf, regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0, municipios: 0 };
+    acc[row.uf_ibge].valor_periodo += row.valor_periodo;
+    acc[row.uf_ibge].qtd_periodo += row.qtd_periodo;
+    acc[row.uf_ibge].municipios += 1;
+    return acc;
+  }, {})).sort((a, b) => b.valor_periodo - a.valor_periodo);
+}
+
+function ufTileColor(value, max) {
+  if (!value || !max) return "#1b282b";
+  const t = Math.max(0.18, Math.min(1, value / max));
+  const start = [27, 58, 61];
+  const mid = [22, 111, 114];
+  const end = [45, 212, 191];
+  const range = t < 0.55 ? [start, mid, t / 0.55] : [mid, end, (t - 0.55) / 0.45];
+  const rgb = range[0].map((channel, i) => Math.round(channel + (range[1][i] - channel) * range[2]));
+  return `rgb(${rgb.join(",")})`;
+}
+
 function territoryInsight(rows, totalValue, totalQty) {
   const top = rows[0];
   const regionText = state.uf !== "all"
@@ -472,6 +581,8 @@ function renderEmptyTerritory() {
   document.getElementById("territoryAvgCost").textContent = "-";
   document.getElementById("territoryAvgCostHint").textContent = "ajuste os filtros";
   document.getElementById("territoryInsight").innerHTML = `<article><span>Sem resultado</span><strong>Nenhum município encontrado</strong><small>Revise região, UF ou busca.</small></article>`;
+  document.getElementById("ufTileMap").innerHTML = "";
+  document.getElementById("ufMapLegend").innerHTML = "";
   document.getElementById("municipalityTable").innerHTML = "";
   ["regionChart", "municipalityValueChart", "municipalityQtyChart", "municipalityGrowthChart"].forEach(id => {
     const base = canvasBase(id);

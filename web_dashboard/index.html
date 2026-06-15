@@ -144,7 +144,20 @@
         </div>
         <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
         <div class="insight-strip" id="territoryInsight"></div>
-        <div class="chart-shell large"><h3>Comparação por região</h3><canvas id="regionChart" height="300"></canvas></div>
+        <div class="grid two territory-map-grid">
+          <div class="territory-map-shell">
+            <div>
+              <p class="eyebrow">Mapa por UF</p>
+              <h3>Intensidade territorial</h3>
+              <p>Quanto mais forte a cor, maior o valor aprovado acumulado no recorte filtrado.</p>
+            </div>
+            <div>
+              <div class="uf-tile-map" id="ufTileMap" aria-label="Mapa do Brasil por UF"></div>
+              <div class="map-legend" id="ufMapLegend"></div>
+            </div>
+          </div>
+          <div class="chart-shell"><h3>Comparação por região</h3><canvas id="regionChart" height="300"></canvas></div>
+        </div>
         <div class="grid two">
           <div class="chart-shell"><h3>Top 15 por valor aprovado</h3><canvas id="municipalityValueChart" height="360"></canvas></div>
           <div class="chart-shell"><h3>Top 15 por quantidade aprovada</h3><canvas id="municipalityQtyChart" height="360"></canvas></div>
