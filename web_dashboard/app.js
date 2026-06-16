@@ -428,7 +428,7 @@ function renderForecast() {
   const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
   const firstContext = recent[0]?.data?.slice(0, 7) || "2022";
   const bestModel = state.metricas[0];
-  const modelText = bestModel ? ` Modelo selecionado: ${bestModel.modelo} (MAPE ${fmtDecimal.format(bestModel.MAPE_pct)}%).` : "";
+  const modelText = bestModel ? ` Modelo selecionado: ${bestModel.modelo} (MAPE médio ${fmtDecimal.format(bestModel.MAPE_pct)}% em ${bestModel.recortes} recortes temporais).` : "";
   document.getElementById("forecastNote").textContent = `A linha azul mostra o histórico recente desde ${firstContext}; a linha tracejada mostra os 12 meses previstos após ${lastReal}. Como 2026 ainda está parcial, isto não representa o ano fechado de 2027.${modelText}`;
   drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Histórico real (${firstContext} a ${lastReal})`, forecastRows);
   renderModelMetricsTable();
@@ -439,7 +439,7 @@ function renderModelMetricsTable() {
   const table = document.getElementById("modelMetricsTable");
   if (!table || !state.metricas.length) return;
   table.innerHTML = `
-    <thead><tr><th>Modelo</th><th>Tipo</th><th>MAE</th><th>RMSE</th><th>MAPE</th></tr></thead>
+    <thead><tr><th>Modelo</th><th>Tipo</th><th>MAE médio</th><th>RMSE médio</th><th>MAPE médio</th><th>Desvio MAPE</th><th>Recortes</th></tr></thead>
     <tbody>
       ${state.metricas.map((r, index) => `
         <tr class="${index === 0 ? "best-row" : ""}">
@@ -448,6 +448,8 @@ function renderModelMetricsTable() {
           <td>${fmtMoney.format(r.MAE)}</td>
           <td>${fmtMoney.format(r.RMSE)}</td>
           <td>${fmtDecimal.format(r.MAPE_pct)}%</td>
+          <td>${Number.isFinite(r.MAPE_desvio_pct) ? `${fmtDecimal.format(r.MAPE_desvio_pct)}%` : "-"}</td>
+          <td>${r.recortes || "-"}</td>
         </tr>
       `).join("")}
     </tbody>`;
@@ -810,6 +812,8 @@ async function init() {
     MAE: numeric(d, "MAE"),
     RMSE: numeric(d, "RMSE"),
     MAPE_pct: numeric(d, "MAPE_pct"),
+    MAPE_desvio_pct: d.MAPE_desvio_pct === "" ? NaN : numeric(d, "MAPE_desvio_pct"),
+    recortes: d.recortes || "",
   }));
   state.municipios = municipios.map(d => ({
     ...d,

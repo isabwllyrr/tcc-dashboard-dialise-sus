@@ -124,54 +124,85 @@ def previsao_modelo_aprendizagem(modelo, df_historico, datas_futuras):
     return np.array(preds)
 
 
+def avaliar_recorte(df, inicio_teste, meses_teste=None):
+    inicio_teste = pd.Timestamp(inicio_teste)
+    treino_df = df[df["data"] < inicio_teste].copy()
+    teste_df = df[df["data"] >= inicio_teste].copy()
+    if meses_teste is not None:
+        teste_df = teste_df.head(meses_teste).copy()
+    if len(treino_df) < 24 or teste_df.empty:
+        return [], pd.DataFrame()
+
+    y_train = treino_df[TARGET].astype(float).to_numpy()
+    y_test = teste_df[TARGET].astype(float).to_numpy()
+    resultados = []
+
+    pred_media = previsao_media_movel(y_train, y_test, janela=12)
+    pred_sazonal = previsao_sazonal_ingenua(y_train, y_test, sazonalidade=12)
+    pred_linear = previsao_tendencia_linear(treino_df["data"], y_train, teste_df["data"])
+    predicoes = {
+        "media_movel_12m": ("baseline", pred_media),
+        "sazonal_ingenuo_12m": ("baseline", pred_sazonal),
+        "tendencia_linear": ("baseline", pred_linear),
+    }
+
+    features_df = criar_features(df)
+    features_treino = features_df[features_df["data"] < inicio_teste].copy()
+    features_teste = features_df[features_df["data"].isin(teste_df["data"])].copy()
+    if not features_treino.empty and len(features_teste) == len(teste_df):
+        x_train = features_treino[FEATURES]
+        y_train_ml = features_treino[TARGET]
+        x_test = features_teste[FEATURES]
+        for nome, modelo in modelos_aprendizagem().items():
+            modelo.fit(x_train, y_train_ml)
+            predicoes[nome] = ("aprendizagem", modelo.predict(x_test))
+
+    comparacao = teste_df[["data", TARGET]].copy()
+    for nome, (tipo, pred) in predicoes.items():
+        mae, rmse, mape = metricas(y_test, pred)
+        resultados.append({
+            "modelo": nome,
+            "tipo": tipo,
+            "inicio_teste": inicio_teste.strftime("%Y-%m"),
+            "meses_teste": len(teste_df),
+            "MAE": mae,
+            "RMSE": rmse,
+            "MAPE_pct": mape,
+        })
+        comparacao[nome] = pred
+    return resultados, comparacao
+
+
 def main():
     df = pd.read_csv(INPUT, parse_dates=["data"]).sort_values("data").reset_index(drop=True)
     serie = df[TARGET].astype(float).to_numpy()
     periodo_inicio = df["data"].min().strftime("%Y-%m")
     periodo_fim = df["data"].max().strftime("%Y-%m")
-
-    treino_df = df[df["data"] < "2022-01-01"].copy()
-    teste_df = df[df["data"] >= "2022-01-01"].copy()
-    y_train = treino_df[TARGET].astype(float).to_numpy()
-    y_test = teste_df[TARGET].astype(float).to_numpy()
-
-    modelos = []
-    pred_media = previsao_media_movel(y_train, y_test, janela=12)
-    pred_sazonal = previsao_sazonal_ingenua(y_train, y_test, sazonalidade=12)
-    pred_linear = previsao_tendencia_linear(treino_df["data"], y_train, teste_df["data"])
-
-    for nome, pred in [
-        ("media_movel_12m", pred_media),
-        ("sazonal_ingenuo_12m", pred_sazonal),
-        ("tendencia_linear", pred_linear),
-    ]:
-        mae, rmse, mape = metricas(y_test, pred)
-        modelos.append({"modelo": nome, "tipo": "baseline", "MAE": mae, "RMSE": rmse, "MAPE_pct": mape})
-
     features_df = criar_features(df)
-    features_treino = features_df[features_df["data"] < "2022-01-01"].copy()
-    features_teste = features_df[features_df["data"] >= "2022-01-01"].copy()
-    x_train = features_treino[FEATURES]
-    y_train_ml = features_treino[TARGET]
-    x_test = features_teste[FEATURES]
-    predicoes_ml = {}
 
-    for nome, modelo in modelos_aprendizagem().items():
-        modelo.fit(x_train, y_train_ml)
-        pred = modelo.predict(x_test)
-        predicoes_ml[nome] = pred
-        mae, rmse, mape = metricas(y_test, pred)
-        modelos.append({"modelo": nome, "tipo": "aprendizagem", "MAE": mae, "RMSE": rmse, "MAPE_pct": mape})
+    holdout_resultados, comparacao = avaliar_recorte(df, "2022-01-01")
+    holdout_df = pd.DataFrame(holdout_resultados).sort_values("MAPE_pct")
 
-    metricas_df = pd.DataFrame(modelos).sort_values("MAPE_pct")
+    recortes = ["2019-01-01", "2020-01-01", "2021-01-01", "2022-01-01", "2023-01-01", "2024-01-01", "2025-01-01"]
+    backtest_resultados = []
+    for recorte in recortes:
+        resultados, _ = avaliar_recorte(df, recorte, meses_teste=12)
+        backtest_resultados.extend(resultados)
+
+    backtest_detalhado = pd.DataFrame(backtest_resultados)
+    metricas_df = (
+        backtest_detalhado
+        .groupby(["modelo", "tipo"], as_index=False)
+        .agg(
+            MAE=("MAE", "mean"),
+            RMSE=("RMSE", "mean"),
+            MAPE_pct=("MAPE_pct", "mean"),
+            MAPE_desvio_pct=("MAPE_pct", "std"),
+            recortes=("inicio_teste", "nunique"),
+        )
+        .sort_values(["MAPE_pct", "RMSE"])
+    )
     melhor = metricas_df.iloc[0]["modelo"]
-
-    comparacao = teste_df[["data", TARGET]].copy()
-    comparacao["media_movel_12m"] = pred_media
-    comparacao["sazonal_ingenuo_12m"] = pred_sazonal
-    comparacao["tendencia_linear"] = pred_linear
-    for nome, pred in predicoes_ml.items():
-        comparacao[nome] = pred
 
     datas_futuras = pd.date_range(df["data"].max() + pd.DateOffset(months=1), periods=12, freq="MS")
     future = pd.DataFrame({"data": datas_futuras})
@@ -200,6 +231,8 @@ def main():
     future["modelo_usado"] = melhor
 
     metricas_df.to_csv(DATA_DIR / "metricas_modelos_preditivos.csv", index=False, encoding="utf-8-sig")
+    holdout_df.to_csv(DATA_DIR / "metricas_modelos_holdout_2022_atual.csv", index=False, encoding="utf-8-sig")
+    backtest_detalhado.to_csv(DATA_DIR / "metricas_modelos_backtest_temporal.csv", index=False, encoding="utf-8-sig")
     comparacao.to_csv(DATA_DIR / "comparacao_real_previsto_2022_atual.csv", index=False, encoding="utf-8-sig")
     future.to_csv(DATA_DIR / "previsao_mensal_proximos_12m.csv", index=False, encoding="utf-8-sig")
 
@@ -207,20 +240,30 @@ def main():
         "# Modelagem preditiva inicial",
         "",
         f"A serie mensal de valor aprovado cobre {periodo_inicio} a {periodo_fim}.",
-        "A divisao inicial usa treino de 2015 a 2021 e teste de 2022 ate o ultimo mes disponivel.",
+        "A validacao principal usa backtesting temporal com multiplos recortes anuais de 12 meses.",
+        "Tambem foi mantido um holdout de 2022 ate o ultimo mes disponivel para comparacao historica.",
         "Foram avaliados baselines estatisticos e modelos supervisionados de aprendizagem de maquina.",
         "Os modelos de aprendizagem usam variaveis temporais, defasagens do valor aprovado, medias moveis, quantidade aprovada e custo medio defasado.",
         "",
-        "## Metricas no periodo de teste",
+        "## Metricas do backtesting temporal",
+        "",
+        "| modelo | tipo | MAE medio | RMSE medio | MAPE medio | desvio MAPE | recortes |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+        *[
+            f"| {r.modelo} | {r.tipo} | {r.MAE:.2f} | {r.RMSE:.2f} | {r.MAPE_pct:.2f}% | {r.MAPE_desvio_pct:.2f}% | {int(r.recortes)} |"
+            for r in metricas_df.itertuples(index=False)
+        ],
+        "",
+        f"Modelo selecionado pelo menor MAPE medio no backtesting temporal: `{melhor}`.",
+        "",
+        "## Holdout 2022 ate o ultimo mes disponivel",
         "",
         "| modelo | tipo | MAE | RMSE | MAPE_pct |",
         "| --- | --- | --- | --- | --- |",
         *[
             f"| {r.modelo} | {r.tipo} | {r.MAE:.2f} | {r.RMSE:.2f} | {r.MAPE_pct:.2f}% |"
-            for r in metricas_df.itertuples(index=False)
+            for r in holdout_df.itertuples(index=False)
         ],
-        "",
-        f"Modelo selecionado pelo menor MAPE: `{melhor}`.",
         "",
         "## Observacao metodologica",
         "",
@@ -230,6 +273,8 @@ def main():
     (ROOT_DIR / "docs" / "modelagem_preditiva.md").write_text("\n".join(linhas), encoding="utf-8")
 
     print(metricas_df.to_string(index=False))
+    print("\nHoldout 2022 ate o ultimo mes disponivel:")
+    print(holdout_df.to_string(index=False))
     print(f"Modelo selecionado: {melhor}")
 
 
