@@ -431,28 +431,27 @@ function renderForecast() {
   const modelText = bestModel ? ` Modelo selecionado: ${bestModel.modelo} (MAPE médio ${fmtDecimal.format(bestModel.MAPE_pct)}% em ${bestModel.recortes} recortes temporais).` : "";
   document.getElementById("forecastNote").textContent = `A linha azul mostra o histórico recente desde ${firstContext}; a linha tracejada mostra os 12 meses previstos após ${lastReal}. Como 2026 ainda está parcial, isto não representa o ano fechado de 2027.${modelText}`;
   drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Histórico real (${firstContext} a ${lastReal})`, forecastRows);
-  renderModelMetricsTable();
+  renderSelectedModelCard();
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
 }
 
-function renderModelMetricsTable() {
-  const table = document.getElementById("modelMetricsTable");
-  if (!table || !state.metricas.length) return;
-  table.innerHTML = `
-    <thead><tr><th>Modelo</th><th>Tipo</th><th>MAE médio</th><th>RMSE médio</th><th>MAPE médio</th><th>Desvio MAPE</th><th>Recortes</th></tr></thead>
-    <tbody>
-      ${state.metricas.map((r, index) => `
-        <tr class="${index === 0 ? "best-row" : ""}">
-          <td>${index === 0 ? "Selecionado: " : ""}${r.modelo}</td>
-          <td>${r.tipo}</td>
-          <td>${fmtMoney.format(r.MAE)}</td>
-          <td>${fmtMoney.format(r.RMSE)}</td>
-          <td>${fmtDecimal.format(r.MAPE_pct)}%</td>
-          <td>${Number.isFinite(r.MAPE_desvio_pct) ? `${fmtDecimal.format(r.MAPE_desvio_pct)}%` : "-"}</td>
-          <td>${r.recortes || "-"}</td>
-        </tr>
-      `).join("")}
-    </tbody>`;
+function renderSelectedModelCard() {
+  const card = document.getElementById("selectedModelCard");
+  const model = state.metricas[0];
+  if (!card || !model) return;
+  card.innerHTML = `
+    <div>
+      <p class="eyebrow">Modelo de aprendizagem selecionado</p>
+      <h3>${model.modelo}</h3>
+      <p>Modelo supervisionado escolhido pelo menor MAPE médio no backtesting temporal.</p>
+    </div>
+    <div class="selected-model-metrics">
+      <article><span>MAPE médio</span><strong>${fmtDecimal.format(model.MAPE_pct)}%</strong></article>
+      <article><span>MAE médio</span><strong>${fmtMoney.format(model.MAE)}</strong></article>
+      <article><span>RMSE médio</span><strong>${fmtMoney.format(model.RMSE)}</strong></article>
+      <article><span>Recortes</span><strong>${model.recortes}</strong></article>
+    </div>
+  `;
 }
 
 function renderTerritory() {
