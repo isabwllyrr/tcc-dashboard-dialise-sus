@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260615-layout" />
+    <link rel="stylesheet" href="./styles.css?v=20260616-improvements" />
   </head>
   <body>
     <aside class="sidebar">
@@ -22,6 +22,8 @@
         <button class="nav-item" data-tab="forecast">Previsão</button>
         <button class="nav-item" data-tab="territory">Território</button>
         <button class="nav-item" data-tab="risk">Triagem</button>
+        <button class="nav-item" data-tab="methodology">Metodologia</button>
+        <button class="nav-item" data-tab="conclusions">Conclusões</button>
       </nav>
 
       <section class="filters" aria-label="Filtros">
@@ -112,6 +114,7 @@
         <p class="note" id="forecastNote">A previsão será calculada a partir do último mês disponível na base tratada.</p>
         <div class="chart-shell large"><canvas id="forecastChart" height="320"></canvas></div>
         <div class="selected-model" id="selectedModelCard"></div>
+        <div class="chart-shell large"><h3>Real x previsto no período de teste</h3><canvas id="forecastValidationChart" height="300"></canvas></div>
         <table class="data-table" id="forecastTable"></table>
       </section>
 
@@ -136,12 +139,22 @@
           <label>Município
             <input id="citySearch" type="search" placeholder="Buscar município" />
           </label>
+          <label>Métrica do mapa
+            <select id="territoryMetric">
+              <option value="valor_periodo">Valor aprovado</option>
+              <option value="qtd_periodo">Quantidade aprovada</option>
+              <option value="custo_medio_periodo">Custo médio</option>
+              <option value="crescimento_qtd_pos_vs_pre_pct">Crescimento pós-pandemia</option>
+            </select>
+          </label>
+          <button class="export-button" id="exportTerritory" type="button">Exportar CSV</button>
         </div>
         <div class="territory-map-shell">
           <div>
             <p class="eyebrow">Mapa do Brasil</p>
             <h3>Distribuição por UF</h3>
             <p>Quanto mais forte a cor, maior o valor aprovado acumulado no recorte filtrado. Clique em um estado para filtrar a análise territorial.</p>
+            <div class="uf-summary" id="ufSummary"></div>
           </div>
           <div>
             <div class="brazil-map" id="brazilMap" aria-label="Mapa coroplético do Brasil por UF"></div>
@@ -156,6 +169,7 @@
         </div>
         <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
         <div class="insight-strip" id="territoryInsight"></div>
+        <section class="analysis-brief compact" id="territoryNarrative"></section>
         <div class="chart-shell large"><h3>Comparação por região</h3><canvas id="regionChart" height="300"></canvas></div>
         <div class="grid two">
           <div class="chart-shell leaderboard-shell"><h3>Top 15 por valor aprovado</h3><div class="ranking-list" id="municipalityValueChart"></div></div>
@@ -199,8 +213,57 @@
           </div>
         </div>
       </section>
+
+      <section id="methodology" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Metodologia</h2>
+            <p>Resumo do desenho metodológico usado no tratamento, análise e predição.</p>
+          </div>
+        </div>
+        <div class="method-grid">
+          <article class="method-card"><span>Fonte</span><strong>SIA/SUS - DATASUS</strong><p>Dados públicos agregados de procedimentos ambulatoriais relacionados à diálise no SUS.</p></article>
+          <article class="method-card"><span>Período</span><strong id="methodPeriod">2015 a 2026</strong><p>Em 2026, a base disponível está parcial até abril.</p></article>
+          <article class="method-card"><span>Tratamento</span><strong>Python</strong><p>Padronização dos CSVs, cálculo de indicadores mensais, anuais, territoriais e por período pandêmico.</p></article>
+          <article class="method-card"><span>Modelo</span><strong>Ridge Regression</strong><p>Modelo supervisionado escolhido pelo menor MAPE médio no backtesting temporal.</p></article>
+        </div>
+        <div class="chart-shell">
+          <h3>Etapas do projeto</h3>
+          <div class="steps-list">
+            <article><b>1</b><span>Coleta no DATASUS com recortes por ano/mês, grupo de procedimento e município.</span></article>
+            <article><b>2</b><span>Tratamento e integração das bases em Python, gerando arquivos agregados para o dashboard.</span></article>
+            <article><b>3</b><span>Análise exploratória dos custos, quantidades e distribuição territorial pré, durante e pós-pandemia.</span></article>
+            <article><b>4</b><span>Treinamento e validação temporal dos modelos preditivos para valor aprovado mensal.</span></article>
+            <article><b>5</b><span>Visualização web interativa para apoiar interpretação, apresentação e tomada de decisão.</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="conclusions" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Conclusões preliminares</h2>
+            <p>Principais leituras geradas a partir dos dados tratados até o momento.</p>
+          </div>
+        </div>
+        <div class="conclusion-hero" id="conclusionHero"></div>
+        <div class="grid two">
+          <div class="chart-shell">
+            <h3>Achados principais</h3>
+            <div class="finding-list" id="findingList"></div>
+          </div>
+          <div class="chart-shell">
+            <h3>Limitações da análise</h3>
+            <div class="finding-list muted">
+              <article>Os dados indicam procedimentos aprovados, não número único de pacientes.</article>
+              <article>O ano de 2026 está parcial, com leitura limitada ao período disponível na base.</article>
+              <article>A previsão é apoio exploratório para gestão, não determinação exata do gasto futuro.</article>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260615-layout"></script>
+    <script src="./app.js?v=20260616-improvements"></script>
   </body>
 </html>

@@ -2,6 +2,7 @@
   mensal: "../dados_tratados/dialise_mensal_brasil_total.csv",
   grupo: "../dados_tratados/indicadores_grupo_brasil.csv",
   forecast: "../dados_tratados/previsao_mensal_proximos_12m.csv",
+  comparacao: "../dados_tratados/comparacao_real_previsto_2022_atual.csv",
   metricas: "../dados_tratados/metricas_modelos_preditivos.csv",
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
@@ -11,6 +12,7 @@ const state = {
   mensal: [],
   grupo: [],
   forecast: [],
+  comparacao: [],
   metricas: [],
   municipios: [],
   mapa: null,
@@ -20,8 +22,10 @@ const state = {
   region: "all",
   uf: "all",
   citySearch: "",
+  territoryMetric: "valor_periodo",
 };
 const chartRegistry = new Map();
+let renderPending = false;
 
 const ufMeta = {
   "11": { uf: "RO", region: "Norte" }, "12": { uf: "AC", region: "Norte" }, "13": { uf: "AM", region: "Norte" },
@@ -130,6 +134,8 @@ function setupTerritoryFilters() {
   const regionSelect = document.getElementById("regionFilter");
   const ufSelect = document.getElementById("ufFilter");
   const cityInput = document.getElementById("citySearch");
+  const territoryMetric = document.getElementById("territoryMetric");
+  const exportButton = document.getElementById("exportTerritory");
   const regions = ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"];
   regionSelect.innerHTML = `<option value="all">Brasil</option>${regions.map(r => `<option value="${r}">${r}</option>`).join("")}`;
   populateUfFilter();
@@ -147,6 +153,11 @@ function setupTerritoryFilters() {
     state.citySearch = e.target.value.trim().toLocaleUpperCase("pt-BR");
     scheduleRender();
   });
+  territoryMetric.addEventListener("change", e => {
+    state.territoryMetric = e.target.value;
+    scheduleRender();
+  });
+  exportButton.addEventListener("click", exportTerritoryCSV);
 }
 
 function populateUfFilter() {
@@ -274,6 +285,37 @@ function drawLine(id, data, key, color, label, extraLine = null) {
   ctx.fillStyle = "#9fb3ad"; ctx.font = "12px Segoe UI"; ctx.fillText(label, pad.l, 14);
   drawLineLabels(ctx, [...data, ...(extraLine || []).map(d => ({ data: d.data }))], x, height, pad);
   chartRegistry.set(id, points);
+}
+
+function drawMultiLine(id, data, series) {
+  const base = canvasBase(id); if (!base || !data.length) return;
+  const { ctx, width, height } = base;
+  const pad = { l: 62, r: 24, t: 26, b: 42 };
+  const values = series.flatMap(s => data.map(d => d[s.key]).filter(Number.isFinite));
+  const min = Math.min(...values) * 0.96, max = Math.max(...values) * 1.04;
+  const x = i => pad.l + i * ((width - pad.l - pad.r) / Math.max(data.length - 1, 1));
+  const y = v => height - pad.b - ((v - min) / (max - min || 1)) * (height - pad.t - pad.b);
+  drawAxes(ctx, width, height, pad, min, max);
+  const registry = [];
+  series.forEach((s, sIndex) => {
+    const points = data.map((d, i) => ({
+      x: x(i),
+      y: y(d[s.key]),
+      label: d.data ? d.data.slice(0, 7) : s.label,
+      value: d[s.key],
+      key: s.key,
+      series: s.label,
+      type: "point",
+    }));
+    drawPath(ctx, points.map(p => [p.x, p.y]), s.color, s.dashed);
+    drawPointMarkers(ctx, points, s.color);
+    ctx.fillStyle = s.color;
+    ctx.font = "12px Segoe UI";
+    ctx.fillText(s.label, pad.l + sIndex * 86, 16);
+    registry.push(...points);
+  });
+  drawLineLabels(ctx, data, x, height, pad);
+  chartRegistry.set(id, registry);
 }
 
 function drawBar(id, rows, key, labels, color) {
@@ -432,7 +474,18 @@ function renderForecast() {
   document.getElementById("forecastNote").textContent = `A linha azul mostra o histórico recente desde ${firstContext}; a linha tracejada mostra os 12 meses previstos após ${lastReal}. Como 2026 ainda está parcial, isto não representa o ano fechado de 2027.${modelText}`;
   drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Histórico real (${firstContext} a ${lastReal})`, forecastRows);
   renderSelectedModelCard();
+  renderForecastValidation();
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
+}
+
+function renderForecastValidation() {
+  const model = state.forecast[0]?.modelo_usado || state.metricas[0]?.modelo;
+  if (!model) return;
+  const rows = state.comparacao.filter(row => Number.isFinite(row[model]));
+  drawMultiLine("forecastValidationChart", rows, [
+    { key: "valor_aprovado", label: "Real", color: "#60a5fa" },
+    { key: model, label: "Previsto", color: "#f97362", dashed: true },
+  ]);
 }
 
 function renderSelectedModelCard() {
@@ -475,6 +528,8 @@ function renderTerritory() {
   document.getElementById("territoryAvgCostHint").textContent = `maior volume: ${topQty.municipio}`;
   document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
   document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
+  document.getElementById("territoryNarrative").innerHTML = territoryNarrative(municipios, total, totalQty);
+  renderUfSummary(municipios);
   renderBrazilMap(municipios);
 
   const regionRows = aggregateRegions(municipios);
@@ -527,10 +582,25 @@ function renderTerritory() {
           <td>${fmtNumber.format(r.qtd_periodo)}</td>
           <td>${fmtMoney.format(r.custo_medio_periodo)}</td>
           <td>${Number.isFinite(r.crescimento_valor_pos_vs_pre_pct) ? `${fmtDecimal.format(r.crescimento_valor_pos_vs_pre_pct)}%` : "-"}</td>
-          <td>${Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) ? `${fmtDecimal.format(r.crescimento_qtd_pos_vs_pre_pct)}%` : "-"}</td>
+      <td>${Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) ? `${fmtDecimal.format(r.crescimento_qtd_pos_vs_pre_pct)}%` : "-"}</td>
         </tr>
       `).join("")}
     </tbody>`;
+}
+
+function territoryNarrative(rows, totalValue, totalQty) {
+  const top = rows[0];
+  const top10 = rows.slice(0, 10).reduce((sum, row) => sum + row.valor_periodo, 0);
+  const concentration = (top10 / totalValue) * 100;
+  const avgCost = totalValue / totalQty;
+  const regionText = state.uf !== "all" ? `na UF ${ufMeta[state.uf]?.uf}` : state.region !== "all" ? `na região ${state.region}` : "no Brasil";
+  return `
+    <div>
+      <p class="eyebrow">Leitura dos dados</p>
+      <h2>Concentração territorial e pressão assistencial ${regionText}</h2>
+      <p>O recorte selecionado concentra ${fmtDecimal.format(concentration)}% do valor aprovado nos 10 maiores municípios. O maior polo é ${top.municipio} - ${top.uf}, e o custo médio observado no recorte é ${fmtMoney.format(avgCost)} por procedimento aprovado.</p>
+    </div>
+  `;
 }
 
 function filteredMunicipios() {
@@ -542,13 +612,30 @@ function filteredMunicipios() {
   });
 }
 
+function renderUfSummary(rows) {
+  const box = document.getElementById("ufSummary");
+  if (!box || !rows.length) return;
+  const totalValue = rows.reduce((sum, row) => sum + row.valor_periodo, 0);
+  const totalQty = rows.reduce((sum, row) => sum + row.qtd_periodo, 0);
+  const top = [...rows].sort((a, b) => b.valor_periodo - a.valor_periodo)[0];
+  const scope = state.uf !== "all" ? `UF ${ufMeta[state.uf]?.uf}` : state.region !== "all" ? state.region : "Brasil";
+  box.innerHTML = `
+    <article><span>Recorte</span><strong>${scope}</strong></article>
+    <article><span>Valor aprovado</span><strong>${fmtMoney.format(totalValue)}</strong></article>
+    <article><span>Quantidade</span><strong>${fmtNumber.format(totalQty)}</strong></article>
+    <article><span>Município líder</span><strong>${top.municipio} - ${top.uf}</strong></article>
+  `;
+}
+
 function renderBrazilMap(rows) {
   const map = document.getElementById("brazilMap");
   const legend = document.getElementById("ufMapLegend");
   if (!map || !state.mapa) return;
   const ufRows = aggregateUfs(rows);
   const byCode = Object.fromEntries(ufRows.map(row => [row.uf_ibge, row]));
-  const max = Math.max(...ufRows.map(row => row.valor_periodo), 0);
+  const metric = mapMetricConfig();
+  const mapValues = ufRows.map(row => row[metric.key]).filter(Number.isFinite);
+  const max = Math.max(...mapValues, 0);
   const { project, width, height } = geoProjector(state.mapa, 620, 600, 18);
   const paths = state.mapa.features.map(feature => {
     const code = String(feature.properties.codigo_ibg);
@@ -556,9 +643,8 @@ function renderBrazilMap(rows) {
     const data = byCode[code];
     const active = state.uf === code ? " active" : "";
     const dim = data ? "" : " dim";
-    const value = data?.valor_periodo || 0;
-    const qty = data?.qtd_periodo || 0;
-    const title = `${sigla} - ${feature.properties.name}: ${fmtMoney.format(value)} | ${fmtNumber.format(qty)} procedimentos`;
+    const value = data?.[metric.key] || 0;
+    const title = `${sigla} - ${feature.properties.name}: ${metric.label} ${metric.format(value)}`;
     return `<path class="map-state${active}${dim}" data-uf-code="${code}" d="${geoPath(feature.geometry, project)}" fill="${ufMapColor(value, max)}"><title>${title}</title></path>`;
   }).join("");
   const labels = state.mapa.features.map(feature => {
@@ -569,7 +655,7 @@ function renderBrazilMap(rows) {
 
   map.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Mapa do Brasil por UF">${paths}${labels}</svg>`;
   if (legend) {
-    legend.innerHTML = `<span>menor valor</span><span class="map-scale"></span><span>maior valor</span>`;
+    legend.innerHTML = `<span>menor ${metric.short}</span><span class="map-scale"></span><span>maior ${metric.short}</span>`;
   }
   map.querySelectorAll(".map-state[data-uf-code]").forEach(shape => {
     shape.addEventListener("click", () => {
@@ -632,13 +718,29 @@ function featureCentroid(geometry, project) {
 }
 
 function aggregateUfs(rows) {
-  return Object.values(rows.reduce((acc, row) => {
-    acc[row.uf_ibge] ||= { uf_ibge: row.uf_ibge, uf: row.uf, regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0, municipios: 0 };
+  const aggregated = Object.values(rows.reduce((acc, row) => {
+    acc[row.uf_ibge] ||= { uf_ibge: row.uf_ibge, uf: row.uf, regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0, municipios: 0, growthValues: [] };
     acc[row.uf_ibge].valor_periodo += row.valor_periodo;
     acc[row.uf_ibge].qtd_periodo += row.qtd_periodo;
     acc[row.uf_ibge].municipios += 1;
+    if (Number.isFinite(row.crescimento_qtd_pos_vs_pre_pct)) acc[row.uf_ibge].growthValues.push(row.crescimento_qtd_pos_vs_pre_pct);
     return acc;
-  }, {})).sort((a, b) => b.valor_periodo - a.valor_periodo);
+  }, {}));
+  return aggregated.map(row => ({
+    ...row,
+    custo_medio_periodo: row.qtd_periodo ? row.valor_periodo / row.qtd_periodo : 0,
+    crescimento_qtd_pos_vs_pre_pct: row.growthValues.length ? row.growthValues.reduce((sum, value) => sum + value, 0) / row.growthValues.length : 0,
+  })).sort((a, b) => b.valor_periodo - a.valor_periodo);
+}
+
+function mapMetricConfig() {
+  const configs = {
+    valor_periodo: { key: "valor_periodo", label: "Valor aprovado", short: "valor", format: fmtMoney.format },
+    qtd_periodo: { key: "qtd_periodo", label: "Quantidade aprovada", short: "quantidade", format: fmtNumber.format },
+    custo_medio_periodo: { key: "custo_medio_periodo", label: "Custo médio", short: "custo", format: fmtMoney.format },
+    crescimento_qtd_pos_vs_pre_pct: { key: "crescimento_qtd_pos_vs_pre_pct", label: "Crescimento pós-pandemia", short: "crescimento", format: value => `${fmtDecimal.format(value)}%` },
+  };
+  return configs[state.territoryMetric] || configs.valor_periodo;
 }
 
 function ufMapColor(value, max) {
@@ -675,6 +777,8 @@ function renderEmptyTerritory() {
   document.getElementById("territoryAvgCost").textContent = "-";
   document.getElementById("territoryAvgCostHint").textContent = "ajuste os filtros";
   document.getElementById("territoryInsight").innerHTML = `<article><span>Sem resultado</span><strong>Nenhum município encontrado</strong><small>Revise região, UF ou busca.</small></article>`;
+  document.getElementById("territoryNarrative").innerHTML = "";
+  document.getElementById("ufSummary").innerHTML = "";
   document.getElementById("brazilMap").innerHTML = "";
   document.getElementById("ufMapLegend").innerHTML = "";
   document.getElementById("municipalityTable").innerHTML = "";
@@ -689,6 +793,85 @@ function renderEmptyTerritory() {
       base.ctx.fillText("Sem dados para o filtro atual", 24, 42);
     }
   });
+}
+
+function renderMethodology() {
+  const methodPeriod = document.getElementById("methodPeriod");
+  if (!methodPeriod) return;
+  const lastYear = Math.max(...state.mensal.map(d => d.ano));
+  const lastMonth = Math.max(...state.mensal.filter(d => d.ano === lastYear).map(d => d.mes));
+  const monthLabel = String(lastMonth).padStart(2, "0");
+  methodPeriod.textContent = `${state.yearStart} a ${lastYear}${monthsInYear(lastYear) < 12 ? `, parcial até ${monthLabel}/${lastYear}` : ""}`;
+}
+
+function renderConclusions() {
+  const hero = document.getElementById("conclusionHero");
+  const list = document.getElementById("findingList");
+  if (!hero || !list || !state.mensal.length) return;
+  const completeEnd = latestCompleteYear(Math.max(...state.mensal.map(d => d.ano)));
+  const firstYear = Math.min(...state.mensal.map(d => d.ano));
+  const firstValue = state.mensal.filter(d => d.ano === firstYear).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const lastValue = state.mensal.filter(d => d.ano === completeEnd).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const valueGrowth = firstValue ? ((lastValue / firstValue) - 1) * 100 : 0;
+  const preQty = state.mensal.filter(d => d.ano >= 2015 && d.ano <= 2019).reduce((sum, row) => sum + row.qtd_aprovada, 0) / 5;
+  const postYears = [...new Set(state.mensal.map(d => d.ano))].filter(year => year >= 2022 && monthsInYear(year) === 12);
+  const postQty = state.mensal.filter(d => postYears.includes(d.ano)).reduce((sum, row) => sum + row.qtd_aprovada, 0) / Math.max(postYears.length, 1);
+  const qtyGrowth = preQty ? ((postQty / preQty) - 1) * 100 : 0;
+  const totalValue = state.municipios.reduce((sum, row) => sum + row.valor_periodo, 0);
+  const top10Value = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo).slice(0, 10).reduce((sum, row) => sum + row.valor_periodo, 0);
+  const topCity = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo)[0];
+  const model = state.metricas[0];
+  hero.innerHTML = `
+    <div>
+      <p class="eyebrow">Síntese para o TCC</p>
+      <h3>Os dados apontam aumento sustentado da demanda e do gasto com diálise no SUS, com concentração territorial em grandes polos.</h3>
+      <p>A leitura usa ${completeEnd} como último ano fechado, porque 2026 ainda está parcial na base tratada.</p>
+    </div>
+    <div class="conclusion-stats">
+      <article><span>Valor aprovado</span><strong>${fmtDecimal.format(valueGrowth)}%</strong><small>${firstYear} x ${completeEnd}</small></article>
+      <article><span>Quantidade média</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>pós x pré-pandemia</small></article>
+      <article><span>Top 10 municípios</span><strong>${fmtDecimal.format((top10Value / totalValue) * 100)}%</strong><small>do valor territorial</small></article>
+    </div>
+  `;
+  list.innerHTML = `
+    <article>O crescimento do valor aprovado acompanha uma elevação da quantidade aprovada, então a análise não deve ser lida apenas como aumento financeiro.</article>
+    <article>O período pós-pandemia apresenta maior média anual de procedimentos em comparação ao pré-pandemia, sugerindo maior pressão assistencial.</article>
+    <article>${topCity ? `${topCity.municipio} - ${topCity.uf} aparece como principal polo territorial no recorte analisado.` : "A análise territorial permite localizar polos municipais de maior concentração."}</article>
+    <article>${model ? `Para previsão, o modelo supervisionado vencedor foi ${model.modelo}, com MAPE médio de ${fmtDecimal.format(model.MAPE_pct)}% no backtesting temporal.` : "A etapa preditiva deve ser interpretada como apoio exploratório à gestão."}</article>
+  `;
+}
+
+function csvEscape(value) {
+  const text = String(value ?? "");
+  return /[",\n\r;]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+}
+
+function exportTerritoryCSV() {
+  const rows = filteredMunicipios().sort((a, b) => b.valor_periodo - a.valor_periodo);
+  const columns = [
+    ["municipio", "Município"],
+    ["uf", "UF"],
+    ["regiao", "Região"],
+    ["valor_periodo", "Valor aprovado"],
+    ["qtd_periodo", "Quantidade aprovada"],
+    ["custo_medio_periodo", "Custo médio"],
+    ["crescimento_valor_pos_vs_pre_pct", "Crescimento valor pós x pré (%)"],
+    ["crescimento_qtd_pos_vs_pre_pct", "Crescimento qtd pós x pré (%)"],
+  ];
+  const content = [
+    columns.map(([, label]) => csvEscape(label)).join(";"),
+    ...rows.map(row => columns.map(([key]) => csvEscape(row[key])).join(";")),
+  ].join("\n");
+  const blob = new Blob([`\ufeff${content}`], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const scope = state.uf !== "all" ? ufMeta[state.uf]?.uf : state.region !== "all" ? state.region : "brasil";
+  link.href = url;
+  link.download = `dialise_territorio_${String(scope).toLowerCase().replaceAll(" ", "_")}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function aggregateRegions(rows) {
@@ -752,11 +935,18 @@ function render() {
   renderPeriods();
   renderForecast();
   renderTerritory();
+  renderMethodology();
+  renderConclusions();
   renderRisk();
 }
 
 function scheduleRender() {
-  requestAnimationFrame(() => requestAnimationFrame(render));
+  if (renderPending) return;
+  renderPending = true;
+  setTimeout(() => {
+    renderPending = false;
+    render();
+  }, 0);
 }
 
 function setupChartTooltips() {
@@ -792,7 +982,7 @@ function setupChartTooltips() {
 }
 
 async function init() {
-  const [mensal, grupo, forecast, metricas, municipios, mapa] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.metricas), loadCSV(paths.municipios), loadJSON(paths.mapa)]);
+  const [mensal, grupo, forecast, comparacao, metricas, municipios, mapa] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.comparacao), loadCSV(paths.metricas), loadCSV(paths.municipios), loadJSON(paths.mapa)]);
   state.mapa = mapa;
   state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
   state.yearStart = Math.min(...state.mensal.map(d => d.ano));
@@ -806,6 +996,13 @@ async function init() {
     participacao_valor_pct: numeric(d, "participacao_valor_pct"),
   }));
   state.forecast = forecast.map(d => ({ ...d, previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado") }));
+  state.comparacao = comparacao.map(d => {
+    const row = { ...d };
+    Object.keys(row).forEach(key => {
+      if (key !== "data") row[key] = numeric(row, key);
+    });
+    return row;
+  });
   state.metricas = metricas.map(d => ({
     ...d,
     MAE: numeric(d, "MAE"),
@@ -830,7 +1027,7 @@ async function init() {
     participacao_valor_nacional_pct: numeric(d, "participacao_valor_nacional_pct"),
     participacao_qtd_nacional_pct: numeric(d, "participacao_qtd_nacional_pct"),
   }));
-  setupFilters(); setupNavigation(); setupSidebarToggle(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); scheduleRender();
+  setupFilters(); setupNavigation(); setupSidebarToggle(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); render();
 }
 
 window.addEventListener("resize", scheduleRender);
