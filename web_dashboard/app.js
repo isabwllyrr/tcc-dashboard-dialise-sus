@@ -1,12 +1,13 @@
 ﻿const paths = {
   mensal: "../dados_tratados/dialise_mensal_brasil_total.csv",
   grupo: "../dados_tratados/indicadores_grupo_brasil.csv",
-  forecast: "../dados_tratados/previsao_mensal_proximos_12m.csv",
-  comparacao: "../dados_tratados/comparacao_real_previsto_2022_atual.csv",
-  metricas: "../dados_tratados/metricas_modelos_preditivos.csv",
+  forecast: "../dados_tratados/previsao_mensal_proximos_12m_corrigido.csv",
+  comparacao: "../dados_tratados/comparacao_real_previsto_2022_atual_corrigido.csv",
+  metricas: "../dados_tratados/metricas_modelos_preditivos_corrigido.csv",
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
+const DATA_VERSION = "20260616-qtdfix";
 
 const state = {
   mensal: [],
@@ -62,13 +63,13 @@ function parseCSV(text) {
 }
 
 async function loadCSV(path) {
-  const response = await fetch(path);
+  const response = await fetch(`${path}${path.includes("?") ? "&" : "?"}v=${DATA_VERSION}`);
   if (!response.ok) throw new Error(`Falha ao carregar ${path}`);
   return parseCSV(await response.text());
 }
 
 async function loadJSON(path) {
-  const response = await fetch(path);
+  const response = await fetch(`${path}${path.includes("?") ? "&" : "?"}v=${DATA_VERSION}`);
   if (!response.ok) throw new Error(`Falha ao carregar ${path}`);
   return response.json();
 }

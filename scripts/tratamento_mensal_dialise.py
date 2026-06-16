@@ -32,6 +32,8 @@ MESES = {
 def br_number_to_float(value):
     if pd.isna(value):
         return np.nan
+    if isinstance(value, (int, float, np.integer, np.floating)):
+        return float(value)
     value = str(value).strip()
     if value in {"", "-"}:
         return 0.0

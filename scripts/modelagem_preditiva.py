@@ -230,11 +230,11 @@ def main():
     future["previsao_valor_aprovado"] = future_pred
     future["modelo_usado"] = melhor
 
-    metricas_df.to_csv(DATA_DIR / "metricas_modelos_preditivos.csv", index=False, encoding="utf-8-sig")
-    holdout_df.to_csv(DATA_DIR / "metricas_modelos_holdout_2022_atual.csv", index=False, encoding="utf-8-sig")
-    backtest_detalhado.to_csv(DATA_DIR / "metricas_modelos_backtest_temporal.csv", index=False, encoding="utf-8-sig")
-    comparacao.to_csv(DATA_DIR / "comparacao_real_previsto_2022_atual.csv", index=False, encoding="utf-8-sig")
-    future.to_csv(DATA_DIR / "previsao_mensal_proximos_12m.csv", index=False, encoding="utf-8-sig")
+    metricas_df.to_csv(DATA_DIR / "metricas_modelos_preditivos_corrigido.csv", index=False, encoding="utf-8-sig")
+    holdout_df.to_csv(DATA_DIR / "metricas_modelos_holdout_2022_atual_corrigido.csv", index=False, encoding="utf-8-sig")
+    backtest_detalhado.to_csv(DATA_DIR / "metricas_modelos_backtest_temporal_corrigido.csv", index=False, encoding="utf-8-sig")
+    comparacao.to_csv(DATA_DIR / "comparacao_real_previsto_2022_atual_corrigido.csv", index=False, encoding="utf-8-sig")
+    future.to_csv(DATA_DIR / "previsao_mensal_proximos_12m_corrigido.csv", index=False, encoding="utf-8-sig")
 
     linhas = [
         "# Modelagem preditiva inicial",
