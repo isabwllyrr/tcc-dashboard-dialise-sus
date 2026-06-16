@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260616-improvements" />
+    <link rel="stylesheet" href="./styles.css?v=20260616-pro" />
   </head>
   <body>
     <aside class="sidebar">
@@ -23,6 +23,7 @@
         <button class="nav-item" data-tab="territory">Território</button>
         <button class="nav-item" data-tab="risk">Triagem</button>
         <button class="nav-item" data-tab="methodology">Metodologia</button>
+        <button class="nav-item" data-tab="tcc">TCC</button>
         <button class="nav-item" data-tab="conclusions">Conclusões</button>
       </nav>
 
@@ -66,6 +67,7 @@
           </div>
           <div class="brief-stats" id="briefStats"></div>
         </section>
+        <section class="executive-strip" id="executiveStrip" aria-label="Indicadores executivos"></section>
 
         <section class="kpis" aria-label="Indicadores principais">
           <article class="kpi"><span>Valor aprovado</span><strong id="kpiValue">-</strong><small id="kpiValueHint">-</small></article>
@@ -167,6 +169,7 @@
           <article class="period-card"><h3>Top 10</h3><strong id="top10Share">-</strong><span>participação no valor nacional</span></article>
           <article class="period-card"><h3>Custo médio nacional</h3><strong id="territoryAvgCost">-</strong><span id="territoryAvgCostHint">valor / quantidade</span></article>
         </div>
+        <div class="comparison-panel" id="territoryComparison"></div>
         <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
         <div class="insight-strip" id="territoryInsight"></div>
         <section class="analysis-brief compact" id="territoryNarrative"></section>
@@ -239,12 +242,48 @@
         </div>
       </section>
 
+      <section id="tcc" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Síntese acadêmica</h2>
+            <p>Organização dos principais pontos para apresentação e escrita do TCC.</p>
+          </div>
+        </div>
+        <div class="tcc-hero">
+          <div>
+            <p class="eyebrow">Objetivo geral</p>
+            <h3>Analisar a evolução temporal, territorial e preditiva dos procedimentos de diálise no SUS, com apoio de visualização web.</h3>
+          </div>
+          <div class="tcc-mini-grid" id="tccMiniGrid"></div>
+        </div>
+        <div class="grid two">
+          <div class="chart-shell">
+            <h3>Objetivos específicos</h3>
+            <div class="steps-list">
+              <article><b>1</b><span>Organizar bases públicas do DATASUS relacionadas aos procedimentos de diálise.</span></article>
+              <article><b>2</b><span>Comparar valor aprovado, quantidade e custo médio antes, durante e após a pandemia.</span></article>
+              <article><b>3</b><span>Identificar concentração territorial por região, UF e município.</span></article>
+              <article><b>4</b><span>Testar modelo de aprendizagem para previsão mensal do valor aprovado.</span></article>
+            </div>
+          </div>
+          <div class="chart-shell">
+            <h3>Recorte do estudo</h3>
+            <div class="finding-list muted">
+              <article>O termo diálise foi mantido porque o recorte inclui procedimentos relacionados à terapia dialítica no SUS.</article>
+              <article>A base trabalha com procedimentos aprovados, não com pacientes únicos.</article>
+              <article>O painel apoia leitura exploratória, apresentação e tomada de decisão em saúde.</article>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="conclusions" class="tab-panel">
         <div class="section-head">
           <div>
             <h2>Conclusões preliminares</h2>
             <p>Principais leituras geradas a partir dos dados tratados até o momento.</p>
           </div>
+          <button class="export-button" id="exportSummary" type="button">Baixar resumo</button>
         </div>
         <div class="conclusion-hero" id="conclusionHero"></div>
         <div class="grid two">
@@ -264,6 +303,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260616-improvements"></script>
+    <script src="./app.js?v=20260616-pro"></script>
   </body>
 </html>

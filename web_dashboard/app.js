@@ -172,6 +172,7 @@ function populateUfFilter() {
 
 function setupRisk() {
   document.getElementById("riskForm").addEventListener("input", renderRisk);
+  document.getElementById("exportSummary")?.addEventListener("click", exportSummaryText);
   renderRisk();
 }
 
@@ -418,6 +419,7 @@ function compact(v) {
 function renderOverview(data) {
   const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
   renderBrief(data);
+  renderExecutiveStrip(data);
   drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
@@ -426,6 +428,24 @@ function renderOverview(data) {
   }, {}));
   drawBar("annualBar", annual, "valor_aprovado", r => r.ano, () => "#60a5fa");
   drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#2dd4bf", "#f97362", "#f0b94d"][i % 3]);
+}
+
+function renderExecutiveStrip(data) {
+  const target = document.getElementById("executiveStrip");
+  if (!target || !data.length) return;
+  const completeEnd = latestCompleteYear(state.yearEnd);
+  const firstValue = data.filter(d => d.ano === state.yearStart).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const lastValue = data.filter(d => d.ano === completeEnd).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const valueGrowth = firstValue ? ((lastValue / firstValue) - 1) * 100 : 0;
+  const firstQty = data.filter(d => d.ano === state.yearStart).reduce((sum, row) => sum + row.qtd_aprovada, 0);
+  const lastQty = data.filter(d => d.ano === completeEnd).reduce((sum, row) => sum + row.qtd_aprovada, 0);
+  const qtyGrowth = firstQty ? ((lastQty / firstQty) - 1) * 100 : 0;
+  const model = state.metricas[0];
+  target.innerHTML = `
+    <article><span>Leitura principal</span><strong>${fmtDecimal.format(valueGrowth)}%</strong><small>valor aprovado, ${state.yearStart} x ${completeEnd}</small></article>
+    <article><span>Uso assistencial</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>quantidade aprovada, ${state.yearStart} x ${completeEnd}</small></article>
+    <article><span>Modelo preditivo</span><strong>${model?.modelo || "-"}</strong><small>${model ? `MAPE médio ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
+  `;
 }
 
 function renderBrief(data) {
@@ -529,6 +549,7 @@ function renderTerritory() {
   document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
   document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
   document.getElementById("territoryNarrative").innerHTML = territoryNarrative(municipios, total, totalQty);
+  renderTerritoryComparison(municipios, total, totalQty);
   renderUfSummary(municipios);
   renderBrazilMap(municipios);
 
@@ -586,6 +607,28 @@ function renderTerritory() {
         </tr>
       `).join("")}
     </tbody>`;
+}
+
+function renderTerritoryComparison(rows, totalValue, totalQty) {
+  const panel = document.getElementById("territoryComparison");
+  if (!panel) return;
+  const nationalValue = state.municipios.reduce((sum, row) => sum + row.valor_periodo, 0);
+  const nationalQty = state.municipios.reduce((sum, row) => sum + row.qtd_periodo, 0);
+  const scope = state.uf !== "all" ? `UF ${ufMeta[state.uf]?.uf}` : state.region !== "all" ? `região ${state.region}` : "Brasil";
+  const valueShare = nationalValue ? (totalValue / nationalValue) * 100 : 0;
+  const qtyShare = nationalQty ? (totalQty / nationalQty) * 100 : 0;
+  const avgCost = totalQty ? totalValue / totalQty : 0;
+  const nationalAvg = nationalQty ? nationalValue / nationalQty : 0;
+  const avgDiff = nationalAvg ? ((avgCost / nationalAvg) - 1) * 100 : 0;
+  panel.innerHTML = `
+    <div>
+      <p class="eyebrow">Comparação com Brasil</p>
+      <h3>${scope}</h3>
+    </div>
+    <article><span>Participação no valor</span><strong>${fmtDecimal.format(valueShare)}%</strong><small>do total nacional</small></article>
+    <article><span>Participação na quantidade</span><strong>${fmtDecimal.format(qtyShare)}%</strong><small>do total nacional</small></article>
+    <article><span>Custo médio</span><strong>${fmtDecimal.format(avgDiff)}%</strong><small>diferença em relação ao Brasil</small></article>
+  `;
 }
 
 function territoryNarrative(rows, totalValue, totalQty) {
@@ -777,6 +820,7 @@ function renderEmptyTerritory() {
   document.getElementById("territoryAvgCost").textContent = "-";
   document.getElementById("territoryAvgCostHint").textContent = "ajuste os filtros";
   document.getElementById("territoryInsight").innerHTML = `<article><span>Sem resultado</span><strong>Nenhum município encontrado</strong><small>Revise região, UF ou busca.</small></article>`;
+  document.getElementById("territoryComparison").innerHTML = "";
   document.getElementById("territoryNarrative").innerHTML = "";
   document.getElementById("ufSummary").innerHTML = "";
   document.getElementById("brazilMap").innerHTML = "";
@@ -802,6 +846,19 @@ function renderMethodology() {
   const lastMonth = Math.max(...state.mensal.filter(d => d.ano === lastYear).map(d => d.mes));
   const monthLabel = String(lastMonth).padStart(2, "0");
   methodPeriod.textContent = `${state.yearStart} a ${lastYear}${monthsInYear(lastYear) < 12 ? `, parcial até ${monthLabel}/${lastYear}` : ""}`;
+}
+
+function renderTcc() {
+  const grid = document.getElementById("tccMiniGrid");
+  if (!grid || !state.mensal.length) return;
+  const lastYear = Math.max(...state.mensal.map(d => d.ano));
+  const lastMonth = Math.max(...state.mensal.filter(d => d.ano === lastYear).map(d => d.mes));
+  const model = state.metricas[0];
+  grid.innerHTML = `
+    <article><span>Fonte</span><strong>SIA/SUS</strong><small>DATASUS</small></article>
+    <article><span>Período</span><strong>${state.yearStart}-${lastYear}</strong><small>${monthsInYear(lastYear) < 12 ? `até ${String(lastMonth).padStart(2, "0")}/${lastYear}` : "ano fechado"}</small></article>
+    <article><span>Modelo</span><strong>${model?.modelo || "-"}</strong><small>${model ? `MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
+  `;
 }
 
 function renderConclusions() {
@@ -874,6 +931,38 @@ function exportTerritoryCSV() {
   URL.revokeObjectURL(url);
 }
 
+function exportSummaryText() {
+  const completeEnd = latestCompleteYear(Math.max(...state.mensal.map(d => d.ano)));
+  const model = state.metricas[0];
+  const hero = document.getElementById("conclusionHero")?.innerText || "";
+  const findings = [...document.querySelectorAll("#findingList article")].map(item => `- ${item.innerText}`).join("\n");
+  const limitations = [...document.querySelectorAll("#conclusions .finding-list.muted article")].map(item => `- ${item.innerText}`).join("\n");
+  const content = [
+    "Resumo do dashboard - Diálise no SUS",
+    "",
+    `Período analisado: ${state.yearStart} a ${state.yearEnd}`,
+    `Ano fechado de referência: ${completeEnd}`,
+    model ? `Modelo de aprendizagem: ${model.modelo} | MAPE médio: ${fmtDecimal.format(model.MAPE_pct)}%` : "Modelo de aprendizagem: em validação",
+    "",
+    hero,
+    "",
+    "Achados principais",
+    findings,
+    "",
+    "Limitações da análise",
+    limitations,
+  ].join("\n");
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "resumo_dashboard_dialise_sus.txt";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 function aggregateRegions(rows) {
   return Object.values(rows.reduce((acc, row) => {
     acc[row.regiao] ||= { regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0 };
@@ -936,6 +1025,7 @@ function render() {
   renderForecast();
   renderTerritory();
   renderMethodology();
+  renderTcc();
   renderConclusions();
   renderRisk();
 }
