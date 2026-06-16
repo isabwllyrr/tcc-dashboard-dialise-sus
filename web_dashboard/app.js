@@ -2,6 +2,7 @@
   mensal: "../dados_tratados/dialise_mensal_brasil_total.csv",
   grupo: "../dados_tratados/indicadores_grupo_brasil.csv",
   forecast: "../dados_tratados/previsao_mensal_proximos_12m.csv",
+  metricas: "../dados_tratados/metricas_modelos_preditivos.csv",
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
@@ -10,6 +11,7 @@ const state = {
   mensal: [],
   grupo: [],
   forecast: [],
+  metricas: [],
   municipios: [],
   mapa: null,
   yearStart: 2015,
@@ -425,9 +427,30 @@ function renderForecast() {
   const forecastRows = state.forecast.map(d => ({ data: d.data, value: d.previsao_valor_aprovado }));
   const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
   const firstContext = recent[0]?.data?.slice(0, 7) || "2022";
-  document.getElementById("forecastNote").textContent = `A linha azul mostra o histórico recente desde ${firstContext}; a linha tracejada mostra os 12 meses previstos após ${lastReal}. Como 2026 ainda está parcial, isto não representa o ano fechado de 2027.`;
+  const bestModel = state.metricas[0];
+  const modelText = bestModel ? ` Modelo selecionado: ${bestModel.modelo} (MAPE ${fmtDecimal.format(bestModel.MAPE_pct)}%).` : "";
+  document.getElementById("forecastNote").textContent = `A linha azul mostra o histórico recente desde ${firstContext}; a linha tracejada mostra os 12 meses previstos após ${lastReal}. Como 2026 ainda está parcial, isto não representa o ano fechado de 2027.${modelText}`;
   drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Histórico real (${firstContext} a ${lastReal})`, forecastRows);
+  renderModelMetricsTable();
   document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
+}
+
+function renderModelMetricsTable() {
+  const table = document.getElementById("modelMetricsTable");
+  if (!table || !state.metricas.length) return;
+  table.innerHTML = `
+    <thead><tr><th>Modelo</th><th>Tipo</th><th>MAE</th><th>RMSE</th><th>MAPE</th></tr></thead>
+    <tbody>
+      ${state.metricas.map((r, index) => `
+        <tr class="${index === 0 ? "best-row" : ""}">
+          <td>${index === 0 ? "Selecionado: " : ""}${r.modelo}</td>
+          <td>${r.tipo}</td>
+          <td>${fmtMoney.format(r.MAE)}</td>
+          <td>${fmtMoney.format(r.RMSE)}</td>
+          <td>${fmtDecimal.format(r.MAPE_pct)}%</td>
+        </tr>
+      `).join("")}
+    </tbody>`;
 }
 
 function renderTerritory() {
@@ -768,7 +791,7 @@ function setupChartTooltips() {
 }
 
 async function init() {
-  const [mensal, grupo, forecast, municipios, mapa] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.municipios), loadJSON(paths.mapa)]);
+  const [mensal, grupo, forecast, metricas, municipios, mapa] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.metricas), loadCSV(paths.municipios), loadJSON(paths.mapa)]);
   state.mapa = mapa;
   state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
   state.yearStart = Math.min(...state.mensal.map(d => d.ano));
@@ -782,6 +805,12 @@ async function init() {
     participacao_valor_pct: numeric(d, "participacao_valor_pct"),
   }));
   state.forecast = forecast.map(d => ({ ...d, previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado") }));
+  state.metricas = metricas.map(d => ({
+    ...d,
+    MAE: numeric(d, "MAE"),
+    RMSE: numeric(d, "RMSE"),
+    MAPE_pct: numeric(d, "MAPE_pct"),
+  }));
   state.municipios = municipios.map(d => ({
     ...d,
     uf: ufMeta[d.uf_ibge]?.uf || d.uf_ibge,

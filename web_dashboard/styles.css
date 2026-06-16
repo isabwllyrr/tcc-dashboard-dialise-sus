@@ -495,6 +495,12 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 }
 .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; }
 .data-table th { background: #10181a; color: #cbd9d5; }
+.data-table.compact { min-width: 680px; }
+.data-table .best-row td {
+  background: rgba(45, 212, 191, .08);
+  color: #eef7f4;
+  font-weight: 750;
+}
 .empty-state { padding: 28px; }
 .empty-state h3 { margin-top: 0; }
 .empty-state li { margin: 8px 0; }
