@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260616-qtdfix2" />
+    <link rel="stylesheet" href="./styles.css?v=20260618-forecast" />
   </head>
   <body>
     <aside class="sidebar">
@@ -114,10 +114,20 @@
           </div>
         </div>
         <p class="note" id="forecastNote">A previsão será calculada a partir do último mês disponível na base tratada.</p>
-        <div class="chart-shell large"><canvas id="forecastChart" height="320"></canvas></div>
         <div class="selected-model" id="selectedModelCard"></div>
-        <div class="chart-shell large"><h3>Real x previsto no período de teste</h3><canvas id="forecastValidationChart" height="300"></canvas></div>
-        <table class="data-table" id="forecastTable"></table>
+        <div class="forecast-guide" id="forecastGuide"></div>
+        <div class="forecast-summary" id="forecastSummary"></div>
+        <div class="chart-shell large">
+          <h3>Próximos 12 meses previstos</h3>
+          <p class="chart-subtitle" id="forecastFutureSubtitle">Histórico recente e projeção futura.</p>
+          <canvas id="forecastChart" height="320"></canvas>
+        </div>
+        <div class="chart-shell large">
+          <h3>Validação do modelo</h3>
+          <p class="chart-subtitle" id="forecastValidationSubtitle">Comparação entre o valor real e o valor previsto no período reservado para teste.</p>
+          <canvas id="forecastValidationChart" height="300"></canvas>
+        </div>
+        <div class="table-wrap"><table class="data-table" id="forecastTable"></table></div>
       </section>
 
       <section id="territory" class="tab-panel">
@@ -303,6 +313,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260616-qtdfix2"></script>
+    <script src="./app.js?v=20260618-forecast"></script>
   </body>
 </html>

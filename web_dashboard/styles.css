@@ -322,6 +322,12 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 }
 .chart-shell { padding: 18px; margin-bottom: 16px; }
 .chart-shell h3 { margin: 0 0 10px; }
+.chart-subtitle {
+  margin: -4px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
 .leaderboard-shell h3 { margin-bottom: 16px; }
 .chart-shell canvas {
   display: block;
@@ -332,6 +338,62 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 .chart-shell.large canvas { height: 340px; }
 .chart-shell.large { min-height: 0; }
 .grid.two { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
+.forecast-guide,
+.forecast-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.forecast-guide article,
+.forecast-summary article {
+  padding: 16px;
+  background: #10181a;
+  border: 1px solid #2f464b;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+.forecast-guide article {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.forecast-guide b {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  color: #dffbf6;
+  background: #12312f;
+}
+.forecast-guide strong,
+.forecast-summary strong {
+  display: block;
+  color: var(--ink);
+  font-size: 19px;
+}
+.forecast-guide span,
+.forecast-guide small,
+.forecast-summary span,
+.forecast-summary small {
+  display: block;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.forecast-guide span,
+.forecast-summary span {
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.forecast-summary strong {
+  margin-bottom: 4px;
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
 .selected-model {
   display: grid;
   grid-template-columns: .8fr 1.2fr;
@@ -843,7 +905,7 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   body.sidebar-collapsed .main { margin-left: 0; }
   .topbar, .section-head { display: block; }
   .sidebar-toggle { margin-bottom: 14px; }
-  .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .analysis-brief, .brief-stats, .risk-layout, .territory-map-shell, .selected-model, .selected-model-metrics, .method-grid, .conclusion-hero, .conclusion-stats, .executive-strip, .comparison-panel, .tcc-hero, .tcc-mini-grid { grid-template-columns: 1fr; }
+  .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .analysis-brief, .brief-stats, .risk-layout, .territory-map-shell, .selected-model, .selected-model-metrics, .method-grid, .conclusion-hero, .conclusion-stats, .executive-strip, .comparison-panel, .tcc-hero, .tcc-mini-grid, .forecast-guide, .forecast-summary { grid-template-columns: 1fr; }
   .ranking-row,
   .ranking-list.roomy .ranking-row {
     grid-template-columns: 1fr;

@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260616-qtdfix";
+const DATA_VERSION = "20260618-forecast";
 
 const state = {
   mensal: [],
@@ -85,6 +85,16 @@ function formatMetricValue(key, value) {
   if (key.includes("valor") || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
   if (key.includes("pct")) return `${fmtDecimal.format(value)}%`;
   return fmtNumber.format(value);
+}
+
+function modelDisplayName(name) {
+  const labels = {
+    ridge: "Ridge Regression",
+    random_forest: "Random Forest",
+    gradient_boosting: "Gradient Boosting",
+    linear_regression: "Regressão Linear",
+  };
+  return labels[String(name || "").toLowerCase()] || name || "-";
 }
 
 function setupFilters() {
@@ -486,27 +496,60 @@ function renderPeriods() {
 }
 
 function renderForecast() {
-  const recent = state.mensal.filter(d => d.ano >= 2022);
+  const recent = state.mensal.slice(-12);
   const forecastRows = state.forecast.map(d => ({ data: d.data, value: d.previsao_valor_aprovado }));
   const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
-  const firstContext = recent[0]?.data?.slice(0, 7) || "2022";
+  const firstContext = recent[0]?.data?.slice(0, 7) || lastReal;
+  const firstForecast = forecastRows[0]?.data?.slice(0, 7) || "próximo mês";
+  const lastForecast = forecastRows[forecastRows.length - 1]?.data?.slice(0, 7) || "12 meses";
   const bestModel = state.metricas[0];
-  const modelText = bestModel ? ` Modelo selecionado: ${bestModel.modelo} (MAPE médio ${fmtDecimal.format(bestModel.MAPE_pct)}% em ${bestModel.recortes} recortes temporais).` : "";
-  document.getElementById("forecastNote").textContent = `A linha azul mostra o histórico recente desde ${firstContext}; a linha tracejada mostra os 12 meses previstos após ${lastReal}. Como 2026 ainda está parcial, isto não representa o ano fechado de 2027.${modelText}`;
-  drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Histórico real (${firstContext} a ${lastReal})`, forecastRows);
+  const modelText = bestModel ? ` O modelo selecionado foi ${modelDisplayName(bestModel.modelo)}, com MAPE médio de ${fmtDecimal.format(bestModel.MAPE_pct)}% no backtesting temporal.` : "";
+  document.getElementById("forecastNote").textContent = `A previsão começa em ${firstForecast}, logo após o último mês real disponível (${lastReal}), e segue até ${lastForecast}. Como 2026 ainda está parcial, a projeção mostra meses futuros, não o ano fechado de 2027.${modelText}`;
+  document.getElementById("forecastFutureSubtitle").textContent = `Linha azul: últimos 12 meses observados (${firstContext} a ${lastReal}). Linha tracejada: previsão de ${firstForecast} a ${lastForecast}.`;
   renderSelectedModelCard();
+  renderForecastGuide(firstContext, lastReal, firstForecast, lastForecast, bestModel);
   renderForecastValidation();
-  document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${r.modelo_usado}</td></tr>`).join("")}</tbody>`;
+  renderForecastSummary(recent, forecastRows);
+  drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Real recente (${firstContext} a ${lastReal})`, forecastRows);
+  document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês previsto</th><th>Valor previsto</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${modelDisplayName(r.modelo_usado)}</td></tr>`).join("")}</tbody>`;
 }
 
 function renderForecastValidation() {
   const model = state.forecast[0]?.modelo_usado || state.metricas[0]?.modelo;
   if (!model) return;
   const rows = state.comparacao.filter(row => Number.isFinite(row[model]));
+  const first = rows[0]?.data?.slice(0, 7) || "período de teste";
+  const last = rows[rows.length - 1]?.data?.slice(0, 7) || "período de teste";
+  const subtitle = document.getElementById("forecastValidationSubtitle");
+  if (subtitle) subtitle.textContent = `Real x previsto entre ${first} e ${last}. Quanto mais próximas as duas linhas, melhor a aderência do modelo.`;
   drawMultiLine("forecastValidationChart", rows, [
     { key: "valor_aprovado", label: "Real", color: "#60a5fa" },
     { key: model, label: "Previsto", color: "#f97362", dashed: true },
   ]);
+}
+
+function renderForecastGuide(firstContext, lastReal, firstForecast, lastForecast, model) {
+  const target = document.getElementById("forecastGuide");
+  if (!target) return;
+  target.innerHTML = `
+    <article><b>1</b><div><span>Base observada</span><strong>${firstContext} a ${lastReal}</strong><small>O gráfico futuro usa só o histórico recente para evitar ruído visual.</small></div></article>
+    <article><b>2</b><div><span>Teste do modelo</span><strong>${modelDisplayName(model?.modelo) || "modelo vencedor"}</strong><small>Antes da projeção, o painel compara real x previsto no período reservado para validação.</small></div></article>
+    <article><b>3</b><div><span>Projeção</span><strong>${firstForecast} a ${lastForecast}</strong><small>Os valores previstos servem como apoio exploratório para planejamento.</small></div></article>
+  `;
+}
+
+function renderForecastSummary(recent, forecastRows) {
+  const target = document.getElementById("forecastSummary");
+  if (!target || !forecastRows.length) return;
+  const lastObserved = recent[recent.length - 1];
+  const firstForecast = forecastRows[0];
+  const lastForecast = forecastRows[forecastRows.length - 1];
+  const forecastGrowth = firstForecast.value ? ((lastForecast.value / firstForecast.value) - 1) * 100 : 0;
+  target.innerHTML = `
+    <article><span>Último real</span><strong>${fmtMoney.format(lastObserved?.valor_aprovado || 0)}</strong><small>${lastObserved?.data?.slice(0, 7) || "-"}</small></article>
+    <article><span>Primeira previsão</span><strong>${fmtMoney.format(firstForecast.value)}</strong><small>${firstForecast.data.slice(0, 7)}</small></article>
+    <article><span>Variação prevista</span><strong>${fmtDecimal.format(forecastGrowth)}%</strong><small>${firstForecast.data.slice(0, 7)} x ${lastForecast.data.slice(0, 7)}</small></article>
+  `;
 }
 
 function renderSelectedModelCard() {
@@ -516,7 +559,7 @@ function renderSelectedModelCard() {
   card.innerHTML = `
     <div>
       <p class="eyebrow">Modelo de aprendizagem selecionado</p>
-      <h3>${model.modelo}</h3>
+      <h3>${modelDisplayName(model.modelo)}</h3>
       <p>Modelo supervisionado escolhido pelo menor MAPE médio no backtesting temporal.</p>
     </div>
     <div class="selected-model-metrics">
@@ -858,7 +901,7 @@ function renderTcc() {
   grid.innerHTML = `
     <article><span>Fonte</span><strong>SIA/SUS</strong><small>DATASUS</small></article>
     <article><span>Período</span><strong>${state.yearStart}-${lastYear}</strong><small>${monthsInYear(lastYear) < 12 ? `até ${String(lastMonth).padStart(2, "0")}/${lastYear}` : "ano fechado"}</small></article>
-    <article><span>Modelo</span><strong>${model?.modelo || "-"}</strong><small>${model ? `MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
+    <article><span>Modelo</span><strong>${modelDisplayName(model?.modelo)}</strong><small>${model ? `MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
   `;
 }
 
@@ -895,7 +938,7 @@ function renderConclusions() {
     <article>O crescimento do valor aprovado acompanha uma elevação da quantidade aprovada, então a análise não deve ser lida apenas como aumento financeiro.</article>
     <article>O período pós-pandemia apresenta maior média anual de procedimentos em comparação ao pré-pandemia, sugerindo maior pressão assistencial.</article>
     <article>${topCity ? `${topCity.municipio} - ${topCity.uf} aparece como principal polo territorial no recorte analisado.` : "A análise territorial permite localizar polos municipais de maior concentração."}</article>
-    <article>${model ? `Para previsão, o modelo supervisionado vencedor foi ${model.modelo}, com MAPE médio de ${fmtDecimal.format(model.MAPE_pct)}% no backtesting temporal.` : "A etapa preditiva deve ser interpretada como apoio exploratório à gestão."}</article>
+    <article>${model ? `Para previsão, o modelo supervisionado vencedor foi ${modelDisplayName(model.modelo)}, com MAPE médio de ${fmtDecimal.format(model.MAPE_pct)}% no backtesting temporal.` : "A etapa preditiva deve ser interpretada como apoio exploratório à gestão."}</article>
   `;
 }
 
@@ -943,7 +986,7 @@ function exportSummaryText() {
     "",
     `Período analisado: ${state.yearStart} a ${state.yearEnd}`,
     `Ano fechado de referência: ${completeEnd}`,
-    model ? `Modelo de aprendizagem: ${model.modelo} | MAPE médio: ${fmtDecimal.format(model.MAPE_pct)}%` : "Modelo de aprendizagem: em validação",
+    model ? `Modelo de aprendizagem: ${modelDisplayName(model.modelo)} | MAPE médio: ${fmtDecimal.format(model.MAPE_pct)}%` : "Modelo de aprendizagem: em validação",
     "",
     hero,
     "",
