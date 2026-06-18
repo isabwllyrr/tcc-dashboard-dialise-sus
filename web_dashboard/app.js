@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-aprendizagem";
+const DATA_VERSION = "20260618-abas";
 
 const state = {
   mensal: [],
@@ -1014,7 +1014,7 @@ function exportSummaryText() {
   const model = state.metricas[0];
   const hero = document.getElementById("conclusionHero")?.innerText || "";
   const findings = [...document.querySelectorAll("#findingList article")].map(item => `- ${item.innerText}`).join("\n");
-  const limitations = [...document.querySelectorAll("#conclusions .finding-list.muted article")].map(item => `- ${item.innerText}`).join("\n");
+  const limitations = [...document.querySelectorAll("#overview .overview-limitations .finding-list.muted article")].map(item => `- ${item.innerText}`).join("\n");
   const content = [
     "Resumo do dashboard - Diálise no SUS",
     "",

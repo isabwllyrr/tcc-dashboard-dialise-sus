@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260618-aprendizagem" />
+    <link rel="stylesheet" href="./styles.css?v=20260618-abas" />
   </head>
   <body>
     <aside class="sidebar">
@@ -18,13 +18,11 @@
 
       <nav class="nav" aria-label="Navegação principal">
         <button class="nav-item active" data-tab="overview">Visão geral</button>
-        <button class="nav-item" data-tab="pandemic">Pandemia</button>
-        <button class="nav-item" data-tab="forecast">Previsão</button>
+        <button class="nav-item" data-tab="temporal">Análise temporal</button>
         <button class="nav-item" data-tab="territory">Território</button>
+        <button class="nav-item" data-tab="forecast">Previsão</button>
         <button class="nav-item" data-tab="methodology">Metodologia</button>
-        <button class="nav-item" data-tab="tcc">TCC</button>
-        <button class="nav-item" data-tab="conclusions">Conclusões</button>
-        <button class="nav-item" data-tab="risk">Triagem</button>
+        <button class="nav-item" data-tab="risk">Triagem demonstrativa</button>
       </nav>
 
       <section class="filters" aria-label="Filtros">
@@ -78,6 +76,31 @@
 
         <div class="section-head">
           <div>
+            <h2>Conclusões preliminares</h2>
+            <p>Principais leituras geradas a partir dos dados tratados até o momento.</p>
+          </div>
+          <button class="export-button" id="exportSummary" type="button">Baixar resumo</button>
+        </div>
+        <div class="conclusion-hero" id="conclusionHero"></div>
+        <div class="grid two">
+          <div class="chart-shell">
+            <h3>Achados principais</h3>
+            <div class="finding-list" id="findingList"></div>
+          </div>
+          <div class="chart-shell overview-limitations">
+            <h3>Limitações da análise</h3>
+            <div class="finding-list muted">
+              <article>Os dados indicam procedimentos aprovados, não número único de pacientes.</article>
+              <article>O ano de 2026 está parcial, com leitura limitada ao período disponível na base.</article>
+              <article>A previsão é apoio exploratório para gestão, não determinação exata do gasto futuro.</article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="temporal" class="tab-panel">
+        <div class="section-head">
+          <div>
             <h2>Série histórica</h2>
             <p>O gráfico acompanha o comportamento mensal dos procedimentos selecionados de diálise.</p>
           </div>
@@ -93,9 +116,6 @@
           <div class="chart-shell"><h3>Valor anual</h3><canvas id="annualBar" height="240"></canvas></div>
           <div class="chart-shell"><h3>Participação por grupo</h3><canvas id="groupBar" height="240"></canvas></div>
         </div>
-      </section>
-
-      <section id="pandemic" class="tab-panel">
         <div class="section-head">
           <div>
             <h2>Comparação por período</h2>
@@ -192,41 +212,6 @@
         <div class="table-wrap"><table class="data-table" id="municipalityTable"></table></div>
       </section>
 
-      <section id="risk" class="tab-panel">
-        <div class="section-head">
-          <div>
-            <h2>Simulador educativo de risco renal</h2>
-            <p>Ferramenta demonstrativa. Não realiza diagnóstico e não substitui avaliação profissional.</p>
-          </div>
-        </div>
-        <div class="risk-layout">
-          <form id="riskForm" class="risk-form">
-            <label>Idade <input id="riskAge" type="number" min="0" max="120" value="45" /></label>
-            <label>eGFR/TFG estimada <input id="riskEgfr" type="number" min="0" max="150" value="90" /></label>
-            <label>Albuminúria (mg/g) <input id="riskAlbumin" type="number" min="0" max="5000" value="10" /></label>
-            <div class="check-grid">
-              <label><input type="checkbox" value="3" data-label="diabetes" /> Diabetes</label>
-              <label><input type="checkbox" value="3" data-label="hipertensão" /> Hipertensão</label>
-              <label><input type="checkbox" value="2" data-label="doença cardiovascular" /> Doença cardiovascular</label>
-              <label><input type="checkbox" value="2" data-label="histórico familiar" /> Histórico familiar</label>
-              <label><input type="checkbox" value="1" data-label="obesidade" /> Obesidade</label>
-              <label><input type="checkbox" value="1" data-label="tabagismo" /> Tabagismo</label>
-              <label><input type="checkbox" value="1" data-label="uso frequente de anti-inflamatórios" /> Anti-inflamatórios frequentes</label>
-              <label><input type="checkbox" value="2" data-label="lesão renal aguda prévia" /> Lesão renal aguda prévia</label>
-              <label><input type="checkbox" value="1" data-label="inchaço" /> Inchaço</label>
-              <label><input type="checkbox" value="1" data-label="urina espumosa" /> Urina espumosa</label>
-              <label><input type="checkbox" value="2" data-label="sangue na urina" /> Sangue na urina</label>
-              <label><input type="checkbox" value="2" data-label="alteração urinária persistente" /> Alteração urinária</label>
-            </div>
-          </form>
-          <div class="risk-result" id="riskResult">
-            <span>Classificação simulada</span>
-            <strong>Baixo</strong>
-            <p>Preencha os fatores para visualizar o resultado educativo.</p>
-          </div>
-        </div>
-      </section>
-
       <section id="methodology" class="tab-panel">
         <div class="section-head">
           <div>
@@ -257,67 +242,42 @@
         </div>
       </section>
 
-      <section id="tcc" class="tab-panel">
+      <section id="risk" class="tab-panel">
         <div class="section-head">
           <div>
-            <h2>Síntese acadêmica</h2>
-            <p>Organização dos principais pontos para apresentação e escrita do TCC.</p>
+            <h2>Triagem demonstrativa</h2>
+            <p>Simulador educativo de risco renal. Não realiza diagnóstico e não substitui avaliação profissional.</p>
           </div>
         </div>
-        <div class="tcc-hero">
-          <div>
-            <p class="eyebrow">Objetivo geral</p>
-            <h3>Analisar a evolução temporal, territorial e preditiva dos procedimentos de diálise no SUS, com apoio de visualização web.</h3>
-          </div>
-          <div class="tcc-mini-grid" id="tccMiniGrid"></div>
-        </div>
-        <div class="grid two">
-          <div class="chart-shell">
-            <h3>Objetivos específicos</h3>
-            <div class="steps-list">
-              <article><b>1</b><span>Organizar bases públicas do DATASUS relacionadas aos procedimentos de diálise.</span></article>
-              <article><b>2</b><span>Comparar valor aprovado, quantidade e custo médio antes, durante e após a pandemia.</span></article>
-              <article><b>3</b><span>Identificar concentração territorial por região, UF e município.</span></article>
-              <article><b>4</b><span>Testar modelo de aprendizagem para previsão mensal do valor aprovado.</span></article>
+        <div class="risk-layout">
+          <form id="riskForm" class="risk-form">
+            <label>Idade <input id="riskAge" type="number" min="0" max="120" value="45" /></label>
+            <label>eGFR/TFG estimada <input id="riskEgfr" type="number" min="0" max="150" value="90" /></label>
+            <label>Albuminúria (mg/g) <input id="riskAlbumin" type="number" min="0" max="5000" value="10" /></label>
+            <div class="check-grid">
+              <label><input type="checkbox" value="3" data-label="diabetes" /> Diabetes</label>
+              <label><input type="checkbox" value="3" data-label="hipertensão" /> Hipertensão</label>
+              <label><input type="checkbox" value="2" data-label="doença cardiovascular" /> Doença cardiovascular</label>
+              <label><input type="checkbox" value="2" data-label="histórico familiar" /> Histórico familiar</label>
+              <label><input type="checkbox" value="1" data-label="obesidade" /> Obesidade</label>
+              <label><input type="checkbox" value="1" data-label="tabagismo" /> Tabagismo</label>
+              <label><input type="checkbox" value="1" data-label="uso frequente de anti-inflamatórios" /> Anti-inflamatórios frequentes</label>
+              <label><input type="checkbox" value="2" data-label="lesão renal aguda prévia" /> Lesão renal aguda prévia</label>
+              <label><input type="checkbox" value="1" data-label="inchaço" /> Inchaço</label>
+              <label><input type="checkbox" value="1" data-label="urina espumosa" /> Urina espumosa</label>
+              <label><input type="checkbox" value="2" data-label="sangue na urina" /> Sangue na urina</label>
+              <label><input type="checkbox" value="2" data-label="alteração urinária persistente" /> Alteração urinária</label>
             </div>
-          </div>
-          <div class="chart-shell">
-            <h3>Recorte do estudo</h3>
-            <div class="finding-list muted">
-              <article>O termo diálise foi mantido porque o recorte inclui procedimentos relacionados à terapia dialítica no SUS.</article>
-              <article>A base trabalha com procedimentos aprovados, não com pacientes únicos.</article>
-              <article>O painel apoia leitura exploratória, apresentação e tomada de decisão em saúde.</article>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="conclusions" class="tab-panel">
-        <div class="section-head">
-          <div>
-            <h2>Conclusões preliminares</h2>
-            <p>Principais leituras geradas a partir dos dados tratados até o momento.</p>
-          </div>
-          <button class="export-button" id="exportSummary" type="button">Baixar resumo</button>
-        </div>
-        <div class="conclusion-hero" id="conclusionHero"></div>
-        <div class="grid two">
-          <div class="chart-shell">
-            <h3>Achados principais</h3>
-            <div class="finding-list" id="findingList"></div>
-          </div>
-          <div class="chart-shell">
-            <h3>Limitações da análise</h3>
-            <div class="finding-list muted">
-              <article>Os dados indicam procedimentos aprovados, não número único de pacientes.</article>
-              <article>O ano de 2026 está parcial, com leitura limitada ao período disponível na base.</article>
-              <article>A previsão é apoio exploratório para gestão, não determinação exata do gasto futuro.</article>
-            </div>
+          </form>
+          <div class="risk-result" id="riskResult">
+            <span>Classificação simulada</span>
+            <strong>Baixo</strong>
+            <p>Preencha os fatores para visualizar o resultado educativo.</p>
           </div>
         </div>
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260618-aprendizagem"></script>
+    <script src="./app.js?v=20260618-abas"></script>
   </body>
 </html>
