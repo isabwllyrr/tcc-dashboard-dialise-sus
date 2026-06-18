@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260618-overview" />
+    <link rel="stylesheet" href="./styles.css?v=20260618-overviewdash" />
   </head>
   <body>
     <aside class="sidebar">
@@ -65,6 +65,21 @@
           </div>
           <div class="brief-stats" id="briefStats"></div>
         </section>
+
+        <div class="chart-shell large overview-dashboard">
+          <div class="chart-title-row">
+            <div>
+              <h3>Painel rápido</h3>
+              <p class="chart-subtitle" id="overviewChartSubtitle">Evolução mensal no período filtrado.</p>
+            </div>
+            <div class="segmented compact" id="overviewMetricButtons" role="group" aria-label="Métrica do painel rápido">
+              <button data-overview-metric="valor_aprovado" class="active">Valor</button>
+              <button data-overview-metric="qtd_aprovada">Quantidade</button>
+              <button data-overview-metric="custo_medio">Custo médio</button>
+            </div>
+          </div>
+          <canvas id="overviewChart" height="300"></canvas>
+        </div>
 
         <div class="section-head">
           <div>
@@ -269,6 +284,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260618-overview"></script>
+    <script src="./app.js?v=20260618-overviewdash"></script>
   </body>
 </html>

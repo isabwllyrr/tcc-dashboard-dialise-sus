@@ -314,6 +314,14 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   color: var(--muted);
 }
 .segmented button.active { background: #223033; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+.segmented.compact {
+  align-self: start;
+}
+.segmented.compact button {
+  padding: 7px 9px;
+  font-size: 13px;
+  white-space: nowrap;
+}
 .chart-shell, .empty-state, .risk-form, .risk-result {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -322,6 +330,16 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
 }
 .chart-shell { padding: 18px; margin-bottom: 16px; }
 .chart-shell h3 { margin: 0 0 10px; }
+.chart-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.overview-dashboard {
+  margin-top: -2px;
+}
 .chart-subtitle {
   margin: -4px 0 14px;
   color: var(--muted);
@@ -969,8 +987,9 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   .main { margin-left: 0; padding: 18px; }
   body.sidebar-collapsed .sidebar { display: none; }
   body.sidebar-collapsed .main { margin-left: 0; }
-  .topbar, .section-head { display: block; }
+  .topbar, .section-head, .chart-title-row { display: block; }
   .sidebar-toggle { margin-bottom: 14px; }
+  .segmented.compact { display: inline-flex; margin-bottom: 10px; }
   .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .analysis-brief, .brief-stats, .risk-layout, .territory-map-shell, .selected-model, .selected-model-metrics, .method-grid, .conclusion-hero, .conclusion-stats, .executive-strip, .comparison-panel, .tcc-hero, .tcc-mini-grid, .forecast-guide, .forecast-summary { grid-template-columns: 1fr; }
   .model-row,
   .model-row.header {

@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-overview";
+const DATA_VERSION = "20260618-overviewdash";
 
 const state = {
   mensal: [],
@@ -24,6 +24,7 @@ const state = {
   uf: "all",
   citySearch: "",
   territoryMetric: "valor_periodo",
+  overviewMetric: "valor_aprovado",
 };
 const chartRegistry = new Map();
 let renderPending = false;
@@ -143,6 +144,15 @@ function setupSidebarToggle() {
     button.setAttribute("aria-label", collapsed ? "Mostrar filtros" : "Ocultar filtros");
     scheduleRender();
   });
+}
+
+function setupOverviewControls() {
+  document.querySelectorAll("[data-overview-metric]").forEach(btn => btn.addEventListener("click", () => {
+    state.overviewMetric = btn.dataset.overviewMetric;
+    document.querySelectorAll("[data-overview-metric]").forEach(item => item.classList.remove("active"));
+    btn.classList.add("active");
+    scheduleRender();
+  }));
 }
 
 function setupTerritoryFilters() {
@@ -436,6 +446,7 @@ function renderOverview(data) {
   const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
   renderBrief(data);
   renderExecutiveStrip(data);
+  renderOverviewDashboard(data);
   drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
@@ -444,6 +455,17 @@ function renderOverview(data) {
   }, {}));
   drawBar("annualBar", annual, "valor_aprovado", r => r.ano, () => "#60a5fa");
   drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#2dd4bf", "#f97362", "#f0b94d"][i % 3]);
+}
+
+function renderOverviewDashboard(data) {
+  const labels = {
+    valor_aprovado: "Valor aprovado",
+    qtd_aprovada: "Quantidade aprovada",
+    custo_medio: "Custo médio",
+  };
+  const subtitle = document.getElementById("overviewChartSubtitle");
+  if (subtitle) subtitle.textContent = `${labels[state.overviewMetric]} mensal no período filtrado (${state.yearStart} a ${state.yearEnd}${monthsInYear(state.yearEnd) < 12 ? " parcial" : ""}).`;
+  drawLine("overviewChart", data, state.overviewMetric, "#2dd4bf", labels[state.overviewMetric]);
 }
 
 function renderExecutiveStrip(data) {
@@ -1183,7 +1205,7 @@ async function init() {
     participacao_valor_nacional_pct: numeric(d, "participacao_valor_nacional_pct"),
     participacao_qtd_nacional_pct: numeric(d, "participacao_qtd_nacional_pct"),
   }));
-  setupFilters(); setupNavigation(); setupSidebarToggle(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); render();
+  setupFilters(); setupNavigation(); setupSidebarToggle(); setupOverviewControls(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); render();
 }
 
 window.addEventListener("resize", scheduleRender);
