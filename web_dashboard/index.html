@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260618-abas" />
+    <link rel="stylesheet" href="./styles.css?v=20260618-overview" />
   </head>
   <body>
     <aside class="sidebar">
@@ -65,23 +65,14 @@
           </div>
           <div class="brief-stats" id="briefStats"></div>
         </section>
-        <section class="executive-strip" id="executiveStrip" aria-label="Indicadores executivos"></section>
-
-        <section class="kpis" aria-label="Indicadores principais">
-          <article class="kpi"><span>Valor aprovado</span><strong id="kpiValue">-</strong><small id="kpiValueHint">-</small></article>
-          <article class="kpi"><span>Quantidade</span><strong id="kpiQty">-</strong><small>procedimentos aprovados</small></article>
-          <article class="kpi"><span>Custo médio</span><strong id="kpiAvg">-</strong><small>valor / quantidade</small></article>
-          <article class="kpi accent"><span>Variação</span><strong id="kpiGrowth">-</strong><small id="kpiGrowthHint">primeiro x último ano fechado</small></article>
-        </section>
 
         <div class="section-head">
           <div>
-            <h2>Conclusões preliminares</h2>
-            <p>Principais leituras geradas a partir dos dados tratados até o momento.</p>
+            <h2>Resumo do estudo</h2>
+            <p>Principais leituras para orientar a apresentação do painel.</p>
           </div>
           <button class="export-button" id="exportSummary" type="button">Baixar resumo</button>
         </div>
-        <div class="conclusion-hero" id="conclusionHero"></div>
         <div class="grid two">
           <div class="chart-shell">
             <h3>Achados principais</h3>
@@ -278,6 +269,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260618-abas"></script>
+    <script src="./app.js?v=20260618-overview"></script>
   </body>
 </html>

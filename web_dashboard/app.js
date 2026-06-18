@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-abas";
+const DATA_VERSION = "20260618-overview";
 
 const state = {
   mensal: [],
@@ -192,6 +192,7 @@ function setupRisk() {
 }
 
 function renderKPIs(data) {
+  if (!document.getElementById("kpiValue")) return;
   const totalValue = data.reduce((s, d) => s + d.valor_aprovado, 0);
   const totalQty = data.reduce((s, d) => s + d.qtd_aprovada, 0);
   const avg = totalValue / totalQty;
@@ -940,9 +941,8 @@ function renderTcc() {
 }
 
 function renderConclusions() {
-  const hero = document.getElementById("conclusionHero");
   const list = document.getElementById("findingList");
-  if (!hero || !list || !state.mensal.length) return;
+  if (!list || !state.mensal.length) return;
   const completeEnd = latestCompleteYear(Math.max(...state.mensal.map(d => d.ano)));
   const firstYear = Math.min(...state.mensal.map(d => d.ano));
   const firstValue = state.mensal.filter(d => d.ano === firstYear).reduce((sum, row) => sum + row.valor_aprovado, 0);
@@ -956,18 +956,6 @@ function renderConclusions() {
   const top10Value = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo).slice(0, 10).reduce((sum, row) => sum + row.valor_periodo, 0);
   const topCity = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo)[0];
   const model = state.metricas[0];
-  hero.innerHTML = `
-    <div>
-      <p class="eyebrow">Síntese para o TCC</p>
-      <h3>Os dados apontam aumento sustentado da demanda e do gasto com diálise no SUS, com concentração territorial em grandes polos.</h3>
-      <p>A leitura usa ${completeEnd} como último ano fechado, porque 2026 ainda está parcial na base tratada.</p>
-    </div>
-    <div class="conclusion-stats">
-      <article><span>Valor aprovado</span><strong>${fmtDecimal.format(valueGrowth)}%</strong><small>${firstYear} x ${completeEnd}</small></article>
-      <article><span>Quantidade média</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>pós x pré-pandemia</small></article>
-      <article><span>Top 10 municípios</span><strong>${fmtDecimal.format((top10Value / totalValue) * 100)}%</strong><small>do valor territorial</small></article>
-    </div>
-  `;
   list.innerHTML = `
     <article>O crescimento do valor aprovado acompanha uma elevação da quantidade aprovada, então a análise não deve ser lida apenas como aumento financeiro.</article>
     <article>O período pós-pandemia apresenta maior média anual de procedimentos em comparação ao pré-pandemia, sugerindo maior pressão assistencial.</article>
@@ -1012,7 +1000,7 @@ function exportTerritoryCSV() {
 function exportSummaryText() {
   const completeEnd = latestCompleteYear(Math.max(...state.mensal.map(d => d.ano)));
   const model = state.metricas[0];
-  const hero = document.getElementById("conclusionHero")?.innerText || "";
+  const brief = document.getElementById("briefTitle")?.innerText || "";
   const findings = [...document.querySelectorAll("#findingList article")].map(item => `- ${item.innerText}`).join("\n");
   const limitations = [...document.querySelectorAll("#overview .overview-limitations .finding-list.muted article")].map(item => `- ${item.innerText}`).join("\n");
   const content = [
@@ -1022,7 +1010,7 @@ function exportSummaryText() {
     `Ano fechado de referência: ${completeEnd}`,
     model ? `Modelo de aprendizagem: ${modelDisplayName(model.modelo)} | MAPE médio: ${fmtDecimal.format(model.MAPE_pct)}%` : "Modelo de aprendizagem: em validação",
     "",
-    hero,
+    brief,
     "",
     "Achados principais",
     findings,
