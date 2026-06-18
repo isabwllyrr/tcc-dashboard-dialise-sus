@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-modelos";
+const DATA_VERSION = "20260618-aprendizagem";
 
 const state = {
   mensal: [],
@@ -900,21 +900,22 @@ function renderMethodology() {
 function renderModelComparison() {
   const target = document.getElementById("modelComparison");
   if (!target || !state.metricas.length) return;
-  const rows = [...state.metricas].sort((a, b) => a.MAPE_pct - b.MAPE_pct);
+  const rows = state.metricas
+    .filter(row => row.tipo === "aprendizagem")
+    .sort((a, b) => a.MAPE_pct - b.MAPE_pct);
   target.innerHTML = `
     <div class="model-row header">
       <span>Modelo</span><span>Tipo</span><span>Ranking</span><span>MAPE</span><span>RMSE</span><span>Recortes</span>
     </div>
     ${rows.map((row, index) => {
       const winner = index === 0;
-      const baseline = row.tipo === "baseline";
       return `
         <article class="model-row ${winner ? "winner" : ""}">
           <div class="model-name">
             <strong>${modelDisplayName(row.modelo)}</strong>
-            <small>${winner ? "Modelo vencedor pelo menor erro médio" : baseline ? "Referência de comparação" : "Modelo de aprendizagem testado"}</small>
+            <small>${winner ? "Modelo vencedor pelo menor erro médio" : "Modelo de aprendizagem testado"}</small>
           </div>
-          <span class="model-badge ${baseline ? "baseline" : ""}">${baseline ? "Baseline" : "Aprendizagem"}</span>
+          <span class="model-badge">Aprendizagem</span>
           <span class="model-rank">${index + 1}</span>
           <strong>${fmtDecimal.format(row.MAPE_pct)}%</strong>
           <span>${fmtMoney.format(row.RMSE)}</span>

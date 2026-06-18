@@ -793,11 +793,6 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   font-size: 12px;
   font-weight: 800;
 }
-.model-badge.baseline {
-  color: #f8e8c2;
-  background: #2a2111;
-  border-color: #6b501f;
-}
 .model-rank {
   display: grid;
   place-items: center;
