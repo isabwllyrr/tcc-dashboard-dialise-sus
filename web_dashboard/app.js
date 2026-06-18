@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-overviewdash";
+const DATA_VERSION = "20260618-periodos";
 
 const state = {
   mensal: [],
@@ -24,7 +24,7 @@ const state = {
   uf: "all",
   citySearch: "",
   territoryMetric: "valor_periodo",
-  overviewMetric: "valor_aprovado",
+  overviewPeriod: "post",
 };
 const chartRegistry = new Map();
 let renderPending = false;
@@ -147,12 +147,12 @@ function setupSidebarToggle() {
 }
 
 function setupOverviewControls() {
-  document.querySelectorAll("[data-overview-metric]").forEach(btn => btn.addEventListener("click", () => {
-    state.overviewMetric = btn.dataset.overviewMetric;
-    document.querySelectorAll("[data-overview-metric]").forEach(item => item.classList.remove("active"));
-    btn.classList.add("active");
+  document.getElementById("overviewPeriodSelector")?.addEventListener("click", event => {
+    const btn = event.target.closest("[data-overview-period]");
+    if (!btn) return;
+    state.overviewPeriod = btn.dataset.overviewPeriod;
     scheduleRender();
-  }));
+  });
 }
 
 function setupTerritoryFilters() {
@@ -446,7 +446,7 @@ function renderOverview(data) {
   const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
   renderBrief(data);
   renderExecutiveStrip(data);
-  renderOverviewDashboard(data);
+  renderOverviewDashboard();
   drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
@@ -457,15 +457,48 @@ function renderOverview(data) {
   drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#2dd4bf", "#f97362", "#f0b94d"][i % 3]);
 }
 
-function renderOverviewDashboard(data) {
-  const labels = {
-    valor_aprovado: "Valor aprovado",
-    qtd_aprovada: "Quantidade aprovada",
-    custo_medio: "Custo médio",
-  };
-  const subtitle = document.getElementById("overviewChartSubtitle");
-  if (subtitle) subtitle.textContent = `${labels[state.overviewMetric]} mensal no período filtrado (${state.yearStart} a ${state.yearEnd}${monthsInYear(state.yearEnd) < 12 ? " parcial" : ""}).`;
-  drawLine("overviewChart", data, state.overviewMetric, "#2dd4bf", labels[state.overviewMetric]);
+function periodSummaries() {
+  const completeEnd = latestCompleteYear(Math.max(...state.mensal.map(d => d.ano)));
+  return [
+    { key: "pre", name: "Pré-pandemia", years: [2015, 2019], note: "base de comparação anterior à crise sanitária" },
+    { key: "pandemic", name: "Pandemia", years: [2020, 2021], note: "período de maior restrição e reorganização assistencial" },
+    { key: "post", name: "Pós-pandemia", years: [2022, completeEnd], note: "retomada e pressão assistencial recente" },
+  ].map(period => {
+    const rows = state.mensal.filter(d => d.ano >= period.years[0] && d.ano <= period.years[1]);
+    const valor = rows.reduce((sum, row) => sum + row.valor_aprovado, 0);
+    const qtd = rows.reduce((sum, row) => sum + row.qtd_aprovada, 0);
+    const months = Math.max(rows.length, 1);
+    return {
+      ...period,
+      valor,
+      qtd,
+      custo: valor / qtd,
+      mediaMensal: valor / months,
+      mediaQtdMensal: qtd / months,
+    };
+  });
+}
+
+function renderOverviewDashboard() {
+  const selector = document.getElementById("overviewPeriodSelector");
+  const panel = document.getElementById("overviewPeriodPanel");
+  const subtitle = document.getElementById("overviewPeriodSubtitle");
+  if (!selector || !panel) return;
+  const periods = periodSummaries();
+  const selected = periods.find(period => period.key === state.overviewPeriod) || periods[periods.length - 1];
+  selector.innerHTML = periods.map(period => `<button class="${period.key === selected.key ? "active" : ""}" data-overview-period="${period.key}">${period.name}</button>`).join("");
+  if (subtitle) subtitle.textContent = `${selected.name}: ${selected.years[0]} a ${selected.years[1]}.`;
+  panel.innerHTML = `
+    <div class="period-focus">
+      <span>Período selecionado</span>
+      <strong>${selected.name}</strong>
+      <small>${selected.years[0]} a ${selected.years[1]}</small>
+      <p>${selected.note}.</p>
+    </div>
+    <article><span>Valor aprovado</span><strong>${fmtMoney.format(selected.valor)}</strong><small>total no período</small></article>
+    <article><span>Quantidade aprovada</span><strong>${fmtNumber.format(selected.qtd)}</strong><small>procedimentos aprovados</small></article>
+    <article><span>Custo médio</span><strong>${fmtMoney.format(selected.custo)}</strong><small>valor / quantidade</small></article>
+  `;
 }
 
 function renderExecutiveStrip(data) {
@@ -505,17 +538,14 @@ function renderBrief(data) {
 }
 
 function renderPeriods() {
-  const completeEnd = latestCompleteYear(Math.max(...state.mensal.map(d => d.ano)));
-  const groups = [
-    { name: "Pré-pandemia", years: [2015, 2019] },
-    { name: "Pandemia", years: [2020, 2021] },
-    { name: "Pós-pandemia", years: [2022, completeEnd] },
-  ].map(p => {
-    const rows = state.mensal.filter(d => d.ano >= p.years[0] && d.ano <= p.years[1]);
-    const value = rows.reduce((s, d) => s + d.valor_aprovado, 0);
-    const qty = rows.reduce((s, d) => s + d.qtd_aprovada, 0);
-    return { ...p, valor_aprovado: value, qtd_aprovada: qty, custo_medio: value / qty, media_mensal: value / rows.length };
-  });
+  const groups = periodSummaries().map(period => ({
+    name: period.name,
+    years: period.years,
+    valor_aprovado: period.valor,
+    qtd_aprovada: period.qtd,
+    custo_medio: period.custo,
+    media_mensal: period.mediaMensal,
+  }));
   document.getElementById("periodCards").innerHTML = groups.map(g => `
     <article class="period-card"><h3>${g.name}</h3><strong>${fmtMoney.format(g.media_mensal)}</strong><span>média mensal de valor aprovado</span><p>Custo médio: ${fmtMoney.format(g.custo_medio)}</p></article>
   `).join("");
