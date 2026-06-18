@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-periodos";
+const DATA_VERSION = "20260618-entrada";
 
 const state = {
   mensal: [],
@@ -24,7 +24,6 @@ const state = {
   uf: "all",
   citySearch: "",
   territoryMetric: "valor_periodo",
-  overviewPeriod: "post",
 };
 const chartRegistry = new Map();
 let renderPending = false;
@@ -116,13 +115,12 @@ function setupFilters() {
 }
 
 function setupNavigation() {
-  document.querySelectorAll(".nav-item").forEach(btn => btn.addEventListener("click", () => {
-    document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.tab).classList.add("active");
-    scheduleRender();
-  }));
+  document.querySelectorAll(".nav-item").forEach(btn => btn.addEventListener("click", () => activateTab(btn.dataset.tab)));
+  document.addEventListener("click", event => {
+    const target = event.target.closest("[data-jump-tab]");
+    if (!target) return;
+    activateTab(target.dataset.jumpTab);
+  });
   document.querySelectorAll("[data-range]").forEach(btn => btn.addEventListener("click", () => {
     const maxYear = Math.max(...state.mensal.map(d => d.ano));
     const ranges = { pre: [2015, 2019], pandemic: [2020, 2021], post: [2022, maxYear], all: [2015, maxYear] };
@@ -133,6 +131,18 @@ function setupNavigation() {
     document.getElementById("yearEnd").value = state.yearEnd;
     scheduleRender();
   }));
+}
+
+function activateTab(tab) {
+  const panel = document.getElementById(tab);
+  const nav = document.querySelector(`.nav-item[data-tab="${tab}"]`);
+  if (!panel || !nav) return;
+  document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  nav.classList.add("active");
+  panel.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  scheduleRender();
 }
 
 function setupSidebarToggle() {
@@ -147,12 +157,6 @@ function setupSidebarToggle() {
 }
 
 function setupOverviewControls() {
-  document.getElementById("overviewPeriodSelector")?.addEventListener("click", event => {
-    const btn = event.target.closest("[data-overview-period]");
-    if (!btn) return;
-    state.overviewPeriod = btn.dataset.overviewPeriod;
-    scheduleRender();
-  });
 }
 
 function setupTerritoryFilters() {
@@ -446,7 +450,7 @@ function renderOverview(data) {
   const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
   renderBrief(data);
   renderExecutiveStrip(data);
-  renderOverviewDashboard();
+  renderOverviewPaths();
   drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
@@ -479,26 +483,42 @@ function periodSummaries() {
   });
 }
 
-function renderOverviewDashboard() {
-  const selector = document.getElementById("overviewPeriodSelector");
-  const panel = document.getElementById("overviewPeriodPanel");
-  const subtitle = document.getElementById("overviewPeriodSubtitle");
-  if (!selector || !panel) return;
-  const periods = periodSummaries();
-  const selected = periods.find(period => period.key === state.overviewPeriod) || periods[periods.length - 1];
-  selector.innerHTML = periods.map(period => `<button class="${period.key === selected.key ? "active" : ""}" data-overview-period="${period.key}">${period.name}</button>`).join("");
-  if (subtitle) subtitle.textContent = `${selected.name}: ${selected.years[0]} a ${selected.years[1]}.`;
-  panel.innerHTML = `
-    <div class="period-focus">
-      <span>Período selecionado</span>
-      <strong>${selected.name}</strong>
-      <small>${selected.years[0]} a ${selected.years[1]}</small>
-      <p>${selected.note}.</p>
-    </div>
-    <article><span>Valor aprovado</span><strong>${fmtMoney.format(selected.valor)}</strong><small>total no período</small></article>
-    <article><span>Quantidade aprovada</span><strong>${fmtNumber.format(selected.qtd)}</strong><small>procedimentos aprovados</small></article>
-    <article><span>Custo médio</span><strong>${fmtMoney.format(selected.custo)}</strong><small>valor / quantidade</small></article>
-  `;
+function renderOverviewPaths() {
+  const target = document.getElementById("overviewPaths");
+  if (!target) return;
+  const model = state.metricas[0];
+  const lastMonth = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "-";
+  const rows = [
+    {
+      tab: "temporal",
+      label: "Análise temporal",
+      metric: "Pré, pandemia e pós",
+      text: "Acompanhe a evolução mensal e compare o comportamento dos procedimentos antes, durante e após a pandemia.",
+    },
+    {
+      tab: "territory",
+      label: "Território",
+      metric: "UF e município",
+      text: "Localize concentração regional, principais municípios e crescimento de quantidade no pós-pandemia.",
+    },
+    {
+      tab: "forecast",
+      label: "Previsão",
+      metric: model ? `${modelDisplayName(model.modelo)} | MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : lastMonth,
+      text: "Veja a projeção dos próximos meses e a validação do modelo supervisionado selecionado.",
+    },
+  ];
+  target.innerHTML = rows.map((row, index) => `
+    <button class="overview-path-card" type="button" data-jump-tab="${row.tab}">
+      <b>${index + 1}</b>
+      <div>
+        <span>${row.metric}</span>
+        <strong>${row.label}</strong>
+      </div>
+      <p>${row.text}</p>
+      <span class="path-action">Abrir seção</span>
+    </button>
+  `).join("");
 }
 
 function renderExecutiveStrip(data) {

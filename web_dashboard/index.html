@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260618-periodos" />
+    <link rel="stylesheet" href="./styles.css?v=20260618-entrada" />
   </head>
   <body>
     <aside class="sidebar">
@@ -66,24 +66,17 @@
           <div class="brief-stats" id="briefStats"></div>
         </section>
 
-        <div class="chart-shell overview-dashboard">
-          <div class="chart-title-row">
-            <div>
-              <h3>Comparação rápida por período</h3>
-              <p class="chart-subtitle" id="overviewPeriodSubtitle">Selecione um período para ver a leitura resumida.</p>
-            </div>
-            <div class="period-selector" id="overviewPeriodSelector" role="group" aria-label="Período em destaque"></div>
-          </div>
-          <div class="overview-period-panel" id="overviewPeriodPanel"></div>
-        </div>
-
         <div class="section-head">
           <div>
-            <h2>Resumo do estudo</h2>
-            <p>Principais leituras para orientar a apresentação do painel.</p>
+            <h2>O que investigar no painel</h2>
+            <p>Use a visão geral como ponto de partida para navegar pelas análises principais.</p>
           </div>
           <button class="export-button" id="exportSummary" type="button">Baixar resumo</button>
         </div>
+        <div class="overview-paths" id="overviewPaths"></div>
+
+        <p class="note overview-method-note">Os dados representam procedimentos aprovados no SIA/SUS, não pacientes únicos. O painel apoia leitura exploratória e apresentação do estudo.</p>
+
         <div class="grid two">
           <div class="chart-shell">
             <h3>Achados principais</h3>
@@ -280,6 +273,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260618-periodos"></script>
+    <script src="./app.js?v=20260618-entrada"></script>
   </body>
 </html>
