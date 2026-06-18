@@ -741,6 +741,77 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   color: #cbd9d5;
   line-height: 1.45;
 }
+.model-comparison {
+  display: grid;
+  gap: 10px;
+}
+.model-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.25fr) .7fr .6fr .85fr .85fr .7fr;
+  gap: 12px;
+  align-items: center;
+  min-height: 56px;
+  padding: 12px 14px;
+  background: #10181a;
+  border: 1px solid #2a3a3e;
+  border-radius: 8px;
+}
+.model-row.header {
+  min-height: auto;
+  color: var(--muted);
+  background: transparent;
+  border-color: transparent;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.model-row.winner {
+  background: #122423;
+  border-color: #2b766f;
+}
+.model-row strong,
+.model-row span {
+  min-width: 0;
+}
+.model-name {
+  display: grid;
+  gap: 4px;
+}
+.model-name strong {
+  color: var(--ink);
+}
+.model-name small {
+  color: var(--muted);
+}
+.model-badge {
+  justify-self: start;
+  padding: 5px 8px;
+  color: #dffbf6;
+  background: #12312f;
+  border: 1px solid #2b6b66;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.model-badge.baseline {
+  color: #f8e8c2;
+  background: #2a2111;
+  border-color: #6b501f;
+}
+.model-rank {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 30px;
+  border-radius: 8px;
+  color: var(--teal);
+  background: #12312f;
+  font-weight: 900;
+}
+.model-row:not(.winner) .model-rank {
+  color: var(--muted);
+  background: #172326;
+}
 .steps-list {
   display: grid;
   gap: 12px;
@@ -906,6 +977,13 @@ h1 { margin: 0; max-width: 920px; font-size: 34px; letter-spacing: 0; }
   .topbar, .section-head { display: block; }
   .sidebar-toggle { margin-bottom: 14px; }
   .kpis, .grid.two, .period-grid, .territory-summary, .territory-controls, .insight-strip, .analysis-brief, .brief-stats, .risk-layout, .territory-map-shell, .selected-model, .selected-model-metrics, .method-grid, .conclusion-hero, .conclusion-stats, .executive-strip, .comparison-panel, .tcc-hero, .tcc-mini-grid, .forecast-guide, .forecast-summary { grid-template-columns: 1fr; }
+  .model-row,
+  .model-row.header {
+    grid-template-columns: 1fr;
+  }
+  .model-row.header {
+    display: none;
+  }
   .ranking-row,
   .ranking-list.roomy .ranking-row {
     grid-template-columns: 1fr;

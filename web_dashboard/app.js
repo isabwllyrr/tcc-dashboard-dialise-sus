@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-forecast";
+const DATA_VERSION = "20260618-modelos";
 
 const state = {
   mensal: [],
@@ -93,6 +93,10 @@ function modelDisplayName(name) {
     random_forest: "Random Forest",
     gradient_boosting: "Gradient Boosting",
     linear_regression: "Regressão Linear",
+    regressao_linear: "Regressão Linear",
+    media_movel_12m: "Média Móvel 12m",
+    tendencia_linear: "Tendência Linear",
+    sazonal_ingenuo_12m: "Sazonal Ingênuo 12m",
   };
   return labels[String(name || "").toLowerCase()] || name || "-";
 }
@@ -455,7 +459,7 @@ function renderExecutiveStrip(data) {
   target.innerHTML = `
     <article><span>Leitura principal</span><strong>${fmtDecimal.format(valueGrowth)}%</strong><small>valor aprovado, ${state.yearStart} x ${completeEnd}</small></article>
     <article><span>Uso assistencial</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>quantidade aprovada, ${state.yearStart} x ${completeEnd}</small></article>
-    <article><span>Modelo preditivo</span><strong>${model?.modelo || "-"}</strong><small>${model ? `MAPE médio ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
+    <article><span>Modelo preditivo</span><strong>${modelDisplayName(model?.modelo)}</strong><small>${model ? `MAPE médio ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
   `;
 }
 
@@ -890,6 +894,35 @@ function renderMethodology() {
   const lastMonth = Math.max(...state.mensal.filter(d => d.ano === lastYear).map(d => d.mes));
   const monthLabel = String(lastMonth).padStart(2, "0");
   methodPeriod.textContent = `${state.yearStart} a ${lastYear}${monthsInYear(lastYear) < 12 ? `, parcial até ${monthLabel}/${lastYear}` : ""}`;
+  renderModelComparison();
+}
+
+function renderModelComparison() {
+  const target = document.getElementById("modelComparison");
+  if (!target || !state.metricas.length) return;
+  const rows = [...state.metricas].sort((a, b) => a.MAPE_pct - b.MAPE_pct);
+  target.innerHTML = `
+    <div class="model-row header">
+      <span>Modelo</span><span>Tipo</span><span>Ranking</span><span>MAPE</span><span>RMSE</span><span>Recortes</span>
+    </div>
+    ${rows.map((row, index) => {
+      const winner = index === 0;
+      const baseline = row.tipo === "baseline";
+      return `
+        <article class="model-row ${winner ? "winner" : ""}">
+          <div class="model-name">
+            <strong>${modelDisplayName(row.modelo)}</strong>
+            <small>${winner ? "Modelo vencedor pelo menor erro médio" : baseline ? "Referência de comparação" : "Modelo de aprendizagem testado"}</small>
+          </div>
+          <span class="model-badge ${baseline ? "baseline" : ""}">${baseline ? "Baseline" : "Aprendizagem"}</span>
+          <span class="model-rank">${index + 1}</span>
+          <strong>${fmtDecimal.format(row.MAPE_pct)}%</strong>
+          <span>${fmtMoney.format(row.RMSE)}</span>
+          <span>${row.recortes}</span>
+        </article>
+      `;
+    }).join("")}
+  `;
 }
 
 function renderTcc() {
