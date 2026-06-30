@@ -1,6 +1,7 @@
 # Resultados exploratorios iniciais
 
 Periodo analisado: 2015-01 a 2026-04 (136 meses).
+Unidade de analise: procedimentos aprovados no SIA/SUS, nao pacientes unicos.
 Valor aprovado total: R$ 39.192.216.520,97.
 Quantidade aprovada total: 184.718.625.
 Custo medio no periodo: R$ 212,17.

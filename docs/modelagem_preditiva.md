@@ -1,10 +1,11 @@
-# Modelagem preditiva inicial
+# Modelagem preditiva
 
 A serie mensal de valor aprovado cobre 2015-01 a 2026-04.
 A validacao principal usa backtesting temporal com multiplos recortes anuais de 12 meses.
 Tambem foi mantido um holdout de 2022 ate o ultimo mes disponivel para comparacao historica.
 Foram avaliados baselines estatisticos e modelos supervisionados de aprendizagem de maquina.
 Os modelos de aprendizagem usam variaveis temporais, defasagens do valor aprovado, medias moveis, quantidade aprovada e custo medio defasado.
+No dashboard, a comparacao resumida prioriza apenas os modelos de aprendizagem, conforme o recorte metodologico do TCC.
 
 ## Metricas do backtesting temporal
 
@@ -34,4 +35,4 @@ Modelo selecionado pelo menor MAPE medio no backtesting temporal: `ridge`.
 
 ## Observacao metodologica
 
-Esta e uma modelagem inicial. Para a versao final do TCC, as previsoes devem ser discutidas como apoio exploratorio a gestao, nao como determinacao exata do gasto futuro.
+As previsoes devem ser discutidas como apoio exploratorio a gestao, nao como determinacao exata do gasto futuro. A unidade de analise do projeto sao procedimentos aprovados no SIA/SUS, nao pacientes unicos.

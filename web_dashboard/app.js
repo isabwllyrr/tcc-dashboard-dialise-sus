@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260618-entrada";
+const DATA_VERSION = "20260630-recorte";
 
 const state = {
   mensal: [],
@@ -492,7 +492,7 @@ function renderOverviewPaths() {
     {
       tab: "temporal",
       label: "Análise temporal",
-      metric: "Pré, pandemia e pós",
+      metric: "Série e pandemia",
       text: "Acompanhe a evolução mensal e compare o comportamento dos procedimentos antes, durante e após a pandemia.",
     },
     {
@@ -505,7 +505,7 @@ function renderOverviewPaths() {
       tab: "forecast",
       label: "Previsão",
       metric: model ? `${modelDisplayName(model.modelo)} | MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : lastMonth,
-      text: "Veja a projeção dos próximos meses e a validação do modelo supervisionado selecionado.",
+      text: "Veja a projeção dos próximos meses e a validação temporal do modelo supervisionado selecionado.",
     },
   ];
   target.innerHTML = rows.map((row, index) => `
@@ -549,7 +549,7 @@ function renderBrief(data) {
   const postQty = state.mensal.filter(d => postYears.includes(d.ano)).reduce((s, d) => s + d.qtd_aprovada, 0) / Math.max(postYears.length, 1);
   const qtyGrowth = preQty ? (postQty / preQty - 1) * 100 : 0;
   document.getElementById("briefTitle").textContent = `Crescimento de ${fmtDecimal.format(growth)}% no valor aprovado até ${completeEnd}`;
-  document.getElementById("briefText").textContent = `A série indica aumento sustentado da utilização e dos custos dos procedimentos de diálise no SUS. Como 2026 está parcial, a leitura anual principal usa ${completeEnd} como último ano fechado.`;
+  document.getElementById("briefText").textContent = `O recorte acompanha procedimentos aprovados de diálise no SUS, não pacientes únicos. A leitura combina evolução temporal, distribuição territorial e previsão exploratória do valor aprovado.`;
   document.getElementById("briefStats").innerHTML = `
     <article><span>Demanda pós-pandemia</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>quantidade média anual pós x pré</small></article>
     <article><span>Ano fechado de referência</span><strong>${completeEnd}</strong><small>comparações anuais</small></article>
@@ -580,7 +580,7 @@ function renderForecast() {
   const firstForecast = forecastRows[0]?.data?.slice(0, 7) || "próximo mês";
   const lastForecast = forecastRows[forecastRows.length - 1]?.data?.slice(0, 7) || "12 meses";
   const bestModel = state.metricas[0];
-  const modelText = bestModel ? ` O modelo selecionado foi ${modelDisplayName(bestModel.modelo)}, com MAPE médio de ${fmtDecimal.format(bestModel.MAPE_pct)}% no backtesting temporal.` : "";
+  const modelText = bestModel ? ` O modelo selecionado pelo menor erro médio foi ${modelDisplayName(bestModel.modelo)}, com MAPE médio de ${fmtDecimal.format(bestModel.MAPE_pct)}% no backtesting temporal.` : "";
   document.getElementById("forecastNote").textContent = `A previsão começa em ${firstForecast}, logo após o último mês real disponível (${lastReal}), e segue até ${lastForecast}. Como 2026 ainda está parcial, a projeção mostra meses futuros, não o ano fechado de 2027.${modelText}`;
   document.getElementById("forecastFutureSubtitle").textContent = `Linha azul: últimos 12 meses observados (${firstContext} a ${lastReal}). Linha tracejada: previsão de ${firstForecast} a ${lastForecast}.`;
   renderSelectedModelCard();
@@ -610,7 +610,7 @@ function renderForecastGuide(firstContext, lastReal, firstForecast, lastForecast
   if (!target) return;
   target.innerHTML = `
     <article><b>1</b><div><span>Base observada</span><strong>${firstContext} a ${lastReal}</strong><small>O gráfico futuro usa só o histórico recente para evitar ruído visual.</small></div></article>
-    <article><b>2</b><div><span>Teste do modelo</span><strong>${modelDisplayName(model?.modelo) || "modelo vencedor"}</strong><small>Antes da projeção, o painel compara real x previsto no período reservado para validação.</small></div></article>
+    <article><b>2</b><div><span>Teste do modelo</span><strong>${modelDisplayName(model?.modelo) || "modelo selecionado"}</strong><small>Antes da projeção, o painel valida o modelo em meses posteriores aos dados de treino.</small></div></article>
     <article><b>3</b><div><span>Projeção</span><strong>${firstForecast} a ${lastForecast}</strong><small>Os valores previstos servem como apoio exploratório para planejamento.</small></div></article>
   `;
 }
@@ -637,7 +637,7 @@ function renderSelectedModelCard() {
     <div>
       <p class="eyebrow">Modelo de aprendizagem selecionado</p>
       <h3>${modelDisplayName(model.modelo)}</h3>
-      <p>Modelo supervisionado escolhido pelo menor MAPE médio no backtesting temporal.</p>
+      <p>Modelo de aprendizagem supervisionada selecionado pelo menor MAPE médio na validação temporal.</p>
     </div>
     <div class="selected-model-metrics">
       <article><span>MAPE médio</span><strong>${fmtDecimal.format(model.MAPE_pct)}%</strong></article>
@@ -986,7 +986,7 @@ function renderModelComparison() {
         <article class="model-row ${winner ? "winner" : ""}">
           <div class="model-name">
             <strong>${modelDisplayName(row.modelo)}</strong>
-            <small>${winner ? "Modelo vencedor pelo menor erro médio" : "Modelo de aprendizagem testado"}</small>
+            <small>${winner ? "Selecionado pelo menor MAPE médio" : "Modelo de aprendizagem testado"}</small>
           </div>
           <span class="model-badge">Aprendizagem</span>
           <span class="model-rank">${index + 1}</span>
@@ -1032,7 +1032,7 @@ function renderConclusions() {
     <article>O crescimento do valor aprovado acompanha uma elevação da quantidade aprovada, então a análise não deve ser lida apenas como aumento financeiro.</article>
     <article>O período pós-pandemia apresenta maior média anual de procedimentos em comparação ao pré-pandemia, sugerindo maior pressão assistencial.</article>
     <article>${topCity ? `${topCity.municipio} - ${topCity.uf} aparece como principal polo territorial no recorte analisado.` : "A análise territorial permite localizar polos municipais de maior concentração."}</article>
-    <article>${model ? `Para previsão, o modelo supervisionado vencedor foi ${modelDisplayName(model.modelo)}, com MAPE médio de ${fmtDecimal.format(model.MAPE_pct)}% no backtesting temporal.` : "A etapa preditiva deve ser interpretada como apoio exploratório à gestão."}</article>
+    <article>${model ? `Para previsão, o modelo supervisionado selecionado foi ${modelDisplayName(model.modelo)}, com MAPE médio de ${fmtDecimal.format(model.MAPE_pct)}% no backtesting temporal.` : "A etapa preditiva deve ser interpretada como apoio exploratório à gestão."}</article>
   `;
 }
 
@@ -1076,7 +1076,7 @@ function exportSummaryText() {
   const findings = [...document.querySelectorAll("#findingList article")].map(item => `- ${item.innerText}`).join("\n");
   const limitations = [...document.querySelectorAll("#overview .overview-limitations .finding-list.muted article")].map(item => `- ${item.innerText}`).join("\n");
   const content = [
-    "Resumo do dashboard - Diálise no SUS",
+    "Resumo do protótipo DialisaSUS - Diálise no SUS",
     "",
     `Período analisado: ${state.yearStart} a ${state.yearEnd}`,
     `Ano fechado de referência: ${completeEnd}`,

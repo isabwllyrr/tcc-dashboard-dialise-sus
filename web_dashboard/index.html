@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Diálise no SUS | Dashboard</title>
-    <link rel="stylesheet" href="./styles.css?v=20260618-entrada" />
+    <title>DialisaSUS | Diálise no SUS</title>
+    <link rel="stylesheet" href="./styles.css?v=20260630-recorte" />
   </head>
   <body>
     <aside class="sidebar">
       <div class="brand">
         <span class="brand-mark">SUS</span>
         <div>
-          <strong>Diálise Brasil</strong>
+          <strong>DialisaSUS</strong>
           <small id="brandPeriod">2015-2026</small>
         </div>
       </div>
@@ -50,8 +50,8 @@
         </button>
         <div>
           <p class="eyebrow">SIA/SUS - DATASUS</p>
-          <h1>Análise temporal dos procedimentos de diálise no SUS</h1>
-          <p class="subtitle">Monitoramento de utilização, custos e comportamento pré, durante e pós-pandemia.</p>
+          <h1>Análise temporal, territorial e preditiva dos procedimentos de diálise no SUS</h1>
+          <p class="subtitle">Protótipo web para monitorar procedimentos aprovados, distribuição territorial e previsão exploratória do valor aprovado.</p>
         </div>
         <div class="status-pill"><span></span> Dados públicos agregados</div>
       </header>
@@ -66,6 +66,12 @@
           <div class="brief-stats" id="briefStats"></div>
         </section>
 
+        <section class="research-question" aria-label="Pergunta norteadora">
+          <p class="eyebrow">Pergunta norteadora</p>
+          <h3>Como os procedimentos de diálise aprovados no SUS evoluíram no período pré e pós-pandemia?</h3>
+          <p>O painel combina análise temporal, territorial e modelo de aprendizagem para apoiar a leitura exploratória do valor aprovado, da quantidade aprovada e do custo médio.</p>
+        </section>
+
         <div class="section-head">
           <div>
             <h2>O que investigar no painel</h2>
@@ -75,7 +81,7 @@
         </div>
         <div class="overview-paths" id="overviewPaths"></div>
 
-        <p class="note overview-method-note">Os dados representam procedimentos aprovados no SIA/SUS, não pacientes únicos. O painel apoia leitura exploratória e apresentação do estudo.</p>
+        <p class="note overview-method-note">Unidade de análise: procedimentos aprovados no SIA/SUS. O painel não identifica pacientes únicos e deve ser lido como apoio exploratório à gestão e à apresentação do estudo.</p>
 
         <div class="grid two">
           <div class="chart-shell">
@@ -211,15 +217,16 @@
         <div class="section-head">
           <div>
             <h2>Metodologia</h2>
-            <p>Resumo do desenho metodológico usado no tratamento, análise e predição.</p>
+            <p>Resumo do desenho metodológico usado no tratamento, análise e predição exploratória.</p>
           </div>
         </div>
         <div class="method-grid">
           <article class="method-card"><span>Fonte</span><strong>SIA/SUS - DATASUS</strong><p>Dados públicos agregados de procedimentos ambulatoriais relacionados à diálise no SUS.</p></article>
+          <article class="method-card"><span>Unidade de análise</span><strong>Procedimentos aprovados</strong><p>Os registros não representam pacientes únicos e não permitem acompanhar indivíduos.</p></article>
           <article class="method-card"><span>Período</span><strong id="methodPeriod">2015 a 2026</strong><p>Em 2026, a base disponível está parcial até abril.</p></article>
-          <article class="method-card"><span>Tratamento</span><strong>Python</strong><p>Padronização dos CSVs, cálculo de indicadores mensais, anuais, territoriais e por período pandêmico.</p></article>
-          <article class="method-card"><span>Modelo</span><strong>Ridge Regression</strong><p>Modelo supervisionado escolhido pelo menor MAPE médio no backtesting temporal.</p></article>
+          <article class="method-card"><span>Modelo</span><strong>Ridge Regression</strong><p>Selecionado entre modelos de aprendizagem pelo menor MAPE médio em validação temporal.</p></article>
         </div>
+        <p class="note">As previsões são exploratórias: servem para apoiar planejamento e discussão acadêmica, não para determinar o gasto futuro de forma exata.</p>
         <div class="chart-shell">
           <h3>Etapas do projeto</h3>
           <div class="steps-list">
@@ -241,7 +248,7 @@
         <div class="section-head">
           <div>
             <h2>Triagem demonstrativa</h2>
-            <p>Simulador educativo de risco renal. Não realiza diagnóstico e não substitui avaliação profissional.</p>
+            <p>Módulo educativo demonstrativo, independente da modelagem do DATASUS. Não realiza diagnóstico e não substitui avaliação profissional.</p>
           </div>
         </div>
         <div class="risk-layout">
@@ -273,6 +280,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260618-entrada"></script>
+    <script src="./app.js?v=20260630-recorte"></script>
   </body>
 </html>
