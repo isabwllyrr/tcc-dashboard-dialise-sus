@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DialisaSUS | Diálise no SUS</title>
-    <link rel="stylesheet" href="./styles.css?v=20260630-recorte" />
+    <title>DialisaSUS | Painel de gestão</title>
+    <link rel="stylesheet" href="./styles.css?v=20260710-pro" />
   </head>
   <body>
     <aside class="sidebar">
@@ -49,9 +49,14 @@
           <span></span>
         </button>
         <div>
-          <p class="eyebrow">SIA/SUS - DATASUS</p>
-          <h1>Análise temporal, territorial e preditiva dos procedimentos de diálise no SUS</h1>
-          <p class="subtitle">Protótipo web para monitorar procedimentos aprovados, distribuição territorial e previsão exploratória do valor aprovado.</p>
+          <p class="eyebrow">DialisaSUS | SIA/SUS - DATASUS</p>
+          <h1>Monitoramento da diálise no SUS</h1>
+          <p class="subtitle">Painel web para leitura temporal, territorial e preditiva dos procedimentos aprovados no Brasil.</p>
+          <div class="hero-meta" aria-label="Resumo do escopo do painel">
+            <span>Brasil</span>
+            <span>2015-2026</span>
+            <span>Ridge Regression</span>
+          </div>
         </div>
         <div class="status-pill"><span></span> Dados públicos agregados</div>
       </header>
@@ -59,7 +64,7 @@
       <section id="overview" class="tab-panel active">
         <section class="analysis-brief" aria-label="Resumo executivo">
           <div>
-            <p class="eyebrow">Leitura rápida</p>
+            <p class="eyebrow">Síntese executiva</p>
             <h2 id="briefTitle">Pressão assistencial e financeira em acompanhamento</h2>
             <p id="briefText">Os indicadores serão calculados a partir dos filtros selecionados.</p>
           </div>
@@ -67,17 +72,17 @@
         </section>
 
         <section class="research-question" aria-label="Pergunta norteadora">
-          <p class="eyebrow">Pergunta norteadora</p>
-          <h3>Como os procedimentos de diálise aprovados no SUS evoluíram no período pré e pós-pandemia?</h3>
-          <p>O painel combina análise temporal, territorial e modelo de aprendizagem para apoiar a leitura exploratória do valor aprovado, da quantidade aprovada e do custo médio.</p>
+          <p class="eyebrow">Fio condutor da defesa</p>
+          <h3>O painel mostra como a pressão por diálise evolui no SUS e onde ela se concentra.</h3>
+          <p>A pergunta norteadora continua sendo a evolução dos procedimentos aprovados antes, durante e após a pandemia, conectando quantidade, valor aprovado, território e previsão exploratória.</p>
         </section>
 
         <div class="section-head">
           <div>
-            <h2>O que investigar no painel</h2>
-            <p>Use a visão geral como ponto de partida para navegar pelas análises principais.</p>
+            <h2>Roteiro de apresentação</h2>
+            <p>Use estes três eixos para conduzir a leitura do protótipo durante a defesa.</p>
           </div>
-          <button class="export-button" id="exportSummary" type="button">Baixar resumo</button>
+          <button class="export-button" id="exportSummary" type="button">Resumo da análise</button>
         </div>
         <div class="overview-paths" id="overviewPaths"></div>
 
@@ -280,6 +285,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260630-recorte"></script>
+    <script src="./app.js?v=20260710-pro"></script>
   </body>
 </html>

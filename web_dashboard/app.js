@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260630-recorte";
+const DATA_VERSION = "20260710-pro";
 
 const state = {
   mensal: [],
@@ -491,21 +491,21 @@ function renderOverviewPaths() {
   const rows = [
     {
       tab: "temporal",
-      label: "Análise temporal",
-      metric: "Série e pandemia",
-      text: "Acompanhe a evolução mensal e compare o comportamento dos procedimentos antes, durante e após a pandemia.",
+      label: "Evolução",
+      metric: "Série histórica",
+      text: "Mostre a trajetória mensal e compare o comportamento antes, durante e após a pandemia.",
     },
     {
       tab: "territory",
       label: "Território",
       metric: "UF e município",
-      text: "Localize concentração regional, principais municípios e crescimento de quantidade no pós-pandemia.",
+      text: "Identifique polos de concentração, diferenças regionais e municípios com maior crescimento.",
     },
     {
       tab: "forecast",
-      label: "Previsão",
+      label: "Cenário futuro",
       metric: model ? `${modelDisplayName(model.modelo)} | MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : lastMonth,
-      text: "Veja a projeção dos próximos meses e a validação temporal do modelo supervisionado selecionado.",
+      text: "Apresente a projeção dos próximos meses e a validação temporal do modelo supervisionado.",
     },
   ];
   target.innerHTML = rows.map((row, index) => `
@@ -516,7 +516,7 @@ function renderOverviewPaths() {
         <strong>${row.label}</strong>
       </div>
       <p>${row.text}</p>
-      <span class="path-action">Abrir seção</span>
+      <span class="path-action">Explorar eixo</span>
     </button>
   `).join("");
 }
@@ -548,8 +548,8 @@ function renderBrief(data) {
   const postYears = [...new Set(state.mensal.map(d => d.ano))].filter(y => y >= 2022 && monthsInYear(y) === 12);
   const postQty = state.mensal.filter(d => postYears.includes(d.ano)).reduce((s, d) => s + d.qtd_aprovada, 0) / Math.max(postYears.length, 1);
   const qtyGrowth = preQty ? (postQty / preQty - 1) * 100 : 0;
-  document.getElementById("briefTitle").textContent = `Crescimento de ${fmtDecimal.format(growth)}% no valor aprovado até ${completeEnd}`;
-  document.getElementById("briefText").textContent = `O recorte acompanha procedimentos aprovados de diálise no SUS, não pacientes únicos. A leitura combina evolução temporal, distribuição territorial e previsão exploratória do valor aprovado.`;
+  document.getElementById("briefTitle").textContent = `Valor aprovado cresceu ${fmtDecimal.format(growth)}% até ${completeEnd}`;
+  document.getElementById("briefText").textContent = `O painel acompanha procedimentos aprovados de diálise no SUS, não pacientes únicos. A leitura combina pressão assistencial, distribuição territorial e cenário preditivo para apoiar decisões de gestão.`;
   document.getElementById("briefStats").innerHTML = `
     <article><span>Demanda pós-pandemia</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>quantidade média anual pós x pré</small></article>
     <article><span>Ano fechado de referência</span><strong>${completeEnd}</strong><small>comparações anuais</small></article>
