@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260710-pro";
+const DATA_VERSION = "20260713-executivo";
 
 const state = {
   mensal: [],
@@ -492,20 +492,20 @@ function renderOverviewPaths() {
     {
       tab: "temporal",
       label: "Evolução",
-      metric: "Série histórica",
-      text: "Mostre a trajetória mensal e compare o comportamento antes, durante e após a pandemia.",
+      metric: "Tendência nacional",
+      text: "Série mensal, períodos pandêmicos e variação anual.",
     },
     {
       tab: "territory",
       label: "Território",
-      metric: "UF e município",
-      text: "Identifique polos de concentração, diferenças regionais e municípios com maior crescimento.",
+      metric: "Mapa e polos",
+      text: "UFs, municípios, concentração e crescimento pós-pandemia.",
     },
     {
       tab: "forecast",
       label: "Cenário futuro",
       metric: model ? `${modelDisplayName(model.modelo)} | MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : lastMonth,
-      text: "Apresente a projeção dos próximos meses e a validação temporal do modelo supervisionado.",
+      text: "Projeção exploratória e validação temporal do modelo.",
     },
   ];
   target.innerHTML = rows.map((row, index) => `
@@ -533,9 +533,9 @@ function renderExecutiveStrip(data) {
   const qtyGrowth = firstQty ? ((lastQty / firstQty) - 1) * 100 : 0;
   const model = state.metricas[0];
   target.innerHTML = `
-    <article><span>Leitura principal</span><strong>${fmtDecimal.format(valueGrowth)}%</strong><small>valor aprovado, ${state.yearStart} x ${completeEnd}</small></article>
-    <article><span>Uso assistencial</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>quantidade aprovada, ${state.yearStart} x ${completeEnd}</small></article>
-    <article><span>Modelo preditivo</span><strong>${modelDisplayName(model?.modelo)}</strong><small>${model ? `MAPE médio ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
+    <article><span>Valor aprovado</span><strong>${fmtDecimal.format(valueGrowth)}%</strong><small>${state.yearStart} x ${completeEnd}</small></article>
+    <article><span>Quantidade</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>${state.yearStart} x ${completeEnd}</small></article>
+    <article><span>Modelo</span><strong>${modelDisplayName(model?.modelo)}</strong><small>${model ? `MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : "em validação"}</small></article>
   `;
 }
 
@@ -548,12 +548,12 @@ function renderBrief(data) {
   const postYears = [...new Set(state.mensal.map(d => d.ano))].filter(y => y >= 2022 && monthsInYear(y) === 12);
   const postQty = state.mensal.filter(d => postYears.includes(d.ano)).reduce((s, d) => s + d.qtd_aprovada, 0) / Math.max(postYears.length, 1);
   const qtyGrowth = preQty ? (postQty / preQty - 1) * 100 : 0;
-  document.getElementById("briefTitle").textContent = `Valor aprovado cresceu ${fmtDecimal.format(growth)}% até ${completeEnd}`;
-  document.getElementById("briefText").textContent = `O painel acompanha procedimentos aprovados de diálise no SUS, não pacientes únicos. A leitura combina pressão assistencial, distribuição territorial e cenário preditivo para apoiar decisões de gestão.`;
+  document.getElementById("briefTitle").textContent = `Pressão assistencial em alta até ${completeEnd}`;
+  document.getElementById("briefText").textContent = `Leitura consolidada de custo, volume, território e previsão para apoiar planejamento em saúde.`;
   document.getElementById("briefStats").innerHTML = `
-    <article><span>Demanda pós-pandemia</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>quantidade média anual pós x pré</small></article>
-    <article><span>Ano fechado de referência</span><strong>${completeEnd}</strong><small>comparações anuais</small></article>
-    <article><span>Último mês real</span><strong>${state.mensal[state.mensal.length - 1].data.slice(0, 7)}</strong><small>base SIA/SUS tratada</small></article>
+    <article><span>Pós x pré</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>média anual de quantidade</small></article>
+    <article><span>Ano fechado</span><strong>${completeEnd}</strong><small>base comparável</small></article>
+    <article><span>Último dado</span><strong>${state.mensal[state.mensal.length - 1].data.slice(0, 7)}</strong><small>SIA/SUS tratado</small></article>
   `;
 }
 
@@ -1029,10 +1029,10 @@ function renderConclusions() {
   const topCity = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo)[0];
   const model = state.metricas[0];
   list.innerHTML = `
-    <article>O crescimento do valor aprovado acompanha uma elevação da quantidade aprovada, então a análise não deve ser lida apenas como aumento financeiro.</article>
-    <article>O período pós-pandemia apresenta maior média anual de procedimentos em comparação ao pré-pandemia, sugerindo maior pressão assistencial.</article>
-    <article>${topCity ? `${topCity.municipio} - ${topCity.uf} aparece como principal polo territorial no recorte analisado.` : "A análise territorial permite localizar polos municipais de maior concentração."}</article>
-    <article>${model ? `Para previsão, o modelo supervisionado selecionado foi ${modelDisplayName(model.modelo)}, com MAPE médio de ${fmtDecimal.format(model.MAPE_pct)}% no backtesting temporal.` : "A etapa preditiva deve ser interpretada como apoio exploratório à gestão."}</article>
+    <article>Valor e quantidade crescem juntos; não é apenas efeito financeiro.</article>
+    <article>Pós-pandemia tem maior média anual de procedimentos.</article>
+    <article>${topCity ? `Principal polo: ${topCity.municipio} - ${topCity.uf}.` : "Território evidencia polos municipais."}</article>
+    <article>${model ? `Modelo: ${modelDisplayName(model.modelo)} | MAPE ${fmtDecimal.format(model.MAPE_pct)}%.` : "Previsão exploratória para gestão."}</article>
   `;
 }
 
