@@ -7,7 +7,7 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260713-executivo";
+const DATA_VERSION = "20260713-tech";
 
 const state = {
   mensal: [],
@@ -451,6 +451,7 @@ function renderOverview(data) {
   renderBrief(data);
   renderExecutiveStrip(data);
   renderOverviewPaths();
+  drawLine("overviewTrendChart", data, "valor_aprovado", "#2dd4bf", "Valor aprovado");
   drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
@@ -493,19 +494,19 @@ function renderOverviewPaths() {
       tab: "temporal",
       label: "Evolução",
       metric: "Tendência nacional",
-      text: "Série mensal, períodos pandêmicos e variação anual.",
+      text: "Série mensal, ruptura pandêmica e variação anual.",
     },
     {
       tab: "territory",
       label: "Território",
       metric: "Mapa e polos",
-      text: "UFs, municípios, concentração e crescimento pós-pandemia.",
+      text: "Mapa, rankings e concentração municipal.",
     },
     {
       tab: "forecast",
-      label: "Cenário futuro",
+      label: "Previsão",
       metric: model ? `${modelDisplayName(model.modelo)} | MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : lastMonth,
-      text: "Projeção exploratória e validação temporal do modelo.",
+      text: "Próximos 12 meses e erro do modelo.",
     },
   ];
   target.innerHTML = rows.map((row, index) => `
@@ -516,7 +517,7 @@ function renderOverviewPaths() {
         <strong>${row.label}</strong>
       </div>
       <p>${row.text}</p>
-      <span class="path-action">Explorar eixo</span>
+      <span class="path-action">Abrir</span>
     </button>
   `).join("");
 }
@@ -548,9 +549,12 @@ function renderBrief(data) {
   const postYears = [...new Set(state.mensal.map(d => d.ano))].filter(y => y >= 2022 && monthsInYear(y) === 12);
   const postQty = state.mensal.filter(d => postYears.includes(d.ano)).reduce((s, d) => s + d.qtd_aprovada, 0) / Math.max(postYears.length, 1);
   const qtyGrowth = preQty ? (postQty / preQty - 1) * 100 : 0;
-  document.getElementById("briefTitle").textContent = `Pressão assistencial em alta até ${completeEnd}`;
-  document.getElementById("briefText").textContent = `Leitura consolidada de custo, volume, território e previsão para apoiar planejamento em saúde.`;
-  document.getElementById("briefStats").innerHTML = `
+  const briefTitle = document.getElementById("briefTitle");
+  const briefText = document.getElementById("briefText");
+  const briefStats = document.getElementById("briefStats");
+  if (briefTitle) briefTitle.textContent = `Pressão assistencial em alta até ${completeEnd}`;
+  if (briefText) briefText.textContent = `Leitura consolidada de custo, volume, território e previsão para apoiar planejamento em saúde.`;
+  if (briefStats) briefStats.innerHTML = `
     <article><span>Pós x pré</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>média anual de quantidade</small></article>
     <article><span>Ano fechado</span><strong>${completeEnd}</strong><small>base comparável</small></article>
     <article><span>Último dado</span><strong>${state.mensal[state.mensal.length - 1].data.slice(0, 7)}</strong><small>SIA/SUS tratado</small></article>
@@ -1029,10 +1033,10 @@ function renderConclusions() {
   const topCity = [...state.municipios].sort((a, b) => b.valor_periodo - a.valor_periodo)[0];
   const model = state.metricas[0];
   list.innerHTML = `
-    <article>Valor e quantidade crescem juntos; não é apenas efeito financeiro.</article>
-    <article>Pós-pandemia tem maior média anual de procedimentos.</article>
-    <article>${topCity ? `Principal polo: ${topCity.municipio} - ${topCity.uf}.` : "Território evidencia polos municipais."}</article>
-    <article>${model ? `Modelo: ${modelDisplayName(model.modelo)} | MAPE ${fmtDecimal.format(model.MAPE_pct)}%.` : "Previsão exploratória para gestão."}</article>
+    <article><span>Demanda</span><strong>${fmtDecimal.format(qtyGrowth)}%</strong><small>pós-pandemia x pré-pandemia</small></article>
+    <article><span>Custo</span><strong>${fmtDecimal.format(valueGrowth)}%</strong><small>valor aprovado entre ${firstYear} e ${completeEnd}</small></article>
+    <article><span>Polo</span><strong>${topCity ? `${topCity.municipio} - ${topCity.uf}` : "Em análise"}</strong><small>${totalValue ? `${fmtDecimal.format(top10Value / totalValue * 100)}% no top 10` : "concentração municipal"}</small></article>
+    <article><span>Modelo</span><strong>${model ? modelDisplayName(model.modelo) : "Exploratório"}</strong><small>${model ? `MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : "previsão em validação"}</small></article>
   `;
 }
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DialisaSUS | Painel executivo</title>
-    <link rel="stylesheet" href="./styles.css?v=20260713-executivo" />
+    <link rel="stylesheet" href="./styles.css?v=20260713-tech" />
   </head>
   <body>
     <aside class="sidebar">
@@ -50,8 +50,8 @@
         </button>
         <div>
           <p class="eyebrow">DialisaSUS | SIA/SUS - DATASUS</p>
-          <h1>DialisaSUS Executivo</h1>
-          <p class="subtitle">Monitoramento nacional dos procedimentos de diálise aprovados no SUS.</p>
+          <h1>Centro de Controle da Diálise</h1>
+          <p class="subtitle">Indicadores operacionais, pressão territorial e cenário preditivo do SUS.</p>
           <div class="hero-meta" aria-label="Resumo do escopo do painel">
             <span>Brasil</span>
             <span>2015-2026</span>
@@ -64,45 +64,33 @@
       <section id="overview" class="tab-panel active">
         <div class="executive-strip executive-command" id="executiveStrip"></div>
 
-        <section class="analysis-brief" aria-label="Resumo executivo">
-          <div>
-            <p class="eyebrow">Síntese executiva</p>
-            <h2 id="briefTitle">Pressão assistencial e financeira em acompanhamento</h2>
-            <p id="briefText">Os indicadores serão calculados a partir dos filtros selecionados.</p>
-          </div>
-          <div class="brief-stats" id="briefStats"></div>
-        </section>
+        <div class="overview-board">
+          <section class="chart-shell overview-trend">
+            <div class="chart-title-row">
+              <div>
+                <p class="eyebrow">Tendência nacional</p>
+                <h3>Valor aprovado mensal</h3>
+              </div>
+              <span class="live-badge">SIA/SUS</span>
+            </div>
+            <canvas id="overviewTrendChart" height="300"></canvas>
+          </section>
 
-        <section class="research-question" aria-label="Pergunta norteadora">
-          <p class="eyebrow">Pergunta de gestão</p>
-          <h3>Onde a demanda cresce, quanto custa e qual cenário o histórico sugere?</h3>
-        </section>
-
-        <div class="section-head">
-          <div>
-            <h2>Eixos de análise</h2>
-            <p>Fluxo principal de navegação do painel.</p>
-          </div>
-          <button class="export-button" id="exportSummary" type="button">Resumo da análise</button>
+          <section class="chart-shell signal-panel">
+            <div class="chart-title-row">
+              <div>
+                <p class="eyebrow">Sinais de gestão</p>
+                <h3>O que observar</h3>
+              </div>
+              <button class="export-button compact" id="exportSummary" type="button">Resumo</button>
+            </div>
+            <div class="finding-list signal-list" id="findingList"></div>
+          </section>
         </div>
+
         <div class="overview-paths" id="overviewPaths"></div>
 
-        <p class="note overview-method-note">Procedimentos aprovados no SIA/SUS. Não representa pacientes únicos.</p>
-
-        <div class="grid two">
-          <div class="chart-shell">
-            <h3>Sinais principais</h3>
-            <div class="finding-list" id="findingList"></div>
-          </div>
-          <div class="chart-shell overview-limitations">
-            <h3>Premissas</h3>
-            <div class="finding-list muted">
-              <article>Unidade: procedimentos aprovados.</article>
-              <article>2026 parcial até abril.</article>
-              <article>Previsão exploratória.</article>
-            </div>
-          </div>
-        </div>
+        <p class="note overview-method-note">Base agregada: procedimentos aprovados. 2026 parcial. Não representa pacientes únicos.</p>
       </section>
 
       <section id="temporal" class="tab-panel">
@@ -286,6 +274,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260713-executivo"></script>
+    <script src="./app.js?v=20260713-tech"></script>
   </body>
 </html>
