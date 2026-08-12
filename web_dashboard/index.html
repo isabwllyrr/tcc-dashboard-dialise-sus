@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DialisaSUS | Painel executivo</title>
-    <link rel="stylesheet" href="./styles.css?v=20260713-tech" />
+    <title>DialisaSUS | Console de gestão</title>
+    <link rel="stylesheet" href="./styles.css?v=20260812-trendplain" />
   </head>
   <body>
     <aside class="sidebar">
@@ -14,18 +14,23 @@
           <strong>DialisaSUS</strong>
           <small id="brandPeriod">2015-2026</small>
         </div>
+        <button class="sidebar-close" id="sidebarClose" type="button" aria-label="Fechar menu">×</button>
       </div>
 
       <nav class="nav" aria-label="Navegação principal">
-        <button class="nav-item active" data-tab="overview">Visão geral</button>
-        <button class="nav-item" data-tab="temporal">Análise temporal</button>
+        <button class="nav-item active" data-tab="overview">Intelligence</button>
+        <button class="nav-item" data-tab="temporal">Temporal</button>
         <button class="nav-item" data-tab="territory">Território</button>
         <button class="nav-item" data-tab="forecast">Previsão</button>
         <button class="nav-item" data-tab="methodology">Metodologia</button>
-        <button class="nav-item" data-tab="risk">Triagem demonstrativa</button>
+        <button class="nav-item" data-tab="risk">Triagem</button>
       </nav>
 
-      <section class="filters" aria-label="Filtros">
+      <section class="filters" id="filterPanel" aria-label="Filtros">
+        <div class="filter-heading">
+          <span>Filtros da série</span>
+          <button id="resetFilters" type="button">Restaurar</button>
+        </div>
         <label for="yearStart">Ano inicial</label>
         <select id="yearStart"></select>
 
@@ -39,6 +44,7 @@
           <option value="custo_medio">Custo médio</option>
         </select>
       </section>
+      <p class="sidebar-context" id="sidebarContext">Filtros aplicados à análise histórica.</p>
     </aside>
 
     <main class="main">
@@ -50,8 +56,8 @@
         </button>
         <div>
           <p class="eyebrow">DialisaSUS | SIA/SUS - DATASUS</p>
-          <h1>Centro de Controle da Diálise</h1>
-          <p class="subtitle">Indicadores operacionais, pressão territorial e cenário preditivo do SUS.</p>
+          <h1>DialisaSUS Intelligence</h1>
+          <p class="subtitle">Produção, território, custo e previsão dos procedimentos de diálise no SUS.</p>
           <div class="hero-meta" aria-label="Resumo do escopo do painel">
             <span>Brasil</span>
             <span>2015-2026</span>
@@ -64,40 +70,38 @@
       <section id="overview" class="tab-panel active">
         <div class="executive-strip executive-command" id="executiveStrip"></div>
 
-        <div class="overview-board">
-          <section class="chart-shell overview-trend">
+        <div class="visual-board intelligence-board">
+          <section class="overview-map-card">
             <div class="chart-title-row">
               <div>
-                <p class="eyebrow">Tendência nacional</p>
-                <h3>Valor aprovado mensal</h3>
+                <p class="eyebrow">Território</p>
+                <h3>Mapa nacional</h3>
+              </div>
+              <span class="live-badge ghost">UF</span>
+            </div>
+            <div class="overview-map" id="overviewBrazilMap" aria-label="Mapa do Brasil na visão geral"></div>
+            <div class="map-legend compact" id="overviewMapLegend"></div>
+            <div class="overview-uf-spotlight" id="overviewUfSpotlight"></div>
+          </section>
+
+          <section class="chart-shell overview-trend visual-main">
+            <div class="chart-title-row">
+              <div>
+                <p class="eyebrow">Trend</p>
+                <h3>Tendência nacional</h3>
               </div>
               <span class="live-badge">SIA/SUS</span>
             </div>
-            <canvas id="overviewTrendChart" height="300"></canvas>
-          </section>
-
-          <section class="chart-shell signal-panel">
-            <div class="chart-title-row">
-              <div>
-                <p class="eyebrow">Sinais de gestão</p>
-                <h3>O que observar</h3>
-              </div>
-              <button class="export-button compact" id="exportSummary" type="button">Resumo</button>
-            </div>
-            <div class="finding-list signal-list" id="findingList"></div>
+            <canvas id="overviewTrendChart" height="420"></canvas>
           </section>
         </div>
-
-        <div class="overview-paths" id="overviewPaths"></div>
-
-        <p class="note overview-method-note">Base agregada: procedimentos aprovados. 2026 parcial. Não representa pacientes únicos.</p>
       </section>
 
       <section id="temporal" class="tab-panel">
         <div class="section-head">
           <div>
             <h2>Série histórica</h2>
-            <p>O gráfico acompanha o comportamento mensal dos procedimentos selecionados de diálise.</p>
+            <p>Evolução mensal dos procedimentos de diálise.</p>
           </div>
           <div class="segmented" role="group" aria-label="Atalho de período">
             <button data-range="pre">Pré-pandemia</button>
@@ -124,32 +128,46 @@
       <section id="forecast" class="tab-panel">
         <div class="section-head">
           <div>
-            <h2>Previsão inicial</h2>
-            <p>Projeção dos 12 meses seguintes ao último mês disponível na base tratada.</p>
+            <h2>Previsão</h2>
+            <p>Cenário nacional para os próximos 12 meses.</p>
           </div>
+          <p class="forecast-period" id="forecastNote">Aguardando projeção.</p>
         </div>
-        <p class="note" id="forecastNote">A previsão será calculada a partir do último mês disponível na base tratada.</p>
-        <div class="selected-model" id="selectedModelCard"></div>
-        <div class="forecast-guide" id="forecastGuide"></div>
-        <div class="forecast-summary" id="forecastSummary"></div>
+        <div class="forecast-command">
+          <div class="selected-model" id="selectedModelCard"></div>
+          <div class="forecast-summary" id="forecastSummary"></div>
+        </div>
         <div class="chart-shell large">
-          <h3>Próximos 12 meses previstos</h3>
+          <div class="chart-title-row">
+            <div>
+              <p class="eyebrow">Cenário central</p>
+              <h3>Real recente x previsão</h3>
+            </div>
+            <span class="chart-key"><i class="actual"></i>Real <i class="projected"></i>Previsto</span>
+          </div>
           <p class="chart-subtitle" id="forecastFutureSubtitle">Histórico recente e projeção futura.</p>
           <canvas id="forecastChart" height="320"></canvas>
         </div>
-        <div class="chart-shell large">
-          <h3>Validação do modelo</h3>
-          <p class="chart-subtitle" id="forecastValidationSubtitle">Comparação entre o valor real e o valor previsto no período reservado para teste.</p>
-          <canvas id="forecastValidationChart" height="300"></canvas>
-        </div>
-        <div class="table-wrap"><table class="data-table" id="forecastTable"></table></div>
+        <p class="forecast-caveat">Projeção pontual, sem intervalo de confiança.</p>
+        <details class="technical-details forecast-details">
+          <summary><span>Detalhes técnicos</span><small>validação, erros e valores mensais</small></summary>
+          <div class="detail-content">
+            <div class="model-diagnostics" id="modelDiagnostics"></div>
+            <div class="chart-shell large">
+              <h3>Validação temporal</h3>
+              <p class="chart-subtitle" id="forecastValidationSubtitle">Real x previsto no período de teste.</p>
+              <canvas id="forecastValidationChart" height="300"></canvas>
+            </div>
+            <div class="table-wrap"><table class="data-table" id="forecastTable"></table></div>
+          </div>
+        </details>
       </section>
 
       <section id="territory" class="tab-panel">
         <div class="section-head">
           <div>
             <h2>Análise territorial</h2>
-            <p>Distribuição municipal de valor aprovado, quantidade e custo médio nos procedimentos de diálise no SUS.</p>
+            <p>Concentração, volume e custo por município.</p>
           </div>
         </div>
         <div class="territory-controls" aria-label="Filtros territoriais">
@@ -180,7 +198,7 @@
           <div>
             <p class="eyebrow">Mapa do Brasil</p>
             <h3>Distribuição por UF</h3>
-            <p>Quanto mais forte a cor, maior o valor aprovado acumulado no recorte filtrado. Clique em um estado para filtrar a análise territorial.</p>
+            <p>Selecione uma UF no mapa para detalhar o território.</p>
             <div class="uf-summary" id="ufSummary"></div>
           </div>
           <div>
@@ -197,7 +215,10 @@
         <div class="comparison-panel" id="territoryComparison"></div>
         <p class="note" id="territoryPeriod">Recorte territorial em atualização.</p>
         <div class="insight-strip" id="territoryInsight"></div>
-        <section class="analysis-brief compact" id="territoryNarrative"></section>
+        <details class="technical-details territory-details">
+          <summary><span>Leitura territorial</span><small>interpretação automática do recorte</small></summary>
+          <section class="analysis-brief compact" id="territoryNarrative"></section>
+        </details>
         <div class="chart-shell large"><h3>Comparação por região</h3><canvas id="regionChart" height="300"></canvas></div>
         <div class="grid two">
           <div class="chart-shell leaderboard-shell"><h3>Top 15 por valor aprovado</h3><div class="ranking-list" id="municipalityValueChart"></div></div>
@@ -211,31 +232,31 @@
         <div class="section-head">
           <div>
             <h2>Metodologia</h2>
-            <p>Resumo do desenho metodológico usado no tratamento, análise e predição exploratória.</p>
+            <p>Ficha técnica do protótipo.</p>
           </div>
         </div>
         <div class="method-grid">
-          <article class="method-card"><span>Fonte</span><strong>SIA/SUS - DATASUS</strong><p>Dados públicos agregados de procedimentos ambulatoriais relacionados à diálise no SUS.</p></article>
-          <article class="method-card"><span>Unidade de análise</span><strong>Procedimentos aprovados</strong><p>Os registros não representam pacientes únicos e não permitem acompanhar indivíduos.</p></article>
-          <article class="method-card"><span>Período</span><strong id="methodPeriod">2015 a 2026</strong><p>Em 2026, a base disponível está parcial até abril.</p></article>
-          <article class="method-card"><span>Modelo</span><strong>Ridge Regression</strong><p>Selecionado entre modelos de aprendizagem pelo menor MAPE médio em validação temporal.</p></article>
+          <article class="method-card"><span>Fonte</span><strong>SIA/SUS</strong><p>DATASUS</p></article>
+          <article class="method-card"><span>Unidade</span><strong>Procedimentos</strong><p>não pacientes únicos</p></article>
+          <article class="method-card"><span>Período</span><strong id="methodPeriod">2015 a 2026</strong><p>2026 parcial</p></article>
+          <article class="method-card"><span>Modelo</span><strong>Ridge</strong><p>menor MAPE</p></article>
         </div>
-        <p class="note">As previsões são exploratórias: servem para apoiar planejamento e discussão acadêmica, não para determinar o gasto futuro de forma exata.</p>
-        <div class="chart-shell">
+        <div class="chart-shell method-flow">
           <h3>Etapas do projeto</h3>
           <div class="steps-list">
-            <article><b>1</b><span>Coleta no DATASUS com recortes por ano/mês, grupo de procedimento e município.</span></article>
-            <article><b>2</b><span>Tratamento e integração das bases em Python, gerando arquivos agregados para o dashboard.</span></article>
-            <article><b>3</b><span>Análise exploratória dos custos, quantidades e distribuição territorial pré, durante e pós-pandemia.</span></article>
-            <article><b>4</b><span>Treinamento e validação temporal dos modelos preditivos para valor aprovado mensal.</span></article>
-            <article><b>5</b><span>Visualização web interativa para apoiar interpretação, apresentação e tomada de decisão.</span></article>
+            <article><b>1</b><span>Coleta DATASUS</span></article>
+            <article><b>2</b><span>Tratamento Python</span></article>
+            <article><b>3</b><span>Análise temporal e territorial</span></article>
+            <article><b>4</b><span>Validação dos modelos</span></article>
+            <article><b>5</b><span>Dashboard web</span></article>
           </div>
         </div>
-        <div class="chart-shell">
-          <h3>Comparação resumida dos modelos</h3>
-          <p class="chart-subtitle">Métricas médias dos modelos de aprendizagem testados no backtesting temporal.</p>
-          <div class="model-comparison" id="modelComparison"></div>
-        </div>
+        <details class="technical-details model-details">
+          <summary><span>Modelos testados</span><small>comparação por backtesting temporal</small></summary>
+          <div class="detail-content">
+            <div class="model-comparison" id="modelComparison"></div>
+          </div>
+        </details>
       </section>
 
       <section id="risk" class="tab-panel">
@@ -274,6 +295,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260713-tech"></script>
+    <script src="./app.js?v=20260812-trendplain"></script>
   </body>
 </html>
