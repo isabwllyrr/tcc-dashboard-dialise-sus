@@ -2,11 +2,23 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
+    <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DialisaSUS | Console de gestão</title>
-    <link rel="stylesheet" href="./styles.css?v=20260812-trendplain" />
+    <link rel="stylesheet" href="./styles.css?v=20260820-base-2026-06" />
   </head>
   <body>
+    <section class="intro-splash" id="introSplash" aria-label="Abertura DialisaSUS">
+      <div class="splash-copy">
+        <p class="eyebrow">ASTRA IA Lab | DialisaSUS</p>
+        <h1>Inteligência territorial para monitorar diálise no SUS</h1>
+        <div class="splash-status"><span></span> Inicializando painel executivo</div>
+      </div>
+      <div class="splash-kidney interactive-renal" aria-label="Visual renal tecnológico">
+        <img src="./assets/renal-astra-lab.png" alt="" />
+      </div>
+    </section>
+
     <aside class="sidebar">
       <div class="brand">
         <span class="brand-mark">SUS</span>
@@ -23,6 +35,7 @@
         <button class="nav-item" data-tab="territory">Território</button>
         <button class="nav-item" data-tab="forecast">Previsão</button>
         <button class="nav-item" data-tab="methodology">Metodologia</button>
+        <button class="nav-item" data-tab="agent">Agente IA</button>
         <button class="nav-item" data-tab="risk">Triagem</button>
       </nav>
 
@@ -194,17 +207,31 @@
           </label>
           <button class="export-button" id="exportTerritory" type="button">Exportar CSV</button>
         </div>
-        <div class="territory-map-shell">
-          <div>
-            <p class="eyebrow">Mapa do Brasil</p>
-            <h3>Distribuição por UF</h3>
-            <p>Selecione uma UF no mapa para detalhar o território.</p>
-            <div class="uf-summary" id="ufSummary"></div>
-          </div>
-          <div>
-            <div class="brazil-map" id="brazilMap" aria-label="Mapa coroplético do Brasil por UF"></div>
+        <div class="territory-map-shell territory-command-map">
+          <section class="map-stage">
+            <div class="map-stage-head">
+              <div>
+                <p class="eyebrow">Mapa nacional</p>
+                <h3>Distribuição por UF</h3>
+              </div>
+              <span class="live-badge">interativo</span>
+            </div>
+            <div class="brazil-map" id="brazilMap" aria-label="Mapa do Brasil por UF"></div>
             <div class="map-legend" id="ufMapLegend"></div>
-          </div>
+          </section>
+          <aside class="map-intel-panel">
+            <div>
+              <p class="eyebrow">Recorte territorial</p>
+              <h3 id="mapScopeTitle">Brasil</h3>
+            </div>
+            <div class="uf-summary map-summary-grid" id="ufSummary"></div>
+            <div class="map-metric-rail">
+              <article><span>UF líder</span><strong id="mapTopUf">-</strong></article>
+              <article><span>Intensidade</span><strong id="mapIntensity">-</strong></article>
+              <article><span>Municípios</span><strong id="mapCoverage">-</strong></article>
+            </div>
+            <p class="map-hint">Clique em uma UF para filtrar. Clique novamente para voltar ao Brasil.</p>
+          </aside>
         </div>
         <div class="territory-summary">
           <article class="period-card"><h3>Municípios com atendimento</h3><strong id="municipalityCount">-</strong><span>com valor aprovado no período</span></article>
@@ -259,6 +286,60 @@
         </details>
       </section>
 
+      <section id="agent" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <h2>Agente DialisaSUS</h2>
+            <p>Assistente de apoio à interpretação dos indicadores do painel.</p>
+          </div>
+          <span class="agent-status" id="agentStatus">verificando backend</span>
+        </div>
+
+        <div class="agent-layout">
+          <section class="agent-console">
+            <div class="agent-header">
+              <div>
+                <p class="eyebrow">Copiloto de gestão</p>
+                <h3>Pergunte sobre custos, volume, previsão e território</h3>
+              </div>
+              <span class="live-badge">IA + DATASUS</span>
+            </div>
+            <form id="agentForm" class="agent-form">
+              <label for="agentQuestion">Pergunta</label>
+              <textarea id="agentQuestion" maxlength="500" rows="4" placeholder="Ex.: Quais municípios merecem maior atenção no recorte atual?"></textarea>
+              <div class="agent-actions">
+                <button type="submit">Perguntar</button>
+                <button type="button" id="agentClear">Limpar</button>
+              </div>
+            </form>
+            <div class="agent-answer" id="agentAnswer">
+              <span>Resposta</span>
+              <p>Faça uma pergunta para o agente analisar os indicadores já carregados no dashboard.</p>
+            </div>
+          </section>
+
+          <aside class="agent-side">
+            <section>
+              <p class="eyebrow">Perguntas sugeridas</p>
+              <div class="agent-prompts">
+                <button type="button" data-agent-prompt="Qual é a leitura geral do período analisado?">Leitura geral</button>
+                <button type="button" data-agent-prompt="Quais municípios merecem maior atenção no recorte territorial atual?">Municípios críticos</button>
+                <button type="button" data-agent-prompt="O que a previsão indica para os próximos 12 meses?">Previsão</button>
+                <button type="button" data-agent-prompt="Explique o modelo preditivo usado e o MAPE.">Modelo e MAPE</button>
+              </div>
+            </section>
+            <section>
+              <p class="eyebrow">Escopo</p>
+              <ul class="agent-scope">
+                <li>Responde com base nos dados exibidos no painel.</li>
+                <li>Não inventa números fora do contexto enviado.</li>
+                <li>Não realiza diagnóstico ou orientação clínica individual.</li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+      </section>
+
       <section id="risk" class="tab-panel">
         <div class="section-head">
           <div>
@@ -286,15 +367,20 @@
               <label><input type="checkbox" value="2" data-label="alteração urinária persistente" /> Alteração urinária</label>
             </div>
           </form>
-          <div class="risk-result" id="riskResult">
-            <span>Classificação simulada</span>
-            <strong>Baixo</strong>
-            <p>Preencha os fatores para visualizar o resultado educativo.</p>
+          <div class="risk-result risk-visual-panel" id="riskResult">
+            <div class="kidney-visual image-kidney interactive-renal" aria-label="Visual renal tecnológico">
+              <img src="./assets/renal-astra-lab.png" alt="" />
+            </div>
+            <div class="risk-copy">
+              <span>Classificação simulada</span>
+              <strong>Baixo</strong>
+              <p>Preencha os fatores para visualizar o resultado educativo.</p>
+            </div>
           </div>
         </div>
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260812-trendplain"></script>
+    <script src="./app.js?v=20260820-base-2026-06"></script>
   </body>
 </html>

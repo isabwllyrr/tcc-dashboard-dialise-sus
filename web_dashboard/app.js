@@ -1,4 +1,4 @@
-﻿const paths = {
+const paths = {
   mensal: "../dados_tratados/dialise_mensal_brasil_total.csv",
   grupo: "../dados_tratados/indicadores_grupo_brasil.csv",
   forecast: "../dados_tratados/previsao_mensal_proximos_12m_corrigido.csv",
@@ -7,7 +7,8 @@
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260713-command";
+const DATA_VERSION = "20260820-base-2026-06";
+const AGENT_API_URL = "http://127.0.0.1:8000";
 
 const state = {
   mensal: [],
@@ -173,6 +174,7 @@ function updateSidebarContext(tab) {
     territory: "Use os filtros territoriais dentro da página.",
     forecast: "A previsão utiliza toda a série disponível.",
     methodology: "Ficha técnica do protótipo e dos modelos.",
+    agent: "Perguntas respondidas com contexto do painel.",
     risk: "Simulação educativa independente do DATASUS.",
   };
   context.textContent = messages[tab] || "";
@@ -255,6 +257,340 @@ function setupRisk() {
   document.getElementById("riskForm").addEventListener("input", renderRisk);
   document.getElementById("exportSummary")?.addEventListener("click", exportSummaryText);
   renderRisk();
+}
+
+function setupAgent() {
+  const form = document.getElementById("agentForm");
+  const input = document.getElementById("agentQuestion");
+  const answer = document.getElementById("agentAnswer");
+  if (!form || !input || !answer) return;
+
+  document.querySelectorAll("[data-agent-prompt]").forEach(button => {
+    button.addEventListener("click", () => {
+      input.value = button.dataset.agentPrompt || "";
+      input.focus();
+    });
+  });
+
+  document.getElementById("agentClear")?.addEventListener("click", () => {
+    input.value = "";
+    answer.className = "agent-answer";
+    answer.innerHTML = `<span>Resposta</span><p>Faça uma pergunta para o agente analisar os indicadores já carregados no dashboard.</p>`;
+  });
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const question = input.value.trim();
+    if (!question) {
+      answer.className = "agent-answer warning";
+      answer.innerHTML = `<span>Atenção</span><p>Digite uma pergunta para consultar o Agente DialisaSUS.</p>`;
+      return;
+    }
+    await askAgent(question);
+  });
+
+  checkAgentHealth();
+}
+
+function setupInteractiveRenal() {
+  document.addEventListener("pointermove", event => {
+    const target = event.target.closest(".interactive-renal");
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    const rotateY = (x - 0.5) * 24;
+    const rotateX = (0.5 - y) * 18;
+    target.style.setProperty("--ry", `${rotateY.toFixed(2)}deg`);
+    target.style.setProperty("--rx", `${rotateX.toFixed(2)}deg`);
+    target.style.setProperty("--renal-scale", "1.045");
+  });
+
+  document.addEventListener("pointerout", event => {
+    const target = event.target.closest(".interactive-renal");
+    if (!target || target.contains(event.relatedTarget)) return;
+    target.style.setProperty("--ry", "0deg");
+    target.style.setProperty("--rx", "0deg");
+    target.style.setProperty("--renal-scale", "1");
+  });
+}
+
+function setupIntroSplash() {
+  const splash = document.getElementById("introSplash");
+  if (!splash) return;
+  document.body.classList.add("splash-active");
+  window.setTimeout(() => {
+    splash.classList.add("splash-hidden");
+    document.body.classList.remove("splash-active");
+  }, 5000);
+}
+
+const kidneyScenes = new WeakMap();
+
+function setupKidneyModels() {
+  document.querySelectorAll("#splashKidneyCanvas, #riskKidneyCanvas").forEach(canvas => {
+    if (kidneyScenes.has(canvas)) return;
+    kidneyScenes.set(canvas, createKidneyScene(canvas));
+  });
+}
+
+function createKidneyScene(canvas) {
+  const ctx = canvas.getContext("2d");
+  const points = kidneyPointCloud();
+  const scene = { rx: -0.18, ry: 0.45, dragging: false, lastX: 0, lastY: 0, active: true };
+
+  canvas.addEventListener("pointerdown", event => {
+    scene.dragging = true;
+    scene.lastX = event.clientX;
+    scene.lastY = event.clientY;
+    canvas.setPointerCapture?.(event.pointerId);
+  });
+  canvas.addEventListener("pointermove", event => {
+    if (!scene.dragging) return;
+    const dx = event.clientX - scene.lastX;
+    const dy = event.clientY - scene.lastY;
+    scene.ry += dx * 0.014;
+    scene.rx += dy * 0.010;
+    scene.rx = Math.max(-1.1, Math.min(1.1, scene.rx));
+    scene.lastX = event.clientX;
+    scene.lastY = event.clientY;
+  });
+  canvas.addEventListener("pointerup", event => {
+    scene.dragging = false;
+    canvas.releasePointerCapture?.(event.pointerId);
+  });
+  canvas.addEventListener("pointerleave", () => {
+    scene.dragging = false;
+  });
+
+  function draw() {
+    if (!canvas.isConnected) return;
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.max(320, rect.width || canvas.parentElement?.clientWidth || 360);
+    const height = Math.max(320, rect.height || canvas.parentElement?.clientHeight || 360);
+    if (canvas.width !== Math.floor(width * dpr) || canvas.height !== Math.floor(height * dpr)) {
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    if (!scene.dragging) scene.ry += 0.006;
+    ctx.clearRect(0, 0, width, height);
+    const bg = ctx.createRadialGradient(width * .52, height * .44, 20, width * .52, height * .48, width * .46);
+    bg.addColorStop(0, "rgba(45, 212, 191, .18)");
+    bg.addColorStop(1, "rgba(3, 8, 10, 0)");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, width, height);
+
+    drawKidneyGrid(ctx, width, height, scene.rx, scene.ry);
+    const projected = points.map(point => projectKidneyPoint(point, scene.rx, scene.ry, width, height)).sort((a, b) => a.z - b.z);
+    projected.forEach(point => {
+      const light = Math.max(0, Math.min(1, (point.z + 1.4) / 2.8));
+      const red = Math.round(112 + light * 132);
+      const green = Math.round(28 + light * 64);
+      const blue = Math.round(44 + light * 55);
+      ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${0.28 + light * 0.55})`;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, point.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    drawKidneyVessels(ctx, width, height, scene.rx, scene.ry);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  return scene;
+}
+
+function kidneyPointCloud() {
+  const points = [];
+  for (let i = 0; i < 58; i++) {
+    const v = -Math.PI / 2 + (Math.PI * i) / 57;
+    for (let j = 0; j < 84; j++) {
+      const u = (Math.PI * 2 * j) / 84;
+      const cv = Math.cos(v);
+      let x = .74 * cv * Math.cos(u);
+      let y = 1.08 * Math.sin(v);
+      let z = .52 * cv * Math.sin(u);
+      const hilum = Math.exp(-Math.pow((x - .47) / .30, 2) - Math.pow(y / .44, 2) - Math.pow(z / .58, 2));
+      x -= hilum * .34;
+      z *= 1 - hilum * .22;
+      const organic = 1 + .035 * Math.sin(5 * u + 2 * v) + .022 * Math.cos(7 * v);
+      points.push({ x: x * organic, y, z: z * organic, r: 1.15 + Math.max(0, z) * .55 });
+    }
+  }
+  return points;
+}
+
+function projectKidneyPoint(point, rx, ry, width, height) {
+  const cosY = Math.cos(ry), sinY = Math.sin(ry);
+  const cosX = Math.cos(rx), sinX = Math.sin(rx);
+  const x1 = point.x * cosY - point.z * sinY;
+  const z1 = point.x * sinY + point.z * cosY;
+  const y1 = point.y * cosX - z1 * sinX;
+  const z2 = point.y * sinX + z1 * cosX;
+  const scale = Math.min(width, height) * .34;
+  const perspective = 1.45 / (1.9 - z2 * .34);
+  return {
+    x: width * .50 + x1 * scale * perspective,
+    y: height * .51 + y1 * scale * perspective,
+    z: z2,
+    r: point.r * perspective,
+  };
+}
+
+function drawKidneyGrid(ctx, width, height, rx, ry) {
+  ctx.save();
+  ctx.translate(width * .5, height * .5);
+  ctx.rotate(Math.sin(ry) * .16);
+  ctx.strokeStyle = "rgba(45, 212, 191, .16)";
+  ctx.lineWidth = 1;
+  for (let i = 1; i <= 3; i++) {
+    ctx.beginPath();
+    ctx.ellipse(0, 0, width * (.13 + i * .06), height * (.10 + i * .045), 0, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawKidneyVessels(ctx, width, height, rx, ry) {
+  const anchors = [
+    { x: .45, y: .02, z: .12 }, { x: .15, y: -.16, z: .05 }, { x: -.18, y: -.36, z: .02 },
+    { x: .44, y: .02, z: .11 }, { x: .12, y: .15, z: .04 }, { x: -.14, y: .38, z: .01 },
+    { x: .48, y: .02, z: .10 }, { x: .76, y: .00, z: .04 }, { x: 1.02, y: -.06, z: .00 },
+  ].map(p => projectKidneyPoint(p, rx, ry, width, height));
+  ctx.save();
+  ctx.lineCap = "round";
+  [[0, 1, 2, "#ef596d"], [3, 4, 5, "#ef596d"], [6, 7, 8, "#2f9bd4"]].forEach(([a, b, c, color]) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(anchors[a].x, anchors[a].y);
+    ctx.quadraticCurveTo(anchors[b].x, anchors[b].y, anchors[c].x, anchors[c].y);
+    ctx.stroke();
+  });
+  ctx.restore();
+}
+
+async function checkAgentHealth() {
+  const status = document.getElementById("agentStatus");
+  if (!status) return;
+  try {
+    const response = await fetch(`${AGENT_API_URL}/health`);
+    if (!response.ok) throw new Error("backend indisponível");
+    const data = await response.json();
+    status.className = `agent-status ${data.ai_enabled ? "online" : "fallback"}`;
+    status.textContent = data.ai_enabled ? "backend online | IA ativa" : "backend online | fallback local";
+  } catch (_error) {
+    status.className = "agent-status offline";
+    status.textContent = "backend offline";
+  }
+}
+
+async function askAgent(question) {
+  const answer = document.getElementById("agentAnswer");
+  const submit = document.querySelector("#agentForm button[type='submit']");
+  if (!answer) return;
+  answer.className = "agent-answer loading";
+  answer.innerHTML = `<span>Consultando agente</span><p>Enviando pergunta com os indicadores atuais do painel...</p>`;
+  if (submit) submit.disabled = true;
+
+  try {
+    const response = await fetch(`${AGENT_API_URL}/api/ask`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question,
+        context: buildAgentContext(),
+      }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || "Falha ao consultar o agente.");
+    answer.className = "agent-answer";
+    answer.innerHTML = `<span>${data.source === "openai" ? "Resposta da IA" : "Resposta local"}</span><p>${escapeHTML(data.answer || "Sem resposta retornada.")}</p>`;
+  } catch (error) {
+    answer.className = "agent-answer error";
+    answer.innerHTML = `<span>Não foi possível consultar</span><p>${escapeHTML(error.message || "Verifique se o backend está rodando em localhost:8000.")}</p>`;
+  } finally {
+    if (submit) submit.disabled = false;
+    checkAgentHealth();
+  }
+}
+
+function buildAgentContext() {
+  const data = filteredMensal();
+  const completeEnd = latestCompleteYear(state.yearEnd);
+  const totalValue = data.reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const totalQty = data.reduce((sum, row) => sum + row.qtd_aprovada, 0);
+  const firstValue = data.filter(row => row.ano === state.yearStart).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const lastValue = data.filter(row => row.ano === completeEnd).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const valueGrowth = firstValue ? ((lastValue / firstValue) - 1) * 100 : 0;
+  const bestModel = state.metricas[0] || {};
+  const forecastRows = state.forecast || [];
+  const firstForecast = forecastRows[0];
+  const lastForecast = forecastRows[forecastRows.length - 1];
+  const forecastGrowth = firstForecast?.previsao_valor_aprovado
+    ? ((lastForecast.previsao_valor_aprovado / firstForecast.previsao_valor_aprovado) - 1) * 100
+    : null;
+  const territoryRows = filteredMunicipios().sort((a, b) => b.valor_periodo - a.valor_periodo);
+  const topMunicipios = territoryRows.slice(0, 8).map(row => ({
+    municipio: row.municipio,
+    uf: row.uf,
+    regiao: row.regiao,
+    valor_periodo: fmtMoney.format(row.valor_periodo),
+    qtd_periodo: fmtNumber.format(row.qtd_periodo),
+    custo_medio: fmtMoney.format(row.custo_medio_periodo),
+    crescimento_qtd_pos_vs_pre_pct: Number.isFinite(row.crescimento_qtd_pos_vs_pre_pct) ? `${fmtDecimal.format(row.crescimento_qtd_pos_vs_pre_pct)}%` : null,
+  }));
+
+  return {
+    fonte: "SIA/SUS-DATASUS, dados públicos agregados tratados no dashboard DialisaSUS",
+    periodo: `${state.yearStart} a ${state.yearEnd}${monthsInYear(state.yearEnd) < 12 ? " (ano final parcial)" : ""}`,
+    ultimo_dado: state.mensal[state.mensal.length - 1]?.data?.slice(0, 7),
+    escopo_territorial: state.uf !== "all" ? `UF ${ufMeta[state.uf]?.uf}` : state.region !== "all" ? `Região ${state.region}` : "Brasil",
+    filtros: {
+      ano_inicial: state.yearStart,
+      ano_final: state.yearEnd,
+      metrica_temporal: state.metric,
+      regiao: state.region,
+      uf: state.uf === "all" ? "todas" : ufMeta[state.uf]?.uf,
+      busca_municipio: state.citySearch || null,
+    },
+    indicadores: {
+      valor_aprovado_total: fmtMoney.format(totalValue),
+      quantidade_aprovada_total: fmtNumber.format(totalQty),
+      custo_medio: totalQty ? fmtMoney.format(totalValue / totalQty) : null,
+      crescimento_valor_primeiro_ultimo_ano_completo: `${fmtDecimal.format(valueGrowth)}%`,
+      ano_final_completo_usado_na_comparacao: completeEnd,
+    },
+    modelo_preditivo: {
+      modelo: modelDisplayName(bestModel.modelo),
+      mape: Number.isFinite(bestModel.MAPE_pct) ? `${fmtDecimal.format(bestModel.MAPE_pct)}%` : null,
+      mae: Number.isFinite(bestModel.MAE) ? fmtMoney.format(bestModel.MAE) : null,
+      rmse: Number.isFinite(bestModel.RMSE) ? fmtMoney.format(bestModel.RMSE) : null,
+    },
+    previsao: {
+      primeiro_mes: firstForecast?.data?.slice(0, 7),
+      primeiro_valor: firstForecast ? fmtMoney.format(firstForecast.previsao_valor_aprovado) : null,
+      ultimo_mes: lastForecast?.data?.slice(0, 7),
+      ultimo_valor: lastForecast ? fmtMoney.format(lastForecast.previsao_valor_aprovado) : null,
+      variacao_prevista: Number.isFinite(forecastGrowth) ? `${fmtDecimal.format(forecastGrowth)}%` : null,
+    },
+    territorio: {
+      municipios_no_recorte: territoryRows.length,
+      top_municipios_por_valor: topMunicipios,
+    },
+  };
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+    .replace(/\n/g, "<br>");
 }
 
 function renderKPIs(data) {
@@ -683,11 +1019,18 @@ function compact(v) {
   return fmtNumber.format(v);
 }
 
+function compactMoney(v) {
+  if (v >= 1e9) return `R$ ${fmtDecimal.format(v / 1e9)} bi`;
+  if (v >= 1e6) return `R$ ${fmtDecimal.format(v / 1e6)} mi`;
+  return fmtMoney.format(v);
+}
+
 function renderOverview(data) {
   const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
   renderBrief(data);
   renderExecutiveStrip(data);
   renderMiniVisuals(data);
+  renderOpeningMetrics(data);
   renderOverviewMap();
   renderOverviewPaths();
   drawHeroTrend("overviewTrendChart", data, "valor_aprovado");
@@ -701,6 +1044,19 @@ function renderOverview(data) {
   drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#2dd4bf", "#f97362", "#f0b94d"][i % 3]);
 }
 
+function renderOpeningMetrics(data) {
+  const target = document.getElementById("openingMetrics");
+  if (!target || !data.length) return;
+  const totalValue = data.reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const totalQty = data.reduce((sum, row) => sum + row.qtd_aprovada, 0);
+  const last = data[data.length - 1];
+  target.innerHTML = `
+    <article><span>Valor aprovado</span><strong>${compactMoney(totalValue)}</strong></article>
+    <article><span>Procedimentos</span><strong>${compact(totalQty)}</strong></article>
+    <article><span>Último mês</span><strong>${last.data.slice(0, 7)}</strong></article>
+  `;
+}
+
 function renderOverviewMap() {
   const map = document.getElementById("overviewBrazilMap");
   const legend = document.getElementById("overviewMapLegend");
@@ -711,20 +1067,25 @@ function renderOverviewMap() {
   const topUf = ufRows[0];
   const values = ufRows.map(row => row.valor_periodo).filter(Number.isFinite);
   const max = Math.max(...values, 0);
-  const { project, width, height } = geoProjector(state.mapa, 620, 520, 18);
+  const { project, width, height } = geoProjector(state.mapa, 720, 640, 24);
   const paths = state.mapa.features.map(feature => {
     const code = String(feature.properties.codigo_ibg);
     const data = byCode[code];
     const value = data?.valor_periodo || 0;
     const title = `${feature.properties.sigla}: ${fmtMoney.format(value)}`;
-    return `<path class="map-state overview-state${data ? "" : " dim"}" data-overview-uf="${code}" d="${geoPath(feature.geometry, project)}" fill="${ufMapColor(value, max)}"><title>${title}</title></path>`;
+    return `<path class="overview-state${data ? "" : " dim"}" data-overview-uf="${code}" d="${geoPath(feature.geometry, project)}" fill="${overviewMapColor(value, max)}"><title>${title}</title></path>`;
   }).join("");
   const labels = state.mapa.features.map(feature => {
     const centroid = featureCentroid(feature.geometry, project);
     if (!centroid) return "";
     return `<text class="map-label overview-label" x="${centroid[0]}" y="${centroid[1]}">${feature.properties.sigla}</text>`;
   }).join("");
-  map.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Mapa do Brasil por valor aprovado">${paths}${labels}</svg>`;
+  map.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Mapa do Brasil por valor aprovado">
+      <rect class="overview-map-bg" x="0" y="0" width="${width}" height="${height}"></rect>
+      <g>${paths}</g>
+      <g>${labels}</g>
+    </svg>`;
   if (legend) legend.innerHTML = `<span>menor valor</span><span class="map-scale"></span><span>maior valor</span>`;
   if (spotlight && topUf) {
     spotlight.innerHTML = `
@@ -993,6 +1354,7 @@ function renderTerritory() {
   renderTerritoryComparison(municipios, total, totalQty);
   renderUfSummary(municipios);
   renderBrazilMap(municipios);
+  renderMapIntelligence(municipios);
 
   const regionRows = aggregateRegions(municipios);
   drawHorizontalBars("regionChart", regionRows, "valor_periodo", r => r.regiao, i => ["#2dd4bf", "#60a5fa", "#f0b94d", "#f97362", "#94a3b8"][i % 5]);
@@ -1120,7 +1482,8 @@ function renderBrazilMap(rows) {
   const metric = mapMetricConfig();
   const mapValues = ufRows.map(row => row[metric.key]).filter(Number.isFinite);
   const max = Math.max(...mapValues, 0);
-  const { project, width, height } = geoProjector(state.mapa, 620, 600, 18);
+  const { project, width, height } = geoProjector(state.mapa, 760, 720, 26);
+  const shadowPaths = state.mapa.features.map(feature => `<path class="map-state-shadow" d="${geoPath(feature.geometry, project)}"></path>`).join("");
   const paths = state.mapa.features.map(feature => {
     const code = String(feature.properties.codigo_ibg);
     const sigla = feature.properties.sigla;
@@ -1131,13 +1494,40 @@ function renderBrazilMap(rows) {
     const title = `${sigla} - ${feature.properties.name}: ${metric.label} ${metric.format(value)}`;
     return `<path class="map-state${active}${dim}" data-uf-code="${code}" d="${geoPath(feature.geometry, project)}" fill="${ufMapColor(value, max)}"><title>${title}</title></path>`;
   }).join("");
+  const markers = ufRows
+    .slice()
+    .sort((a, b) => (b[metric.key] || 0) - (a[metric.key] || 0))
+    .slice(0, 8)
+    .map((row, index) => {
+      const feature = state.mapa.features.find(item => String(item.properties.codigo_ibg) === row.uf_ibge);
+      const centroid = feature ? featureCentroid(feature.geometry, project) : null;
+      if (!centroid) return "";
+      const radius = Math.max(5, 15 - index * 1.15);
+      return `<circle class="map-marker${index === 0 ? " hot" : ""}" cx="${centroid[0]}" cy="${centroid[1]}" r="${radius.toFixed(1)}"><title>${row.uf}: ${metric.format(row[metric.key] || 0)}</title></circle>`;
+    }).join("");
   const labels = state.mapa.features.map(feature => {
     const centroid = featureCentroid(feature.geometry, project);
     if (!centroid) return "";
     return `<text class="map-label" x="${centroid[0]}" y="${centroid[1]}">${feature.properties.sigla}</text>`;
   }).join("");
 
-  map.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Mapa do Brasil por UF">${paths}${labels}</svg>`;
+  map.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Mapa do Brasil por UF">
+      <defs>
+        <filter id="mapGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#020607" flood-opacity=".35"></feDropShadow>
+        </filter>
+        <radialGradient id="oceanGlow" cx="50%" cy="45%" r="58%">
+          <stop offset="0%" stop-color="#13272b"></stop>
+          <stop offset="100%" stop-color="#081013"></stop>
+        </radialGradient>
+      </defs>
+      <rect class="map-backdrop" x="0" y="0" width="${width}" height="${height}" fill="url(#oceanGlow)"></rect>
+      <g class="map-layer-shadow">${shadowPaths}</g>
+      <g class="map-layer-states">${paths}</g>
+      <g class="map-layer-markers">${markers}</g>
+      <g class="map-layer-labels">${labels}</g>
+    </svg>`;
   if (legend) {
     legend.innerHTML = `<span>menor ${metric.short}</span><span class="map-scale"></span><span>maior ${metric.short}</span>`;
   }
@@ -1153,6 +1543,27 @@ function renderBrazilMap(rows) {
       scheduleRender();
     });
   });
+}
+
+function renderMapIntelligence(rows) {
+  const scopeTitle = document.getElementById("mapScopeTitle");
+  const topUfBox = document.getElementById("mapTopUf");
+  const intensityBox = document.getElementById("mapIntensity");
+  const coverageBox = document.getElementById("mapCoverage");
+  if (!scopeTitle || !topUfBox || !intensityBox || !coverageBox) return;
+  const ufRows = aggregateUfs(rows);
+  const metric = mapMetricConfig();
+  const topUf = ufRows.slice().sort((a, b) => (b[metric.key] || 0) - (a[metric.key] || 0))[0];
+  const scope = state.uf !== "all" ? `UF ${ufMeta[state.uf]?.uf}` : state.region !== "all" ? state.region : "Brasil";
+  const totalMunicipios = rows.length;
+  const activeValue = rows.reduce((sum, row) => sum + (row[metric.key] || 0), 0);
+  const nationalRows = state.municipios.filter(row => state.yearStart <= state.yearEnd);
+  const nationalValue = nationalRows.reduce((sum, row) => sum + (row[metric.key] || 0), 0);
+  const share = nationalValue ? (activeValue / nationalValue) * 100 : 0;
+  scopeTitle.textContent = scope;
+  topUfBox.textContent = topUf ? `${topUf.uf} · ${metric.format(topUf[metric.key] || 0)}` : "-";
+  intensityBox.textContent = `${fmtDecimal.format(share)}%`;
+  coverageBox.textContent = fmtNumber.format(totalMunicipios);
 }
 
 function geoProjector(geojson, width, height, pad) {
@@ -1228,15 +1639,29 @@ function mapMetricConfig() {
 }
 
 function ufMapColor(value, max) {
-  if (!value || !max) return "#1b282b";
-  const t = Math.max(0.18, Math.min(1, value / max));
-  const start = [27, 58, 61];
-  const mid = [22, 111, 114];
-  const end = [45, 212, 191];
-  const range = t < 0.55 ? [start, mid, t / 0.55] : [mid, end, (t - 0.55) / 0.45];
+  if (!value || !max) return "#27474b";
+  const raw = Math.max(0, Math.min(1, value / max));
+  const t = Math.max(0.30, Math.pow(raw, 0.52));
+  const start = [53, 103, 109];
+  const mid = [35, 170, 161];
+  const end = [116, 255, 222];
+  const range = t < 0.58 ? [start, mid, t / 0.58] : [mid, end, (t - 0.58) / 0.42];
   const rgb = range[0].map((channel, i) => Math.round(channel + (range[1][i] - channel) * range[2]));
   return `rgb(${rgb.join(",")})`;
 }
+
+function overviewMapColor(value, max) {
+  if (!value || !max) return "#1d5155";
+  const raw = Math.max(0, Math.min(1, value / max));
+  const t = Math.max(0.34, Math.pow(raw, 0.58));
+  const start = [29, 81, 85];
+  const mid = [29, 126, 124];
+  const end = [45, 212, 191];
+  const range = t < 0.62 ? [start, mid, t / 0.62] : [mid, end, (t - 0.62) / 0.38];
+  const rgb = range[0].map((channel, i) => Math.round(channel + (range[1][i] - channel) * range[2]));
+  return `rgb(${rgb.join(",")})`;
+}
+
 
 function territoryInsight(rows, totalValue, totalQty) {
   const top = rows[0];
@@ -1471,8 +1896,18 @@ function renderRisk() {
   if (egfr < 30 || albumin >= 300 || points >= 9) { risk = "Alto"; cls = "high"; text = "Resultado de alerta. Recomenda-se avaliação profissional e investigação laboratorial conforme contexto clínico."; }
   else if (egfr < 60 || albumin >= 30 || points >= 5) { risk = "Moderado"; cls = "moderate"; text = "Fatores de risco ou exames sugerem necessidade de acompanhamento e rastreio adequado."; }
   const box = document.getElementById("riskResult");
-  box.className = `risk-result ${cls}`;
-  box.innerHTML = `<span>Classificação simulada</span><strong>${risk}</strong><p>Pontuação educativa: ${points}</p><p>${text}</p><p><b>Fatores:</b> ${factors.length ? factors.join(", ") : "nenhum marcado"}</p>`;
+  box.className = `risk-result risk-visual-panel ${cls}`;
+  box.innerHTML = `
+    <div class="kidney-visual image-kidney interactive-renal" aria-label="Visual renal tecnológico">
+      <img src="./assets/renal-astra-lab.png" alt="" />
+    </div>
+    <div class="risk-copy">
+      <span>Classificação simulada</span>
+      <strong>${risk}</strong>
+      <p>Pontuação educativa: ${points}</p>
+      <p>${text}</p>
+      <p><b>Fatores:</b> ${factors.length ? factors.join(", ") : "nenhum marcado"}</p>
+    </div>`;
 }
 
 function render() {
@@ -1575,11 +2010,12 @@ async function init() {
     participacao_valor_nacional_pct: numeric(d, "participacao_valor_nacional_pct"),
     participacao_qtd_nacional_pct: numeric(d, "participacao_qtd_nacional_pct"),
   }));
-  setupFilters(); setupNavigation(); setupSidebarToggle(); setupOverviewControls(); setupDetails(); setupTerritoryFilters(); setupRisk(); setupChartTooltips(); updateSidebarContext("overview"); render();
+  setupIntroSplash(); setupFilters(); setupNavigation(); setupSidebarToggle(); setupOverviewControls(); setupDetails(); setupTerritoryFilters(); setupRisk(); setupAgent(); setupInteractiveRenal(); setupChartTooltips(); updateSidebarContext("overview"); render();
 }
 
 window.addEventListener("resize", scheduleRender);
 init().catch(err => { document.body.innerHTML = `<main class="main"><h1>Erro ao carregar dashboard</h1><p>${err.message}</p></main>`; });
+
 
 
 
