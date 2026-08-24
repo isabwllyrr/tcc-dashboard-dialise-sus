@@ -10,7 +10,7 @@ Analise temporal, territorial e preditiva dos procedimentos de dialise no SUS: d
 
 - Abrangencia geografica: Brasil.
 - Fonte dos dados: SIA/SUS - DATASUS/TabNet.
-- Periodo principal: janeiro de 2015 a abril de 2026, com 2026 tratado como ano parcial.
+- Periodo principal: janeiro de 2015 a junho de 2026, com 2026 tratado como ano parcial.
 - Unidade de analise: procedimentos aprovados, nao pacientes unicos.
 - Variaveis principais: valor aprovado, quantidade aprovada e custo medio.
 - Objeto: procedimentos relacionados a dialise no SUS.
@@ -26,8 +26,13 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 ├── dashboard/
 │   ├── app.py
 │   └── README.md
+├── backend/
+│   ├── main.py
+│   ├── requirements.txt
+│   └── .env.example
 ├── web_dashboard/
 │   ├── app.js
+│   ├── assets/
 │   ├── index.html
 │   ├── README.md
 │   └── styles.css
@@ -115,15 +120,24 @@ Depois acesse:
 http://localhost:8080/web_dashboard/
 ```
 
+8. Opcional: rodar o backend do agente de IA:
+
+```bash
+cd backend
+uvicorn main:app --reload --port 8000
+```
+
+Para usar o agente, configure `OPENAI_API_KEY` em um arquivo `.env` local ou nas variaveis de ambiente. O arquivo `.env.example` mostra o formato esperado.
+
 ## Resultados iniciais
 
-- Periodo analisado: 136 meses, de janeiro de 2015 a abril de 2026.
-- Valor aprovado total no periodo: aproximadamente R$ 39,19 bilhoes.
+- Periodo analisado: 138 meses, de janeiro de 2015 a junho de 2026.
+- Valor aprovado total no periodo: aproximadamente R$ 40,03 bilhoes.
 - Crescimento do valor aprovado entre 2015 e 2025, ultimo ano fechado: aproximadamente 88,61%.
 - Unidade de analise: procedimentos aprovados, nao pacientes unicos.
-- Modelo de aprendizagem selecionado: Ridge Regression.
-- MAPE medio no backtesting temporal: aproximadamente 2,54%.
-- Previsao exploratoria: maio de 2026 a abril de 2027, a partir do ultimo mes real disponivel.
+- Modelo de aprendizagem selecionado: Gradient Boosting.
+- MAPE medio no backtesting temporal: aproximadamente 3,27%.
+- Previsao exploratoria: julho de 2026 a junho de 2027, a partir do ultimo mes real disponivel.
 
 ## Dashboards
 
@@ -142,11 +156,12 @@ As interfaces permitem visualizar:
 - custo medio municipal;
 - crescimento municipal pos-pandemia versus pre-pandemia;
 - comparacao real x previsto;
-- previsao mensal para os 12 meses seguintes ao ultimo dado disponivel.
+- previsao mensal para os 12 meses seguintes ao ultimo dado disponivel;
+- agente de IA demonstrativo para perguntas gerenciais sobre os indicadores carregados.
 
 ## Observacao metodologica
 
-Foram testados modelos de aprendizagem supervisionada para previsao do valor aprovado mensal, com validacao temporal por backtesting. O modelo selecionado foi o Ridge Regression, por apresentar o menor MAPE medio entre os modelos de aprendizagem avaliados. As previsoes devem ser apresentadas como apoio exploratorio a gestao, nao como estimativas deterministicas do gasto futuro.
+Foram testados modelos de aprendizagem supervisionada para previsao do valor aprovado mensal, com validacao temporal por backtesting. Apos a atualizacao da base ate junho de 2026, o modelo selecionado foi o Gradient Boosting, por apresentar o menor MAPE medio entre os modelos de aprendizagem avaliados. As previsoes devem ser apresentadas como apoio exploratorio a gestao, nao como estimativas deterministicas do gasto futuro.
 
 ## Triagem demonstrativa
 

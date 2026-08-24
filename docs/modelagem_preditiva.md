@@ -1,9 +1,8 @@
 # Modelagem preditiva
 
-A serie mensal de valor aprovado cobre 2015-01 a 2026-04.
-A validacao principal usa backtesting temporal com multiplos recortes anuais de 12 meses.
-Tambem foi mantido um holdout de 2022 ate o ultimo mes disponivel para comparacao historica.
-Foram avaliados baselines estatisticos e modelos supervisionados de aprendizagem de maquina.
+A serie mensal de valor aprovado cobre 2015-01 a 2026-06.
+A validacao principal usa backtesting temporal mensal a partir de 2022-01 ate o ultimo mes disponivel.
+Foram avaliados modelos supervisionados de aprendizagem de maquina.
 Os modelos de aprendizagem usam variaveis temporais, defasagens do valor aprovado, medias moveis, quantidade aprovada e custo medio defasado.
 No dashboard, a comparacao resumida prioriza apenas os modelos de aprendizagem, conforme o recorte metodologico do TCC.
 
@@ -11,27 +10,16 @@ No dashboard, a comparacao resumida prioriza apenas os modelos de aprendizagem, 
 
 | modelo | tipo | MAE medio | RMSE medio | MAPE medio | desvio MAPE | recortes |
 | --- | --- | --- | --- | --- | --- | --- |
-| ridge | aprendizagem | 7986589.49 | 9992251.33 | 2.54% | 0.70% | 7 |
-| regressao_linear | aprendizagem | 11570988.08 | 13290974.07 | 3.80% | 2.43% | 7 |
-| media_movel_12m | baseline | 14457481.64 | 16386373.83 | 4.40% | 2.11% | 7 |
-| gradient_boosting | aprendizagem | 16983339.76 | 19111311.14 | 5.23% | 4.75% | 7 |
-| random_forest | aprendizagem | 17776930.90 | 20198336.62 | 5.40% | 3.98% | 7 |
-| tendencia_linear | baseline | 21658209.80 | 24013798.44 | 6.44% | 2.96% | 7 |
-| sazonal_ingenuo_12m | baseline | 21547981.46 | 23765075.18 | 6.52% | 4.14% | 7 |
+| gradient_boosting | aprendizagem | 11845194.68 | 14239930.79 | 3.27% | - | 54 |
+| random_forest | aprendizagem | 14702489.08 | 17365968.80 | 4.10% | - | 54 |
+| regressao_linear | aprendizagem | 24931318.65 | 28346684.32 | 6.80% | - | 54 |
+| ridge | aprendizagem | 27588773.06 | 30947220.33 | 7.52% | - | 54 |
 
-Modelo selecionado pelo menor MAPE medio no backtesting temporal: `ridge`.
+Modelo selecionado pelo menor MAPE medio no backtesting temporal: `gradient_boosting`.
 
-## Holdout 2022 ate o ultimo mes disponivel
+## Previsao gerada
 
-| modelo | tipo | MAE | RMSE | MAPE_pct |
-| --- | --- | --- | --- | --- |
-| ridge | aprendizagem | 12571232.74 | 14662822.59 | 3.51% |
-| media_movel_12m | baseline | 19485963.30 | 22180207.78 | 5.52% |
-| sazonal_ingenuo_12m | baseline | 29828531.24 | 34306178.46 | 8.52% |
-| tendencia_linear | baseline | 50928000.60 | 56698588.19 | 13.62% |
-| regressao_linear | aprendizagem | 51440457.45 | 56264965.49 | 13.91% |
-| random_forest | aprendizagem | 86644483.40 | 93908213.53 | 23.34% |
-| gradient_boosting | aprendizagem | 94293470.75 | 101025079.11 | 25.50% |
+A previsao exploratoria atual cobre julho de 2026 a junho de 2027 e utiliza o modelo `gradient_boosting`, selecionado apos a atualizacao da base ate junho de 2026.
 
 ## Observacao metodologica
 

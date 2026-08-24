@@ -12,7 +12,7 @@ Como os procedimentos de dialise aprovados no SUS evoluiram no periodo pre e pos
 
 - Abrangencia geografica: Brasil.
 - Fonte: SIA/SUS - DATASUS/TabNet.
-- Periodo: janeiro de 2015 a abril de 2026.
+- Periodo: janeiro de 2015 a junho de 2026.
 - Unidade de analise: procedimentos aprovados, nao pacientes unicos.
 - Variaveis principais: valor aprovado, quantidade aprovada e custo medio.
 
@@ -33,5 +33,5 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 - O estudo mede procedimentos aprovados, nao quantidade de pacientes.
 - O ano de 2026 esta parcial e deve ser interpretado separadamente.
 - A previsao e exploratoria e nao determina o gasto futuro de forma exata.
-- O modelo selecionado foi Ridge Regression, escolhido pelo menor MAPE medio no backtesting temporal.
+- O modelo selecionado foi Gradient Boosting, escolhido pelo menor MAPE medio no backtesting temporal apos a atualizacao da base ate junho de 2026.
 - A aba de triagem renal e demonstrativa e representa uma possibilidade de expansao futura da plataforma.
