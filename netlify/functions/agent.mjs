@@ -120,7 +120,7 @@ function extractGeminiText(data) {
     .trim();
 }
 
-async function callGemini(question, serializedContext, apiKey, model) {
+async function callGeminiModel(question, serializedContext, apiKey, model) {
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
   const response = await fetch(endpoint, {
     method: "POST",
@@ -172,6 +172,23 @@ async function callGemini(question, serializedContext, apiKey, model) {
   return answer;
 }
 
+async function callGemini(question, serializedContext, apiKey, requestedModel) {
+  const candidateModels = [...new Set([requestedModel, "gemini-2.5-flash"])];
+  let lastError;
+
+  for (const model of candidateModels) {
+    try {
+      const answer = await callGeminiModel(question, serializedContext, apiKey, model);
+      return { answer, model };
+    } catch (error) {
+      lastError = error;
+      if (error?.providerStatus !== 404) throw error;
+    }
+  }
+
+  throw lastError;
+}
+
 export default async function handler(request) {
   const apiKey = (process.env.GEMINI_API_KEY || "").trim();
   const model = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim();
@@ -221,8 +238,8 @@ export default async function handler(request) {
   }
 
   try {
-    const answer = await callGemini(question, serializedContext, apiKey, model);
-    return jsonResponse({ answer, source: "gemini" });
+    const result = await callGemini(question, serializedContext, apiKey, model);
+    return jsonResponse({ answer: result.answer, source: "gemini", model: result.model });
   } catch (error) {
     const timedOut = error && error.name === "TimeoutError";
     return jsonResponse(

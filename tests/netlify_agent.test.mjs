@@ -88,3 +88,36 @@ test("resposta do Gemini é extraída sem expor a chave", async () => {
     else process.env.GEMINI_API_KEY = originalKey;
   }
 });
+
+test("modelo alternativo é usado quando o principal não está disponível", async () => {
+  const originalKey = process.env.GEMINI_API_KEY;
+  const originalFetch = globalThis.fetch;
+  process.env.GEMINI_API_KEY = "chave-falsa-de-teste";
+  const calledUrls = [];
+  globalThis.fetch = async (url) => {
+    calledUrls.push(url);
+    if (calledUrls.length === 1) {
+      return Response.json({ error: { status: "NOT_FOUND" } }, { status: 404 });
+    }
+    return Response.json({
+      candidates: [{ content: { parts: [{ text: "Resposta pelo modelo alternativo." }] } }],
+    });
+  };
+
+  try {
+    const response = await handler(new Request("http://localhost/api/agent", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ question: "Resuma os indicadores.", context: { periodo: "2026" } }),
+    }));
+    const body = await response.json();
+    assert.equal(response.status, 200);
+    assert.match(calledUrls[0], /gemini-2\.5-flash-lite/);
+    assert.match(calledUrls[1], /gemini-2\.5-flash:generateContent$/);
+    assert.equal(body.model, "gemini-2.5-flash");
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = originalKey;
+  }
+});
