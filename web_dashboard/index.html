@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css?v=20260824-restyle" />
+    <link rel="stylesheet" href="./pro-theme.css?v=20260911-platform" />
   </head>
   <body>
     <section class="intro-splash" id="introSplash" aria-label="Abertura DialisaSUS">
@@ -33,13 +34,15 @@
       </div>
 
       <nav class="nav" aria-label="Navegação principal">
-        <button class="nav-item active" data-tab="overview">Intelligence</button>
-        <button class="nav-item" data-tab="temporal">Temporal</button>
-        <button class="nav-item" data-tab="territory">Território</button>
-        <button class="nav-item" data-tab="forecast">Previsão</button>
-        <button class="nav-item" data-tab="methodology">Metodologia</button>
-        <button class="nav-item" data-tab="agent">Agente IA</button>
-        <button class="nav-item" data-tab="risk">Triagem</button>
+        <span class="nav-label">Monitoramento</span>
+        <button class="nav-item active" data-tab="overview"><i data-lucide="layout-dashboard"></i><span>Intelligence</span></button>
+        <button class="nav-item" data-tab="temporal"><i data-lucide="activity"></i><span>Temporal</span></button>
+        <button class="nav-item" data-tab="territory"><i data-lucide="map"></i><span>Território</span></button>
+        <button class="nav-item" data-tab="forecast"><i data-lucide="chart-spline"></i><span>Previsão</span></button>
+        <span class="nav-label">Sistema</span>
+        <button class="nav-item" data-tab="agent"><i data-lucide="sparkles"></i><span>Agente IA</span></button>
+        <button class="nav-item" data-tab="methodology"><i data-lucide="flask-conical"></i><span>Metodologia</span></button>
+        <button class="nav-item" data-tab="risk"><i data-lucide="heart-pulse"></i><span>Triagem</span></button>
       </nav>
 
       <section class="filters" id="filterPanel" aria-label="Filtros">
@@ -73,7 +76,7 @@
         <div>
           <p class="eyebrow">DialisaSUS | SIA/SUS - DATASUS</p>
           <h1>DialisaSUS Intelligence</h1>
-          <p class="subtitle">Produção, território, custo e previsão dos procedimentos de diálise no SUS.</p>
+          <p class="subtitle">Inteligência operacional da diálise no SUS.</p>
           <div class="hero-meta" aria-label="Resumo do escopo do painel">
             <span>Brasil</span>
             <span>2015-2026</span>
@@ -385,7 +388,9 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="./config.js?v=20260911-gemini-netlify"></script>
-    <script src="./app.js?v=20260911-gemini-netlify"></script>
+    <script src="./app.js?v=20260911-platform"></script>
+    <script>window.lucide?.createIcons({ strokeWidth: 1.8 });</script>
   </body>
 </html>
