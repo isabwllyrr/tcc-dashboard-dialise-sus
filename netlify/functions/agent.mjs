@@ -154,8 +154,17 @@ async function callGemini(question, serializedContext, apiKey, model) {
 
   if (!response.ok) {
     const providerDetail = (await response.text()).slice(0, 500);
-    console.error("Gemini API error:", response.status, providerDetail);
-    throw new Error("gemini_provider_error");
+    let providerCode = "UNKNOWN";
+    try {
+      providerCode = JSON.parse(providerDetail)?.error?.status || providerCode;
+    } catch {
+      // Keep the public diagnostic generic when the provider does not return JSON.
+    }
+    console.error("Gemini API error:", response.status, providerCode, providerDetail);
+    const providerError = new Error("gemini_provider_error");
+    providerError.providerStatus = response.status;
+    providerError.providerCode = providerCode;
+    throw providerError;
   }
 
   const answer = extractGeminiText(await response.json());
@@ -221,6 +230,10 @@ export default async function handler(request) {
         detail: timedOut
           ? "A consulta ao Gemini demorou além do esperado."
           : "Não foi possível concluir a consulta ao Gemini.",
+        ...(timedOut ? {} : {
+          provider_status: error?.providerStatus || null,
+          provider_code: error?.providerCode || "CONNECTION_ERROR",
+        }),
       },
       timedOut ? 504 : 502,
     );
