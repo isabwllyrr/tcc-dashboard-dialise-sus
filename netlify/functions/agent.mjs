@@ -155,8 +155,11 @@ async function callGeminiModel(question, serializedContext, apiKey, model) {
   if (!response.ok) {
     const providerDetail = (await response.text()).slice(0, 500);
     let providerCode = "UNKNOWN";
+    let providerMessage = "Detalhe não informado pelo provedor.";
     try {
-      providerCode = JSON.parse(providerDetail)?.error?.status || providerCode;
+      const parsedError = JSON.parse(providerDetail)?.error;
+      providerCode = parsedError?.status || providerCode;
+      providerMessage = String(parsedError?.message || providerMessage).slice(0, 240);
     } catch {
       // Keep the public diagnostic generic when the provider does not return JSON.
     }
@@ -164,6 +167,7 @@ async function callGeminiModel(question, serializedContext, apiKey, model) {
     const providerError = new Error("gemini_provider_error");
     providerError.providerStatus = response.status;
     providerError.providerCode = providerCode;
+    providerError.providerMessage = providerMessage;
     throw providerError;
   }
 
@@ -250,6 +254,7 @@ export default async function handler(request) {
         ...(timedOut ? {} : {
           provider_status: error?.providerStatus || null,
           provider_code: error?.providerCode || "CONNECTION_ERROR",
+          provider_message: error?.providerMessage || "Falha de conexão com o provedor.",
         }),
       },
       timedOut ? 504 : 502,
