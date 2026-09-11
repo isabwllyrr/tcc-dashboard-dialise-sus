@@ -10,6 +10,8 @@ OUT_DIR = ROOT_DIR / "dados_tratados"
 
 ARQ_VALOR = RAW_DIR / "valor_mensal_dialise_brasil.csv"
 ARQ_QTD = RAW_DIR / "qtd_mensal_dialise_brasil.csv"
+ARQ_ATUALIZACAO_VALOR = RAW_DIR / "atualizacao_2026_05_06_valor_mensal_grupo.csv"
+ARQ_ATUALIZACAO_QTD = RAW_DIR / "atualizacao_2026_05_06_qtd_mensal_grupo.csv"
 
 MESES = {
     "Janeiro": 1,
@@ -75,9 +77,48 @@ def load_tabnet_monthly(path, value_name):
     )
 
 
+def load_tabnet_group_update(path, value_name):
+    with path.open(encoding="latin1") as file:
+        header_row = next(
+            i for i, line in enumerate(file)
+            if "Grupo procedimento" in line and "Total" in line
+        )
+    df = pd.read_csv(path, sep=";", skiprows=header_row, encoding="latin1")
+    group_col = df.columns[0]
+    df = df[df[group_col].astype(str).str.match(r"^\d{2}\s")].copy()
+    month_cols = [col for col in df.columns if str(col).startswith("2026/")]
+    month_numbers = {
+        "Jan": 1, "Fev": 2, "Mar": 3, "Abr": 4, "Mai": 5, "Jun": 6,
+        "Jul": 7, "Ago": 8, "Set": 9, "Out": 10, "Nov": 11, "Dez": 12,
+    }
+    long = df.melt(
+        id_vars=[group_col], value_vars=month_cols,
+        var_name="ano_mes", value_name=value_name,
+    )
+    long[value_name] = long[value_name].map(br_number_to_float).fillna(0)
+    long["ano"] = long["ano_mes"].str[:4].astype(int)
+    long["mes"] = long["ano_mes"].str[-3:].map(month_numbers).astype(int)
+    long["data"] = pd.to_datetime(dict(year=long["ano"], month=long["mes"], day=1))
+    long["mes_nome"] = long["mes"].map({value: key for key, value in MESES.items()})
+    return long.rename(columns={group_col: "grupo_procedimento"})[
+        ["data", "ano", "mes", "mes_nome", "grupo_procedimento", value_name]
+    ]
+
+
 def main():
     valor = load_tabnet_monthly(ARQ_VALOR, "valor_aprovado")
     qtd = load_tabnet_monthly(ARQ_QTD, "qtd_aprovada")
+
+    if ARQ_ATUALIZACAO_VALOR.exists() and ARQ_ATUALIZACAO_QTD.exists():
+        ultimo_mes_base = valor["data"].max()
+        valor_update = load_tabnet_group_update(ARQ_ATUALIZACAO_VALOR, "valor_aprovado")
+        qtd_update = load_tabnet_group_update(ARQ_ATUALIZACAO_QTD, "qtd_aprovada")
+        valor = pd.concat(
+            [valor, valor_update[valor_update["data"] > ultimo_mes_base]], ignore_index=True
+        )
+        qtd = pd.concat(
+            [qtd, qtd_update[qtd_update["data"] > ultimo_mes_base]], ignore_index=True
+        )
 
     base = valor.merge(
         qtd,
@@ -85,6 +126,9 @@ def main():
         how="outer",
     )
     base = base[base["ano"] >= 2015].copy()
+    # O transporte sanitario apareceu apenas na atualizacao de 2026 e mudaria
+    # o conceito da serie. O painel mantem o escopo assistencial historico.
+    base = base[~base["grupo_procedimento"].str.startswith("08 ", na=False)].copy()
     base["valor_aprovado"] = base["valor_aprovado"].fillna(0)
     base["qtd_aprovada"] = base["qtd_aprovada"].fillna(0)
     base["custo_medio"] = np.where(

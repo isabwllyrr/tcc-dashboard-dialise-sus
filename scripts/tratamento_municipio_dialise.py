@@ -10,6 +10,8 @@ OUT_DIR = ROOT_DIR / "dados_tratados"
 
 ARQ_VALOR_MUNICIPIO = RAW_DIR / "valor_municipio_dialise_brasil.csv"
 ARQ_QTD_MUNICIPIO = RAW_DIR / "qtd_municipio_dialise_brasil.csv"
+ARQ_ATUALIZACAO_VALOR = RAW_DIR / "atualizacao_2026_05_06_valor_municipio.csv"
+ARQ_ATUALIZACAO_QTD = RAW_DIR / "atualizacao_2026_05_06_qtd_municipio.csv"
 
 ANO_INICIO = 2015
 ANOS_PRE = [str(ano) for ano in range(2015, 2020)]
@@ -73,11 +75,23 @@ def period_mean(df, years):
     return df[cols].mean(axis=1)
 
 
+def append_partial_year(base_wide, update_path, metric_name):
+    if not update_path.exists():
+        return base_wide
+    update_wide, _, years = load_municipio_file(update_path, metric_name)
+    if "2026" not in years:
+        return base_wide
+    update_values = update_wide.set_index("cod_municipio")["2026"]
+    result = base_wide.copy()
+    result["2026"] = result.get("2026", 0) + result["cod_municipio"].map(update_values).fillna(0)
+    return result
+
+
 def build_indicators(valor_wide, qtd_wide, anos_analise):
     base_cols = ["cod_municipio", "municipio", "uf_ibge"]
     indicadores = valor_wide[base_cols].copy()
-    periodo_label = f"{anos_analise[0]}_{anos_analise[-1]}"
     anos_fechados = anos_analise[:-1] if anos_analise[-1] == "2026" else anos_analise
+    periodo_label = f"{anos_fechados[0]}_{anos_fechados[-1]}"
     anos_pos = [year for year in anos_fechados if int(year) >= 2022]
 
     valor_years = valor_wide.set_index("cod_municipio")
@@ -86,8 +100,8 @@ def build_indicators(valor_wide, qtd_wide, anos_analise):
         indicadores[f"valor_{year}"] = indicadores["cod_municipio"].map(valor_years[year]).fillna(0)
         indicadores[f"qtd_{year}"] = indicadores["cod_municipio"].map(qtd_years[year]).fillna(0)
 
-    valor_cols = [f"valor_{year}" for year in anos_analise]
-    qtd_cols = [f"qtd_{year}" for year in anos_analise]
+    valor_cols = [f"valor_{year}" for year in anos_fechados]
+    qtd_cols = [f"qtd_{year}" for year in anos_fechados]
     indicadores["periodo_analise"] = periodo_label
     indicadores["valor_periodo"] = indicadores[valor_cols].sum(axis=1)
     indicadores["qtd_periodo"] = indicadores[qtd_cols].sum(axis=1)
@@ -134,6 +148,20 @@ def build_indicators(valor_wide, qtd_wide, anos_analise):
 def main():
     valor_wide, valor_long, _ = load_municipio_file(ARQ_VALOR_MUNICIPIO, "valor_aprovado")
     qtd_wide, qtd_long, _ = load_municipio_file(ARQ_QTD_MUNICIPIO, "qtd_aprovada")
+    valor_wide = append_partial_year(valor_wide, ARQ_ATUALIZACAO_VALOR, "valor_aprovado")
+    qtd_wide = append_partial_year(qtd_wide, ARQ_ATUALIZACAO_QTD, "qtd_aprovada")
+    valor_long = valor_wide.melt(
+        id_vars=["cod_municipio", "municipio", "uf_ibge"],
+        value_vars=[c for c in valor_wide.columns if str(c).isdigit()],
+        var_name="ano", value_name="valor_aprovado",
+    )
+    qtd_long = qtd_wide.melt(
+        id_vars=["cod_municipio", "municipio", "uf_ibge"],
+        value_vars=[c for c in qtd_wide.columns if str(c).isdigit()],
+        var_name="ano", value_name="qtd_aprovada",
+    )
+    valor_long["ano"] = valor_long["ano"].astype(int)
+    qtd_long["ano"] = qtd_long["ano"].astype(int)
     anos_analise = [
         year
         for year in valor_wide.columns

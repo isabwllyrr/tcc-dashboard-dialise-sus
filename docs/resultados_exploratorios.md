@@ -1,10 +1,9 @@
 # Resultados exploratorios iniciais
 
 Periodo analisado: 2015-01 a 2026-06 (138 meses).
-Unidade de analise: procedimentos aprovados no SIA/SUS, nao pacientes unicos.
 Valor aprovado total: R$ 40.028.040.752,85.
-Quantidade aprovada total: 187.957.614.
-Custo medio no periodo: R$ 212,96.
+Quantidade aprovada total: 187.951.964.
+Custo medio no periodo: R$ 212,97.
 Crescimento do valor aprovado entre 2015 e 2025 (ultimo ano fechado): 88.61%.
 O ano de 2026 aparece na base como periodo parcial e deve ser interpretado separadamente.
 
@@ -23,7 +22,7 @@ O ano de 2026 aparece na base como periodo parcial e deve ser interpretado separ
 | 2023 | R$ 4.080.317.284,95 | 17.662.215 | R$ 231,02 | 10.03% | 4.72% | 12 | True |
 | 2024 | R$ 4.543.024.146,71 | 18.584.597 | R$ 244,45 | 11.34% | 5.22% | 12 | True |
 | 2025 | R$ 4.721.394.104,15 | 19.263.461 | R$ 245,10 | 3.93% | 3.65% | 12 | True |
-| 2026 | R$ 2.421.603.305,55 | 9.584.501 | R$ 252,66 |  |  | 6 | False |
+| 2026 | R$ 2.421.603.305,55 | 9.578.851 | R$ 252,81 |  |  | 6 | False |
 
 ## Participacao por grupo de procedimento
 
@@ -32,4 +31,3 @@ O ano de 2026 aparece na base como periodo parcial e deve ser interpretado separ
 | 03 Procedimentos clinicos | R$ 39.465.762.283,86 | 185.580.380 | 98.60% | R$ 212,66 |
 | 04 Procedimentos cirurgicos | R$ 410.015.851,43 | 1.388.822 | 1.02% | R$ 295,23 |
 | 07 Orteses, proteses e materiais especiais | R$ 152.262.617,56 | 982.762 | 0.38% | R$ 154,93 |
-| 08 Acoes complementares da atencao a saude | R$ 0,00 | 5.650 | 0.00% | R$ 0,00 |

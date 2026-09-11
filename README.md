@@ -11,6 +11,7 @@ Analise temporal, territorial e preditiva dos procedimentos de dialise no SUS: d
 - Abrangencia geografica: Brasil.
 - Fonte dos dados: SIA/SUS - DATASUS/TabNet.
 - Periodo principal: janeiro de 2015 a junho de 2026, com 2026 tratado como ano parcial.
+- Recorte territorial comparavel: 2015 a 2025, somente anos completos.
 - Unidade de analise: procedimentos aprovados, nao pacientes unicos.
 - Variaveis principais: valor aprovado, quantidade aprovada e custo medio.
 - Objeto: procedimentos relacionados a dialise no SUS.
@@ -40,7 +41,8 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 │   ├── qtd_mensal_dialise_brasil.csv
 │   ├── qtd_municipio_dialise_brasil.csv
 │   ├── valor_mensal_dialise_brasil.csv
-│   └── valor_municipio_dialise_brasil.csv
+│   ├── valor_municipio_dialise_brasil.csv
+│   └── atualizacao_2026_05_06_*.csv
 ├── dados_tratados/
 │   ├── comparacao_real_previsto_2022_atual_corrigido.csv
 │   ├── dialise_anual_brasil_total.csv
@@ -57,6 +59,8 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 │   └── serie_mensal_dashboard.csv
 ├── docs/
 │   ├── modelagem_preditiva.md
+│   ├── dicionario_dados.md
+│   ├── limitacoes.md
 │   ├── relatorio_analise_tcc_dialise.md
 │   └── resultados_exploratorios.md
 ├── scripts/
@@ -64,7 +68,10 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 │   ├── modelagem_preditiva.py
 │   ├── tratamento_municipio_dialise.py
 │   ├── tratamento_dialise.py
-│   └── tratamento_mensal_dialise.py
+│   ├── tratamento_mensal_dialise.py
+│   └── validar_dados.py
+├── tests/
+│   └── test_data_quality.py
 ├── analise.ipynb
 ├── requirements.txt
 └── README.md
@@ -102,13 +109,20 @@ python scripts/tratamento_municipio_dialise.py
 python scripts/modelagem_preditiva.py
 ```
 
-6. Abrir o dashboard Streamlit antigo/prototipo:
+6. Validar automaticamente todos os produtos de dados:
+
+```bash
+python scripts/validar_dados.py
+python -m unittest discover -s tests
+```
+
+7. Opcional: abrir o dashboard Streamlit legado:
 
 ```bash
 streamlit run dashboard/app.py
 ```
 
-7. Abrir o dashboard web customizado:
+8. Abrir o dashboard web customizado:
 
 ```powershell
 .\.venv\Scripts\python.exe -m http.server 8080
@@ -120,7 +134,7 @@ Depois acesse:
 http://localhost:8080/web_dashboard/
 ```
 
-8. Opcional: rodar o backend do agente de IA:
+9. Opcional: rodar o backend do agente de IA:
 
 ```bash
 cd backend
@@ -136,12 +150,13 @@ Para usar o agente, configure `OPENAI_API_KEY` em um arquivo `.env` local ou nas
 - Crescimento do valor aprovado entre 2015 e 2025, ultimo ano fechado: aproximadamente 88,61%.
 - Unidade de analise: procedimentos aprovados, nao pacientes unicos.
 - Modelo de aprendizagem selecionado: Gradient Boosting.
-- MAPE medio no backtesting temporal: aproximadamente 3,27%.
+- MAPE medio em 43 janelas moveis de 12 meses: aproximadamente 5,35%.
+- Desvio-padrao do MAPE entre janelas: aproximadamente 2,82 pontos percentuais.
 - Previsao exploratoria: julho de 2026 a junho de 2027, a partir do ultimo mes real disponivel.
 
 ## Dashboards
 
-O projeto possui duas interfaces: uma versao inicial em Streamlit e uma versao web customizada em HTML/CSS/JS, com visual mais adequado para apresentacao do TCC.
+O produto principal e a interface web customizada em HTML/CSS/JS. A versao Streamlit permanece apenas como prototipo legado.
 
 As interfaces permitem visualizar:
 
@@ -161,8 +176,12 @@ As interfaces permitem visualizar:
 
 ## Observacao metodologica
 
-Foram testados modelos de aprendizagem supervisionada para previsao do valor aprovado mensal, com validacao temporal por backtesting. Apos a atualizacao da base ate junho de 2026, o modelo selecionado foi o Gradient Boosting, por apresentar o menor MAPE medio entre os modelos de aprendizagem avaliados. As previsoes devem ser apresentadas como apoio exploratorio a gestao, nao como estimativas deterministicas do gasto futuro.
+Foram testados Regressao Linear, Ridge, Random Forest e Gradient Boosting. A validacao usa 43 janelas temporais moveis: em cada uma, o modelo recebe somente os dados anteriores ao corte e projeta os 12 meses seguintes sem acessar valores reais intermediarios. O Gradient Boosting apresentou o menor MAPE medio. A previsao inclui uma faixa empirica de 95% derivada dos erros historicos por horizonte e deve ser apresentada como apoio exploratorio, nao como estimativa deterministica do gasto futuro.
 
 ## Triagem demonstrativa
 
-A aba de triagem renal e um modulo educativo e demonstrativo. Ela nao utiliza dados individuais do DATASUS, nao realiza diagnostico e nao substitui avaliacao profissional. No TCC, deve ser apresentada como possibilidade de expansao futura da plataforma.
+A aba de triagem renal e um modulo educativo e demonstrativo. Ela combina categorias de TFG e albuminuria da matriz KDIGO, sem criar uma pontuacao ou probabilidade individual. Nao utiliza dados individuais do DATASUS, nao realiza diagnostico e nao substitui avaliacao profissional.
+
+## Limites e definicoes
+
+Consulte `docs/dicionario_dados.md` para as definicoes operacionais e `docs/limitacoes.md` para os limites de interpretacao, incluindo valores nominais, ausencia de pacientes unicos e impossibilidade de inferir causalidade da pandemia.

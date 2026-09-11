@@ -2,10 +2,13 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <base href="/" />
+    <base href="./" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DialisaSUS | Console de gestão</title>
-    <link rel="stylesheet" href="./styles.css?v=20260820-base-2026-06-gb" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css?v=20260824-restyle" />
   </head>
   <body>
     <section class="intro-splash" id="introSplash" aria-label="Abertura DialisaSUS">
@@ -156,12 +159,12 @@
               <p class="eyebrow">Cenário central</p>
               <h3>Real recente x previsão</h3>
             </div>
-            <span class="chart-key"><i class="actual"></i>Real <i class="projected"></i>Previsto</span>
+            <span class="chart-key"><i class="actual"></i>Real <i class="projected"></i>Previsto <i class="interval"></i>Faixa 95%</span>
           </div>
           <p class="chart-subtitle" id="forecastFutureSubtitle">Histórico recente e projeção futura.</p>
           <canvas id="forecastChart" height="320"></canvas>
         </div>
-        <p class="forecast-caveat">Projeção pontual, sem intervalo de confiança.</p>
+          <p class="forecast-caveat">Faixa empírica de 95% estimada pelos erros das janelas de backtesting.</p>
         <details class="technical-details forecast-details">
           <summary><span>Detalhes técnicos</span><small>validação, erros e valores mensais</small></summary>
           <div class="detail-content">
@@ -236,7 +239,7 @@
         <div class="territory-summary">
           <article class="period-card"><h3>Municípios com atendimento</h3><strong id="municipalityCount">-</strong><span>com valor aprovado no período</span></article>
           <article class="period-card"><h3>Maior concentração</h3><strong id="topMunicipality">-</strong><span id="topMunicipalityShare">-</span></article>
-          <article class="period-card"><h3>Top 10</h3><strong id="top10Share">-</strong><span>participação no valor nacional</span></article>
+          <article class="period-card"><h3>Top 10</h3><strong id="top10Share">-</strong><span>participação no valor do recorte</span></article>
           <article class="period-card"><h3>Custo médio nacional</h3><strong id="territoryAvgCost">-</strong><span id="territoryAvgCostHint">valor / quantidade</span></article>
         </div>
         <div class="comparison-panel" id="territoryComparison"></div>
@@ -259,7 +262,7 @@
         <div class="section-head">
           <div>
             <h2>Metodologia</h2>
-            <p>Ficha técnica do protótipo.</p>
+            <p>Como o modelo funciona, do dado bruto à previsão.</p>
           </div>
         </div>
         <div class="method-grid">
@@ -343,10 +346,11 @@
       <section id="risk" class="tab-panel">
         <div class="section-head">
           <div>
-            <h2>Triagem demonstrativa</h2>
-            <p>Módulo educativo demonstrativo, independente da modelagem do DATASUS. Não realiza diagnóstico e não substitui avaliação profissional.</p>
+            <h2>Triagem de risco renal <span class="tag-soft">educativo</span></h2>
+            <p>Leitura educativa de TFG e albuminúria, com fatores clínicos informados.</p>
           </div>
         </div>
+        <p class="note">Módulo educativo baseado nas categorias G e A da KDIGO. Não estima probabilidade individual, não realiza diagnóstico e não substitui avaliação profissional.</p>
         <div class="risk-layout">
           <form id="riskForm" class="risk-form">
             <label>Idade <input id="riskAge" type="number" min="0" max="120" value="45" /></label>
@@ -381,6 +385,6 @@
       </section>
     </main>
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
-    <script src="./app.js?v=20260820-base-2026-06-gb"></script>
+    <script src="./app.js?v=20260824-restyle"></script>
   </body>
 </html>

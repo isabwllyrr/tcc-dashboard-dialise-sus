@@ -7,7 +7,7 @@ const paths = {
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260820-base-2026-06";
+const DATA_VERSION = "20260911-auditoria-estatistica";
 const AGENT_API_URL = "http://127.0.0.1:8000";
 
 const state = {
@@ -83,8 +83,8 @@ function latestCompleteYear(maxYear = state.yearEnd) {
   return completeYears.length ? Math.max(...completeYears) : maxYear;
 }
 function formatMetricValue(key, value) {
-  if (key.includes("valor") || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
   if (key.includes("pct")) return `${fmtDecimal.format(value)}%`;
+  if (key.includes("valor") || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
   return fmtNumber.format(value);
 }
 
@@ -110,8 +110,20 @@ function setupFilters() {
   }
   document.getElementById("yearStart").value = state.yearStart;
   document.getElementById("yearEnd").value = state.yearEnd;
-  document.getElementById("yearStart").addEventListener("change", e => { state.yearStart = Number(e.target.value); if (state.yearStart > state.yearEnd) state.yearEnd = state.yearStart; scheduleRender(); });
-  document.getElementById("yearEnd").addEventListener("change", e => { state.yearEnd = Number(e.target.value); if (state.yearEnd < state.yearStart) state.yearStart = state.yearEnd; scheduleRender(); });
+  const syncYearFilters = () => {
+    document.getElementById("yearStart").value = state.yearStart;
+    document.getElementById("yearEnd").value = state.yearEnd;
+  };
+  document.getElementById("yearStart").addEventListener("change", e => {
+    state.yearStart = Number(e.target.value);
+    if (state.yearStart > state.yearEnd) state.yearEnd = state.yearStart;
+    syncYearFilters(); scheduleRender();
+  });
+  document.getElementById("yearEnd").addEventListener("change", e => {
+    state.yearEnd = Number(e.target.value);
+    if (state.yearEnd < state.yearStart) state.yearStart = state.yearEnd;
+    syncYearFilters(); scheduleRender();
+  });
   document.getElementById("metricSelect").addEventListener("change", e => { state.metric = e.target.value; scheduleRender(); });
   document.getElementById("resetFilters")?.addEventListener("click", () => {
     state.yearStart = Math.min(...state.mensal.map(d => d.ano));
@@ -658,7 +670,10 @@ function drawLine(id, data, key, color, label, extraLine = null) {
   const { ctx, width, height } = base;
   const pad = { l: 72, r: 30, t: 30, b: 48 };
   const values = data.map(d => d[key]);
-  if (extraLine) values.push(...extraLine.map(d => d.value));
+  if (extraLine) {
+    values.push(...extraLine.map(d => d.value));
+    values.push(...extraLine.flatMap(d => [d.lower, d.upper]).filter(Number.isFinite));
+  }
   const totalCount = data.length + (extraLine?.length || 0);
   const minRaw = Math.min(...values);
   const maxRaw = Math.max(...values);
@@ -699,8 +714,18 @@ function drawLine(id, data, key, color, label, extraLine = null) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = "#fda89b";
-    ctx.font = "700 11px Segoe UI";
+    ctx.font = "700 11px Inter, Segoe UI";
     ctx.fillText("INÍCIO DA PREVISÃO", boundaryX + 9, pad.t + 14);
+    const bandRows = extraLine.filter(d => Number.isFinite(d.lower) && Number.isFinite(d.upper));
+    if (bandRows.length) {
+      const upper = bandRows.map((d, i) => [x(data.length + i), y(d.upper)]);
+      const lower = bandRows.map((d, i) => [x(data.length + i), y(d.lower)]).reverse();
+      ctx.beginPath();
+      [...upper, ...lower].forEach(([px, py], i) => i ? ctx.lineTo(px, py) : ctx.moveTo(px, py));
+      ctx.closePath();
+      ctx.fillStyle = "rgba(249, 115, 98, 0.15)";
+      ctx.fill();
+    }
     const forecastPoints = extraLine.map((d, i) => ({
       x: x(data.length + i),
       y: y(d.value),
@@ -714,7 +739,7 @@ function drawLine(id, data, key, color, label, extraLine = null) {
     drawPointMarkers(ctx, forecastPoints, "#f97362");
     points.push(...forecastPoints);
   }
-  ctx.fillStyle = "#9fb3ad"; ctx.font = "700 12px Segoe UI"; ctx.fillText(label, pad.l, 18);
+  ctx.fillStyle = "#9fb3ad"; ctx.font = "700 12px Inter, Segoe UI"; ctx.fillText(label, pad.l, 18);
   drawLineLabels(ctx, [...data, ...(extraLine || []).map(d => ({ data: d.data }))], x, height, pad);
   chartRegistry.set(id, points);
 }
@@ -787,7 +812,7 @@ function drawHeroTrend(id, data, key) {
     ctx.fill();
     ctx.stroke();
     ctx.fillStyle = "#9fb3ad";
-    ctx.font = "800 11px Segoe UI";
+    ctx.font = "800 11px Inter, Segoe UI";
     ctx.textAlign = marker.align;
     ctx.fillText(marker.label || "", marker.point.x, height - 20);
   });
@@ -795,7 +820,7 @@ function drawHeroTrend(id, data, key) {
   const last = avgPoints[avgPoints.length - 1];
   if (last) {
     const label = formatMetricValue(key, last.value);
-    ctx.font = "900 13px Segoe UI";
+    ctx.font = "900 13px Inter, Segoe UI";
     const labelW = ctx.measureText(label).width + 26;
     const labelX = Math.min(width - pad.r - labelW, Math.max(pad.l, last.x - labelW - 12));
     const labelY = Math.max(pad.t + 8, last.y - 22);
@@ -880,7 +905,7 @@ function drawMultiLine(id, data, series) {
     drawPath(ctx, points.map(p => [p.x, p.y]), s.color, s.dashed);
     drawPointMarkers(ctx, points, s.color);
     ctx.fillStyle = s.color;
-    ctx.font = "12px Segoe UI";
+    ctx.font = "12px Inter, Segoe UI";
     ctx.fillText(s.label, pad.l + sIndex * 86, 16);
     registry.push(...points);
   });
@@ -911,7 +936,7 @@ function drawBar(id, rows, key, labels, color) {
     fillRoundRect(ctx, bx, by, actualW, h, 999);
     items.push({ type: "bar", x: bx, y: by, w: actualW, h, label: labels(r), value: r[key], key });
     ctx.fillStyle = "#9fb3ad";
-    ctx.font = "700 11px Segoe UI";
+    ctx.font = "700 11px Inter, Segoe UI";
     ctx.textAlign = "center";
     ctx.fillText(labels(r), bx + actualW / 2, height - 18);
   });
@@ -926,7 +951,7 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
   const max = Math.max(...rows.map(r => r[key])) * 1.08;
   const trackW = width - pad.l - pad.r;
   const rowH = (height - pad.t - pad.b) / rows.length;
-  ctx.font = "700 12px Segoe UI";
+  ctx.font = "700 12px Inter, Segoe UI";
   const items = [];
   rows.forEach((r, i) => {
     const y = pad.t + i * rowH + rowH * 0.28;
@@ -947,9 +972,9 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
     items.push({ type: "bar", x: pad.l, y, w: barW, h: barH, label: rawLabel, value: r[key], key });
     ctx.fillStyle = "#eef7f4";
     ctx.textAlign = "left";
-    ctx.font = "800 12px Segoe UI";
+    ctx.font = "800 12px Inter, Segoe UI";
     ctx.fillText(formatMetricValue(key, r[key]), pad.l + Math.min(trackW + 8, barW + 10), y + barH * 0.76);
-    ctx.font = "700 12px Segoe UI";
+    ctx.font = "700 12px Inter, Segoe UI";
   });
   ctx.textAlign = "left";
   chartRegistry.set(id, items);
@@ -958,7 +983,7 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
 function drawAxes(ctx, width, height, pad, min, max) {
   ctx.strokeStyle = "rgba(148, 163, 184, .24)"; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(pad.l, height - pad.b); ctx.lineTo(width - pad.r, height - pad.b); ctx.stroke();
-  ctx.fillStyle = "#9fb3ad"; ctx.font = "700 11px Segoe UI";
+  ctx.fillStyle = "#9fb3ad"; ctx.font = "700 11px Inter, Segoe UI";
   ctx.textAlign = "right";
   for (let i = 0; i <= 4; i++) {
     const yy = pad.t + i * ((height - pad.t - pad.b) / 4);
@@ -975,7 +1000,7 @@ function drawLineLabels(ctx, data, x, height, pad) {
   const first = data[0].data.slice(0, 7);
   const last = data[data.length - 1].data.slice(0, 7);
   ctx.fillStyle = "#9fb3ad";
-  ctx.font = "11px Segoe UI";
+  ctx.font = "11px Inter, Segoe UI";
   ctx.textAlign = "left";
   ctx.fillText(first, pad.l, height - 16);
   ctx.textAlign = "right";
@@ -1258,19 +1283,22 @@ function renderPeriods() {
 
 function renderForecast() {
   const recent = state.mensal.slice(-12);
-  const forecastRows = state.forecast.map(d => ({ data: d.data, value: d.previsao_valor_aprovado }));
+  const forecastRows = state.forecast.map(d => ({
+    data: d.data, value: d.previsao_valor_aprovado,
+    lower: d.limite_inferior_95, upper: d.limite_superior_95,
+  }));
   const lastReal = state.mensal[state.mensal.length - 1]?.data?.slice(0, 7) || "último dado";
   const firstContext = recent[0]?.data?.slice(0, 7) || lastReal;
   const firstForecast = forecastRows[0]?.data?.slice(0, 7) || "próximo mês";
   const lastForecast = forecastRows[forecastRows.length - 1]?.data?.slice(0, 7) || "12 meses";
   const bestModel = state.metricas[0];
   document.getElementById("forecastNote").textContent = `${lastReal} real | ${firstForecast} a ${lastForecast} previsto`;
-  document.getElementById("forecastFutureSubtitle").textContent = `${modelDisplayName(bestModel?.modelo)} aplicado à série nacional de valor aprovado.`;
+  document.getElementById("forecastFutureSubtitle").textContent = `${modelDisplayName(bestModel?.modelo)} | cenário central e faixa empírica de 95%.`;
   renderSelectedModelCard();
   renderForecastValidation();
   renderForecastSummary(recent, forecastRows);
   drawLine("forecastChart", recent, "valor_aprovado", "#60a5fa", `Real recente (${firstContext} a ${lastReal})`, forecastRows);
-  document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês previsto</th><th>Valor previsto</th><th>Modelo</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${modelDisplayName(r.modelo_usado)}</td></tr>`).join("")}</tbody>`;
+  document.getElementById("forecastTable").innerHTML = `<thead><tr><th>Mês</th><th>Previsão</th><th>Limite inferior 95%</th><th>Limite superior 95%</th></tr></thead><tbody>${state.forecast.map(r => `<tr><td>${r.data.slice(0,7)}</td><td>${fmtMoney.format(r.previsao_valor_aprovado)}</td><td>${fmtMoney.format(r.limite_inferior_95)}</td><td>${fmtMoney.format(r.limite_superior_95)}</td></tr>`).join("")}</tbody>`;
 }
 
 function renderForecastValidation() {
@@ -1303,11 +1331,11 @@ function renderForecastSummary(recent, forecastRows) {
   const lastObserved = recent[recent.length - 1];
   const firstForecast = forecastRows[0];
   const lastForecast = forecastRows[forecastRows.length - 1];
-  const forecastGrowth = firstForecast.value ? ((lastForecast.value / firstForecast.value) - 1) * 100 : 0;
+  const forecastTotal = forecastRows.reduce((sum, row) => sum + row.value, 0);
   target.innerHTML = `
     <article><span>Último real</span><strong>${fmtMoney.format(lastObserved?.valor_aprovado || 0)}</strong><small>${lastObserved?.data?.slice(0, 7) || "-"}</small></article>
     <article><span>Primeira previsão</span><strong>${fmtMoney.format(firstForecast.value)}</strong><small>${firstForecast.data.slice(0, 7)}</small></article>
-    <article><span>Variação prevista</span><strong>${fmtDecimal.format(forecastGrowth)}%</strong><small>${firstForecast.data.slice(0, 7)} x ${lastForecast.data.slice(0, 7)}</small></article>
+    <article><span>Total projetado</span><strong>${compactMoney(forecastTotal)}</strong><small>12 meses</small></article>
   `;
 }
 
@@ -1318,14 +1346,16 @@ function renderSelectedModelCard() {
   card.innerHTML = `
     <span>Modelo ativo</span>
     <strong>${modelDisplayName(model.modelo)}</strong>
-    <small>MAPE ${fmtDecimal.format(model.MAPE_pct)}%</small>
+    <small>MAPE 12 meses: ${fmtDecimal.format(model.MAPE_pct)}%</small>
   `;
   const diagnostics = document.getElementById("modelDiagnostics");
   if (diagnostics) diagnostics.innerHTML = `
-    <article><span>MAPE médio</span><strong>${fmtDecimal.format(model.MAPE_pct)}%</strong></article>
+    <article><span>MAPE médio 12m</span><strong>${fmtDecimal.format(model.MAPE_pct)}%</strong></article>
+    <article><span>Desvio do MAPE</span><strong>${fmtDecimal.format(model.MAPE_desvio_pct)} p.p.</strong></article>
+    <article><span>Viés médio</span><strong>${fmtDecimal.format(model.vies_pct)}%</strong></article>
     <article><span>MAE médio</span><strong>${fmtMoney.format(model.MAE)}</strong></article>
     <article><span>RMSE médio</span><strong>${fmtMoney.format(model.RMSE)}</strong></article>
-    <article><span>Recortes</span><strong>${model.recortes}</strong></article>
+    <article><span>Janelas de 12m</span><strong>${model.recortes}</strong></article>
   `;
 }
 
@@ -1344,11 +1374,11 @@ function renderTerritory() {
   const periodLabel = state.municipios[0].periodo_analise?.replace("_", " a ") || "período";
   document.getElementById("municipalityCount").textContent = fmtNumber.format(municipios.length);
   document.getElementById("topMunicipality").textContent = top.municipio;
-  document.getElementById("topMunicipalityShare").textContent = `${fmtDecimal.format((top.valor_periodo / total) * 100)}% do valor nacional`;
+  document.getElementById("topMunicipalityShare").textContent = `${fmtDecimal.format((top.valor_periodo / total) * 100)}% do valor do recorte`;
   document.getElementById("top10Share").textContent = `${fmtDecimal.format((top10 / total) * 100)}%`;
   document.getElementById("territoryAvgCost").textContent = fmtMoney.format(total / totalQty);
   document.getElementById("territoryAvgCostHint").textContent = `maior volume: ${topQty.municipio}`;
-  document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}. Em 2026, os dados vão até abril.`;
+  document.getElementById("territoryPeriod").textContent = `Recorte territorial: ${periodLabel}, somente anos completos.`;
   document.getElementById("territoryInsight").innerHTML = territoryInsight(municipios, total, totalQty);
   document.getElementById("territoryNarrative").innerHTML = territoryNarrative(municipios, total, totalQty);
   renderTerritoryComparison(municipios, total, totalQty);
@@ -1614,17 +1644,19 @@ function featureCentroid(geometry, project) {
 
 function aggregateUfs(rows) {
   const aggregated = Object.values(rows.reduce((acc, row) => {
-    acc[row.uf_ibge] ||= { uf_ibge: row.uf_ibge, uf: row.uf, regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0, municipios: 0, growthValues: [] };
+    acc[row.uf_ibge] ||= { uf_ibge: row.uf_ibge, uf: row.uf, regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0, municipios: 0, media_qtd_pre_pandemia: 0, media_qtd_pos_pandemia: 0 };
     acc[row.uf_ibge].valor_periodo += row.valor_periodo;
     acc[row.uf_ibge].qtd_periodo += row.qtd_periodo;
     acc[row.uf_ibge].municipios += 1;
-    if (Number.isFinite(row.crescimento_qtd_pos_vs_pre_pct)) acc[row.uf_ibge].growthValues.push(row.crescimento_qtd_pos_vs_pre_pct);
+    acc[row.uf_ibge].media_qtd_pre_pandemia += row.media_qtd_pre_pandemia || 0;
+    acc[row.uf_ibge].media_qtd_pos_pandemia += row.media_qtd_pos_pandemia || 0;
     return acc;
   }, {}));
   return aggregated.map(row => ({
     ...row,
     custo_medio_periodo: row.qtd_periodo ? row.valor_periodo / row.qtd_periodo : 0,
-    crescimento_qtd_pos_vs_pre_pct: row.growthValues.length ? row.growthValues.reduce((sum, value) => sum + value, 0) / row.growthValues.length : 0,
+    crescimento_qtd_pos_vs_pre_pct: row.media_qtd_pre_pandemia
+      ? (row.media_qtd_pos_pandemia / row.media_qtd_pre_pandemia - 1) * 100 : NaN,
   })).sort((a, b) => b.valor_periodo - a.valor_periodo);
 }
 
@@ -1668,12 +1700,12 @@ function territoryInsight(rows, totalValue, totalQty) {
   const regionText = state.uf !== "all"
     ? `UF ${ufMeta[state.uf]?.uf || state.uf}`
     : state.region !== "all" ? `região ${state.region}` : "Brasil";
-  const growthRows = rows.filter(r => Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct));
+  const growthRows = rows.filter(r => Number.isFinite(r.crescimento_qtd_pos_vs_pre_pct) && r.media_qtd_pre_pandemia >= 10000);
   const topGrowth = growthRows.sort((a, b) => b.crescimento_qtd_pos_vs_pre_pct - a.crescimento_qtd_pos_vs_pre_pct)[0];
   return `
     <article><span>Recorte</span><strong>${regionText}</strong><small>${fmtNumber.format(rows.length)} municípios</small></article>
     <article><span>Valor acumulado</span><strong>${fmtMoney.format(totalValue)}</strong><small>${fmtNumber.format(totalQty)} procedimentos</small></article>
-    <article><span>Maior polo</span><strong>${top.municipio} - ${top.uf}</strong><small>${fmtDecimal.format(top.participacao_valor_nacional_pct)}% do valor nacional</small></article>
+    <article><span>Maior polo</span><strong>${top.municipio} - ${top.uf}</strong><small>${fmtDecimal.format((top.valor_periodo / totalValue) * 100)}% do valor do recorte</small></article>
     <article><span>Maior alta de quantidade</span><strong>${topGrowth ? `${topGrowth.municipio} - ${topGrowth.uf}` : "-"}</strong><small>${topGrowth ? `${fmtDecimal.format(topGrowth.crescimento_qtd_pos_vs_pre_pct)}% pós x pré` : "sem base comparável"}</small></article>
   `;
 }
@@ -1723,7 +1755,7 @@ function renderModelComparison() {
     .sort((a, b) => a.MAPE_pct - b.MAPE_pct);
   target.innerHTML = `
     <div class="model-row header">
-      <span>Modelo</span><span>Tipo</span><span>Ranking</span><span>MAPE</span><span>RMSE</span><span>Recortes</span>
+      <span>Modelo</span><span>Tipo</span><span>Ranking</span><span>MAPE 12m</span><span>Desvio</span><span>Janelas</span>
     </div>
     ${rows.map((row, index) => {
       const winner = index === 0;
@@ -1736,7 +1768,7 @@ function renderModelComparison() {
           <span class="model-badge">Aprendizagem</span>
           <span class="model-rank">${index + 1}</span>
           <strong>${fmtDecimal.format(row.MAPE_pct)}%</strong>
-          <span>${fmtMoney.format(row.RMSE)}</span>
+          <span>${fmtDecimal.format(row.MAPE_desvio_pct)} p.p.</span>
           <span>${row.recortes}</span>
         </article>
       `;
@@ -1884,17 +1916,23 @@ function renderRankingList(id, rows, config) {
 
 function renderRisk() {
   const form = document.getElementById("riskForm"); if (!form) return;
-  const age = Number(document.getElementById("riskAge").value || 0);
   const egfr = Number(document.getElementById("riskEgfr").value || 0);
   const albumin = Number(document.getElementById("riskAlbumin").value || 0);
-  let points = age >= 60 ? 1 : 0;
   const factors = [];
-  form.querySelectorAll("input[type='checkbox']:checked").forEach(input => { points += Number(input.value); factors.push(input.dataset.label); });
-  if (egfr < 60) { points += 4; factors.push("eGFR baixo"); } else if (egfr < 90) points += 1;
-  if (albumin >= 300) { points += 4; factors.push("albuminúria muito elevada"); } else if (albumin >= 30) { points += 3; factors.push("albuminúria elevada"); }
-  let risk = "Baixo", cls = "low", text = "Sem excluir risco real. Pessoas com fatores de risco devem manter acompanhamento de rotina.";
-  if (egfr < 30 || albumin >= 300 || points >= 9) { risk = "Alto"; cls = "high"; text = "Resultado de alerta. Recomenda-se avaliação profissional e investigação laboratorial conforme contexto clínico."; }
-  else if (egfr < 60 || albumin >= 30 || points >= 5) { risk = "Moderado"; cls = "moderate"; text = "Fatores de risco ou exames sugerem necessidade de acompanhamento e rastreio adequado."; }
+  form.querySelectorAll("input[type='checkbox']:checked").forEach(input => factors.push(input.dataset.label));
+  const g = egfr >= 90 ? "G1" : egfr >= 60 ? "G2" : egfr >= 45 ? "G3a" : egfr >= 30 ? "G3b" : egfr >= 15 ? "G4" : "G5";
+  const a = albumin < 30 ? "A1" : albumin < 300 ? "A2" : "A3";
+  const matrix = {
+    G1: { A1: "Baixo", A2: "Moderado", A3: "Alto" },
+    G2: { A1: "Baixo", A2: "Moderado", A3: "Alto" },
+    G3a: { A1: "Moderado", A2: "Alto", A3: "Muito alto" },
+    G3b: { A1: "Alto", A2: "Muito alto", A3: "Muito alto" },
+    G4: { A1: "Muito alto", A2: "Muito alto", A3: "Muito alto" },
+    G5: { A1: "Muito alto", A2: "Muito alto", A3: "Muito alto" },
+  };
+  const risk = matrix[g][a];
+  const cls = risk === "Baixo" ? "low" : risk === "Moderado" ? "moderate" : "high";
+  const text = "A categoria combina TFG e albuminúria. Um resultado isolado não diagnostica DRC; alterações devem persistir por pelo menos três meses e ser avaliadas por profissional.";
   const box = document.getElementById("riskResult");
   box.className = `risk-result risk-visual-panel ${cls}`;
   box.innerHTML = `
@@ -1902,11 +1940,11 @@ function renderRisk() {
       <img src="./assets/renal-astra-lab.png" alt="" />
     </div>
     <div class="risk-copy">
-      <span>Classificação simulada</span>
+      <span>Classificação educativa KDIGO</span>
       <strong>${risk}</strong>
-      <p>Pontuação educativa: ${points}</p>
+      <p>Categoria renal: ${g} / ${a}</p>
       <p>${text}</p>
-      <p><b>Fatores:</b> ${factors.length ? factors.join(", ") : "nenhum marcado"}</p>
+      <p><b>Fatores informados:</b> ${factors.length ? factors.join(", ") : "nenhum"}. Eles são contexto clínico e não compõem uma pontuação inventada.</p>
     </div>`;
 }
 
@@ -1978,7 +2016,12 @@ async function init() {
     custo_medio: numeric(d, "custo_medio"),
     participacao_valor_pct: numeric(d, "participacao_valor_pct"),
   }));
-  state.forecast = forecast.map(d => ({ ...d, previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado") }));
+  state.forecast = forecast.map(d => ({
+    ...d,
+    previsao_valor_aprovado: numeric(d, "previsao_valor_aprovado"),
+    limite_inferior_95: numeric(d, "limite_inferior_95"),
+    limite_superior_95: numeric(d, "limite_superior_95"),
+  }));
   state.comparacao = comparacao.map(d => {
     const row = { ...d };
     Object.keys(row).forEach(key => {
@@ -1992,6 +2035,8 @@ async function init() {
     RMSE: numeric(d, "RMSE"),
     MAPE_pct: numeric(d, "MAPE_pct"),
     MAPE_desvio_pct: d.MAPE_desvio_pct === "" ? NaN : numeric(d, "MAPE_desvio_pct"),
+    MAPE_mediana_pct: numeric(d, "MAPE_mediana_pct"),
+    vies_pct: numeric(d, "vies_pct"),
     recortes: d.recortes || "",
   }));
   state.municipios = municipios.map(d => ({
@@ -2005,6 +2050,7 @@ async function init() {
     custo_medio_periodo: numeric(d, "custo_medio_periodo"),
     media_valor_pre_pandemia: numeric(d, "media_valor_pre_pandemia"),
     media_qtd_pre_pandemia: numeric(d, "media_qtd_pre_pandemia"),
+    media_qtd_pos_pandemia: numeric(d, "media_qtd_pos_pandemia"),
     crescimento_valor_pos_vs_pre_pct: d.crescimento_valor_pos_vs_pre_pct === "" ? NaN : numeric(d, "crescimento_valor_pos_vs_pre_pct"),
     crescimento_qtd_pos_vs_pre_pct: d.crescimento_qtd_pos_vs_pre_pct === "" ? NaN : numeric(d, "crescimento_qtd_pos_vs_pre_pct"),
     participacao_valor_nacional_pct: numeric(d, "participacao_valor_nacional_pct"),
