@@ -8,7 +8,9 @@ const paths = {
   mapa: "./assets/brazil-states.geojson",
 };
 const DATA_VERSION = "20260911-auditoria-estatistica";
-const AGENT_API_URL = "http://127.0.0.1:8000";
+const isLocalHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const configuredAgentUrl = window.DIALISASUS_CONFIG?.agentApiUrl || "";
+const AGENT_API_URL = String(configuredAgentUrl || (isLocalHost ? "http://localhost:8888/api/agent" : "/api/agent")).replace(/\/$/, "");
 
 const state = {
   mensal: [],
@@ -487,15 +489,20 @@ function drawKidneyVessels(ctx, width, height, rx, ry) {
 async function checkAgentHealth() {
   const status = document.getElementById("agentStatus");
   if (!status) return;
+  if (!AGENT_API_URL) {
+    status.className = "agent-status offline";
+    status.textContent = "API não configurada";
+    return;
+  }
   try {
-    const response = await fetch(`${AGENT_API_URL}/health`);
+    const response = await fetch(AGENT_API_URL, { signal: AbortSignal.timeout(8000) });
     if (!response.ok) throw new Error("backend indisponível");
     const data = await response.json();
     status.className = `agent-status ${data.ai_enabled ? "online" : "fallback"}`;
-    status.textContent = data.ai_enabled ? "backend online | IA ativa" : "backend online | fallback local";
+    status.textContent = data.ai_enabled ? "Gemini online" : "Gemini sem chave | modo local";
   } catch (_error) {
     status.className = "agent-status offline";
-    status.textContent = "backend offline";
+    status.textContent = "serviço indisponível";
   }
 }
 
@@ -508,9 +515,13 @@ async function askAgent(question) {
   if (submit) submit.disabled = true;
 
   try {
-    const response = await fetch(`${AGENT_API_URL}/api/ask`, {
+    if (!AGENT_API_URL) {
+      throw new Error("A API do agente ainda não foi configurada para este ambiente.");
+    }
+    const response = await fetch(AGENT_API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(35000),
       body: JSON.stringify({
         question,
         context: buildAgentContext(),
@@ -519,10 +530,14 @@ async function askAgent(question) {
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.detail || "Falha ao consultar o agente.");
     answer.className = "agent-answer";
-    answer.innerHTML = `<span>${data.source === "openai" ? "Resposta da IA" : "Resposta local"}</span><p>${escapeHTML(data.answer || "Sem resposta retornada.")}</p>`;
+    const sourceLabel = data.source === "gemini" ? "Resposta do Gemini" : data.source === "safety_rule" ? "Limite de segurança" : "Resposta local";
+    answer.innerHTML = `<span>${sourceLabel}</span><p>${escapeHTML(data.answer || "Sem resposta retornada.")}</p>`;
   } catch (error) {
     answer.className = "agent-answer error";
-    answer.innerHTML = `<span>Não foi possível consultar</span><p>${escapeHTML(error.message || "Verifique se o backend está rodando em localhost:8000.")}</p>`;
+    const message = error.name === "TimeoutError"
+      ? "A consulta demorou além do esperado. Tente novamente."
+      : error.message || "O serviço do agente está indisponível.";
+    answer.innerHTML = `<span>Não foi possível consultar</span><p>${escapeHTML(message)}</p>`;
   } finally {
     if (submit) submit.disabled = false;
     checkAgentHealth();

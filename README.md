@@ -27,10 +27,14 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 ├── dashboard/
 │   ├── app.py
 │   └── README.md
-├── backend/
-│   ├── main.py
-│   ├── requirements.txt
-│   └── .env.example
+├── netlify/
+│   └── functions/
+│       └── agent.mjs
+├── netlify.toml
+├── tests/
+│   └── netlify_agent.test.mjs
+├── scripts/
+│   └── build_netlify.mjs
 ├── web_dashboard/
 │   ├── app.js
 │   ├── assets/
@@ -134,14 +138,24 @@ Depois acesse:
 http://localhost:8080/web_dashboard/
 ```
 
-9. Opcional: rodar o backend do agente de IA:
+9. Opcional: testar o backend serverless do agente:
 
-```bash
-cd backend
-uvicorn main:app --reload --port 8000
+```powershell
+node --test tests\netlify_agent.test.mjs
+npx netlify dev
 ```
 
-Para usar o agente, configure `OPENAI_API_KEY` em um arquivo `.env` local ou nas variaveis de ambiente. O arquivo `.env.example` mostra o formato esperado.
+O agente usa uma Netlify Function no caminho `/api/agent` e chama a
+Interactions API do Gemini. No painel do Netlify, configure
+`GEMINI_API_KEY` em **Project configuration > Environment variables** e
+faça um novo deploy. Opcionalmente, configure `GEMINI_MODEL`; o padrão é
+`gemini-2.5-flash-lite`. A chave nunca deve ser escrita no frontend, no
+`netlify.toml` ou enviada ao GitHub. Sem chave, a Function responde apenas
+no modo de demonstração.
+
+Para testar com o Netlify CLI, copie `.env.example` para `.env`,
+preencha a chave somente no arquivo `.env` ignorado pelo Git e abra
+`http://localhost:8888/web_dashboard/`.
 
 ## Resultados iniciais
 

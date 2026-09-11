@@ -17,6 +17,7 @@ Thumbs.db
 
 # Saidas temporarias
 outputs/
+dist/
 *.tmp
 
 # Documentos pessoais de estudo
