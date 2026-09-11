@@ -54,14 +54,16 @@ test("resposta do Gemini é extraída sem expor a chave", async () => {
   const originalFetch = globalThis.fetch;
   process.env.GEMINI_API_KEY = "chave-falsa-de-teste";
   globalThis.fetch = async (_url, options) => {
+    assert.match(_url, /models\/gemini-2\.5-flash-lite:generateContent$/);
     assert.equal(options.headers["x-goog-api-key"], "chave-falsa-de-teste");
     const requestBody = JSON.parse(options.body);
-    assert.equal(requestBody.store, false);
-    assert.match(requestBody.system_instruction, /SIA\/SUS-DATASUS/);
+    assert.match(requestBody.systemInstruction.parts[0].text, /SIA\/SUS-DATASUS/);
+    assert.match(requestBody.contents[0].parts[0].text, /Resuma o cenário nacional/);
     return Response.json({
-      steps: [{
-        type: "model_output",
-        content: [{ type: "text", text: "Resposta gerencial simulada." }],
+      candidates: [{
+        content: {
+          parts: [{ text: "Resposta gerencial simulada." }],
+        },
       }],
     });
   };

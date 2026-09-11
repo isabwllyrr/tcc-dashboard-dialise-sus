@@ -112,21 +112,17 @@ export function serializeContext(context) {
 }
 
 function extractGeminiText(data) {
-  if (typeof data.output_text === "string" && data.output_text.trim()) {
-    return data.output_text.trim();
-  }
-
-  return (data.steps || [])
-    .filter(step => step.type === "model_output")
-    .flatMap(step => step.content || [])
-    .map(content => content.text)
+  return (data.candidates || [])
+    .flatMap(candidate => candidate.content?.parts || [])
+    .map(part => part.text)
     .filter(text => typeof text === "string" && text.trim())
     .join("\n")
     .trim();
 }
 
 async function callGemini(question, serializedContext, apiKey, model) {
-  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -134,25 +130,31 @@ async function callGemini(question, serializedContext, apiKey, model) {
     },
     signal: AbortSignal.timeout(25_000),
     body: JSON.stringify({
-      model,
-      input: [
-        "Analise o contexto agregado abaixo e responda à pergunta.",
-        "",
-        "CONTEXTO_JSON:\n" + serializedContext,
-        "",
-        "PERGUNTA:\n" + question,
-      ].join("\n"),
-      system_instruction: SYSTEM_INSTRUCTION,
-      store: false,
-      generation_config: {
-        max_output_tokens: 500,
-        thinking_level: "low",
+      systemInstruction: {
+        parts: [{ text: SYSTEM_INSTRUCTION }],
+      },
+      contents: [{
+        role: "user",
+        parts: [{
+          text: [
+            "Analise o contexto agregado abaixo e responda à pergunta.",
+            "",
+            "CONTEXTO_JSON:\n" + serializedContext,
+            "",
+            "PERGUNTA:\n" + question,
+          ].join("\n"),
+        }],
+      }],
+      generationConfig: {
+        maxOutputTokens: 500,
+        temperature: 0.2,
       },
     }),
   });
 
   if (!response.ok) {
-    console.error("Gemini API status:", response.status);
+    const providerDetail = (await response.text()).slice(0, 500);
+    console.error("Gemini API error:", response.status, providerDetail);
     throw new Error("gemini_provider_error");
   }
 
