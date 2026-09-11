@@ -54,7 +54,7 @@ test("resposta do Gemini é extraída sem expor a chave", async () => {
   const originalFetch = globalThis.fetch;
   process.env.GEMINI_API_KEY = "chave-falsa-de-teste";
   globalThis.fetch = async (_url, options) => {
-    assert.match(_url, /models\/gemini-2\.5-flash-lite:generateContent$/);
+    assert.match(_url, /models\/gemini-3\.6-flash:generateContent$/);
     assert.equal(options.headers["x-goog-api-key"], "chave-falsa-de-teste");
     const requestBody = JSON.parse(options.body);
     assert.match(requestBody.systemInstruction.parts[0].text, /SIA\/SUS-DATASUS/);
@@ -91,8 +91,10 @@ test("resposta do Gemini é extraída sem expor a chave", async () => {
 
 test("modelo alternativo é usado quando o principal não está disponível", async () => {
   const originalKey = process.env.GEMINI_API_KEY;
+  const originalModel = process.env.GEMINI_MODEL;
   const originalFetch = globalThis.fetch;
   process.env.GEMINI_API_KEY = "chave-falsa-de-teste";
+  process.env.GEMINI_MODEL = "gemini-2.5-flash-lite";
   const calledUrls = [];
   globalThis.fetch = async (url) => {
     calledUrls.push(url);
@@ -113,11 +115,13 @@ test("modelo alternativo é usado quando o principal não está disponível", as
     const body = await response.json();
     assert.equal(response.status, 200);
     assert.match(calledUrls[0], /gemini-2\.5-flash-lite/);
-    assert.match(calledUrls[1], /gemini-2\.5-flash:generateContent$/);
-    assert.equal(body.model, "gemini-2.5-flash");
+    assert.match(calledUrls[1], /gemini-3\.6-flash:generateContent$/);
+    assert.equal(body.model, "gemini-3.6-flash");
   } finally {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
     else process.env.GEMINI_API_KEY = originalKey;
+    if (originalModel === undefined) delete process.env.GEMINI_MODEL;
+    else process.env.GEMINI_MODEL = originalModel;
   }
 });

@@ -1,6 +1,6 @@
 const APP_NAME = "Agente DialisaSUS";
 const APP_VERSION = "2.0.0";
-const DEFAULT_MODEL = "gemini-2.5-flash-lite";
+const DEFAULT_MODEL = "gemini-3.6-flash";
 const MAX_QUESTION_CHARS = 500;
 const MAX_CONTEXT_CHARS = 30_000;
 
@@ -177,7 +177,7 @@ async function callGeminiModel(question, serializedContext, apiKey, model) {
 }
 
 async function callGemini(question, serializedContext, apiKey, requestedModel) {
-  const candidateModels = [...new Set([requestedModel, "gemini-2.5-flash"])];
+  const candidateModels = [...new Set([requestedModel, DEFAULT_MODEL])];
   let lastError;
 
   for (const model of candidateModels) {

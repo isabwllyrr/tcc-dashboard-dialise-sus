@@ -149,7 +149,7 @@ O agente usa uma Netlify Function no caminho `/api/agent` e chama a
 Interactions API do Gemini. No painel do Netlify, configure
 `GEMINI_API_KEY` em **Project configuration > Environment variables** e
 faça um novo deploy. Opcionalmente, configure `GEMINI_MODEL`; o padrão é
-`gemini-2.5-flash-lite`. A chave nunca deve ser escrita no frontend, no
+`gemini-3.6-flash`. A chave nunca deve ser escrita no frontend, no
 `netlify.toml` ou enviada ao GitHub. Sem chave, a Function responde apenas
 no modo de demonstração.
 
