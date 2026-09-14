@@ -7,16 +7,17 @@
     <title>DialisaSUS | Console de gestão</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css?v=20260824-restyle" />
-    <link rel="stylesheet" href="./pro-theme.css?v=20260911-platform" />
+    <link rel="stylesheet" href="./studio-theme.css?v=20260914-studio" />
   </head>
-  <body>
+  <body data-active-tab="overview">
     <section class="intro-splash" id="introSplash" aria-label="Abertura DialisaSUS">
       <div class="splash-copy">
-        <p class="eyebrow">ASTRA IA Lab | DialisaSUS</p>
-        <h1>Inteligência territorial para monitorar diálise no SUS</h1>
-        <div class="splash-status"><span></span> Inicializando painel executivo</div>
+        <p class="eyebrow">SIA/SUS + inteligência de dados</p>
+        <h1>DialisaSUS</h1>
+        <p class="splash-lede">Inteligência territorial para monitorar a diálise no Brasil.</p>
+        <div class="splash-status"><span></span> Sincronizando indicadores</div>
       </div>
       <div class="splash-kidney interactive-renal" aria-label="Visual renal tecnológico">
         <img src="./assets/renal-astra-lab.png" alt="" />
@@ -34,12 +35,12 @@
       </div>
 
       <nav class="nav" aria-label="Navegação principal">
-        <span class="nav-label">Monitoramento</span>
-        <button class="nav-item active" data-tab="overview"><i data-lucide="layout-dashboard"></i><span>Intelligence</span></button>
+        <span class="nav-label">Análises</span>
+        <button class="nav-item active" data-tab="overview"><i data-lucide="layout-dashboard"></i><span>Visão geral</span></button>
         <button class="nav-item" data-tab="temporal"><i data-lucide="activity"></i><span>Temporal</span></button>
         <button class="nav-item" data-tab="territory"><i data-lucide="map"></i><span>Território</span></button>
         <button class="nav-item" data-tab="forecast"><i data-lucide="chart-spline"></i><span>Previsão</span></button>
-        <span class="nav-label">Sistema</span>
+        <span class="nav-label">Ferramentas</span>
         <button class="nav-item" data-tab="agent"><i data-lucide="sparkles"></i><span>Agente IA</span></button>
         <button class="nav-item" data-tab="methodology"><i data-lucide="flask-conical"></i><span>Metodologia</span></button>
         <button class="nav-item" data-tab="risk"><i data-lucide="heart-pulse"></i><span>Triagem</span></button>
@@ -68,22 +69,17 @@
 
     <main class="main">
       <header class="topbar">
-        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Ocultar filtros" aria-expanded="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
         <div>
-          <p class="eyebrow">DialisaSUS | SIA/SUS - DATASUS</p>
-          <h1>DialisaSUS Intelligence</h1>
-          <p class="subtitle">Inteligência operacional da diálise no SUS.</p>
+          <p class="eyebrow">Monitoramento nacional</p>
+          <h1>Diálise no SUS, em uma única visão.</h1>
+          <p class="subtitle">Produção, custo, território e previsão com dados públicos do SIA/SUS.</p>
           <div class="hero-meta" aria-label="Resumo do escopo do painel">
             <span>Brasil</span>
             <span>2015-2026</span>
             <span>Gradient Boosting</span>
           </div>
         </div>
-        <div class="status-pill"><span></span> Dados públicos agregados</div>
+        <div class="status-pill"><span></span> Base atualizada até 06/2026</div>
       </header>
 
       <section id="overview" class="tab-panel active">
@@ -122,11 +118,17 @@
             <h2>Série histórica</h2>
             <p>Evolução mensal dos procedimentos de diálise.</p>
           </div>
-          <div class="segmented" role="group" aria-label="Atalho de período">
-            <button data-range="pre">Pré-pandemia</button>
-            <button data-range="pandemic">Pandemia</button>
-            <button data-range="post">Pós-pandemia</button>
-            <button data-range="all" class="active">Tudo</button>
+          <div class="temporal-actions">
+            <div class="segmented" role="group" aria-label="Atalho de período">
+              <button data-range="pre">Pré-pandemia</button>
+              <button data-range="pandemic">Pandemia</button>
+              <button data-range="post">Pós-pandemia</button>
+              <button data-range="all" class="active">Tudo</button>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Abrir filtros" aria-expanded="false" hidden>
+              <i data-lucide="sliders-horizontal"></i>
+              <span class="filter-button-label">Filtros</span>
+            </button>
           </div>
         </div>
         <div class="chart-shell large"><canvas id="mainChart" height="320"></canvas></div>
@@ -390,7 +392,7 @@
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="./config.js?v=20260911-gemini-netlify"></script>
-    <script src="./app.js?v=20260911-platform"></script>
+    <script src="./app.js?v=20260914-studio"></script>
     <script>window.lucide?.createIcons({ strokeWidth: 1.8 });</script>
   </body>
 </html>

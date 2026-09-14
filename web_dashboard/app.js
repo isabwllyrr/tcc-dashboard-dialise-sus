@@ -179,8 +179,13 @@ function activateTab(tab) {
 function updateSidebarContext(tab) {
   const panel = document.getElementById("filterPanel");
   const context = document.getElementById("sidebarContext");
+  const toggle = document.getElementById("sidebarToggle");
   const filteredTabs = new Set(["temporal"]);
-  if (panel) panel.hidden = !filteredTabs.has(tab);
+  const hasFilters = filteredTabs.has(tab);
+  if (panel) panel.hidden = !hasFilters;
+  if (toggle) toggle.hidden = !hasFilters;
+  document.body.classList.remove("filters-open");
+  toggle?.setAttribute("aria-expanded", "false");
   if (!context) return;
   const messages = {
     overview: "Visão nacional consolidada.",
@@ -197,23 +202,16 @@ function updateSidebarContext(tab) {
 function setupSidebarToggle() {
   const button = document.getElementById("sidebarToggle");
   if (!button) return;
-  const saved = localStorage.getItem("dialisasus-sidebar");
-  if (window.matchMedia("(max-width: 960px)").matches || saved === "collapsed") {
-    document.body.classList.add("sidebar-collapsed");
-    button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-label", "Mostrar filtros");
-  }
   button.addEventListener("click", () => {
-    const collapsed = document.body.classList.toggle("sidebar-collapsed");
-    button.setAttribute("aria-expanded", String(!collapsed));
-    button.setAttribute("aria-label", collapsed ? "Mostrar filtros" : "Ocultar filtros");
-    localStorage.setItem("dialisasus-sidebar", collapsed ? "collapsed" : "open");
+    const open = document.body.classList.toggle("filters-open");
+    button.setAttribute("aria-expanded", String(open));
+    button.setAttribute("aria-label", open ? "Fechar filtros" : "Abrir filtros");
     scheduleRender();
   });
   document.getElementById("sidebarClose")?.addEventListener("click", () => {
-    document.body.classList.add("sidebar-collapsed");
+    document.body.classList.remove("filters-open");
     button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-label", "Mostrar filtros");
+    button.setAttribute("aria-label", "Abrir filtros");
     scheduleRender();
   });
 }
@@ -336,7 +334,7 @@ function setupIntroSplash() {
   window.setTimeout(() => {
     splash.classList.add("splash-hidden");
     document.body.classList.remove("splash-active");
-  }, 5000);
+  }, 1800);
 }
 
 const kidneyScenes = new WeakMap();
