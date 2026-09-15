@@ -23,6 +23,7 @@ const state = {
   yearStart: 2015,
   yearEnd: 2026,
   metric: "valor_aprovado",
+  overviewMetric: "valor_aprovado",
   region: "all",
   uf: "all",
   citySearch: "",
@@ -217,6 +218,21 @@ function setupSidebarToggle() {
 }
 
 function setupOverviewControls() {
+  document.querySelectorAll("[data-overview-metric]").forEach(button => {
+    button.addEventListener("click", () => {
+      state.overviewMetric = button.dataset.overviewMetric;
+      document.querySelectorAll("[data-overview-metric]").forEach(item => {
+        item.classList.toggle("active", item === button);
+      });
+      const subtitle = document.getElementById("overviewTrendSubtitle");
+      if (subtitle) {
+        subtitle.textContent = state.overviewMetric === "valor_aprovado"
+          ? "Valor mensal com média móvel de 12 meses."
+          : "Procedimentos mensais com média móvel de 12 meses.";
+      }
+      scheduleRender();
+    });
+  });
 }
 
 function setupDetails() {
@@ -667,7 +683,7 @@ function drawPointMarkers(ctx, points, color) {
   if (!points.length) return;
   const step = Math.max(1, Math.ceil(points.length / 8));
   ctx.fillStyle = color;
-  ctx.strokeStyle = "#0f1719";
+  ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 2;
   points.forEach((point, index) => {
     if (index !== 0 && index % step !== 0 && index !== points.length - 1) return;
@@ -752,7 +768,7 @@ function drawLine(id, data, key, color, label, extraLine = null) {
     drawPointMarkers(ctx, forecastPoints, "#f97362");
     points.push(...forecastPoints);
   }
-  ctx.fillStyle = "#9fb3ad"; ctx.font = "700 12px Inter, Segoe UI"; ctx.fillText(label, pad.l, 18);
+  ctx.fillStyle = "#718096"; ctx.font = "700 12px Inter, Segoe UI"; ctx.fillText(label, pad.l, 18);
   drawLineLabels(ctx, [...data, ...(extraLine || []).map(d => ({ data: d.data }))], x, height, pad);
   chartRegistry.set(id, points);
 }
@@ -801,30 +817,30 @@ function drawHeroTrend(id, data, key) {
     series: "Média móvel 12m",
     type: "point",
   }));
-  drawArea(ctx, avgPoints.map(p => [p.x, p.y]), height - pad.b, "#2dd4bf");
-  drawPath(ctx, rawPoints.map(p => [p.x, p.y]), "rgba(125, 211, 252, .22)", false, 1.3);
-  drawPath(ctx, avgPoints.map(p => [p.x, p.y]), "rgba(45, 212, 191, .24)", false, 8);
-  drawPath(ctx, avgPoints.map(p => [p.x, p.y]), "#2dd4bf", false, 4.2);
+  drawArea(ctx, avgPoints.map(p => [p.x, p.y]), height - pad.b, "#3f72e8");
+  drawPath(ctx, rawPoints.map(p => [p.x, p.y]), "rgba(63, 114, 232, .30)", false, 1.4);
+  drawPath(ctx, avgPoints.map(p => [p.x, p.y]), "rgba(40, 190, 158, .18)", false, 8);
+  drawPath(ctx, avgPoints.map(p => [p.x, p.y]), "#28be9e", false, 3.8);
 
   const markers = [
     { label: data[0]?.data?.slice(0, 7), point: avgPoints[0], align: "left" },
     { label: data[data.length - 1]?.data?.slice(0, 7), point: avgPoints[avgPoints.length - 1], align: "right" },
   ].filter(m => m.point);
   markers.forEach(marker => {
-    ctx.strokeStyle = "rgba(226, 255, 250, .16)";
+    ctx.strokeStyle = "rgba(84, 105, 138, .16)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(marker.point.x, pad.t);
     ctx.lineTo(marker.point.x, height - pad.b);
     ctx.stroke();
-    ctx.fillStyle = "#dff8f3";
-    ctx.strokeStyle = "#081214";
+    ctx.fillStyle = "#3f72e8";
+    ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.arc(marker.point.x, marker.point.y, 4.6, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
-    ctx.fillStyle = "#9fb3ad";
+    ctx.fillStyle = "#718096";
     ctx.font = "800 11px Inter, Segoe UI";
     ctx.textAlign = marker.align;
     ctx.fillText(marker.label || "", marker.point.x, height - 20);
@@ -837,12 +853,12 @@ function drawHeroTrend(id, data, key) {
     const labelW = ctx.measureText(label).width + 26;
     const labelX = Math.min(width - pad.r - labelW, Math.max(pad.l, last.x - labelW - 12));
     const labelY = Math.max(pad.t + 8, last.y - 22);
-    ctx.fillStyle = "rgba(8, 23, 24, .92)";
-    ctx.strokeStyle = "rgba(45, 212, 191, .55)";
+    ctx.fillStyle = "rgba(255, 255, 255, .96)";
+    ctx.strokeStyle = "rgba(63, 114, 232, .32)";
     ctx.lineWidth = 1;
     fillRoundRect(ctx, labelX, labelY, labelW, 30, 999);
     ctx.strokeRect(labelX + 6, labelY + .5, labelW - 12, 29);
-    ctx.fillStyle = "#e8fffb";
+    ctx.fillStyle = "#244fbd";
     ctx.textAlign = "right";
     ctx.fillText(label, labelX + labelW - 13, labelY + 20);
     ctx.textAlign = "left";
@@ -948,7 +964,7 @@ function drawBar(id, rows, key, labels, color) {
     ctx.fillStyle = grad;
     fillRoundRect(ctx, bx, by, actualW, h, 999);
     items.push({ type: "bar", x: bx, y: by, w: actualW, h, label: labels(r), value: r[key], key });
-    ctx.fillStyle = "#9fb3ad";
+    ctx.fillStyle = "#718096";
     ctx.font = "700 11px Inter, Segoe UI";
     ctx.textAlign = "center";
     ctx.fillText(labels(r), bx + actualW / 2, height - 18);
@@ -971,19 +987,19 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
     const barH = Math.max(7, Math.min(18, rowH * 0.46));
     const rawLabel = String(labelFn(r));
     const label = rawLabel.length > 24 ? `${rawLabel.slice(0, 22)}...` : rawLabel;
-    ctx.fillStyle = "#cbd9d5";
+    ctx.fillStyle = "#43516a";
     ctx.textAlign = "right";
     ctx.fillText(label, pad.l - 12, y + barH * 0.76);
-    ctx.fillStyle = "rgba(148, 163, 184, .11)";
+    ctx.fillStyle = "rgba(148, 163, 184, .18)";
     fillRoundRect(ctx, pad.l, y, trackW, barH, 999);
     const barW = Math.max(3, (r[key] / max) * trackW);
     const grad = ctx.createLinearGradient(pad.l, 0, pad.l + barW, 0);
     grad.addColorStop(0, colorFn(i));
-    grad.addColorStop(1, "rgba(125, 211, 252, .92)");
+    grad.addColorStop(1, "rgba(63, 114, 232, .92)");
     ctx.fillStyle = grad;
     fillRoundRect(ctx, pad.l, y, barW, barH, 999);
     items.push({ type: "bar", x: pad.l, y, w: barW, h: barH, label: rawLabel, value: r[key], key });
-    ctx.fillStyle = "#eef7f4";
+    ctx.fillStyle = "#22304a";
     ctx.textAlign = "left";
     ctx.font = "800 12px Inter, Segoe UI";
     ctx.fillText(formatMetricValue(key, r[key]), pad.l + Math.min(trackW + 8, barW + 10), y + barH * 0.76);
@@ -994,15 +1010,15 @@ function drawHorizontalBars(id, rows, key, labelFn, colorFn) {
 }
 
 function drawAxes(ctx, width, height, pad, min, max) {
-  ctx.strokeStyle = "rgba(148, 163, 184, .24)"; ctx.lineWidth = 1;
+  ctx.strokeStyle = "rgba(100, 116, 139, .22)"; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(pad.l, height - pad.b); ctx.lineTo(width - pad.r, height - pad.b); ctx.stroke();
-  ctx.fillStyle = "#9fb3ad"; ctx.font = "700 11px Inter, Segoe UI";
+  ctx.fillStyle = "#718096"; ctx.font = "700 11px Inter, Segoe UI";
   ctx.textAlign = "right";
   for (let i = 0; i <= 4; i++) {
     const yy = pad.t + i * ((height - pad.t - pad.b) / 4);
     const val = max - i * ((max - min) / 4);
     ctx.fillText(compact(val), pad.l - 12, yy + 4);
-    ctx.strokeStyle = i === 4 ? "rgba(148, 163, 184, .22)" : "rgba(148, 163, 184, .10)";
+    ctx.strokeStyle = i === 4 ? "rgba(100, 116, 139, .22)" : "rgba(100, 116, 139, .10)";
     ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(width - pad.r, yy); ctx.stroke();
   }
   ctx.textAlign = "left";
@@ -1012,7 +1028,7 @@ function drawLineLabels(ctx, data, x, height, pad) {
   if (!data.length) return;
   const first = data[0].data.slice(0, 7);
   const last = data[data.length - 1].data.slice(0, 7);
-  ctx.fillStyle = "#9fb3ad";
+  ctx.fillStyle = "#718096";
   ctx.font = "11px Inter, Segoe UI";
   ctx.textAlign = "left";
   ctx.fillText(first, pad.l, height - 16);
@@ -1071,7 +1087,7 @@ function renderOverview(data) {
   renderOpeningMetrics(data);
   renderOverviewMap();
   renderOverviewPaths();
-  drawHeroTrend("overviewTrendChart", data, "valor_aprovado");
+  drawHeroTrend("overviewTrendChart", data, state.overviewMetric);
   drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
   const annual = Object.values(data.reduce((acc, d) => {
     acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
@@ -1079,7 +1095,41 @@ function renderOverview(data) {
     return acc;
   }, {}));
   drawBar("annualBar", annual, "valor_aprovado", r => r.ano, () => "#60a5fa");
+  drawBar("overviewAnnualBar", annual, "valor_aprovado", r => r.ano, () => "#3f72e8");
   drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#2dd4bf", "#f97362", "#f0b94d"][i % 3]);
+  renderOverviewGroups();
+  renderOverviewMunicipalities();
+}
+
+function renderOverviewGroups() {
+  const target = document.getElementById("overviewGroupList");
+  if (!target || !state.grupo.length) return;
+  const colors = ["#3f72e8", "#28be9e", "#f2aa32"];
+  target.innerHTML = state.grupo.slice(0, 3).map((row, index) => {
+    const label = row.grupo_procedimento.replace("Procedimentos ", "");
+    const share = numeric(row, "participacao_valor_pct");
+    const value = numeric(row, "valor_aprovado");
+    const quantity = numeric(row, "qtd_aprovada");
+    const cost = quantity ? value / quantity : 0;
+    return `
+      <article class="overview-group-item">
+        <div><strong>${label}</strong><b>${fmtDecimal.format(share)}%</b></div>
+        <span class="overview-group-track"><i style="--share:${Math.max(1.5, share)}%;--group-color:${colors[index % colors.length]}"></i></span>
+        <small>${compactMoney(value)} · ${compact(quantity)} procedimentos · ${fmtMoney.format(cost)} por procedimento</small>
+      </article>
+    `;
+  }).join("");
+}
+
+function renderOverviewMunicipalities() {
+  const rows = state.municipios.slice().sort((a, b) => b.valor_periodo - a.valor_periodo).slice(0, 5);
+  renderRankingList("overviewMunicipalityList", rows, {
+    key: "valor_periodo",
+    label: row => `${row.municipio} · ${row.uf}`,
+    value: row => compactMoney(row.valor_periodo),
+    rank: (_row, index) => index + 1,
+    color: index => index === 0 ? "#3f72e8" : "#6d93ee",
+  });
 }
 
 function renderOpeningMetrics(data) {
@@ -1243,18 +1293,14 @@ function renderExecutiveStrip(data) {
   const totalValue = data.reduce((sum, row) => sum + row.valor_aprovado, 0);
   const totalQty = data.reduce((sum, row) => sum + row.qtd_aprovada, 0);
   const avgCost = totalQty ? totalValue / totalQty : 0;
-  const firstValue = data.filter(d => d.ano === state.yearStart).reduce((sum, row) => sum + row.valor_aprovado, 0);
-  const lastValue = data.filter(d => d.ano === completeEnd).reduce((sum, row) => sum + row.valor_aprovado, 0);
-  const valueGrowth = firstValue ? ((lastValue / firstValue) - 1) * 100 : 0;
-  const firstQty = data.filter(d => d.ano === state.yearStart).reduce((sum, row) => sum + row.qtd_aprovada, 0);
-  const lastQty = data.filter(d => d.ano === completeEnd).reduce((sum, row) => sum + row.qtd_aprovada, 0);
-  const qtyGrowth = firstQty ? ((lastQty / firstQty) - 1) * 100 : 0;
-  const model = state.metricas[0];
+  const lastValue = state.mensal.filter(d => d.ano === completeEnd).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const previousValue = state.mensal.filter(d => d.ano === completeEnd - 1).reduce((sum, row) => sum + row.valor_aprovado, 0);
+  const annualGrowth = previousValue ? ((lastValue / previousValue) - 1) * 100 : 0;
   target.innerHTML = `
-    <article><span>Valor</span><strong>${compact(totalValue)}</strong><small>${state.yearStart}-${state.yearEnd}${monthsInYear(state.yearEnd) < 12 ? " parcial" : ""}</small></article>
-    <article><span>Volume</span><strong>${compact(totalQty)}</strong><small>procedimentos</small></article>
+    <article><span>Valor aprovado no período</span><strong>${compactMoney(totalValue)}</strong><small>${state.yearStart} a ${state.yearEnd}${monthsInYear(state.yearEnd) < 12 ? " · ano parcial" : ""}</small></article>
+    <article><span>Procedimentos aprovados</span><strong>${compact(totalQty)}</strong><small>produção ambulatorial</small></article>
     <article><span>Custo médio</span><strong>${fmtMoney.format(avgCost)}</strong><small>por procedimento</small></article>
-    <article><span>Modelo</span><strong>${modelDisplayName(model?.modelo)}</strong><small>${model ? `MAPE ${fmtDecimal.format(model.MAPE_pct)}%` : "validação"}</small></article>
+    <article class="kpi-growth"><span>Variação em ${completeEnd}</span><strong>${annualGrowth >= 0 ? "+" : ""}${fmtDecimal.format(annualGrowth)}%</strong><small>comparado a ${completeEnd - 1}</small></article>
   `;
 }
 
@@ -1558,11 +1604,11 @@ function renderBrazilMap(rows) {
     <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Mapa do Brasil por UF">
       <defs>
         <filter id="mapGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#020607" flood-opacity=".35"></feDropShadow>
+          <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#315caa" flood-opacity=".14"></feDropShadow>
         </filter>
         <radialGradient id="oceanGlow" cx="50%" cy="45%" r="58%">
-          <stop offset="0%" stop-color="#13272b"></stop>
-          <stop offset="100%" stop-color="#081013"></stop>
+          <stop offset="0%" stop-color="#f7fbff"></stop>
+          <stop offset="100%" stop-color="#e9f1ff"></stop>
         </radialGradient>
       </defs>
       <rect class="map-backdrop" x="0" y="0" width="${width}" height="${height}" fill="url(#oceanGlow)"></rect>
@@ -1684,24 +1730,24 @@ function mapMetricConfig() {
 }
 
 function ufMapColor(value, max) {
-  if (!value || !max) return "#27474b";
+  if (!value || !max) return "#dbe6f6";
   const raw = Math.max(0, Math.min(1, value / max));
-  const t = Math.max(0.30, Math.pow(raw, 0.52));
-  const start = [53, 103, 109];
-  const mid = [35, 170, 161];
-  const end = [116, 255, 222];
+  const t = Math.max(0.22, Math.pow(raw, 0.58));
+  const start = [191, 211, 240];
+  const mid = [79, 132, 226];
+  const end = [37, 188, 154];
   const range = t < 0.58 ? [start, mid, t / 0.58] : [mid, end, (t - 0.58) / 0.42];
   const rgb = range[0].map((channel, i) => Math.round(channel + (range[1][i] - channel) * range[2]));
   return `rgb(${rgb.join(",")})`;
 }
 
 function overviewMapColor(value, max) {
-  if (!value || !max) return "#1d5155";
+  if (!value || !max) return "#dce7f7";
   const raw = Math.max(0, Math.min(1, value / max));
-  const t = Math.max(0.34, Math.pow(raw, 0.58));
-  const start = [29, 81, 85];
-  const mid = [29, 126, 124];
-  const end = [45, 212, 191];
+  const t = Math.max(0.22, Math.pow(raw, 0.58));
+  const start = [190, 210, 239];
+  const mid = [85, 137, 226];
+  const end = [39, 190, 157];
   const range = t < 0.62 ? [start, mid, t / 0.62] : [mid, end, (t - 0.62) / 0.38];
   const rgb = range[0].map((channel, i) => Math.round(channel + (range[1][i] - channel) * range[2]));
   return `rgb(${rgb.join(",")})`;
@@ -1744,7 +1790,7 @@ function renderEmptyTerritory() {
   ["regionChart"].forEach(id => {
     const base = canvasBase(id);
     if (base) {
-      base.ctx.fillStyle = "#9fb3ad";
+      base.ctx.fillStyle = "#718096";
       base.ctx.fillText("Sem dados para o filtro atual", 24, 42);
     }
   });

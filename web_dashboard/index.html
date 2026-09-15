@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <base href="./" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DialisaSUS | Console de gestão</title>
+    <title>DialisaSUS | Gestão da diálise no SUS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css?v=20260824-restyle" />
-    <link rel="stylesheet" href="./studio-theme.css?v=20260914-studio" />
+    <link rel="stylesheet" href="./studio-theme.css?v=20260914-lovable" />
   </head>
   <body data-active-tab="overview">
     <section class="intro-splash" id="introSplash" aria-label="Abertura DialisaSUS">
@@ -85,31 +85,74 @@
       <section id="overview" class="tab-panel active">
         <div class="executive-strip executive-command" id="executiveStrip"></div>
 
-        <div class="visual-board intelligence-board">
-          <section class="overview-map-card">
-            <div class="chart-title-row">
-              <div>
-                <p class="eyebrow">Território</p>
-                <h3>Mapa nacional</h3>
-              </div>
-              <span class="live-badge ghost">UF</span>
-            </div>
-            <div class="overview-map" id="overviewBrazilMap" aria-label="Mapa do Brasil na visão geral"></div>
-            <div class="map-legend compact" id="overviewMapLegend"></div>
-            <div class="overview-uf-spotlight" id="overviewUfSpotlight"></div>
-          </section>
-
+        <div class="overview-grid overview-primary-grid">
           <section class="chart-shell overview-trend visual-main">
             <div class="chart-title-row">
               <div>
-                <p class="eyebrow">Trend</p>
-                <h3>Tendência nacional</h3>
+                <p class="eyebrow">Série mensal nacional</p>
+                <h3>Evolução dos procedimentos</h3>
               </div>
-              <span class="live-badge">SIA/SUS</span>
+              <div class="segmented compact-segmented" role="group" aria-label="Métrica da visão geral">
+                <button type="button" class="active" data-overview-metric="valor_aprovado">Valor aprovado</button>
+                <button type="button" data-overview-metric="qtd_aprovada">Quantidade</button>
+              </div>
             </div>
+            <p class="chart-subtitle" id="overviewTrendSubtitle">Linha mensal com média móvel de 12 meses.</p>
             <canvas id="overviewTrendChart" height="420"></canvas>
           </section>
+
+          <section class="chart-shell overview-groups">
+            <div class="chart-title-row">
+              <div>
+                <p class="eyebrow">Composição</p>
+                <h3>Grupos de procedimento</h3>
+              </div>
+              <span class="live-badge ghost">valor aprovado</span>
+            </div>
+            <div class="overview-group-list" id="overviewGroupList"></div>
+          </section>
         </div>
+
+        <div class="overview-grid overview-secondary-grid">
+          <section class="chart-shell overview-annual">
+            <div class="chart-title-row">
+              <div>
+                <p class="eyebrow">Histórico anual</p>
+                <h3>Valor aprovado por ano</h3>
+              </div>
+              <span class="live-badge ghost">2026 parcial</span>
+            </div>
+            <canvas id="overviewAnnualBar" height="300"></canvas>
+          </section>
+
+          <section class="chart-shell overview-ranking-card">
+            <div class="chart-title-row">
+              <div>
+                <p class="eyebrow">Concentração</p>
+                <h3>Maiores municípios</h3>
+              </div>
+              <button class="text-link" type="button" data-jump-tab="territory">Ver ranking</button>
+            </div>
+            <div class="ranking-list overview-ranking" id="overviewMunicipalityList"></div>
+          </section>
+        </div>
+
+        <section class="overview-map-card overview-map-wide">
+          <div class="chart-title-row">
+            <div>
+              <p class="eyebrow">Território</p>
+              <h3>Distribuição nacional por UF</h3>
+            </div>
+            <button class="text-link" type="button" data-jump-tab="territory">Explorar território</button>
+          </div>
+          <div class="overview-map-layout">
+            <div class="overview-map" id="overviewBrazilMap" aria-label="Mapa do Brasil na visão geral"></div>
+            <div>
+              <div class="map-legend compact" id="overviewMapLegend"></div>
+              <div class="overview-uf-spotlight" id="overviewUfSpotlight"></div>
+            </div>
+          </div>
+        </section>
       </section>
 
       <section id="temporal" class="tab-panel">
@@ -392,7 +435,7 @@
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="./config.js?v=20260911-gemini-netlify"></script>
-    <script src="./app.js?v=20260914-studio"></script>
+    <script src="./app.js?v=20260914-lovable"></script>
     <script>window.lucide?.createIcons({ strokeWidth: 1.8 });</script>
   </body>
 </html>
