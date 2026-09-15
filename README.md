@@ -9,11 +9,11 @@ Analise temporal, territorial e preditiva dos procedimentos de dialise no SUS: d
 ## Recorte do estudo
 
 - Abrangencia geografica: Brasil.
-- Fonte dos dados: SIA/SUS - DATASUS/TabNet.
+- Fontes dos dados: SIA/SUS - DATASUS/TabNet e IBGE/SIDRA.
 - Periodo principal: janeiro de 2015 a junho de 2026, com 2026 tratado como ano parcial.
 - Recorte territorial comparavel: 2015 a 2025, somente anos completos.
 - Unidade de analise: procedimentos aprovados, nao pacientes unicos.
-- Variaveis principais: valor aprovado, quantidade aprovada e custo medio.
+- Variaveis principais: valor aprovado nominal e real, quantidade aprovada, custo medio, populacao e taxas populacionais.
 - Objeto: procedimentos relacionados a dialise no SUS.
 
 ## Objetivo geral
@@ -73,6 +73,7 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 │   ├── tratamento_municipio_dialise.py
 │   ├── tratamento_dialise.py
 │   ├── tratamento_mensal_dialise.py
+│   ├── integrar_ibge.py
 │   └── validar_dados.py
 ├── tests/
 │   └── test_data_quality.py
@@ -107,26 +108,32 @@ python scripts/analise_exploratoria.py
 python scripts/tratamento_municipio_dialise.py
 ```
 
-5. Rodar a modelagem preditiva:
+5. Integrar populacao municipal e IPCA do IBGE:
+
+```bash
+python scripts/integrar_ibge.py
+```
+
+6. Rodar a modelagem preditiva:
 
 ```bash
 python scripts/modelagem_preditiva.py
 ```
 
-6. Validar automaticamente todos os produtos de dados:
+7. Validar automaticamente todos os produtos de dados:
 
 ```bash
 python scripts/validar_dados.py
 python -m unittest discover -s tests
 ```
 
-7. Opcional: abrir o dashboard Streamlit legado:
+8. Opcional: abrir o dashboard Streamlit legado:
 
 ```bash
 streamlit run dashboard/app.py
 ```
 
-8. Abrir o dashboard web customizado:
+9. Abrir o dashboard web customizado:
 
 ```powershell
 .\.venv\Scripts\python.exe -m http.server 8080
@@ -138,7 +145,7 @@ Depois acesse:
 http://localhost:8080/web_dashboard/
 ```
 
-9. Opcional: testar o backend serverless do agente:
+10. Opcional: testar o backend serverless do agente:
 
 ```powershell
 node --test tests\netlify_agent.test.mjs
@@ -177,12 +184,14 @@ As interfaces permitem visualizar:
 - valor aprovado mensal;
 - quantidade aprovada mensal;
 - custo medio mensal;
+- valor e custo medio corrigidos pelo IPCA para reais de junho de 2026;
 - comparacao por grupo de procedimento;
 - ranking de municipios por valor aprovado;
 - ranking de municipios por quantidade aprovada;
 - filtros territoriais por regiao, UF e municipio;
 - mapa do Brasil por UF;
 - custo medio municipal;
+- valor real por habitante e procedimentos por 100 mil habitantes;
 - crescimento municipal pos-pandemia versus pre-pandemia;
 - comparacao real x previsto;
 - previsao mensal para os 12 meses seguintes ao ultimo dado disponivel;
@@ -198,4 +207,4 @@ A aba de triagem renal e um modulo educativo e demonstrativo. Ela combina catego
 
 ## Limites e definicoes
 
-Consulte `docs/dicionario_dados.md` para as definicoes operacionais e `docs/limitacoes.md` para os limites de interpretacao, incluindo valores nominais, ausencia de pacientes unicos e impossibilidade de inferir causalidade da pandemia.
+Os valores corrigidos usam o IPCA mensal, com junho de 2026 como data de referencia. As taxas municipais usam estimativas anuais do IBGE e o Censo Demografico 2022. Como a serie fornecida nao continha 2023, esse ano foi estimado por interpolacao geometrica entre 2022 e 2024. Consulte `docs/integracao_ibge.md`, `docs/dicionario_dados.md` e `docs/limitacoes.md` para formulas, definicoes e limites de interpretacao.

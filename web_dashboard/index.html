@@ -60,8 +60,10 @@
         <label for="metricSelect">Métrica principal</label>
         <select id="metricSelect">
           <option value="valor_aprovado">Valor aprovado</option>
+          <option value="valor_aprovado_real">Valor corrigido (jun/2026)</option>
           <option value="qtd_aprovada">Quantidade aprovada</option>
           <option value="custo_medio">Custo médio</option>
+          <option value="custo_medio_real">Custo médio corrigido</option>
         </select>
       </section>
       <p class="sidebar-context" id="sidebarContext">Filtros aplicados à análise histórica.</p>
@@ -94,6 +96,7 @@
               </div>
               <div class="segmented compact-segmented" role="group" aria-label="Métrica da visão geral">
                 <button type="button" class="active" data-overview-metric="valor_aprovado">Valor aprovado</button>
+                <button type="button" data-overview-metric="valor_aprovado_real">Valor real</button>
                 <button type="button" data-overview-metric="qtd_aprovada">Quantidade</button>
               </div>
             </div>
@@ -118,7 +121,7 @@
             <div class="chart-title-row">
               <div>
                 <p class="eyebrow">Histórico anual</p>
-                <h3>Valor aprovado por ano</h3>
+                <h3 id="overviewAnnualTitle">Valor aprovado por ano</h3>
               </div>
               <span class="live-badge ghost">2026 parcial</span>
             </div>
@@ -176,7 +179,7 @@
         </div>
         <div class="chart-shell large"><canvas id="mainChart" height="320"></canvas></div>
         <div class="grid two">
-          <div class="chart-shell"><h3>Valor anual</h3><canvas id="annualBar" height="240"></canvas></div>
+          <div class="chart-shell"><h3 id="temporalAnnualTitle">Valor aprovado por ano</h3><canvas id="annualBar" height="240"></canvas></div>
           <div class="chart-shell"><h3>Participação por grupo</h3><canvas id="groupBar" height="240"></canvas></div>
         </div>
         <div class="section-head">
@@ -251,8 +254,11 @@
           <label>Métrica do mapa
             <select id="territoryMetric">
               <option value="valor_periodo">Valor aprovado</option>
+              <option value="valor_real_periodo">Valor corrigido (jun/2026)</option>
               <option value="qtd_periodo">Quantidade aprovada</option>
               <option value="custo_medio_periodo">Custo médio</option>
+              <option value="valor_real_por_habitante_ano">Valor real por habitante/ano</option>
+              <option value="qtd_por_100_mil_ano">Procedimentos por 100 mil/ano</option>
               <option value="crescimento_qtd_pos_vs_pre_pct">Crescimento pós-pandemia</option>
             </select>
           </label>
@@ -314,11 +320,17 @@
           </div>
         </div>
         <div class="method-grid">
-          <article class="method-card"><span>Fonte</span><strong>SIA/SUS</strong><p>DATASUS</p></article>
+          <article class="method-card"><span>Fontes</span><strong>SIA/SUS + IBGE</strong><p>produção, IPCA e população</p></article>
           <article class="method-card"><span>Unidade</span><strong>Procedimentos</strong><p>não pacientes únicos</p></article>
           <article class="method-card"><span>Período</span><strong id="methodPeriod">2015 a 2026</strong><p>2026 parcial</p></article>
           <article class="method-card"><span>Modelo</span><strong>Gradient Boosting</strong><p>menor MAPE</p></article>
         </div>
+        <details class="technical-details">
+          <summary><span>Indicadores ajustados</span><small>inflação e população</small></summary>
+          <div class="detail-content">
+            <p>Os valores reais estão expressos em reais de junho de 2026 pelo IPCA. As taxas municipais usam população anual do IBGE; para 2023, foi aplicada interpolação geométrica entre o Censo 2022 e a estimativa de 2024.</p>
+          </div>
+        </details>
         <div class="chart-shell method-flow">
           <h3>Etapas do projeto</h3>
           <div class="steps-list">
@@ -435,7 +447,7 @@
     <div id="chartTooltip" class="chart-tooltip" role="status"></div>
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="./config.js?v=20260911-gemini-netlify"></script>
-    <script src="./app.js?v=20260914-lovable"></script>
+    <script src="./app.js?v=20260915-ibge-ipca"></script>
     <script>window.lucide?.createIcons({ strokeWidth: 1.8 });</script>
   </body>
 </html>

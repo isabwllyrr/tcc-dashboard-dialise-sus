@@ -7,7 +7,7 @@ const paths = {
   municipios: "../dados_tratados/indicadores_municipio_brasil.csv",
   mapa: "./assets/brazil-states.geojson",
 };
-const DATA_VERSION = "20260911-auditoria-estatistica";
+const DATA_VERSION = "20260915-ibge-ipca";
 const isLocalHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const configuredAgentUrl = window.DIALISASUS_CONFIG?.agentApiUrl || "";
 const AGENT_API_URL = String(configuredAgentUrl || (isLocalHost ? "http://localhost:8888/api/agent" : "/api/agent")).replace(/\/$/, "");
@@ -87,6 +87,7 @@ function latestCompleteYear(maxYear = state.yearEnd) {
 }
 function formatMetricValue(key, value) {
   if (key.includes("pct")) return `${fmtDecimal.format(value)}%`;
+  if (key.includes("por_100_mil")) return fmtDecimal.format(value);
   if (key.includes("valor") || key === "custo_medio" || key === "media_mensal" || key === "previsao_valor_aprovado") return fmtMoney.format(value);
   return fmtNumber.format(value);
 }
@@ -226,9 +227,12 @@ function setupOverviewControls() {
       });
       const subtitle = document.getElementById("overviewTrendSubtitle");
       if (subtitle) {
-        subtitle.textContent = state.overviewMetric === "valor_aprovado"
-          ? "Valor mensal com média móvel de 12 meses."
-          : "Procedimentos mensais com média móvel de 12 meses.";
+        const subtitles = {
+          valor_aprovado: "Valor nominal mensal com média móvel de 12 meses.",
+          valor_aprovado_real: "Valor corrigido pelo IPCA para reais de junho de 2026.",
+          qtd_aprovada: "Procedimentos mensais com média móvel de 12 meses.",
+        };
+        subtitle.textContent = subtitles[state.overviewMetric] || "Série mensal com média móvel de 12 meses.";
       }
       scheduleRender();
     });
@@ -1080,7 +1084,13 @@ function compactMoney(v) {
 }
 
 function renderOverview(data) {
-  const labels = { valor_aprovado: "Valor aprovado", qtd_aprovada: "Quantidade aprovada", custo_medio: "Custo médio" };
+  const labels = {
+    valor_aprovado: "Valor aprovado",
+    valor_aprovado_real: "Valor corrigido (jun/2026)",
+    qtd_aprovada: "Quantidade aprovada",
+    custo_medio: "Custo médio",
+    custo_medio_real: "Custo médio corrigido",
+  };
   renderBrief(data);
   renderExecutiveStrip(data);
   renderMiniVisuals(data);
@@ -1089,13 +1099,25 @@ function renderOverview(data) {
   renderOverviewPaths();
   drawHeroTrend("overviewTrendChart", data, state.overviewMetric);
   drawLine("mainChart", data, state.metric, "#2dd4bf", labels[state.metric]);
+  const annualMetric = state.overviewMetric;
   const annual = Object.values(data.reduce((acc, d) => {
-    acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0 };
+    acc[d.ano] ||= { ano: d.ano, valor_aprovado: 0, valor_aprovado_real: 0, qtd_aprovada: 0 };
     acc[d.ano].valor_aprovado += d.valor_aprovado;
+    acc[d.ano].valor_aprovado_real += d.valor_aprovado_real;
+    acc[d.ano].qtd_aprovada += d.qtd_aprovada;
     return acc;
-  }, {}));
-  drawBar("annualBar", annual, "valor_aprovado", r => r.ano, () => "#60a5fa");
-  drawBar("overviewAnnualBar", annual, "valor_aprovado", r => r.ano, () => "#3f72e8");
+  }, {})).map(row => ({
+    ...row,
+    custo_medio: row.qtd_aprovada ? row.valor_aprovado / row.qtd_aprovada : 0,
+    custo_medio_real: row.qtd_aprovada ? row.valor_aprovado_real / row.qtd_aprovada : 0,
+    value: row[annualMetric],
+  }));
+  drawBar("annualBar", annual, state.metric, r => r.ano, () => "#60a5fa");
+  const temporalAnnualTitle = document.getElementById("temporalAnnualTitle");
+  if (temporalAnnualTitle) temporalAnnualTitle.textContent = `${labels[state.metric] || "Indicador"} por ano`;
+  drawBar("overviewAnnualBar", annual, "value", r => r.ano, () => "#3f72e8");
+  const annualTitle = document.getElementById("overviewAnnualTitle");
+  if (annualTitle) annualTitle.textContent = `${labels[annualMetric] || "Indicador"} por ano`;
   drawHorizontalBars("groupBar", state.grupo, "participacao_valor_pct", r => r.grupo_procedimento.replace("Procedimentos ", ""), i => ["#2dd4bf", "#f97362", "#f0b94d"][i % 3]);
   renderOverviewGroups();
   renderOverviewMunicipalities();
@@ -1703,9 +1725,11 @@ function featureCentroid(geometry, project) {
 
 function aggregateUfs(rows) {
   const aggregated = Object.values(rows.reduce((acc, row) => {
-    acc[row.uf_ibge] ||= { uf_ibge: row.uf_ibge, uf: row.uf, regiao: row.regiao, valor_periodo: 0, qtd_periodo: 0, municipios: 0, media_qtd_pre_pandemia: 0, media_qtd_pos_pandemia: 0 };
+    acc[row.uf_ibge] ||= { uf_ibge: row.uf_ibge, uf: row.uf, regiao: row.regiao, valor_periodo: 0, valor_real_periodo: 0, qtd_periodo: 0, populacao_uf_acumulada_2015_2025: 0, municipios: 0, media_qtd_pre_pandemia: 0, media_qtd_pos_pandemia: 0 };
     acc[row.uf_ibge].valor_periodo += row.valor_periodo;
+    acc[row.uf_ibge].valor_real_periodo += row.valor_real_periodo;
     acc[row.uf_ibge].qtd_periodo += row.qtd_periodo;
+    acc[row.uf_ibge].populacao_uf_acumulada_2015_2025 = Math.max(acc[row.uf_ibge].populacao_uf_acumulada_2015_2025, row.populacao_uf_acumulada_2015_2025);
     acc[row.uf_ibge].municipios += 1;
     acc[row.uf_ibge].media_qtd_pre_pandemia += row.media_qtd_pre_pandemia || 0;
     acc[row.uf_ibge].media_qtd_pos_pandemia += row.media_qtd_pos_pandemia || 0;
@@ -1714,6 +1738,8 @@ function aggregateUfs(rows) {
   return aggregated.map(row => ({
     ...row,
     custo_medio_periodo: row.qtd_periodo ? row.valor_periodo / row.qtd_periodo : 0,
+    valor_real_por_habitante_ano: row.populacao_uf_acumulada_2015_2025 ? row.valor_real_periodo / row.populacao_uf_acumulada_2015_2025 : 0,
+    qtd_por_100_mil_ano: row.populacao_uf_acumulada_2015_2025 ? row.qtd_periodo / row.populacao_uf_acumulada_2015_2025 * 100_000 : 0,
     crescimento_qtd_pos_vs_pre_pct: row.media_qtd_pre_pandemia
       ? (row.media_qtd_pos_pandemia / row.media_qtd_pre_pandemia - 1) * 100 : NaN,
   })).sort((a, b) => b.valor_periodo - a.valor_periodo);
@@ -1722,8 +1748,11 @@ function aggregateUfs(rows) {
 function mapMetricConfig() {
   const configs = {
     valor_periodo: { key: "valor_periodo", label: "Valor aprovado", short: "valor", format: fmtMoney.format },
+    valor_real_periodo: { key: "valor_real_periodo", label: "Valor corrigido (jun/2026)", short: "valor real", format: fmtMoney.format },
     qtd_periodo: { key: "qtd_periodo", label: "Quantidade aprovada", short: "quantidade", format: fmtNumber.format },
     custo_medio_periodo: { key: "custo_medio_periodo", label: "Custo médio", short: "custo", format: fmtMoney.format },
+    valor_real_por_habitante_ano: { key: "valor_real_por_habitante_ano", label: "Valor real por habitante/ano", short: "R$ por habitante", format: fmtMoney.format },
+    qtd_por_100_mil_ano: { key: "qtd_por_100_mil_ano", label: "Procedimentos por 100 mil/ano", short: "taxa populacional", format: fmtDecimal.format },
     crescimento_qtd_pos_vs_pre_pct: { key: "crescimento_qtd_pos_vs_pre_pct", label: "Crescimento pós-pandemia", short: "crescimento", format: value => `${fmtDecimal.format(value)}%` },
   };
   return configs[state.territoryMetric] || configs.valor_periodo;
@@ -1886,6 +1915,9 @@ function exportTerritoryCSV() {
     ["valor_periodo", "Valor aprovado"],
     ["qtd_periodo", "Quantidade aprovada"],
     ["custo_medio_periodo", "Custo médio"],
+    ["valor_real_periodo", "Valor corrigido (jun/2026)"],
+    ["valor_real_por_habitante_ano", "Valor real por habitante/ano"],
+    ["qtd_por_100_mil_ano", "Procedimentos por 100 mil/ano"],
     ["crescimento_valor_pos_vs_pre_pct", "Crescimento valor pós x pré (%)"],
     ["crescimento_qtd_pos_vs_pre_pct", "Crescimento qtd pós x pré (%)"],
   ];
@@ -2064,7 +2096,7 @@ function setupChartTooltips() {
 async function init() {
   const [mensal, grupo, forecast, comparacao, metricas, municipios, mapa] = await Promise.all([loadCSV(paths.mensal), loadCSV(paths.grupo), loadCSV(paths.forecast), loadCSV(paths.comparacao), loadCSV(paths.metricas), loadCSV(paths.municipios), loadJSON(paths.mapa)]);
   state.mapa = mapa;
-  state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio") }));
+  state.mensal = mensal.map(d => ({ ...d, ano: Number(d.ano), mes: Number(d.mes), valor_aprovado: numeric(d, "valor_aprovado"), valor_aprovado_real: numeric(d, "valor_aprovado_real"), qtd_aprovada: numeric(d, "qtd_aprovada"), custo_medio: numeric(d, "custo_medio"), custo_medio_real: numeric(d, "custo_medio_real") }));
   state.yearStart = Math.min(...state.mensal.map(d => d.ano));
   state.yearEnd = Math.max(...state.mensal.map(d => d.ano));
   document.getElementById("brandPeriod").textContent = `${state.yearStart}-${state.yearEnd}`;
@@ -2107,6 +2139,15 @@ async function init() {
     valor_periodo: numeric(d, "valor_periodo"),
     qtd_periodo: numeric(d, "qtd_periodo"),
     custo_medio_periodo: numeric(d, "custo_medio_periodo"),
+    valor_real_periodo: numeric(d, "valor_real_periodo"),
+    valor_real_anual_medio: numeric(d, "valor_real_anual_medio"),
+    valor_real_por_habitante_ano: numeric(d, "valor_real_por_habitante_ano"),
+    qtd_por_100_mil_ano: numeric(d, "qtd_por_100_mil_ano"),
+    populacao_acumulada_2015_2025: numeric(d, "populacao_acumulada_2015_2025"),
+    populacao_uf_acumulada_2015_2025: numeric(d, "populacao_uf_acumulada_2015_2025"),
+    populacao_2025: numeric(d, "populacao_2025"),
+    qtd_por_100_mil_2025: numeric(d, "qtd_por_100_mil_2025"),
+    valor_real_por_habitante_2025: numeric(d, "valor_real_por_habitante_2025"),
     media_valor_pre_pandemia: numeric(d, "media_valor_pre_pandemia"),
     media_qtd_pre_pandemia: numeric(d, "media_qtd_pre_pandemia"),
     media_qtd_pos_pandemia: numeric(d, "media_qtd_pos_pandemia"),
