@@ -16,9 +16,10 @@ const normalized = series.map((item) => ({
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   })),
 }));
-const ticks = labels.map((label, index) => ({ label, index })).filter(({ index }) =>
-  index === 0 || index === labels.length - 1 || index % Math.max(1, Math.floor(labels.length / 5)) === 0
-);
+const tickIndexes = new Set(Array.from({ length: Math.min(6, labels.length) }, (_, index) =>
+  Math.round(index * ((labels.length - 1) / Math.max(1, Math.min(6, labels.length) - 1)))
+));
+const ticks = labels.map((label, index) => ({ label, index })).filter(({ index }) => tickIndexes.has(index));
 ---
 <svg class="fig" viewBox="0 0 940 390" role="img" aria-label={ariaLabel}>
   {[0, 1, 2, 3, 4].map((step) => {

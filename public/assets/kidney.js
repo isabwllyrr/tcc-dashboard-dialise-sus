@@ -172,18 +172,8 @@ async function activate() {
     const key = new THREE.DirectionalLight(0xffeee4, 2); key.position.set(-3, 4, 4); scene.add(key);
     const fill = new THREE.DirectionalLight(0xe5edff, .5); fill.position.set(3, 1, 3); scene.add(fill);
     const rim = new THREE.DirectionalLight(0xfff0e7, .85); rim.position.set(2, 3, -3); scene.add(rim);
-    // Small procedural studio; only the PMREM remains, no external HDRI.
-    const studio = new THREE.Scene();
-    studio.background = new THREE.Color(.22, .20, .19);
-    for (const [x,y,z,w,h,intensity] of [[-3,4,3,3,4,3],[4,2,1,2,3,1.6],[0,4,-4,3,2,2]]) {
-      const panel = new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({color:new THREE.Color(intensity,intensity*.96,intensity*.92),side:THREE.DoubleSide}));
-      panel.position.set(x,y,z); panel.lookAt(0,0,0); studio.add(panel);
-    }
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    environment = pmrem.fromScene(studio, .12, .1, 20);
-    scene.environment = environment.texture;
-    scene.environmentIntensity = .55;
-    studio.traverse(o => {o.geometry?.dispose();o.material?.dispose();}); pmrem.dispose();
+    // Direct lights keep startup reliable in embedded browsers that stall on PMREM generation.
+    scene.environment = null;
     const loader = new GLTFLoader(); loader.setMeshoptDecoder(MeshoptDecoder);
     const gltf = await loader.loadAsync("/assets/kidney.glb");
     const model = gltf.scene;
@@ -206,6 +196,8 @@ async function activate() {
     stage.insertBefore(canvas, fallback);
     fallback.hidden = true;
     loaded = true;
+    enable.textContent = "3D ativo";
+    enable.setAttribute("aria-label", "Visualização 3D ativa. Arraste diretamente sobre o rim para girar.");
     window.__kidneyMetrics.assetLoaded = true;
     window.__kidneyMetrics.mode = "interactive";
     resize();
@@ -216,16 +208,15 @@ async function activate() {
       canvas.setPointerCapture(event.pointerId); requestFrame();
     });
     canvas.addEventListener("pointermove", (event) => {
-      if (!dragging || fixedView) return;
-      target.y += (event.clientX - px) * .008;
-      target.x = Math.max(-.7, Math.min(.7, target.x + (event.clientY - py) * .006));
+      if (!dragging) return;
+      target.y += (event.clientX - px) * .014;
+      target.x = Math.max(-.7, Math.min(.7, target.x + (event.clientY - py) * .010));
       px = event.clientX; py = event.clientY; requestFrame();
     });
     const stop = (event) => { dragging = false; try { canvas.releasePointerCapture(event.pointerId); } catch {} };
     canvas.addEventListener("pointerup", stop); canvas.addEventListener("pointercancel", stop);
     canvas.addEventListener("keydown", (event) => {
       if (event.key === '1' || event.key === '2') { chooseView(event.key === '1' ? 'position' : 'hilum'); event.preventDefault(); return; }
-      if (fixedView && event.key.startsWith('Arrow')) {chooseView(activeView === 'position' ? 'hilum' : 'position'); event.preventDefault();return;}
       const step = .12;
       if (event.key === "ArrowLeft") target.y -= step;
       else if (event.key === "ArrowRight") target.y += step;
@@ -271,4 +262,6 @@ if (stage && enable && fallback) {
   addEventListener("pagehide", dispose, { once: true });
   addEventListener('pageshow', event => { if (event.persisted && disposed) useStaticFallback(); });
   chooseView("position");
+  if ("requestIdleCallback" in window) requestIdleCallback(() => activate(), { timeout: 900 });
+  else setTimeout(activate, 250);
 }
