@@ -1,0 +1,125 @@
+[
+  {
+    "name": "Capsula_Albedo_Vascular",
+    "metadata": {
+      "format": "webp",
+      "mediaType": "image/webp",
+      "size": 14486,
+      "width": 1024,
+      "height": 1024,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "channels": [
+      {
+        "min": 106,
+        "max": 179,
+        "mean": 145.55630493164062,
+        "stdev": 8.938334800876016
+      },
+      {
+        "min": 41,
+        "max": 91,
+        "mean": 66.7802906036377,
+        "stdev": 4.875435509396763
+      },
+      {
+        "min": 32,
+        "max": 77,
+        "mean": 54.46655464172363,
+        "stdev": 4.522597426990662
+      }
+    ]
+  },
+  {
+    "name": "Capsula_Normal",
+    "metadata": {
+      "format": "webp",
+      "mediaType": "image/webp",
+      "size": 38690,
+      "width": 1024,
+      "height": 1024,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "channels": [
+      {
+        "min": 95,
+        "max": 157,
+        "mean": 127.44319248199463,
+        "stdev": 5.6812069145464
+      },
+      {
+        "min": 107,
+        "max": 148,
+        "mean": 127.51570701599121,
+        "stdev": 4.211938521308833
+      },
+      {
+        "min": 239,
+        "max": 255,
+        "mean": 253.93521308898926,
+        "stdev": 1.5242113823448131
+      }
+    ]
+  },
+  {
+    "name": "Capsula_AO_Roughness_Metallic",
+    "metadata": {
+      "format": "webp",
+      "mediaType": "image/webp",
+      "size": 10244,
+      "width": 1024,
+      "height": 1024,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    "channels": [
+      {
+        "min": 170,
+        "max": 255,
+        "mean": 252.53413677215576,
+        "stdev": 8.767324079114983
+      },
+      {
+        "min": 52,
+        "max": 94,
+        "mean": 73.36681079864502,
+        "stdev": 6.661384092808874
+      },
+      {
+        "min": 0,
+        "max": 6,
+        "mean": 0.31608009338378906,
+        "stdev": 0.628110169839588
+      }
+    ]
+  }
+]

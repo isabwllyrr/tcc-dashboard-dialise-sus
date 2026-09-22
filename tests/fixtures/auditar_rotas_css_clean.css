@@ -1,0 +1,35 @@
+/* ==========================================================================
+   tests/fixtures/auditar_rotas_css_clean.css
+   Fixture 100% conforme com design tokens (0 violações esperadas)
+   ========================================================================== */
+
+/* Multiline :root */
+:root {
+  --color-brand-primary: #0B5D51;
+  --color-brand-accent: #3F72E8;
+  --color-surface: #FFFFFF;
+}
+
+/* Inline single-line :root */
+:root { --bg-inline: #FFFFFF; --tint-inline: #F7F8F8; }
+
+/* Inline :root com atributo */
+:root[data-theme="dark"] { --dark-bg: #0C0F13; --dark-ink: #EDEFF2; }
+
+/* Nested @media :root */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --media-bg: #0C0F13;
+  }
+}
+
+/* Comentário com menção a hexadecimal #123456 */
+body {
+  background-color: var(--color-surface);
+  color: var(--color-brand-primary);
+}
+
+.cartao {
+  background: var(--bg-inline);
+  border: 1px solid var(--tint-inline);
+}

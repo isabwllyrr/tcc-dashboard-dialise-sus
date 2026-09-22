@@ -1,0 +1,816 @@
+{
+  "generated_at": "2026-09-18T04:14:35.578Z",
+  "routes": [
+    {
+      "route": "/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/assistente/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/contagem/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/modelo/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/ac/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/al/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/am/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/ap/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/ba/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/ce/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/df/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/es/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/go/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/ma/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/mg/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/ms/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/mt/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/pa/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/pb/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/pe/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/pi/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/pr/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/rj/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/rn/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/ro/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/rr/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/rs/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/sc/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/se/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/sp/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/territorio/to/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/evidencias/valor/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    },
+    {
+      "route": "/sobre-a-base/",
+      "viewports": [
+        {
+          "width": 390,
+          "status": 200,
+          "innerWidth": 390,
+          "scrollWidth": 390,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        },
+        {
+          "width": 1440,
+          "status": 200,
+          "innerWidth": 1440,
+          "scrollWidth": 1440,
+          "h1": 1,
+          "lang": "pt-BR",
+          "console_errors": []
+        }
+      ]
+    }
+  ],
+  "interactions": {
+    "territory_year": {
+      "before": "9.086",
+      "after": "7.527",
+      "url": "http://127.0.0.1:4322/evidencias/territorio/?ano=2018",
+      "passed": true
+    },
+    "uf_year": {
+      "label": "2017",
+      "url": "http://127.0.0.1:4322/evidencias/territorio/sp/?ano=2017"
+    },
+    "kidney": {
+      "loaded_before_click": false,
+      "loaded_after_click": true,
+      "mode": "interactive"
+    },
+    "assistant": {
+      "answer": "Resposta de teste baseada no dossiê. Abrir evidência",
+      "href": "/evidencias/valor/"
+    }
+  },
+  "summary": {
+    "pages": 34,
+    "viewport_checks": 68,
+    "overflows": 0,
+    "h1_errors": 0,
+    "console_errors": 0,
+    "interactions": 4
+  }
+}

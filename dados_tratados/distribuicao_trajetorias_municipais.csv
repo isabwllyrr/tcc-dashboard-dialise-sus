@@ -1,0 +1,13 @@
+﻿registro_tipo,faixa,ordem,limite_inferior_pct,limite_superior_pct,municipios,percentual_validos,periodo_inicio,periodo_fim,metrica,incluido_na_distribuicao,motivo_exclusao
+faixa_variacao,queda_maior_50,1,,-50.0,6,1.5113350125944585,2015,2025,variacao_valor_aprovado_real_pct,True,
+faixa_variacao,queda_25_a_50,2,-50.0,-25.0,31,7.8085642317380355,2015,2025,variacao_valor_aprovado_real_pct,True,
+faixa_variacao,queda_ate_25,3,-25.0,0.0,127,31.98992443324937,2015,2025,variacao_valor_aprovado_real_pct,True,
+faixa_variacao,sem_variacao,4,0.0,0.0,0,0.0,2015,2025,variacao_valor_aprovado_real_pct,True,
+faixa_variacao,crescimento_ate_25,5,0.0,25.0,124,31.234256926952142,2015,2025,variacao_valor_aprovado_real_pct,True,
+faixa_variacao,crescimento_25_a_50,6,25.0,50.0,58,14.609571788413097,2015,2025,variacao_valor_aprovado_real_pct,True,
+faixa_variacao,crescimento_maior_50,7,50.0,,51,12.846347607052897,2015,2025,variacao_valor_aprovado_real_pct,True,
+exclusao,novo_registro,8,,,82,,2015,2025,variacao_valor_aprovado_real_pct,False,2015 sem_registro/ausente e 2025 com número: variação percentual não definida
+exclusao,sem_registro_final,9,,,8,,2015,2025,variacao_valor_aprovado_real_pct,False,2015 com número e 2025 sem_registro/ausente: não tratar como queda de 100%
+exclusao,sem_registro_ambos,10,,,11,,2015,2025,variacao_valor_aprovado_real_pct,False,2015 e 2025 sem_registro/ausente
+exclusao,excluido_base_zero,11,,,0,,2015,2025,variacao_valor_aprovado_real_pct,False,valor real observado em 2015 igual a zero: denominador da variação inválido
+resumo_exclusao,excluido_total,12,,,101,,2015,2025,variacao_valor_aprovado_real_pct,False,total de municípios fora da variação por estado sem_registro/ausente ou base zero

@@ -1,7 +1,17 @@
 [build]
-  command = "node scripts/build_netlify.mjs"
+  command = "npm run build"
   publish = "dist"
 
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  included_files = ["dossie/**/*.json"]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

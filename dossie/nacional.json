@@ -1,0 +1,3185 @@
+{
+  "tipo_documento": "nacional",
+  "metadados": {
+    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "vintage": "2026-09-15",
+    "schema_version": "1.0.0"
+  },
+  "series": {
+    "g1_valor_anual": [
+      {
+        "periodo": "2015",
+        "valor": 2503308293.12,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2015",
+        "valor": 4444319717.54385,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2016",
+        "valor": 2593185777.83,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2016",
+        "valor": 4234211779.2833023,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2017",
+        "valor": 2869625575.81,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2017",
+        "valor": 4528875360.011915,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2018",
+        "valor": 2996360541,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2018",
+        "valor": 4561664461.75735,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2019",
+        "valor": 3129327970.86,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2019",
+        "valor": 4592487142.197835,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2020",
+        "valor": 3234830410.92,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2020",
+        "valor": 4600761750.063053,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2021",
+        "valor": 3226651873.1,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2021",
+        "valor": 4238947737.028141,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2022",
+        "valor": 3708411468.85,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2022",
+        "valor": 4455470216.81958,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2023",
+        "valor": 4080317284.95,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2023",
+        "valor": 4685086175.799995,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2024",
+        "valor": 4543024146.71,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2024",
+        "valor": 5000279348.928408,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      },
+      {
+        "periodo": "2025",
+        "valor": 4721394104.15,
+        "estado": "observado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "nominal"
+      },
+      {
+        "periodo": "2025",
+        "valor": 4948321231.787933,
+        "estado": "observado",
+        "unidade": "reais_jun_2026",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "valor_aprovado",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+        },
+        "serie": "real"
+      }
+    ],
+    "g2_medias_periodo": [
+      {
+        "periodo": "pre_pandemia",
+        "valor": 14626600.4,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_ano",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "quantidade"
+      },
+      {
+        "periodo": "pre_pandemia",
+        "valor": 4472311692.15885,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_ano",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "valor_real"
+      },
+      {
+        "periodo": "pre_pandemia",
+        "valor": 305.7656304166791,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_procedimento_aprovado",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "valor_real_por_procedimento"
+      },
+      {
+        "periodo": "pos_pandemia",
+        "valor": 18094098.25,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_ano",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "quantidade"
+      },
+      {
+        "periodo": "pos_pandemia",
+        "valor": 4772289243.333979,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_ano",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "valor_real"
+      },
+      {
+        "periodo": "pos_pandemia",
+        "valor": 263.74838786641266,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_procedimento_aprovado",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "valor_real_por_procedimento"
+      },
+      {
+        "periodo": "pre_pandemia_vs_pos_pandemia",
+        "valor": 23.70679279649972,
+        "estado": "observado",
+        "unidade": "percentual",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "variacao_quantidade"
+      },
+      {
+        "periodo": "pre_pandemia_vs_pos_pandemia",
+        "valor": -13.741649933973232,
+        "estado": "observado",
+        "unidade": "percentual",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "ano",
+            "qtd_aprovada",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+        },
+        "metrica": "variacao_valor_real_por_procedimento"
+      }
+    ],
+    "g3_quantidade_mensal": [
+      {
+        "periodo": "2015-01",
+        "valor": 1149659,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-02",
+        "valor": 1044135,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-03",
+        "valor": 1131974,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-04",
+        "valor": 1131292,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-05",
+        "valor": 1136836,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-06",
+        "valor": 1138359,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-07",
+        "valor": 1182257,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-08",
+        "valor": 1146026,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-09",
+        "valor": 1150240,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-10",
+        "valor": 1193236,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-11",
+        "valor": 1114948,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2015-12",
+        "valor": 1195786,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-01",
+        "valor": 1152905,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-02",
+        "valor": 1119650,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-03",
+        "valor": 1198930,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-04",
+        "valor": 1160890,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-05",
+        "valor": 1163055,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-06",
+        "valor": 1159988,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-07",
+        "valor": 1167092,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-08",
+        "valor": 1214237,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-09",
+        "valor": 1171283,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-10",
+        "valor": 1172803,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-11",
+        "valor": 1175753,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2016-12",
+        "valor": 1216045,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-01",
+        "valor": 1181786,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-02",
+        "valor": 1098089,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-03",
+        "valor": 1236487,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-04",
+        "valor": 1148302,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-05",
+        "valor": 1242593,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-06",
+        "valor": 1198736,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-07",
+        "valor": 1203368,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-08",
+        "valor": 1251208,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-09",
+        "valor": 1212431,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-10",
+        "valor": 1221641,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-11",
+        "valor": 1221298,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2017-12",
+        "valor": 1244380,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-01",
+        "valor": 1253974,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-02",
+        "valor": 1138730,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-03",
+        "valor": 1277101,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-04",
+        "valor": 1196298,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-05",
+        "valor": 1285323,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-06",
+        "valor": 1249090,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-07",
+        "valor": 1251840,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-08",
+        "valor": 1305959,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-09",
+        "valor": 1220867,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-10",
+        "valor": 1320592,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-11",
+        "valor": 1280204,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2018-12",
+        "valor": 1306364,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-01",
+        "valor": 1311472,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-02",
+        "valor": 1196175,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-03",
+        "valor": 1295043,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-04",
+        "valor": 1299327,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-05",
+        "valor": 1349784,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-06",
+        "valor": 1256305,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-07",
+        "valor": 1358175,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-08",
+        "valor": 1364799,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-09",
+        "valor": 1279285,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-10",
+        "valor": 1379692,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-11",
+        "valor": 1335726,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2019-12",
+        "valor": 1373179,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-01",
+        "valor": 1382417,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-02",
+        "valor": 1304366,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-03",
+        "valor": 1358731,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-04",
+        "valor": 1361864,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-05",
+        "valor": 1365479,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-06",
+        "valor": 1367524,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-07",
+        "valor": 1419990,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-08",
+        "valor": 1364025,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-09",
+        "valor": 1364947,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-10",
+        "valor": 1410198,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-11",
+        "valor": 1317798,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2020-12",
+        "valor": 1418970,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-01",
+        "valor": 1370898,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-02",
+        "valor": 1268704,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-03",
+        "valor": 1432639,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-04",
+        "valor": 1366507,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-05",
+        "valor": 1355504,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-06",
+        "valor": 1351679,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-07",
+        "valor": 1399536,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-08",
+        "valor": 1356987,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-09",
+        "valor": 1358226,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-10",
+        "valor": 1367691,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-11",
+        "valor": 1372542,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2021-12",
+        "valor": 1426496,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-01",
+        "valor": 1391636,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-02",
+        "valor": 1284017,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-03",
+        "valor": 1427572,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-04",
+        "valor": 1381964,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-05",
+        "valor": 1391288,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-06",
+        "valor": 1398376,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-07",
+        "valor": 1403830,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-08",
+        "valor": 1466118,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-09",
+        "valor": 1412302,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-10",
+        "valor": 1414776,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-11",
+        "valor": 1417213,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2022-12",
+        "valor": 1477028,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-01",
+        "valor": 1443360,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-02",
+        "valor": 1336556,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-03",
+        "valor": 1508521,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-04",
+        "valor": 1395662,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-05",
+        "valor": 1512575,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-06",
+        "valor": 1457651,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-07",
+        "valor": 1469638,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-08",
+        "valor": 1531434,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-09",
+        "valor": 1485441,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-10",
+        "valor": 1492158,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-11",
+        "valor": 1494134,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2023-12",
+        "valor": 1535085,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-01",
+        "valor": 1537994,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-02",
+        "valor": 1457854,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-03",
+        "valor": 1514265,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-04",
+        "valor": 1529209,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-05",
+        "valor": 1585120,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-06",
+        "valor": 1476198,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-07",
+        "valor": 1597309,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-08",
+        "valor": 1599447,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-09",
+        "valor": 1498669,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-10",
+        "valor": 1620460,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-11",
+        "valor": 1568093,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2024-12",
+        "valor": 1599979,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-01",
+        "valor": 1606649,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-02",
+        "valor": 1466193,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-03",
+        "valor": 1589889,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-04",
+        "valor": 1591552,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-05",
+        "valor": 1651561,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-06",
+        "valor": 1538441,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-07",
+        "valor": 1656617,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-08",
+        "valor": 1607792,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-09",
+        "valor": 1613643,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-10",
+        "valor": 1679067,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-11",
+        "valor": 1559318,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2025-12",
+        "valor": 1702739,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2026-01",
+        "valor": 1659903,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2026-02",
+        "valor": 1505454,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2026-03",
+        "valor": 1636616,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2026-04",
+        "valor": 1543539,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2026-05",
+        "valor": 1650152,
+        "estado": "provisorio",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      },
+      {
+        "periodo": "2026-06",
+        "valor": 1583187,
+        "estado": "provisorio",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/dialise_mensal_brasil_total.csv"
+          ],
+          "colunas": [
+            "data",
+            "qtd_aprovada",
+            "provisorio"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+        }
+      }
+    ]
+  },
+  "achados": [
+    {
+      "id": "G1.achado.variacao_real",
+      "texto": "A variacao do valor anual real entre 2015 e 2025 foi calculada na mesma base monetaria.",
+      "valores": [
+        {
+          "chave": "variacao_real_2015_2025",
+          "valor": 11.340352321066117,
+          "unidade": "percentual",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/dialise_mensal_brasil_total.csv"
+            ],
+            "colunas": [
+              "ano",
+              "valor_aprovado",
+              "valor_aprovado_real"
+            ],
+            "script": "scripts/gerar_dossie.py",
+            "transformacao": "soma dos 12 meses por ano completo; valor real em reais de jun/2026, sem correcao adicional"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.mix"
+      ],
+      "periodos": {
+        "inicio": "2015",
+        "fim": "2025"
+      }
+    },
+    {
+      "id": "G2.achado.periodos",
+      "texto": "A comparacao usa medias anuais de 2015-2019 e 2022-2025; 2020-2021 fica fora dos dois blocos.",
+      "valores": [
+        {
+          "chave": "variacao_quantidade",
+          "valor": 23.70679279649972,
+          "unidade": "percentual",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/dialise_mensal_brasil_total.csv"
+            ],
+            "colunas": [
+              "ano",
+              "qtd_aprovada",
+              "valor_aprovado_real"
+            ],
+            "script": "scripts/gerar_dossie.py",
+            "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+          }
+        },
+        {
+          "chave": "variacao_valor_real_por_procedimento",
+          "valor": -13.741649933973232,
+          "unidade": "percentual",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/dialise_mensal_brasil_total.csv"
+            ],
+            "colunas": [
+              "ano",
+              "qtd_aprovada",
+              "valor_aprovado_real"
+            ],
+            "script": "scripts/gerar_dossie.py",
+            "transformacao": "medias anuais por periodo; valor real por procedimento calculado como razao entre somas"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.procedimento_nao_pessoa",
+        "r.mix"
+      ],
+      "periodos": {
+        "pre_pandemia": "2015-2019",
+        "pos_pandemia": "2022-2025"
+      }
+    },
+    {
+      "id": "G3.achado.total_procedimentos",
+      "texto": "O total mensal acumulado representa procedimentos aprovados, não pessoas distintas.",
+      "valores": [
+        {
+          "chave": "procedimentos_acumulados",
+          "valor": 187951964,
+          "unidade": "procedimentos_aprovados",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/dialise_mensal_brasil_total.csv"
+            ],
+            "colunas": [
+              "data",
+              "qtd_aprovada",
+              "provisorio"
+            ],
+            "script": "scripts/gerar_dossie.py",
+            "transformacao": "serie mensal sem interpolacao e sem ajuste automatico dos meses provisorios"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.procedimento_nao_pessoa",
+        "r.provisorio"
+      ],
+      "periodos": {
+        "inicio": "2015-01",
+        "fim": "2026-06"
+      }
+    }
+  ]
+}

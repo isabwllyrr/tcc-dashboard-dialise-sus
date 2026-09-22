@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import LineChart from "../../../components/LineChart.astro";
+import { ptInt, ptNumber, readDossie } from "../../../lib/dossie";
+const doc = readDossie("nacional.json");
+const points = doc.series.g3_quantidade_mensal;
+const labels = points.map((p: any) => p.periodo);
+const observed = points.map((p: any) => p.estado === "observado" ? p.valor : Number.NaN);
+const provisional = points.map((p: any) => p.estado === "provisorio" ? p.valor : Number.NaN);
+const total = doc.achados.find((a: any) => a.id === "G3.achado.total_procedimentos").valores[0].valor;
+const provisionalLabel = new Intl.ListFormat("pt-BR", { style: "long", type: "conjunction" }).format(points.filter((p:any)=>p.estado==="provisorio").map((p:any)=>new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${p.periodo}-01T00:00:00Z`))));
+---
+<BaseLayout title="Contagem">
+  <p class="eyebrow">Evidência · Contagem</p><h1 class="claim">A quantidade é uma série de <em>eventos administrativos</em>.</h1><p class="standfirst">A base acompanha {ptInt(points.length)} competências, de {labels[0]} a {labels.at(-1)}. {provisionalLabel} ainda são competências provisórias.</p><p class="guard">Esta base conta procedimentos aprovados, não pessoas.</p>
+  <figure><div class="figure-head"><span class="id">G3</span><h2 class="title">Quantidade mensal de procedimentos aprovados</h2><span class="meta">{labels[0]}–{labels.at(-1)}</span></div><div class="plot"><LineChart labels={labels} series={[{label:"Observado",className:"observed",values:observed},{label:"Provisório",className:"provisional estimated",values:provisional}]} ariaLabel="Quantidade mensal observada; os dois pontos finais são provisórios" /></div><figcaption>O acumulado é de <b>{ptNumber(total / 1_000_000, 2)} milhões de procedimentos aprovados</b>. Os pontos provisórios não foram corrigidos automaticamente.</figcaption><details class="twin"><summary>Tabela gêmea — abrir {ptInt(points.length)} competências</summary><div class="table-wrap"><table><thead><tr><th scope="col">Competência</th><th scope="col">Quantidade</th><th scope="col">Estado</th></tr></thead><tbody>{points.map((p: any) => <tr><th scope="row">{p.periodo}</th><td>{ptInt(p.valor)}</td><td>{p.estado}</td></tr>)}</tbody></table></div></details></figure>
+  <h2 class="sect">Como ler</h2><p class="calc">Uma pessoa pode produzir vários registros ao longo do tratamento. O total não é convertido em pessoas e não é dividido por doze ou treze.</p><div class="next"><a href="/evidencias/modelo/"><span class="q">Como o erro muda com o horizonte?</span><span class="path">/evidencias/modelo/</span></a></div>
+</BaseLayout>

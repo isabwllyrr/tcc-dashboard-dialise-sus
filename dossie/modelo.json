@@ -1,0 +1,4574 @@
+{
+  "tipo_documento": "modelo",
+  "metadados": {
+    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "vintage": "2026-09-15",
+    "schema_version": "1.0.0"
+  },
+  "protocolo": {
+    "frequencia": "mensal",
+    "horizonte_meses": 12,
+    "baseline": "sazonal_ingenuo",
+    "origem_previsao": "2026-06",
+    "meses_provisorios_na_origem": true
+  },
+  "comparacao_modelos": [
+    {
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 4.440915016063527,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 3.5127493939983454,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.0176336617061592,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -0.8903322125029568,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 5.351826108996289,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 4.42470654129894,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.234357819650697,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -4.980802337680056,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 6.738673619226697,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 5.374883370862737,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.559225529612026,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -6.319589780134296,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 8.455567668207532,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 7.637858542278249,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.899909910323179,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -8.436603167186302,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 10.007807691103986,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 9.409492696916134,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 2.2430487425301613,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -10.107858474935924,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 3.9209628050128535,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 3.3083805048823502,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 0.9786481575659078,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -2.8060870283121546,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 4.563259845020472,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 4.029814462166372,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.1296816620881702,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -2.765077202518493,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 4.592827957950077,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 3.920610926571872,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.1260312050282604,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -0.5786229121372967,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 5.697276795308141,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 5.118878790864211,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.4083771771575435,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -4.702099620959768,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    },
+    {
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "janelas": 43,
+      "metricas": {
+        "mape_medio": {
+          "valor": 5.794853721861514,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mape_mediano": {
+          "valor": 5.3630885507279045,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "mase": {
+          "valor": 1.4318329646916517,
+          "estado": "observado",
+          "unidade": "razao",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        },
+        "vies": {
+          "valor": -4.858940331781136,
+          "estado": "observado",
+          "unidade": "percentual",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      }
+    }
+  ],
+  "vies_por_horizonte": [
+    {
+      "periodo": "1",
+      "valor": -1.6385495626034308,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -2.270967837442984,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -2.988046076988664,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -3.595453081963732,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -4.05143227167018,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -4.703251524899346,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -5.240715716272592,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -5.634550613621864,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -6.129644133926518,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -6.598125597736902,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -7.294296833657402,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -7.977373840385401,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -0.5607470340500617,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -0.5985205363389653,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -0.6935515972699101,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -0.7759068336945177,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -0.7031266951884565,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -0.8644489120570493,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -0.8865486260006308,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -0.8447108435570599,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -0.8246059852231903,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -0.7841293538707447,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -0.976983667528318,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -1.001718852553336,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -2.897765850606146,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -3.581765602585934,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -4.361873158259578,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -5.00023306949967,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -5.477361042440393,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -6.102530329838804,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -6.65111304635229,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -6.953035623778841,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -7.411004162523528,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -7.849162565477535,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -8.516101456642728,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -9.118335625422164,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -7.033301436107173,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -7.354376790743161,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -7.792014431857843,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -8.011535730704503,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -8.09096782943475,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -8.332856884156238,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -8.522847946937292,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -8.481875772286445,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -8.609916384266324,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -8.773341360881126,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -9.145716377371306,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -9.479390807239549,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -8.610705788507003,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -8.966048905493444,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -9.430492242028704,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -9.669272059891004,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -9.760464992201868,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -10.00072787218631,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -10.189112234941158,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -10.155033073481873,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -10.296973914376396,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -10.483661448331071,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -10.885354113652072,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -11.25524150212925,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_nominal",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -1.307445091627296,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -1.566671212044454,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -1.9269622271799132,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -2.3207104113213157,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -2.4959311365096206,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -2.826998124407434,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -3.0652147531297884,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -3.119162712548037,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -3.264074086138092,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -3.3275289690069,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -3.5531081178811683,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -3.708325168102701,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "gradient_boosting",
+      "alvo": "valor_real",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -0.4302011411314099,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -0.392378878493175,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -0.4264455756517439,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -0.4928774153202408,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -0.4248580388149831,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -0.5948019035635187,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -0.6066000256892977,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -0.5987857703164822,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -0.5251831790766647,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -0.4222437672808505,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -0.5409266273986361,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -0.4631882422680586,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "holt_winters",
+      "alvo": "valor_real",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -1.1954939301172227,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -1.4463169841975034,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -1.846508698113176,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -2.1444067468618475,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -2.3514644927198,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -2.705175562925678,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -3.0018856258306243,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -3.0326910034341594,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -3.202422625598175,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -3.3119556705224458,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -3.5670943272666564,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -3.719024837509061,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "random_forest",
+      "alvo": "valor_real",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -3.429773102253342,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -3.6160871293235903,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -3.97481794078105,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -4.168877519999161,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -4.276678936730781,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -4.578276212285078,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -4.845953003527215,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -4.84528376425585,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -4.970908764937801,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -5.089815184087067,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -5.38609027058377,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -5.598870375828458,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "regressao_linear",
+      "alvo": "valor_real",
+      "horizonte_meses": 12
+    },
+    {
+      "periodo": "1",
+      "valor": -3.566785965120769,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 1
+    },
+    {
+      "periodo": "2",
+      "valor": -3.756047181646513,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 2
+    },
+    {
+      "periodo": "3",
+      "valor": -4.121446775064611,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 3
+    },
+    {
+      "periodo": "4",
+      "valor": -4.320831715896324,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 4
+    },
+    {
+      "periodo": "5",
+      "valor": -4.433267032404443,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 5
+    },
+    {
+      "periodo": "6",
+      "valor": -4.734314273058168,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 6
+    },
+    {
+      "periodo": "7",
+      "valor": -5.002896344591619,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 7
+    },
+    {
+      "periodo": "8",
+      "valor": -5.004452166104636,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 8
+    },
+    {
+      "periodo": "9",
+      "valor": -5.134286568897283,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 9
+    },
+    {
+      "periodo": "10",
+      "valor": -5.256881977680639,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 10
+    },
+    {
+      "periodo": "11",
+      "valor": -5.557055911501392,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 11
+    },
+    {
+      "periodo": "12",
+      "valor": -5.774526498473137,
+      "estado": "observado",
+      "unidade": "percentual",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/evidencia_modelos_horizonte.csv"
+        ],
+        "colunas": [
+          "alvo",
+          "escala",
+          "modelo",
+          "horizonte",
+          "vies_pct"
+        ],
+        "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+        "transformacao": "vies percentual de cada modelo e alvo em cada horizonte do backtest temporal"
+      },
+      "modelo": "ridge",
+      "alvo": "valor_real",
+      "horizonte_meses": 12
+    }
+  ],
+  "previsao_12m": [
+    {
+      "periodo": "2026-07",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2026-07",
+        "valor": 414901984.6036289,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2026-07",
+        "valor": 391975487.92809504,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2026-07",
+        "valor": 437828481.2791628,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2026-08",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2026-08",
+        "valor": 414901984.6036289,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2026-08",
+        "valor": 390062390.8598756,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2026-08",
+        "valor": 439741578.3473823,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2026-09",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2026-09",
+        "valor": 410142434.6891463,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2026-09",
+        "valor": 379697879.5529531,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2026-09",
+        "valor": 440586989.8253394,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2026-10",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2026-10",
+        "valor": 414901984.6036289,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2026-10",
+        "valor": 377842388.2185496,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2026-10",
+        "valor": 451961580.98870826,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2026-11",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2026-11",
+        "valor": 413930020.8385469,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2026-11",
+        "valor": 378240738.5328632,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2026-11",
+        "valor": 449619303.1442306,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2026-12",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2026-12",
+        "valor": 418852710.7323847,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2026-12",
+        "valor": 374978868.834915,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2026-12",
+        "valor": 462726552.6298544,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2027-01",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2027-01",
+        "valor": 416315571.13256747,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2027-01",
+        "valor": 370076773.57797706,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2027-01",
+        "valor": 462554368.68715787,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2027-02",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2027-02",
+        "valor": 396553247.2250996,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2027-02",
+        "valor": 345486194.1229733,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2027-02",
+        "valor": 447620300.3272258,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2027-03",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2027-03",
+        "valor": 409645457.4969733,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2027-03",
+        "valor": 359525320.92209625,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2027-03",
+        "valor": 459765594.0718504,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2027-04",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2027-04",
+        "valor": 403307703.1951493,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2027-04",
+        "valor": 350028134.21390665,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2027-04",
+        "valor": 456587272.17639184,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2027-05",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2027-05",
+        "valor": 415735218.3349728,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2027-05",
+        "valor": 361634635.2632366,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2027-05",
+        "valor": 469835801.4067089,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    },
+    {
+      "periodo": "2027-06",
+      "modelo": "gradient_boosting",
+      "central": {
+        "periodo": "2027-06",
+        "valor": 407401892.9890204,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_inferior_95": {
+        "periodo": "2027-06",
+        "valor": 348337521.7595179,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      },
+      "limite_superior_95": {
+        "periodo": "2027-06",
+        "valor": 466466264.2185229,
+        "estado": "estimado",
+        "unidade": "reais_correntes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/previsao_mensal_proximos_12m_corrigido.csv"
+          ],
+          "colunas": [
+            "data",
+            "previsao_valor_aprovado",
+            "limite_inferior_95",
+            "limite_superior_95",
+            "modelo_usado"
+          ],
+          "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+          "transformacao": "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica"
+        }
+      }
+    }
+  ],
+  "achados": [
+    {
+      "id": "G6.achado.modelo_nominal",
+      "texto": "No alvo nominal, o menor MAPE medio pertence ao primeiro colocado do backtest; a escolha operacional permanece separada da decisao metodologica da autora e do orientador.",
+      "valores": [
+        {
+          "chave": "menor_mape_nominal",
+          "valor": 4.440915016063527,
+          "unidade": "percentual",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.mape",
+        "r.provisorio"
+      ],
+      "periodos": {
+        "backtest": "janelas temporais mensais",
+        "origem_previsao": "2026-06"
+      }
+    },
+    {
+      "id": "G6.achado.modelo_real",
+      "texto": "No alvo real, o menor MAPE medio pertence ao primeiro colocado do backtest em reais de jun/2026.",
+      "valores": [
+        {
+          "chave": "menor_mape_real",
+          "valor": 3.9209628050128535,
+          "unidade": "percentual",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.mape",
+        "r.mix"
+      ],
+      "periodos": {
+        "backtest": "janelas temporais mensais"
+      }
+    }
+  ]
+}

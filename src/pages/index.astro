@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ptInt, ptNumber, readDossie } from "../lib/dossie";
+const nacional = readDossie("nacional.json");
+const total = nacional.achados.find((a: any) => a.id === "G3.achado.total_procedimentos").valores[0].valor;
+const meses = nacional.series.g3_quantidade_mensal;
+const inicio = meses[0].periodo;
+const fim = meses.at(-1).periodo;
+const provisorios = meses.filter((p: any) => p.estado === "provisorio");
+const provisionalLabel = new Intl.ListFormat("pt-BR", { style: "long", type: "conjunction" }).format(provisorios.map((p: any) => new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${p.periodo}-01T00:00:00Z`))));
+
+// A virada: nenhum numero digitado. O nominal vem da serie; o real e o valor
+// por procedimento vem dos achados. Ver docs/PLANO-V3-CONCEITO-C.md §3.
+const anual = nacional.series.g1_valor_anual;
+const nominais = anual.filter((p: any) => p.unidade === "reais_correntes");
+const variacaoNominal = (nominais.at(-1).valor / nominais[0].valor - 1) * 100;
+const anoInicio = nominais[0].periodo;
+const anoFim = nominais.at(-1).periodo;
+const variacaoReal = nacional.achados.find((a: any) => a.id === "G1.achado.variacao_real").valores[0].valor;
+const porProcedimento = nacional.achados
+  .find((a: any) => a.id === "G2.achado.periodos")
+  .valores.find((v: any) => v.chave === "variacao_valor_real_por_procedimento").valor;
+---
+<BaseLayout title="Início">
+  <p class="eyebrow">Começo</p>
+  <h1 class="claim">Quando os rins param, o SUS assume a filtragem — <em>e repete o tratamento</em>.</h1>
+  <p class="standfirst">DialisaSUS reúne procedimentos de diálise aprovados no SUS e mostra o que o número nacional esconde. Antes de qualquer gráfico, vale entender o que exatamente está sendo contado.</p>
+  <h2 class="chapter"><span class="cn">01</span> O órgão</h2>
+  <div class="organ">
+    <section class="stage" id="kidney-stage" aria-label="Rim e circuito externo">
+      <div class="fallback" id="kidney-fallback">
+        <figure><img src="/assets/kidney-position.webp" width="560" height="420" alt="Rim humano ilustrado em três dimensões, com cápsula avermelhada e vasos superficiais" /><figcaption>Posição</figcaption></figure>
+        <figure><img src="/assets/kidney-hilum.webp" width="560" height="420" alt="Vista do hilo, região de entrada e saída de vasos no rim esquerdo" /><figcaption>Entrada do sangue</figcaption></figure>
+      </div>
+      <div class="kidney-controls"><button type="button" data-view="position" aria-pressed="true">Posição</button><button type="button" data-view="hilum" aria-pressed="false">Entrada do sangue</button><button type="button" id="enable-3d">Explorar em 3D</button><span class="kidney-hint">arraste, use setas ou toque</span></div>
+    </section>
+    <section class="organ-copy">
+      <p>Os rins filtram o sangue. Quando falham de forma crônica e avançada, parte dessa função passa a ser feita por um <b>circuito externo</b>: o sangue sai do corpo, atravessa um filtro e volta.</p>
+      <p>O corpo permanece. O tratamento <b>se repete</b>. Cada atendimento aprovado pode virar um novo registro administrativo.</p>
+      <div class="circuit" aria-label="Esquema do circuito externo"><span class="node">corpo</span><span class="flow"></span><span class="node">filtro</span><span class="flow"></span><span class="node">corpo</span></div>
+      <p class="asset-credit">Ilustração anatômica procedural: DialisaSUS. O circuito é esquemático.</p>
+    </section>
+  </div>
+  <h2 class="chapter"><span class="cn">02</span> Do tratamento ao registro</h2>
+  <ol class="sequence"><li><span class="sn">1</span><b>Um tratamento acontece</b><p>Uma sessão usa acesso vascular e circuito externo.</p></li><li><span class="sn">2</span><b>O tratamento se repete</b><p>A mesma pessoa pode voltar muitas vezes. O corpo permanece; o evento se repete.</p></li><li><span class="sn">3</span><b>Cada evento pode gerar um registro</b><p>O SIA/SUS desta análise registra procedimentos aprovados.</p></li></ol>
+  <p class="note">Esta base conta procedimentos aprovados, não pessoas. <b>Por isso {ptNumber(total / 1_000_000, 2)} milhões de procedimentos não são {ptNumber(total / 1_000_000, 2)} milhões de pessoas.</b> Não se converte esse total em pacientes.</p>
+  <h2 class="chapter"><span class="cn">03</span> A escala do que foi contado</h2>
+  <div class="readouts"><div class="readout"><p class="label">Procedimentos aprovados</p><p class="value">{ptNumber(total / 1_000_000, 2)} mi</p><p class="sub">{inicio} a {fim}</p></div><div class="readout"><p class="label">Competências</p><p class="value">{ptInt(meses.length)}</p><p class="sub">série mensal nacional</p></div><div class="readout"><p class="label">Competências provisórias</p><p class="value">{ptInt(provisorios.length)}</p><p class="sub">sem correção automática</p></div></div>
+  <p class="note">Por local de <b>atendimento</b>, não de residência. {provisionalLabel} são competências provisórias e podem estar subestimadas; os valores publicados não foram corrigidos.</p>
+  <h2 class="chapter"><span class="cn">04</span> A pergunta deste trabalho</h2>
+  <blockquote class="quest">Como os procedimentos de diálise aprovados pelo SUS evoluíram temporal e territorialmente, especialmente antes e depois da pandemia, e de que forma modelos preditivos e visualizações interativas podem apoiar o planejamento da gestão em saúde?</blockquote>
+  <p class="quest-src">Pergunta norteadora do trabalho de conclusão de curso, transcrita do texto da autora.</p>
+  <h2 class="chapter"><span class="cn">05</span> O que a série mostrou</h2>
+  <p class="turn">O volume cresceu todos os anos. Mas quando o valor é corrigido pela inflação, <em>a expansão quase desaparece</em> — e a remuneração por procedimento encolhe.</p>
+  <div class="readouts">
+    <div class="readout"><p class="label">Valor aprovado, {anoInicio} a {anoFim}</p><p class="value">+{ptNumber(variacaoNominal, 2)}%</p><p class="sub">em reais correntes</p></div>
+    <div class="readout"><p class="label">O mesmo período, corrigido</p><p class="value">+{ptNumber(variacaoReal, 2)}%</p><p class="sub">em reais de junho de 2026</p></div>
+    <div class="readout"><p class="label">Valor real por procedimento</p><p class="value">{ptNumber(porProcedimento, 2)}%</p><p class="sub">pré contra pós-pandemia</p></div>
+  </div>
+  <p class="note">As duas comparações têm <b>períodos diferentes</b> e não se somam. A terceira usa médias anuais de 2015–2019 contra 2022–2025; 2020 e 2021 ficam fora dos dois blocos.</p>
+  <h2 class="chapter"><span class="cn">06</span> Cada conclusão tem um endereço</h2>
+  <ul class="idx"><li><a href="/evidencias/valor/"><span class="q">Mais valor nominal é a mesma expansão em termos reais?</span><span class="path">/evidencias/valor/</span></a></li><li><a href="/evidencias/territorio/"><span class="q">Onde os procedimentos foram aprovados?</span><span class="path">/evidencias/territorio/</span></a></li><li><a href="/evidencias/contagem/"><span class="q">Como a quantidade se distribui no tempo?</span><span class="path">/evidencias/contagem/</span></a></li><li><a href="/evidencias/modelo/"><span class="q">Onde o modelo erra ao longo do horizonte?</span><span class="path">/evidencias/modelo/</span></a></li><li><a href="/assistente/"><span class="q">Em qual evidência encontro uma resposta sustentada?</span><span class="path">/assistente/</span></a></li></ul>
+  <Fragment slot="scripts"><script type="module" src="/assets/kidney.js"></script></Fragment>
+</BaseLayout>

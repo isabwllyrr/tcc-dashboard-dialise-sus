@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { ptInt, ptMoney, ptNumber, readDossie } from "../../../lib/dossie";
+import mapPaths from "../../../data/mapa-ufs.json";
+const doc = readDossie("territorio/indice.json");
+const distribuicao = readDossie("territorio/distribuicao.json");
+const currentYear = String(doc.ano_corrente);
+const years = [...new Set(doc.mapa_por_ano.map((p:any)=>p.periodo))] as string[];
+const current = doc.mapa_por_ano.filter((p:any)=>p.periodo === currentYear);
+const values = current.map((p:any)=>p.taxa_100_mil.valor).sort((a:number,b:number)=>a-b);
+const thresholds = [1,2,3,4,5,6].map((n)=>values[Math.floor((values.length-1)*n/7)]);
+const classFor = (value:number) => 1 + thresholds.filter((threshold)=>value>threshold).length;
+const byUf = Object.fromEntries(current.map((p:any)=>[p.uf,p]));
+const clientRows = doc.mapa_por_ano.map((p:any)=>({ano:p.periodo,uf:p.uf,qtd:p.quantidade.valor,taxa:p.taxa_100_mil.valor,pop:p.taxa_100_mil.denominador.valor}));
+const eligibility = distribuicao.achados.find((a:any)=>a.id === "G7.achado.elegibilidade").valores;
+const comparable = eligibility.find((v:any)=>v.chave === "municipios_comparaveis").valor;
+const excluded = eligibility.find((v:any)=>v.chave === "municipios_excluidos").valor;
+const trajectoryPeriod = distribuicao.periodos;
+---
+<BaseLayout title="Território">
+  <p class="eyebrow">Evidência · Território</p><h1 class="claim">Produção por local de atendimento <em>não é prevalência</em>.</h1><p class="standfirst">O mapa compara procedimentos aprovados por 100 mil habitantes nas {ptInt(doc.ufs.length)} UFs, de {years[0]} a {years.at(-1)}.</p><p class="guard">Esta base conta procedimentos aprovados, não pessoas. O numerador é produção por local de atendimento; o denominador é população residente estimada ou censitária.</p>
+  <form class="selector territory-selector" id="territory-selector" method="get">
+    <label for="territory-year">Ano</label><select id="territory-year" name="ano">{years.map((year)=><option value={year} selected={year===currentYear}>{year}</option>)}</select>
+    <label for="territory-uf">UF</label><select id="territory-uf" name="uf"><option value="">Todas</option>{doc.ufs.map((uf:any)=><option value={uf.sigla.toLowerCase()}>{uf.sigla} · {uf.nome}</option>)}</select>
+    <button type="submit">Aplicar</button>
+  </form>
+  <figure>
+    <div class="figure-head"><span class="id">G4</span><h2 class="title">Taxa estadual de procedimentos aprovados</h2><span class="meta" id="territory-meta">{currentYear} · por 100 mil</span></div>
+    <div class="territory-grid"><div><svg class="map" viewBox="0 0 650 580" role="group" aria-label={`Mapa do Brasil com taxa em ${currentYear}`}>{doc.ufs.map((uf:any)=>{const row=byUf[uf.sigla]; return <a href={uf.rota} data-map-link={uf.sigla}><path data-map-uf={uf.sigla} class={`state seq-${classFor(row.taxa_100_mil.valor)}`} d={mapPaths[uf.sigla]}><title>{uf.nome}: {ptNumber(row.taxa_100_mil.valor,0)} por 100 mil</title></path></a>})}</svg><div class="legend-ramp" role="img" aria-label="Escala sequencial, da menor para a maior taxa">{[1,2,3,4,5,6,7].map(()=> <i></i>)}</div></div>
+      <div class="table-wrap"><table class="uf-table"><thead><tr><th scope="col">UF</th><th scope="col">Taxa/100 mil</th><th scope="col">Procedimentos</th><th scope="col">População</th></tr></thead><tbody>{doc.ufs.map((uf:any)=>{const row=byUf[uf.sigla];return <tr data-table-uf={uf.sigla}><th scope="row"><a href={uf.rota}>{uf.sigla} · {uf.nome}</a></th><td data-field="taxa">{ptNumber(row.taxa_100_mil.valor,0)}</td><td data-field="qtd">{ptInt(row.quantidade.valor)}</td><td data-field="pop">{ptInt(row.taxa_100_mil.denominador.valor)}</td></tr>})}</tbody></table></div></div>
+    <figcaption id="territory-caption">Taxa = procedimentos aprovados ÷ população do mesmo ano × 100 mil. A procedência e o estado do denominador acompanham cada ponto no dossiê.</figcaption>
+  </figure>
+  <section aria-labelledby="distribution-title"><h2 class="sect" id="distribution-title">G7 · Distribuição municipal, sem transformar ausência em zero</h2><p class="calc">A comparação de {trajectoryPeriod.inicio} a {trajectoryPeriod.fim} inclui <b>{ptInt(comparable)} municípios</b> com registro nos dois extremos e exclui, de forma explícita, <b>{ptInt(excluded)}</b> municípios com “sem registro” ou ausentes em pelo menos um extremo.</p><details class="twin"><summary>Tabela — categorias de trajetória</summary><div class="table-wrap"><table><thead><tr><th scope="col">Categoria</th><th scope="col">Municípios</th><th scope="col">Estado</th></tr></thead><tbody>{distribuicao.trajetorias.map((p:any)=><tr><th scope="row">{p.categoria.replaceAll("_"," ")}</th><td>{ptInt(p.municipios.valor)}</td><td>{p.municipios.estado}</td></tr>)}</tbody></table></div></details></section>
+  <h2 class="sect">Limites</h2><p class="calc">Polos de atendimento podem receber pessoas de outros municípios e estados. Um valor alto descreve concentração de produção aprovada, não prevalência de doença renal.</p><div class="next"><a href="/evidencias/valor/"><span class="q">Como inflação muda a leitura nacional?</span><span class="path">/evidencias/valor/</span></a></div>
+  <script type="application/json" id="territory-data" set:html={JSON.stringify(clientRows).replaceAll("<","\\u003c")} />
+  <script>
+    const form = document.querySelector('#territory-selector');
+    const yearSelect = document.querySelector('#territory-year');
+    const ufSelect = document.querySelector('#territory-uf');
+    const rows = JSON.parse(document.querySelector('#territory-data')?.textContent || '[]');
+    const format = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+    const params = new URLSearchParams(location.search);
+    const initialYear = params.get('ano');
+    if (initialYear && [...yearSelect.options].some((option) => option.value === initialYear)) yearSelect.value = initialYear;
+    const render = (year) => {
+      const selected = rows.filter((row) => row.ano === year);
+      const ordered = selected.map((row) => row.taxa).sort((a,b)=>a-b);
+      const thresholds = [1,2,3,4,5,6].map((n)=>ordered[Math.floor((ordered.length-1)*n/7)]);
+      selected.forEach((row) => {
+        const level = 1 + thresholds.filter((value) => row.taxa > value).length;
+        const path = document.querySelector(`[data-map-uf="${row.uf}"]`);
+        path?.setAttribute('class', `state seq-${level}`);
+        path?.querySelector('title')?.replaceChildren(`${row.uf}: ${format.format(row.taxa)} por 100 mil`);
+        const tr = document.querySelector(`[data-table-uf="${row.uf}"]`);
+        tr?.querySelector('[data-field="taxa"]')?.replaceChildren(format.format(row.taxa));
+        tr?.querySelector('[data-field="qtd"]')?.replaceChildren(format.format(row.qtd));
+        tr?.querySelector('[data-field="pop"]')?.replaceChildren(format.format(row.pop));
+      });
+      document.querySelector('#territory-meta')?.replaceChildren(`${year} · por 100 mil`);
+      history.replaceState(null, '', `${location.pathname}?ano=${encodeURIComponent(year)}`);
+    };
+    render(yearSelect.value);
+    yearSelect.addEventListener('change', () => render(yearSelect.value));
+    form.addEventListener('submit', (event) => {
+      if (ufSelect.value) { event.preventDefault(); location.href = `/evidencias/territorio/${ufSelect.value}/?ano=${encodeURIComponent(yearSelect.value)}`; }
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,959 @@
+{
+  "canonicalRoutes": [
+    {
+      "path": "/",
+      "name": "Home / Relatório Vivo",
+      "h1": "Quando os rins param, o SUS assume a filtragem — e repete o tratamento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/",
+      "guardPresent": true,
+      "guardText": "Esta base conta procedimentos aprovados, não pessoas. Por isso 187,95 milhões de procedimentos não são 187,95 milhões de pessoas. Não se converte esse total em pacientes.",
+      "overflow": {
+        "320px": {
+          "scrollWidth": 320,
+          "innerWidth": 320,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "scrollWidth": 768,
+          "innerWidth": 768,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "scrollWidth": 1024,
+          "innerWidth": 1024,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "scrollWidth": 1440,
+          "innerWidth": 1440,
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0,
+        "details": []
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/home-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/home-mobile-390.png"
+      }
+    },
+    {
+      "path": "/evidencias/valor/",
+      "name": "Evidência 1: Valor Aprovado e IPCA",
+      "h1": "O valor nominal sobe; a leitura real é mais contida.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/valor/",
+      "guardPresent": true,
+      "guardText": "Esta base conta procedimentos aprovados, não pessoas. Valores aprovados são produção administrativa, não renda nem prevalência.",
+      "overflow": {
+        "320px": {
+          "scrollWidth": 320,
+          "innerWidth": 320,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "scrollWidth": 768,
+          "innerWidth": 768,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "scrollWidth": 1024,
+          "innerWidth": 1024,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "scrollWidth": 1440,
+          "innerWidth": 1440,
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0,
+        "details": []
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/evidencias-valor-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/evidencias-valor-mobile-390.png"
+      }
+    },
+    {
+      "path": "/evidencias/contagem/",
+      "name": "Evidência 2: Contagem e Pacientes Estimados",
+      "h1": "A quantidade é uma série de eventos administrativos.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/contagem/",
+      "guardPresent": true,
+      "guardText": "Esta base conta procedimentos aprovados, não pessoas.",
+      "overflow": {
+        "320px": {
+          "scrollWidth": 320,
+          "innerWidth": 320,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "scrollWidth": 768,
+          "innerWidth": 768,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "scrollWidth": 1024,
+          "innerWidth": 1024,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "scrollWidth": 1440,
+          "innerWidth": 1440,
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0,
+        "details": []
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/evidencias-contagem-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/evidencias-contagem-mobile-390.png"
+      }
+    },
+    {
+      "path": "/evidencias/territorio/",
+      "name": "Evidência 3: Território Nacional",
+      "h1": "Produção por local de atendimento não é prevalência.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/",
+      "guardPresent": true,
+      "guardText": "Esta base conta procedimentos aprovados, não pessoas. O numerador é produção por local de atendimento; o denominador é população residente estimada ou censitária.",
+      "overflow": {
+        "320px": {
+          "scrollWidth": 320,
+          "innerWidth": 320,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "scrollWidth": 768,
+          "innerWidth": 768,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "scrollWidth": 1024,
+          "innerWidth": 1024,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "scrollWidth": 1440,
+          "innerWidth": 1440,
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0,
+        "details": []
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/evidencias-territorio-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/evidencias-territorio-mobile-390.png"
+      }
+    },
+    {
+      "path": "/evidencias/modelo/",
+      "name": "Evidência 4: Projeção Preditiva",
+      "h1": "O melhor modelo depende do alvo declarado.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/modelo/",
+      "guardPresent": true,
+      "guardText": "Esta base conta procedimentos aprovados, não pessoas. Previsão não é observação; a origem é 2026-06 e inclui competências provisórias sem correção automática.",
+      "overflow": {
+        "320px": {
+          "scrollWidth": 320,
+          "innerWidth": 320,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "scrollWidth": 768,
+          "innerWidth": 768,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "scrollWidth": 1024,
+          "innerWidth": 1024,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "scrollWidth": 1440,
+          "innerWidth": 1440,
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0,
+        "details": []
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/evidencias-modelo-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/evidencias-modelo-mobile-390.png"
+      }
+    },
+    {
+      "path": "/sobre-a-base/",
+      "name": "Sobre a Base e Glossário",
+      "h1": "Uma base pública, com limites declarados.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/sobre-a-base/",
+      "guardPresent": true,
+      "guardText": "Esta base conta procedimentos aprovados, não pessoas. Uma pessoa pode realizar vários procedimentos.",
+      "overflow": {
+        "320px": {
+          "scrollWidth": 320,
+          "innerWidth": 320,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "scrollWidth": 768,
+          "innerWidth": 768,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "scrollWidth": 1024,
+          "innerWidth": 1024,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "scrollWidth": 1440,
+          "innerWidth": 1440,
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0,
+        "details": []
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/sobre-a-base-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/sobre-a-base-mobile-390.png"
+      }
+    },
+    {
+      "path": "/assistente/",
+      "name": "Assistente Netlify",
+      "h1": "Em qual evidência encontro resposta sustentada?",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/assistente/",
+      "guardPresent": true,
+      "guardText": "Esta base conta procedimentos aprovados, não pessoas. Uma pessoa pode realizar vários procedimentos.",
+      "overflow": {
+        "320px": {
+          "scrollWidth": 320,
+          "innerWidth": 320,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "scrollWidth": 768,
+          "innerWidth": 768,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "scrollWidth": 1024,
+          "innerWidth": 1024,
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "scrollWidth": 1440,
+          "innerWidth": 1440,
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0,
+        "details": []
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/assistente-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/assistente-mobile-390.png"
+      }
+    }
+  ],
+  "ufSampleRoutes": [
+    {
+      "uf": "sp",
+      "path": "/evidencias/territorio/sp/",
+      "h1": "São Paulo: produção aprovada por local de atendimento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/sp/",
+      "guardPresent": true,
+      "overflow": {
+        "320px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/uf-sp-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/uf-sp-mobile-390.png"
+      }
+    },
+    {
+      "uf": "rj",
+      "path": "/evidencias/territorio/rj/",
+      "h1": "Rio de Janeiro: produção aprovada por local de atendimento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/rj/",
+      "guardPresent": true,
+      "overflow": {
+        "320px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/uf-rj-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/uf-rj-mobile-390.png"
+      }
+    },
+    {
+      "uf": "mg",
+      "path": "/evidencias/territorio/mg/",
+      "h1": "Minas Gerais: produção aprovada por local de atendimento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/mg/",
+      "guardPresent": true,
+      "overflow": {
+        "320px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/uf-mg-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/uf-mg-mobile-390.png"
+      }
+    },
+    {
+      "uf": "ba",
+      "path": "/evidencias/territorio/ba/",
+      "h1": "Bahia: produção aprovada por local de atendimento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/ba/",
+      "guardPresent": true,
+      "overflow": {
+        "320px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/uf-ba-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/uf-ba-mobile-390.png"
+      }
+    },
+    {
+      "uf": "am",
+      "path": "/evidencias/territorio/am/",
+      "h1": "Amazonas: produção aprovada por local de atendimento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/am/",
+      "guardPresent": true,
+      "overflow": {
+        "320px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/uf-am-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/uf-am-mobile-390.png"
+      }
+    },
+    {
+      "uf": "rs",
+      "path": "/evidencias/territorio/rs/",
+      "h1": "Rio Grande do Sul: produção aprovada por local de atendimento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/rs/",
+      "guardPresent": true,
+      "overflow": {
+        "320px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/uf-rs-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/uf-rs-mobile-390.png"
+      }
+    },
+    {
+      "uf": "pe",
+      "path": "/evidencias/territorio/pe/",
+      "h1": "Pernambuco: produção aprovada por local de atendimento.",
+      "h1Count": 1,
+      "canonical": "https://dialisasus.netlify.app/evidencias/territorio/pe/",
+      "guardPresent": true,
+      "overflow": {
+        "320px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "375px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "768px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1024px": {
+          "delta": 0,
+          "hasOverflow": false
+        },
+        "1440px": {
+          "delta": 0,
+          "hasOverflow": false
+        }
+      },
+      "axe": {
+        "totalViolations": 0,
+        "structuralViolations": 0,
+        "contrastViolations": 0,
+        "contrastNodes": 0
+      },
+      "screenshots": {
+        "1440px": "docs/evidencias/onda2/uf-pe-desktop-1440.png",
+        "390px": "docs/evidencias/onda2/uf-pe-mobile-390.png"
+      }
+    }
+  ],
+  "jsRuntimeCheck": [
+    {
+      "file": "assistente/index.html",
+      "isHome": false,
+      "clientScriptCount": 1,
+      "scripts": [
+        "<script type=\"module\">var e=document.querySelector(`#agent-form`),t=document.que"
+      ]
+    },
+    {
+      "file": "evidencias/contagem/index.html",
+      "isHome": false,
+      "clientScriptCount": 0,
+      "scripts": []
+    },
+    {
+      "file": "evidencias/modelo/index.html",
+      "isHome": false,
+      "clientScriptCount": 0,
+      "scripts": []
+    },
+    {
+      "file": "evidencias/territorio/ac/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"120",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/al/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"270",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/am/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"130",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/ap/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"160",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/ba/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"290",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/ce/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"230",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/df/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"530",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/es/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"320",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/go/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"520",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"territory-data\">[{\"ano\":\"2015\",\"uf\":\"AC\",\"qt",
+        "<script type=\"module\">var e=document.querySelector(`#territory-selector`),t=docu"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/ma/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"210",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/mg/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"310",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/ms/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"500",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/mt/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"510",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/pa/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"150",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/pb/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"250",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/pe/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"260",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/pi/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"220",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/pr/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"410",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/rj/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"330",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/rn/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"240",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/ro/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"110",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/rr/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"140",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/rs/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"430",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/sc/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"420",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/se/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"280",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/sp/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"350",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/territorio/to/index.html",
+      "isHome": false,
+      "clientScriptCount": 2,
+      "scripts": [
+        "<script type=\"application/json\" id=\"municipal-data\">[{\"ano\":\"2015\",\"codigo\":\"170",
+        "<script type=\"module\">var e=document.querySelector(`#uf-year`),t=document.queryS"
+      ]
+    },
+    {
+      "file": "evidencias/valor/index.html",
+      "isHome": false,
+      "clientScriptCount": 0,
+      "scripts": []
+    },
+    {
+      "file": "index.html",
+      "isHome": true,
+      "clientScriptCount": 1,
+      "scripts": [
+        "<script type=\"module\" src=\"/assets/kidney.js\"></script>"
+      ]
+    },
+    {
+      "file": "licenses/hubmap-kidney-CC-BY-4.0.html",
+      "isHome": false,
+      "clientScriptCount": 0,
+      "scripts": []
+    },
+    {
+      "file": "sobre-a-base/index.html",
+      "isHome": false,
+      "clientScriptCount": 0,
+      "scripts": []
+    }
+  ],
+  "summary": {
+    "totalRoutes": 14,
+    "overflowZeroCount": 14,
+    "singleH1Count": 14,
+    "guardCount": 14,
+    "zeroJsAnalyticalCount": 5,
+    "axeStructuralZeroCount": 14,
+    "ink3ContrastCount": 0
+  }
+}

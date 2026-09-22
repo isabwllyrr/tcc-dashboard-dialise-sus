@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import LineChart from "../../../components/LineChart.astro";
+import { ptMoney, ptNumber, ptPercent, readDossie } from "../../../lib/dossie";
+const doc = readDossie("nacional.json");
+const g1 = doc.series.g1_valor_anual;
+const years = [...new Set(g1.map((p: any) => p.periodo))] as string[];
+const nominal = years.map((year) => g1.find((p: any) => p.periodo === year && p.serie === "nominal").valor);
+const real = years.map((year) => g1.find((p: any) => p.periodo === year && p.serie === "real").valor);
+const variacaoReal = doc.achados.find((a: any) => a.id === "G1.achado.variacao_real").valores[0].valor;
+const g2 = doc.series.g2_medias_periodo;
+const metric = (period: string, key: string) => g2.find((p: any) => p.periodo === period && p.metrica === key).valor;
+const variacaoQtd = metric("pre_pandemia_vs_pos_pandemia", "variacao_quantidade");
+const variacaoCusto = metric("pre_pandemia_vs_pos_pandemia", "variacao_valor_real_por_procedimento");
+const periodosG2 = doc.achados.find((a:any)=>a.id==="G2.achado.periodos").periodos;
+---
+<BaseLayout title="Valor aprovado">
+  <p class="eyebrow">Evidência · Valor</p><h1 class="claim">O valor nominal sobe; a leitura real é <em>mais contida</em>.</h1><p class="standfirst">A comparação anual usa apenas anos completos e converte o valor real para reais de junho de 2026.</p><p class="guard">Esta base conta procedimentos aprovados, não pessoas. Valores aprovados são produção administrativa, não renda nem prevalência.</p>
+  <figure><div class="figure-head"><span class="id">G1</span><h2 class="title">Valor aprovado, nominal e real</h2><span class="meta">{years[0]}–{years.at(-1)} · R$</span></div><div class="plot"><LineChart labels={years} series={[{label:"Real",className:"observed",values:real},{label:"Nominal",className:"nominal",values:nominal}]} ariaLabel="Séries anuais de valor real e nominal" /></div><figcaption>Entre {years[0]} e {years.at(-1)}, o valor anual real variou <b>{ptPercent(variacaoReal)}</b>. Nominal e real não devem ser somados.</figcaption><details class="twin" open><summary>Tabela gêmea — dados do dossiê</summary><div class="table-wrap"><table><thead><tr><th scope="col">Ano</th><th scope="col">Nominal</th><th scope="col">Real, jun/2026</th><th scope="col">Estado</th></tr></thead><tbody>{years.map((year, i) => <tr><th scope="row">{year}</th><td>{ptMoney(nominal[i])}</td><td>{ptMoney(real[i])}</td><td>observado</td></tr>)}</tbody></table></div></details></figure>
+  <figure><div class="figure-head"><span class="id">G2</span><h2 class="title">Médias antes e depois da pandemia</h2><span class="meta">blocos anuais completos</span></div><div class="readouts"><div class="readout"><p class="label">Quantidade média anual</p><p class="value">{ptPercent(variacaoQtd)}</p><p class="sub">pós versus pré-pandemia</p></div><div class="readout"><p class="label">Valor real por procedimento</p><p class="value">{ptPercent(variacaoCusto)}</p><p class="sub">pós versus pré-pandemia</p></div></div><figcaption>As duas variações respondem a perguntas diferentes e permanecem separadas; <b>não são somadas</b>.</figcaption><details class="twin"><summary>Tabela gêmea — abrir dados</summary><div class="table-wrap"><table><thead><tr><th scope="col">Período</th><th scope="col">Quantidade/ano</th><th scope="col">Valor real/ano</th><th scope="col">Real/procedimento</th></tr></thead><tbody>{["pre_pandemia","pos_pandemia"].map((period) => <tr><th scope="row">{period.replace("_", " ")}</th><td>{ptNumber(metric(period,"quantidade"),0)}</td><td>{ptMoney(metric(period,"valor_real"))}</td><td>{ptMoney(metric(period,"valor_real_por_procedimento"))}</td></tr>)}</tbody></table></div></details></figure>
+  <h2 class="sect">Como foi calculada</h2><p class="calc">G1 soma meses por ano completo. G2 compara as médias de {periodosG2.pre_pandemia} e {periodosG2.pos_pandemia}; o intervalo entre os blocos não pertence a nenhum deles. Fonte e transformação acompanham cada ponto no dossiê.</p><div class="next"><a href="/evidencias/contagem/"><span class="q">Como a quantidade se distribui mês a mês?</span><span class="path">/evidencias/contagem/</span></a></div>
+</BaseLayout>

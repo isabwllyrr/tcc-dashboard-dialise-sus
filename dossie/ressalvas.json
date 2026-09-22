@@ -1,0 +1,69 @@
+{
+  "tipo_documento": "ressalvas",
+  "metadados": {
+    "gerado_em": "2026-09-16T16:55:00-03:00",
+    "vintage": "2026-09-16",
+    "schema_version": "1.0.0"
+  },
+  "versao": "1.0.0",
+  "data": "2026-09-16",
+  "fonte": "docs/PLANO-V3-CONCEITO-C.md §8",
+  "ressalvas": [
+    {
+      "id": "r.procedimento_nao_pessoa",
+      "texto": "Esta base conta procedimentos aprovados, não pessoas. Uma pessoa pode realizar vários procedimentos.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; TEXTO-GERAL-DO-PROJETO.md § 'Unidade de análise'",
+      "contexto": "Toda rota de evidência, antes do primeiro gráfico. Referenciada por todas as figuras.",
+      "obrigatoria": true
+    },
+    {
+      "id": "r.atendimento",
+      "texto": "Por local de atendimento: polos regionais podem apresentar taxa por habitante elevada por atender pessoas de outros municípios.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; CONTEXTO.md § 'Território é por local de ATENDIMENTO'",
+      "contexto": "Rotas de território (G4, G5, G7), taxas por 100 mil habitantes.",
+      "obrigatoria": true
+    },
+    {
+      "id": "r.sem_registro",
+      "texto": "Ausência de registro não significa ausência de pacientes nem fechamento de serviço.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; §3.2 'A ressalva que acompanha'",
+      "contexto": "Onde aparecer o estado 'sem registro no recorte'. A ressalva expandida na interface: 'Pode indicar mudança de local de atendimento, de código de procedimento ou de fluxo de faturamento.'",
+      "obrigatoria": true
+    },
+    {
+      "id": "r.provisorio",
+      "texto": "Competência provisória: os valores tendem a subir na próxima extração, em cerca de 1%.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; §3.2",
+      "contexto": "Dados de mai/2026 e jun/2026 (meses provisórios). Referenciada por G3 e qualquer série mensal que inclua esses meses.",
+      "obrigatoria": true
+    },
+    {
+      "id": "r.denominador_2022",
+      "texto": "A base populacional muda em 2022, do regime de estimativa para o Censo. Variações que atravessam esse ponto não são achado.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; CONTEXTO.md § 'Quebra do denominador do IBGE, quantificada'",
+      "contexto": "Taxas por 100 mil habitantes com série que atravessa 2022. A quebra causa artefato de +5,9 p.p. no salto da taxa.",
+      "obrigatoria": true
+    },
+    {
+      "id": "r.populacao_2023",
+      "texto": "População municipal de 2023 é interpolação geométrica entre 2022 e 2024; o IBGE não publicou estimativa nesse ano.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; TEXTO-GERAL-DO-PROJETO.md § 'Novas bases recomendadas'",
+      "contexto": "Taxas por 100 mil habitantes em 2023. A coluna fonte_populacao no CSV declara a procedência linha a linha.",
+      "obrigatoria": true
+    },
+    {
+      "id": "r.mix",
+      "texto": "O valor médio por procedimento pode variar por mudança de composição entre procedimentos, sem mudança de preço.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; DECISOES.md § 'Efeito composição (mix)'",
+      "contexto": "Decomposição do valor (quantidade × preço × inflação). Referenciada por G2 e por qualquer análise de decomposition.",
+      "obrigatoria": true
+    },
+    {
+      "id": "r.mape",
+      "texto": "MAPE é erro médio percentual do backtest, não garantia sobre o futuro nem intervalo de confiança.",
+      "fonte": "PLANO-V3-CONCEITO-C.md §8 — tabela de ressalvas canônicas; TEXTO-GERAL-DO-PROJETO.md § 'Previsão'",
+      "contexto": "Rota de modelo (G6). A previsão é exploratória, não uma determinação exata do gasto futuro.",
+      "obrigatoria": true
+    }
+  ]
+}

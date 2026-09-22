@@ -1,127 +1,43 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import handler, { buildServerContext, fallbackAnswer, isClinicalQuestion, serializeContext } from "../netlify/functions/agent.mjs";
 
-import handler, {
-  fallbackAnswer,
-  isClinicalQuestion,
-  serializeContext,
-} from "../netlify/functions/agent.mjs";
+function jsonRequest(payload) { return new Request("http://localhost/api/agent",{method:"POST",headers:{"content-type":"application/json","accept":"application/json"},body:JSON.stringify(payload)}); }
 
-
-test("health informa o modo do agente", async () => {
-  const originalKey = process.env.GEMINI_API_KEY;
-  delete process.env.GEMINI_API_KEY;
-  const response = await handler(new Request("http://localhost/api/agent"));
-  const body = await response.json();
-  assert.equal(response.status, 200);
-  assert.equal(body.provider, "gemini");
-  assert.equal(body.mode, "local_fallback");
-  if (originalKey !== undefined) process.env.GEMINI_API_KEY = originalKey;
+test("health não expõe provedor, modelo nem modo", async () => {
+  const response=await handler(new Request("http://localhost/api/agent"));const body=await response.json();
+  assert.equal(response.status,200);assert.equal(body.status,"ok");assert.equal("model" in body,false);assert.equal("provider" in body,false);assert.equal("mode" in body,false);
 });
 
-test("pergunta clínica individual é recusada", async () => {
-  const response = await handler(new Request("http://localhost/api/agent", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({
-      question: "Eu tenho dor e alteração na urina, qual meu risco?",
-      context: {},
-    }),
-  }));
-  const body = await response.json();
-  assert.equal(response.status, 200);
-  assert.equal(body.source, "safety_rule");
+test("pergunta clínica individual é recusada antes do provedor", async () => {
+  const original=process.env.GEMINI_API_KEY;process.env.GEMINI_API_KEY="nao-deve-ser-usada";const oldFetch=globalThis.fetch;globalThis.fetch=async()=>{throw new Error("não deveria chamar")};
+  try {const response=await handler(jsonRequest({question:"Eu tenho dor e alteração na urina, qual meu risco?"}));const body=await response.json();assert.equal(body.source,"safety_rule");assert.equal(body.route,"/sobre-a-base/");} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;}
 });
 
-test("pergunta gerencial não é classificada como clínica", () => {
-  assert.equal(isClinicalQuestion("Qual foi o custo do tratamento de diálise?"), false);
+test("pergunta gerencial não é classificada como clínica",()=>assert.equal(isClinicalQuestion("Qual foi o custo do tratamento de diálise?"),false));
+
+test("contexto é montado do dossiê e ignora números enviados pelo cliente", async () => {
+  const original=process.env.GEMINI_API_KEY;delete process.env.GEMINI_API_KEY;
+  try {const response=await handler(jsonRequest({question:"Qual a variação real do valor?",context:{variacao:"999999%"}}));const body=await response.json();assert.equal(body.route,"/evidencias/valor/");assert.doesNotMatch(body.answer,/999999/);assert.match(body.answer,/11,3%/);} finally {if(original!==undefined)process.env.GEMINI_API_KEY=original;}
 });
 
-test("fallback usa apenas o contexto recebido", () => {
-  const answer = fallbackAnswer({
-    periodo: "2015 a 2026",
-    indicadores: { valor_aprovado_total: "R$ 40,03 bi" },
-  });
-  assert.match(answer, /R\$ 40,03 bi/);
+test("fallback sempre cita a rota dona",()=>{const context=buildServerContext("Quantos procedimentos foram aprovados?");assert.match(fallbackAnswer(context),/\/evidencias\/contagem\//);});
+
+test("POST de formulário devolve HTML utilizável sem JavaScript", async () => {
+  const original=process.env.GEMINI_API_KEY;delete process.env.GEMINI_API_KEY;
+  try {const response=await handler(new Request("http://localhost/api/agent",{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded"},body:new URLSearchParams({pergunta:"Qual a fonte da base?"})}));const html=await response.text();assert.match(response.headers.get("content-type"),/text\/html/);assert.match(html,/\/sobre-a-base\//);assert.match(html,/Resposta baseada no dossiê/);} finally {if(original!==undefined)process.env.GEMINI_API_KEY=original;}
 });
 
-test("contexto excessivo é bloqueado", () => {
-  assert.throws(() => serializeContext({ data: "x".repeat(30_001) }), RangeError);
+test("prompt do Gemini contém dossiê do servidor e não contexto forjado", async () => {
+  const original=process.env.GEMINI_API_KEY;const oldFetch=globalThis.fetch;process.env.GEMINI_API_KEY="chave-teste";
+  globalThis.fetch=async (_url,options)=>{const requestBody=JSON.parse(options.body);const prompt=requestBody.contents[0].parts[0].text;assert.match(prompt,/G1\.achado\.variacao_real/);assert.doesNotMatch(prompt,/VALOR_FORJADO/);return Response.json({candidates:[{content:{parts:[{text:"Resposta sustentada em /evidencias/valor/."}]}}]});};
+  try {const response=await handler(jsonRequest({question:"Explique o valor real.",context:{valor:"VALOR_FORJADO"}}));const body=await response.json();assert.equal(body.source,"gemini");assert.equal(body.route,"/evidencias/valor/");} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;}
 });
 
-test("resposta do Gemini é extraída sem expor a chave", async () => {
-  const originalKey = process.env.GEMINI_API_KEY;
-  const originalFetch = globalThis.fetch;
-  process.env.GEMINI_API_KEY = "chave-falsa-de-teste";
-  globalThis.fetch = async (_url, options) => {
-    assert.match(_url, /models\/gemini-3\.6-flash:generateContent$/);
-    assert.equal(options.headers["x-goog-api-key"], "chave-falsa-de-teste");
-    const requestBody = JSON.parse(options.body);
-    assert.match(requestBody.systemInstruction.parts[0].text, /SIA\/SUS-DATASUS/);
-    assert.match(requestBody.contents[0].parts[0].text, /Resuma o cenário nacional/);
-    return Response.json({
-      candidates: [{
-        content: {
-          parts: [{ text: "Resposta gerencial simulada." }],
-        },
-      }],
-    });
-  };
-
-  try {
-    const response = await handler(new Request("http://localhost/api/agent", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        question: "Resuma o cenário nacional.",
-        context: { periodo: "2015 a 2026" },
-      }),
-    }));
-    const body = await response.json();
-    assert.equal(response.status, 200);
-    assert.equal(body.source, "gemini");
-    assert.equal(body.answer, "Resposta gerencial simulada.");
-    assert.equal(JSON.stringify(body).includes("chave-falsa"), false);
-  } finally {
-    globalThis.fetch = originalFetch;
-    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
-    else process.env.GEMINI_API_KEY = originalKey;
-  }
+test("erro do provedor não expõe mensagem nem status internos", async () => {
+  const original=process.env.GEMINI_API_KEY;const oldFetch=globalThis.fetch;process.env.GEMINI_API_KEY="chave-teste";globalThis.fetch=async()=>new Response("SEGREDO DO PROVEDOR",{status:503});
+  try {const response=await handler(jsonRequest({question:"Explique o valor real."}));const text=await response.text();assert.equal(response.status,502);assert.doesNotMatch(text,/SEGREDO|503|provider_status|model/);} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;}
 });
 
-test("modelo alternativo é usado quando o principal não está disponível", async () => {
-  const originalKey = process.env.GEMINI_API_KEY;
-  const originalModel = process.env.GEMINI_MODEL;
-  const originalFetch = globalThis.fetch;
-  process.env.GEMINI_API_KEY = "chave-falsa-de-teste";
-  process.env.GEMINI_MODEL = "gemini-2.5-flash-lite";
-  const calledUrls = [];
-  globalThis.fetch = async (url) => {
-    calledUrls.push(url);
-    if (calledUrls.length === 1) {
-      return Response.json({ error: { status: "NOT_FOUND" } }, { status: 404 });
-    }
-    return Response.json({
-      candidates: [{ content: { parts: [{ text: "Resposta pelo modelo alternativo." }] } }],
-    });
-  };
-
-  try {
-    const response = await handler(new Request("http://localhost/api/agent", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ question: "Resuma os indicadores.", context: { periodo: "2026" } }),
-    }));
-    const body = await response.json();
-    assert.equal(response.status, 200);
-    assert.match(calledUrls[0], /gemini-2\.5-flash-lite/);
-    assert.match(calledUrls[1], /gemini-3\.6-flash:generateContent$/);
-    assert.equal(body.model, "gemini-3.6-flash");
-  } finally {
-    globalThis.fetch = originalFetch;
-    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
-    else process.env.GEMINI_API_KEY = originalKey;
-    if (originalModel === undefined) delete process.env.GEMINI_MODEL;
-    else process.env.GEMINI_MODEL = originalModel;
-  }
-});
+test("filtros territoriais são enums validados", async () => {const response=await handler(jsonRequest({question:"Mostre a taxa por UF",uf:"SÃO PAULO",ano:"2026"}));assert.equal(response.status,422);});
+test("serialização limita o contexto já selecionado",()=>assert.throws(()=>serializeContext({data:"x".repeat(30_001)}),RangeError));

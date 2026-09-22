@@ -1,0 +1,131 @@
+{
+  "tipo_documento": "manifesto",
+  "metadados": {
+    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "vintage": "2026-09-15",
+    "schema_version": "1.0.0"
+  },
+  "versao_dossie": "1.0.0",
+  "extracao": {
+    "data": "2026-09-15",
+    "vintage": "2026-09-15",
+    "arquivos": [
+      {
+        "caminho": "dados_brutos/atualizacao_2026_05_06_qtd_mensal_grupo.csv",
+        "sha256": "6bd68b14faf431343e9c359fbc1c2725c8230b8f1cbb8d4d26d619d943b156a0"
+      },
+      {
+        "caminho": "dados_brutos/atualizacao_2026_05_06_qtd_municipio.csv",
+        "sha256": "51b16c787a3bc42d759ae92e222880d0164c784dec8f618b2f6f3a303f9af8d3"
+      },
+      {
+        "caminho": "dados_brutos/atualizacao_2026_05_06_valor_mensal_grupo.csv",
+        "sha256": "4a8fcea41414140afab5145bc0e5fc59891fe74a27c732a4a10a1085a0ffbe7b"
+      },
+      {
+        "caminho": "dados_brutos/atualizacao_2026_05_06_valor_municipio.csv",
+        "sha256": "98e2b3fea666529305ee8dde3fb2900b091149b697b055ed2b4834ba6fb23f9c"
+      },
+      {
+        "caminho": "dados_brutos/ipca_ibge_indice_2015_2026_06.csv",
+        "sha256": "79e82528b996ed3251aaab03560c85de2de1088a47b9710aa8d1e828ae3e8310"
+      },
+      {
+        "caminho": "dados_brutos/populacao_ibge_censo_2022.csv",
+        "sha256": "cb387042d13e08ae69214ab7ec90736f5dd9898a1c8faf785fa3add7f978d510"
+      },
+      {
+        "caminho": "dados_brutos/populacao_ibge_estimada_2015_2025.csv",
+        "sha256": "11ef761be0051fab6015c0d65b841278b6a9872041e07d502643a09486028d38"
+      },
+      {
+        "caminho": "dados_brutos/qtd_mensal_dialise_brasil.csv",
+        "sha256": "710472b32bc739af0a77da014c0c900bc265b80ed13c0d26e7841c29d0fb8461"
+      },
+      {
+        "caminho": "dados_brutos/qtd_municipio_dialise_brasil.csv",
+        "sha256": "3f703ebf86c383a1bb42c7ecd6558b9f3e92711270b3d8c2832bd71d8d3b39a5"
+      },
+      {
+        "caminho": "dados_brutos/valor_mensal_dialise_brasil.csv",
+        "sha256": "5bcf3000f526487365b02c04a1f8fc9c563440807baf1a815678a039a1e9f89b"
+      },
+      {
+        "caminho": "dados_brutos/valor_municipio_dialise_brasil.csv",
+        "sha256": "9b9b230d1500de7bba694e0877d898b7eee1ef90357f5167015715529a6a1860"
+      }
+    ]
+  },
+  "cobertura": {
+    "temporal": "jan/2015 a jun/2026; 2026 parcial, com mai e jun provisorios",
+    "territorial": "Brasil; UFs e municipios apenas em 2015-2025",
+    "unidade_observacao": "procedimentos aprovados por local de atendimento"
+  },
+  "fontes": [
+    {
+      "id": "sia_sus",
+      "nome": "Sistema de Informacoes Ambulatoriais do SUS",
+      "tabela_ou_sistema": "Producao Ambulatorial por local de atendimento",
+      "arquivos_csv": [
+        "dados_brutos/atualizacao_2026_05_06_qtd_mensal_grupo.csv",
+        "dados_brutos/atualizacao_2026_05_06_qtd_municipio.csv",
+        "dados_brutos/atualizacao_2026_05_06_valor_mensal_grupo.csv",
+        "dados_brutos/atualizacao_2026_05_06_valor_municipio.csv",
+        "dados_brutos/qtd_mensal_dialise_brasil.csv",
+        "dados_brutos/qtd_municipio_dialise_brasil.csv",
+        "dados_brutos/valor_mensal_dialise_brasil.csv",
+        "dados_brutos/valor_municipio_dialise_brasil.csv"
+      ]
+    },
+    {
+      "id": "ibge_populacao",
+      "nome": "Instituto Brasileiro de Geografia e Estatistica",
+      "tabela_ou_sistema": "Censo 2022 e estimativas populacionais municipais",
+      "arquivos_csv": [
+        "dados_brutos/populacao_ibge_censo_2022.csv",
+        "dados_brutos/populacao_ibge_estimada_2015_2025.csv"
+      ]
+    },
+    {
+      "id": "ibge_ipca",
+      "nome": "Instituto Brasileiro de Geografia e Estatistica",
+      "tabela_ou_sistema": "IPCA mensal",
+      "arquivos_csv": [
+        "dados_brutos/ipca_ibge_indice_2015_2026_06.csv"
+      ]
+    }
+  ],
+  "escopo": {
+    "procedimentos_sigtap": [
+      "0301130051",
+      "0301130060",
+      "0305010018",
+      "0305010026",
+      "0305010034",
+      "0305010042",
+      "0305010050",
+      "0305010069",
+      "0305010077",
+      "0305010085",
+      "0305010093",
+      "0305010107",
+      "0305010115",
+      "0305010123",
+      "0305010131",
+      "0305010182",
+      "0305010204",
+      "0305010220",
+      "0405050054",
+      "0418010030",
+      "0418010048",
+      "0418010064",
+      "0702100013",
+      "0702100021"
+    ],
+    "questoes_abertas": [
+      "DPAC/DPA permanece fora do recorte metodologico.",
+      "0405050054 CICLODIALISE permanece dentro do recorte metodologico."
+    ],
+    "ano_parcial": 2026
+  }
+}

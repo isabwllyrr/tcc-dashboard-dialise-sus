@@ -1,0 +1,79 @@
+---
+import "@fontsource/archivo/400.css";
+import "@fontsource/archivo/500.css";
+import "@fontsource/archivo/600.css";
+import "@fontsource/newsreader/400-italic.css";
+import "@fontsource/newsreader/500-italic.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import { readDossie } from "../lib/dossie";
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Caderno aberto de evidências sobre procedimentos de diálise aprovados no SUS." } = Astro.props;
+const currentPath = Astro.url.pathname;
+const isHome = currentPath === "/" || currentPath === "";
+const isValor = currentPath.startsWith("/evidencias/valor");
+const isTerritorio = currentPath.startsWith("/evidencias/territorio");
+const isContagem = currentPath.startsWith("/evidencias/contagem");
+const isModelo = currentPath.startsWith("/evidencias/modelo");
+const isBase = currentPath.startsWith("/sobre-a-base");
+const isAssistant = currentPath.startsWith("/assistente");
+const pageTitle = title.includes("DialisaSUS") ? title : `${title} · DialisaSUS`;
+const canonicalUrl = new URL(Astro.url.pathname, "https://dialisasus.netlify.app").href;
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: pageTitle,
+  description,
+  url: canonicalUrl,
+  isPartOf: { "@type": "WebSite", name: "DialisaSUS", url: "https://dialisasus.netlify.app/" },
+});
+const manifesto = readDossie("manifesto.json");
+const extractionLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${manifesto.extracao.data}T00:00:00Z`));
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/responsive.css" />
+    <script type="application/ld+json" set:html={structuredData} />
+    <slot name="head" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="head">
+        <div class="head-row">
+          <span class="mark">Dialisa<i>SUS</i></span>
+          <span class="stamp">produto acadêmico de TCC · SIA/SUS via TabNet</span>
+        </div>
+        <nav aria-label="Rotas">
+          <a href="/" aria-current={isHome ? "page" : undefined}>Início</a>
+          <a href="/evidencias/valor/" aria-current={isValor ? "page" : undefined}>Valor</a>
+          <a href="/evidencias/territorio/" aria-current={isTerritorio ? "page" : undefined}>Território</a>
+          <a href="/evidencias/contagem/" aria-current={isContagem ? "page" : undefined}>Contagem</a>
+          <a href="/evidencias/modelo/" aria-current={isModelo ? "page" : undefined}>Modelo</a>
+          <a href="/sobre-a-base/" aria-current={isBase ? "page" : undefined}>Sobre a base</a>
+          <a href="/assistente/" aria-current={isAssistant ? "page" : undefined}>Assistente</a>
+        </nav>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer class="colophon">
+        <p><b>DialisaSUS é um produto acadêmico de TCC.</b> Ministério da Saúde, DATASUS e IBGE são fontes; não chancelam esta publicação.</p>
+        <p>Dados por local de atendimento. Extração registrada em {extractionLabel}.</p>
+      </footer>
+    </div>
+    <slot name="scripts" />
+  </body>
+</html>

@@ -1,0 +1,51 @@
+/* ==========================================================================
+   tests/fixtures/auditar_rotas_css_fixture.css
+   Fixture de teste para validação de tools/auditar-rotas.mjs
+   Contém:
+     1. :root multiline válido (0 violações esperadas)
+     2. :root inline válido (0 violações esperadas)
+     3. :root[data-theme="dark"] inline válido (0 violações esperadas)
+     4. @media com :root válido (0 violações esperadas)
+     5. Comentários com hexadecimais (0 violações esperadas)
+     6. Violações deliberadas fora de :root (devem ser detectadas como falhas)
+   ========================================================================== */
+
+/* 1. :root Multiline - Legítimo (Variáveis CSS não devem ser contadas como violação) */
+:root {
+  --color-brand-primary: #0B5D51;
+  --color-brand-accent: #3F72E8;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #F7F9FD;
+}
+
+/* 2. :root Inline (single-line) - Legítimo */
+:root { --bg-inline: #FFFFFF; --tint-inline: #F7F8F8; }
+
+/* 3. :root com seletor de tema inline - Legítimo */
+:root[data-theme="dark"] { --dark-bg: #0C0F13; --dark-ink: #EDEFF2; }
+
+/* 4. :root aninhado dentro de @media - Legítimo */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --media-bg: #0C0F13;
+    --media-rule: #1D232B;
+  }
+}
+
+/* 5. Comentários com hexadecimais literais - Devem ser ignorados */
+/* O código anterior utilizava #B42318 e #EF735F diretamente aqui */
+/*
+  Paleta legada descartada:
+  - primário: #14213A
+  - secundário: #39CDA7
+*/
+
+/* 6. Violações deliberadas fora de :root (devem ser flagradas pelo scanner) */
+.alerta-erro {
+  background-color: #B42318; /* VIOLAÇÃO 1 */
+  border: 1px solid #991B1B;  /* VIOLAÇÃO 2 */
+}
+
+.titulo-destaque {
+  color: #123456;             /* VIOLAÇÃO 3 */
+}

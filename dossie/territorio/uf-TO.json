@@ -1,0 +1,4122 @@
+{
+  "tipo_documento": "territorio_uf",
+  "metadados": {
+    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "vintage": "2026-09-15",
+    "schema_version": "1.0.0"
+  },
+  "uf": {
+    "sigla": "TO",
+    "nome": "Tocantins"
+  },
+  "serie_valor_anual": [
+    {
+      "periodo": "2015",
+      "valor": 11470902.39,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2015",
+      "valor": 20365930.94711364,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2016",
+      "valor": 11667161.73,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2016",
+      "valor": 19049605.7870069,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2017",
+      "valor": 12516581.75,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2017",
+      "valor": 19755646.446536794,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2018",
+      "valor": 13114374.97,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2018",
+      "valor": 19967402.719000157,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2019",
+      "valor": 13902714.89,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2019",
+      "valor": 20405947.188793432,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2020",
+      "valor": 14512685.38,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2020",
+      "valor": 20638384.746757835,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2021",
+      "valor": 14467650.74,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2021",
+      "valor": 18997253.92743957,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2022",
+      "valor": 16340552.46,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2022",
+      "valor": 19634436.39389796,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2023",
+      "valor": 17619017.95,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2023",
+      "valor": 20240835.95025506,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2024",
+      "valor": 21048499.59,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2024",
+      "valor": 23168758.309155963,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    },
+    {
+      "periodo": "2025",
+      "valor": 25052679.59,
+      "estado": "observado",
+      "unidade": "reais_correntes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "nominal"
+    },
+    {
+      "periodo": "2025",
+      "valor": 26258941.4299212,
+      "estado": "observado",
+      "unidade": "reais_jun_2026",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/dialise_uf_total_anual.csv"
+        ],
+        "colunas": [
+          "uf",
+          "ano",
+          "valor_aprovado_nominal",
+          "valor_aprovado_real"
+        ],
+        "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+        "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+      },
+      "serie": "real"
+    }
+  ],
+  "municipios_por_ano": [
+    {
+      "periodo": "2015",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2015",
+        "valor": 19987,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2015",
+        "valor": 11744.416304801302,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 170183,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2015",
+        "valor": 37.868686797236926,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 170183,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2015",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2015",
+        "valor": 15916,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2015",
+        "valor": 19013.941486375094,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 83707,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2015",
+        "valor": 60.664866873358086,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 83707,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2015",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2015",
+        "valor": 27470,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2015",
+        "valor": 10072.38033777491,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 272726,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2015",
+        "valor": 32.42540209049111,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 272726,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2016",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2016",
+        "valor": 19146,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2016",
+        "valor": 11059.891861915983,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 173112,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2016",
+        "valor": 32.958616765187166,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 173112,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2016",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2016",
+        "valor": 16230,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2016",
+        "valor": 19178.049818027128,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 84628,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2016",
+        "valor": 56.719185322495846,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 84628,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2016",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2016",
+        "valor": 28800,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2016",
+        "valor": 10291.006803498942,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 279856,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2016",
+        "valor": 30.53013873592004,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 279856,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2017",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2017",
+        "valor": 18897,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2017",
+        "valor": 10739.372584678336,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 175960,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2017",
+        "valor": 33.387605766491696,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 175960,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2017",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2017",
+        "valor": 16432,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2017",
+        "valor": 19213.544894355902,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 85523,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2017",
+        "valor": 59.28237036613883,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 85523,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2017",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2017",
+        "valor": 28610,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2017",
+        "valor": 9976.044939275487,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 286787,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2017",
+        "valor": 30.72230322518672,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 286787,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2018",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2018",
+        "valor": 19827,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2018",
+        "valor": 11169.071131215602,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 177517,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2018",
+        "valor": 33.52073573676531,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 177517,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2018",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2018",
+        "valor": 16881,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2018",
+        "valor": 19689.28234017985,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 85737,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2018",
+        "valor": 58.78983087584157,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 85737,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2018",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2018",
+        "valor": 30090,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2018",
+        "valor": 10309.91416970756,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 291855,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2018",
+        "valor": 30.756500808328653,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 291855,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2019",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2019",
+        "valor": 20884,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2019",
+        "valor": 11572.006427661106,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 180470,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2019",
+        "valor": 33.44380001067322,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 180470,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2019",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2019",
+        "valor": 17510,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2019",
+        "valor": 20208.43191339573,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 86647,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2019",
+        "valor": 58.36614257839948,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 86647,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2019",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2019",
+        "valor": 32438,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2019",
+        "valor": 10844.223356634471,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 299127,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2019",
+        "valor": 31.134245470574893,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 299127,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2020",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2020",
+        "valor": 21977,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2020",
+        "valor": 11984.338617414018,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 183381,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2020",
+        "valor": 33.49646579373108,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 183381,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2020",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2020",
+        "valor": 18171,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2020",
+        "valor": 20756.18253469644,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 87545,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2020",
+        "valor": 57.764732961082416,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 87545,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2020",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2020",
+        "valor": 34017,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2020",
+        "valor": 11105.923681667407,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 306296,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2020",
+        "valor": 30.815798462793108,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 306296,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2021",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2021",
+        "valor": 21727,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2021",
+        "valor": 11665.816531987435,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 186245,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2021",
+        "valor": 30.2742573467137,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 186245,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2021",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2021",
+        "valor": 18147,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2021",
+        "valor": 20521.78043153752,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 88428,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2021",
+        "valor": 52.54697010713631,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 88428,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2021",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2021",
+        "valor": 33827,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2021",
+        "valor": 10795.311298264874,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 313349,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2021",
+        "valor": 27.80350789460643,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 313349,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2022",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2022",
+        "valor": 22323,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2022",
+        "valor": 13031.44756889919,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 171301,
+          "estado": "observado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - Censo Demografico 2022",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": true
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2022",
+        "valor": 34.67733437304513,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 171301,
+          "estado": "observado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - Censo Demografico 2022",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": true
+      }
+    },
+    {
+      "periodo": "2022",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2022",
+        "valor": 17862,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2022",
+        "valor": 20983.25991189427,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 85125,
+          "estado": "observado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - Censo Demografico 2022",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": true
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2022",
+        "valor": 54.765403918877496,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 85125,
+          "estado": "observado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - Censo Demografico 2022",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": true
+      }
+    },
+    {
+      "periodo": "2022",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2022",
+        "valor": 34243,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2022",
+        "valor": 11312.819631836985,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 302692,
+          "estado": "observado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - Censo Demografico 2022",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": true
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2022",
+        "valor": 29.83980194344915,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 302692,
+          "estado": "observado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - Censo Demografico 2022",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": true
+      }
+    },
+    {
+      "periodo": "2023",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2023",
+        "valor": 23761,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2023",
+        "valor": 13475.836958309466,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 176323,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "Interpolacao geometrica entre IBGE 2022 e estimativa 2024",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2023",
+        "valor": 35.83290828085046,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 176323,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "Interpolacao geometrica entre IBGE 2022 e estimativa 2024",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2023",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2023",
+        "valor": 17362,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2023",
+        "valor": 19882.960570767627,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 87321,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "Interpolacao geometrica entre IBGE 2022 e estimativa 2024",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2023",
+        "valor": 52.26022616818314,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 87321,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "Interpolacao geometrica entre IBGE 2022 e estimativa 2024",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2023",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2023",
+        "valor": 35500,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2023",
+        "valor": 11342.432840017382,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 312984,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "Interpolacao geometrica entre IBGE 2022 e estimativa 2024",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2023",
+        "valor": 29.90330130044585,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 312984,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "Interpolacao geometrica entre IBGE 2022 e estimativa 2024",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2024",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2024",
+        "valor": 28450,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2024",
+        "valor": 15675.535695591569,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 181493,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2024",
+        "valor": 42.13704511921146,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 181493,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2024",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2024",
+        "valor": 17560,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2024",
+        "valor": 19603.90291825753,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 89574,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2024",
+        "valor": 52.25825285797258,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 89574,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2024",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2024",
+        "valor": 40678,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2024",
+        "valor": 12569.48628814214,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 323625,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2024",
+        "valor": 33.49617253869412,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 323625,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2025",
+      "cod_ibge": "1702109",
+      "nome": "ARAGUAINA",
+      "quantidade": {
+        "periodo": "2025",
+        "valor": 41696,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2025",
+        "valor": 22781.711688084622,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 183024,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2025",
+        "valor": 58.12908468429291,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 183024,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2025",
+      "cod_ibge": "1709500",
+      "nome": "GURUPI",
+      "quantidade": {
+        "periodo": "2025",
+        "valor": 17267,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2025",
+        "valor": 19141.10565464643,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 90209,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2025",
+        "valor": 48.72000536229984,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 90209,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    },
+    {
+      "periodo": "2025",
+      "cod_ibge": "1721000",
+      "nome": "PALMAS",
+      "quantidade": {
+        "periodo": "2025",
+        "valor": 44244,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor municipal no ano, preservando estado_registro"
+        }
+      },
+      "taxa_100_mil": {
+        "periodo": "2025",
+        "valor": 13468.534150788892,
+        "estado": "observado",
+        "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "qtd_aprovada",
+            "populacao",
+            "qtd_por_100_mil_habitantes",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "qtd_aprovada / populacao * 100000 quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 328499,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      },
+      "valor_real_por_habitante": {
+        "periodo": "2025",
+        "valor": 34.17039586402232,
+        "estado": "observado",
+        "unidade": "reais_jun_2026_por_habitante",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "valor_aprovado_real",
+            "populacao",
+            "valor_por_habitante_real",
+            "estado_registro"
+          ],
+          "script": "scripts/gerar_dossie.py",
+          "transformacao": "valor_aprovado_real / populacao quando ha registro; nulo em sem_registro/ausente"
+        },
+        "denominador": {
+          "valor": 328499,
+          "estado": "estimado",
+          "unidade": "habitantes",
+          "fonte": "IBGE - estimativa populacional",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "cod_ibge",
+              "ano",
+              "populacao",
+              "fonte_populacao"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+          }
+        },
+        "quebra_denominador": false
+      }
+    }
+  ],
+  "achados": [
+    {
+      "id": "G5.achado.variacao_real_uf",
+      "texto": "A variacao estadual real compara 2015 e 2025 na mesma base monetaria.",
+      "valores": [
+        {
+          "chave": "variacao_real_2015_2025",
+          "valor": 28.93563028427504,
+          "unidade": "percentual",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/dialise_uf_total_anual.csv"
+            ],
+            "colunas": [
+              "uf",
+              "ano",
+              "valor_aprovado_nominal",
+              "valor_aprovado_real"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "soma anual dos valores municipais por UF nas series nominal e real"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.atendimento",
+        "r.sem_registro",
+        "r.mix"
+      ],
+      "periodos": {
+        "inicio": "2015",
+        "fim": "2025"
+      }
+    }
+  ]
+}

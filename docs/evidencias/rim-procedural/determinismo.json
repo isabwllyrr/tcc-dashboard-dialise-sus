@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/amostra/assets/source/rim-procedural-master.glb",
+    "before": "abd68289d0f5651ea1a7f35781c42fddcaccce613029a18b4627a77e6af7ada4",
+    "after": "abd68289d0f5651ea1a7f35781c42fddcaccce613029a18b4627a77e6af7ada4",
+    "identical": true
+  },
+  {
+    "path": "public/assets/kidney.glb",
+    "before": "186253151a57d3e74a0200b1e90e5e184568403d6c6d542d749267068a3ca6cb",
+    "after": "186253151a57d3e74a0200b1e90e5e184568403d6c6d542d749267068a3ca6cb",
+    "identical": true
+  }
+]

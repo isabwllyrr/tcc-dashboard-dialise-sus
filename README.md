@@ -2,6 +2,15 @@
 
 Este repositorio reune os arquivos do TCC sobre analise dos procedimentos de dialise aprovados no SUS, com foco em evolucao temporal, distribuicao territorial, impacto pre e pos-pandemia e previsao exploratoria para apoio a gestao em saude.
 
+## Comece por aqui
+
+**[GUIA-DA-AUTORA.md](GUIA-DA-AUTORA.md)** — como rodar o projeto, onde mexer em cada aba, como trocar textos e gráficos, as regras que protegem o trabalho e o que conferir antes de apresentar.
+
+```bash
+npm install && pip install -r requirements.txt
+npm run dev     # http://localhost:4321
+```
+
 ## Tema
 
 Analise temporal, territorial e preditiva dos procedimentos de dialise no SUS: desenvolvimento da plataforma web DialisaSUS para apoio a gestao em saude.
@@ -24,61 +33,35 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 
 ```text
 .
-├── dashboard/
-│   ├── app.py
-│   └── README.md
-├── netlify/
-│   └── functions/
-│       └── agent.mjs
-├── netlify.toml
-├── tests/
-│   └── netlify_agent.test.mjs
-├── scripts/
-│   └── build_netlify.mjs
-├── web_dashboard/
-│   ├── app.js
-│   ├── assets/
-│   ├── index.html
-│   ├── README.md
-│   └── styles.css
-├── dados_brutos/
-│   ├── qtd_mensal_dialise_brasil.csv
-│   ├── qtd_municipio_dialise_brasil.csv
-│   ├── valor_mensal_dialise_brasil.csv
-│   ├── valor_municipio_dialise_brasil.csv
-│   └── atualizacao_2026_05_06_*.csv
-├── dados_tratados/
-│   ├── comparacao_real_previsto_2022_atual_corrigido.csv
-│   ├── dialise_anual_brasil_total.csv
-│   ├── dialise_mensal_brasil_por_grupo.csv
-│   ├── dialise_mensal_brasil_total.csv
-│   ├── indicadores_anuais_brasil.csv
-│   ├── indicadores_grupo_brasil.csv
-│   ├── indicadores_municipio_brasil.csv
-│   ├── metricas_modelos_preditivos_corrigido.csv
-│   ├── municipio_dialise_brasil_long.csv
-│   ├── previsao_mensal_proximos_12m_corrigido.csv
-│   ├── qtd_municipio_dialise_brasil_wide.csv
-│   ├── valor_municipio_dialise_brasil_wide.csv
-│   └── serie_mensal_dashboard.csv
-├── docs/
-│   ├── modelagem_preditiva.md
-│   ├── dicionario_dados.md
-│   ├── limitacoes.md
-│   ├── relatorio_analise_tcc_dialise.md
-│   └── resultados_exploratorios.md
-├── scripts/
-│   ├── analise_exploratoria.py
-│   ├── modelagem_preditiva.py
-│   ├── tratamento_municipio_dialise.py
-│   ├── tratamento_dialise.py
-│   ├── tratamento_mensal_dialise.py
-│   ├── integrar_ibge.py
-│   └── validar_dados.py
-├── tests/
-│   └── test_data_quality.py
-├── analise.ipynb
-├── requirements.txt
+├── src/                       site Astro
+│   ├── pages/                 as 7 rotas + [uf].astro gera as 27 paginas de UF
+│   ├── layouts/               cabecalho, menu e rodape comuns
+│   ├── components/            LineChart.astro
+│   ├── data/                  brazil-states.geojson, mapa-ufs.json
+│   └── lib/dossie.ts          leitura do dossie e formatacao pt-BR
+├── public/assets/             style.css, rim 3D, vistas WebP, licencas
+├── dossie/                    o que o site le: 34 JSON validados por schema
+│   ├── nacional.json  modelo.json  glossario.json  ressalvas.json
+│   ├── manifesto.json  schema.json
+│   └── territorio/            indice, distribuicao e uf-XX.json
+├── dados_brutos/              extracoes do TabNet e IBGE, imutaveis
+│   └── vintages/              extracoes datadas, para medir revisao
+├── dados_tratados/            saida do pipeline, entrada do dossie
+├── scripts/                   pipeline Python + geradores
+│   ├── tratamento_mensal_dialise.py   analise_exploratoria.py
+│   ├── tratamento_municipio_dialise.py  integrar_ibge.py
+│   ├── modelagem_preditiva.py  agregacao_territorial.py
+│   ├── gerar_dossie.py  validar_dados.py  validar_schema_dossie.py
+│   └── gerar_rim.mjs          rim 3D procedural
+├── netlify/functions/agent.mjs   assistente, contexto do dossie no servidor
+├── tools/                     auditoria de rotas, paleta, rim
+├── tests/                     qualidade de dados, Function, auditoria completa
+├── docs/                      metodologia, contrato do dossie, QA, handoffs
+│   └── evidencias/            medicoes brutas e capturas
+├── legado/                    v1 arquivada: Streamlit, notebook, extracao do Ceara
+├── GUIA-DA-AUTORA.md          comece por aqui
+├── CLAUDE.md  SOURCES.md  DESIGN.md  tokens.json
+├── astro.config.mjs  netlify.toml  package.json  requirements.txt
 └── README.md
 ```
 
@@ -136,13 +119,13 @@ streamlit run dashboard/app.py
 9. Abrir o dashboard web customizado:
 
 ```powershell
-.\.venv\Scripts\python.exe -m http.server 8080
+npm run dev
 ```
 
 Depois acesse:
 
 ```text
-http://localhost:8080/web_dashboard/
+http://localhost:4321
 ```
 
 10. Opcional: testar o backend serverless do agente:
@@ -162,7 +145,7 @@ no modo de demonstração.
 
 Para testar com o Netlify CLI, copie `.env.example` para `.env`,
 preencha a chave somente no arquivo `.env` ignorado pelo Git e abra
-`http://localhost:8888/web_dashboard/`.
+`http://localhost:8888`.
 
 ## Resultados iniciais
 

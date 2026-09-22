@@ -1,0 +1,587 @@
+{
+  "date": "2026-09-18T18:17:13.122Z",
+  "base": "http://127.0.0.1:4328",
+  "machine": {
+    "cpu": "12th Gen Intel(R) Core(TM) i7-1255U",
+    "os": "Windows_NT 10.0.26200 x64",
+    "browser": "153.0.4234.46"
+  },
+  "geometry": {
+    "nodes": [
+      "Capsula_com_hilo_medial",
+      "Arteria_renal",
+      "Veia_renal",
+      "Ureter"
+    ],
+    "sourceNodes": [
+      "Capsula_com_hilo_medial",
+      "Arteria_renal",
+      "Veia_renal",
+      "Ureter"
+    ],
+    "materials": [
+      {
+        "name": "Capsula_renal_umida",
+        "pbrMetallicRoughness": {
+          "metallicFactor": 0,
+          "baseColorTexture": {
+            "index": 0
+          },
+          "metallicRoughnessTexture": {
+            "index": 2
+          }
+        },
+        "normalTexture": {
+          "index": 1,
+          "scale": 0.45
+        },
+        "occlusionTexture": {
+          "index": 2
+        },
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.42,
+            "clearcoatRoughnessFactor": 0.23
+          },
+          "KHR_materials_sheen": {
+            "sheenColorFactor": [
+              0.055,
+              0.018,
+              0.014
+            ],
+            "sheenRoughnessFactor": 0.5
+          }
+        }
+      },
+      {
+        "name": "Arteria_renal_tecido",
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.34,
+            0.045,
+            0.035,
+            1
+          ],
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 2
+          }
+        },
+        "normalTexture": {
+          "index": 1,
+          "scale": 0.15
+        },
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.42,
+            "clearcoatRoughnessFactor": 0.23
+          }
+        }
+      },
+      {
+        "name": "Veia_renal_tecido",
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.19,
+            0.065,
+            0.09,
+            1
+          ],
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 2
+          }
+        },
+        "normalTexture": {
+          "index": 1,
+          "scale": 0.15
+        },
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.42,
+            "clearcoatRoughnessFactor": 0.23
+          }
+        }
+      },
+      {
+        "name": "Ureter_tecido",
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.63,
+            0.43,
+            0.25,
+            1
+          ],
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 2
+          }
+        },
+        "normalTexture": {
+          "index": 1,
+          "scale": 0.15
+        },
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.42,
+            "clearcoatRoughnessFactor": 0.23
+          }
+        }
+      }
+    ],
+    "images": [
+      {
+        "name": "Capsula_Albedo_Vascular",
+        "mimeType": "image/webp",
+        "bufferView": 0
+      },
+      {
+        "name": "Capsula_Normal",
+        "mimeType": "image/webp",
+        "bufferView": 1
+      },
+      {
+        "name": "Capsula_AO_Roughness_Metallic",
+        "mimeType": "image/webp",
+        "bufferView": 2
+      }
+    ],
+    "triangles": 88368,
+    "closedMeshes": [
+      {
+        "name": "Rim_fechado",
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "dimensions": [
+          0.5500045777764214,
+          1,
+          0.26999725333414715
+        ]
+      },
+      {
+        "name": "Arteria_renal",
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "dimensions": [
+          0.23967473953962326,
+          0.07378883548923366,
+          0.050733481656753045
+        ]
+      },
+      {
+        "name": "Veia_renal",
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "dimensions": [
+          0.2571353018283844,
+          0.07521719620426236,
+          0.0786386565636842
+        ]
+      },
+      {
+        "name": "Ureter",
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "dimensions": [
+          0.19714291967608694,
+          0.2314421571791172,
+          0.06871855059039983
+        ]
+      }
+    ]
+  },
+  "weight": {
+    "runtime": [
+      {
+        "path": "public/assets/kidney.js",
+        "bytes": 11688,
+        "gzip": 4012,
+        "sha256": "c3a3bb4f35527a4f1f3e9bd94f05f348c683138c8907f599c9d96a5696cba6fb"
+      },
+      {
+        "path": "public/assets/vendor/three.module.min.js",
+        "bytes": 338914,
+        "gzip": 79154,
+        "sha256": "852c06b9fe936cf8ebc2870c86370d1015c310b04de98cdfc07f4efaf6afd2af"
+      },
+      {
+        "path": "public/assets/vendor/three.core.min.js",
+        "bytes": 381130,
+        "gzip": 100915,
+        "sha256": "4183cee05f0aa093682fdf551363a16bb20bd92b68e14f7576905f45c461ba82"
+      },
+      {
+        "path": "public/assets/vendor/GLTFLoader.js",
+        "bytes": 119658,
+        "gzip": 24982,
+        "sha256": "458d51d6c04c9416e853ea6298364c2af190b1ac2359ad74f07cf48b13d206b2"
+      },
+      {
+        "path": "public/assets/vendor/meshopt_decoder.module.js",
+        "bytes": 25043,
+        "gzip": 6510,
+        "sha256": "3bbc229d8589db85d9c50c23821df2648f3c82c5c8b6428e6315d0b0da2a801d"
+      },
+      {
+        "path": "public/assets/utils/BufferGeometryUtils.js",
+        "bytes": 37003,
+        "gzip": 8084,
+        "sha256": "cffff7bd151ba8899251ecc1e278fe755648136fc4f7a98d11675a2e71bd699d"
+      }
+    ],
+    "glb": {
+      "path": "public/assets/kidney.glb",
+      "bytes": 568228,
+      "gzip": 362653,
+      "sha256": "186253151a57d3e74a0200b1e90e5e184568403d6c6d542d749267068a3ca6cb"
+    },
+    "fallbacks": [
+      {
+        "path": "public/assets/kidney-position.webp",
+        "bytes": 10848,
+        "gzip": 10761,
+        "sha256": "6f677c7f9b58a913e268aeba21d2ddcc660742bd48aac061e7c3a90ebfc4ca18"
+      },
+      {
+        "path": "public/assets/kidney-hilum.webp",
+        "bytes": 10718,
+        "gzip": 10629,
+        "sha256": "75c95ca1d91974bcc1db723456952d8f7ed78c2bd09614db5915db901c44b4bd"
+      }
+    ],
+    "breakdown": {
+      "textureBytes": 63420,
+      "textureGzipSeparate": 63458,
+      "geometryAndContainerGzipSeparate": 299194
+    },
+    "note": "gzip nível 9 por recurso. Partições comprimidas separadamente não são aditivas ao gzip do GLB inteiro.",
+    "totalGzip": 607700
+  },
+  "beforeClick": [],
+  "render": {
+    "metrics": {
+      "windows": [],
+      "mode": "interactive",
+      "assetLoaded": true,
+      "paintedPixels": 68191,
+      "renderCount": 2
+    },
+    "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "width": 717,
+    "height": 510
+  },
+  "pixels": {
+    "position": {
+      "opaquePixels": 67280,
+      "greenPixels": 0,
+      "greenDefinition": "HSV H=145..195°, S>.2, alpha>=240",
+      "luminanceP05": 46.0236,
+      "luminanceP95": 141.52739999999997,
+      "hueP05": 4,
+      "hueP95": 9.473684210526315,
+      "dominantBins": [
+        [
+          "144,48,32",
+          8184
+        ],
+        [
+          "160,64,48",
+          6244
+        ],
+        [
+          "128,32,32",
+          6124
+        ],
+        [
+          "112,32,32",
+          6076
+        ],
+        [
+          "128,48,32",
+          5563
+        ],
+        [
+          "144,48,48",
+          4556
+        ],
+        [
+          "160,48,48",
+          3138
+        ],
+        [
+          "96,32,16",
+          2614
+        ],
+        [
+          "176,64,48",
+          2317
+        ],
+        [
+          "144,64,48",
+          2006
+        ]
+      ]
+    },
+    "hilum": {
+      "opaquePixels": 62368,
+      "greenPixels": 0,
+      "greenDefinition": "HSV H=145..195°, S>.2, alpha>=240",
+      "luminanceP05": 36.4042,
+      "luminanceP95": 149.88959999999997,
+      "hueP05": 4.11764705882353,
+      "hueP95": 10,
+      "dominantBins": [
+        [
+          "144,48,32",
+          10600
+        ],
+        [
+          "160,64,48",
+          8258
+        ],
+        [
+          "128,32,32",
+          5066
+        ],
+        [
+          "128,48,32",
+          4488
+        ],
+        [
+          "112,32,32",
+          3245
+        ],
+        [
+          "160,48,48",
+          2607
+        ],
+        [
+          "176,64,48",
+          2278
+        ],
+        [
+          "48,16,16",
+          1670
+        ],
+        [
+          "144,48,48",
+          1650
+        ],
+        [
+          "176,80,64",
+          1438
+        ]
+      ]
+    }
+  },
+  "interaction": {
+    "windows": [
+      {
+        "frames": 90,
+        "fps": 60,
+        "dpr": 1.5,
+        "at": "2026-09-18T18:17:19.638Z"
+      },
+      {
+        "frames": 90,
+        "fps": 60,
+        "dpr": 1.5,
+        "at": "2026-09-18T18:17:21.138Z"
+      },
+      {
+        "frames": 90,
+        "fps": 60,
+        "dpr": 1.5,
+        "at": "2026-09-18T18:17:22.638Z"
+      }
+    ],
+    "mode": "interactive",
+    "assetLoaded": true,
+    "paintedPixels": 68191,
+    "renderCount": 350
+  },
+  "idleRenders": 0,
+  "offscreenRenders": 0,
+  "reducedMotionKeyboard": true,
+  "contextLossFallback": true,
+  "noJS": [
+    {
+      "loaded": true,
+      "src": "/assets/kidney-position.webp"
+    },
+    {
+      "loaded": true,
+      "src": "/assets/kidney-hilum.webp"
+    }
+  ],
+  "downloadFailureFallback": true,
+  "touch": true,
+  "otherRoutes": [
+    {
+      "route": "/sobre-a-base/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/valor/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/to/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/sp/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/se/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/sc/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/rs/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/rr/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/ro/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/rn/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/rj/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/pr/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/pi/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/pe/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/pb/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/pa/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/mt/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/ms/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/mg/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/ma/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/go/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/es/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/df/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/ce/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/ba/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/ap/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/am/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/al/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/territorio/ac/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/modelo/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/evidencias/contagem/",
+      "status": 200,
+      "requests3D": []
+    },
+    {
+      "route": "/assistente/",
+      "status": 200,
+      "requests3D": []
+    }
+  ],
+  "errors": []
+}

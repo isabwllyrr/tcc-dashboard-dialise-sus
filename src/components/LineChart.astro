@@ -1,0 +1,35 @@
+---
+import { pointSegments } from "../lib/dossie";
+
+interface Series { label: string; className: string; values: number[]; }
+interface Props { labels: string[]; series: Series[]; ariaLabel: string; }
+const { labels, series, ariaLabel } = Astro.props;
+const all = series.flatMap((item) => item.values.filter(Number.isFinite));
+const globalMin = Math.min(...all);
+const globalMax = Math.max(...all);
+const normalized = series.map((item) => ({
+  ...item,
+  segments: pointSegments(item.values.map((value, index) => {
+    if (!Number.isFinite(value)) return null;
+    const x = 70 + index * (846 / Math.max(1, item.values.length - 1));
+    const y = 26 + (globalMax - value) * (316 / (globalMax - globalMin || 1));
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  })),
+}));
+const ticks = labels.map((label, index) => ({ label, index })).filter(({ index }) =>
+  index === 0 || index === labels.length - 1 || index % Math.max(1, Math.floor(labels.length / 5)) === 0
+);
+---
+<svg class="fig" viewBox="0 0 940 390" role="img" aria-label={ariaLabel}>
+  {[0, 1, 2, 3, 4].map((step) => {
+    const y = 26 + step * 79;
+    return <line class="grid" x1="70" x2="916" y1={y} y2={y} />;
+  })}
+  {ticks.map(({ label, index }) => {
+    const x = 70 + index * (846 / Math.max(1, labels.length - 1));
+    return <text class="axis" x={x} y="374" text-anchor="middle">{label}</text>;
+  })}
+  {normalized.map((item) => item.segments.map((points) =>
+    <polyline class={`series ${item.className}`} points={points} />
+  ))}
+</svg>

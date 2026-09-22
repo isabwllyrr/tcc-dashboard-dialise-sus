@@ -1,0 +1,479 @@
+{
+  "cohort_2015_real_above_2m": {
+    "coerced_zero_declines_count": 168,
+    "coerced_zero_minus_100_count": 7,
+    "coerced_zero_share_pct": "42.74809160305343511450381679389312977099",
+    "cohort_count": 393,
+    "declines_count": 161,
+    "declines_share_comparable_pct": "41.70984455958549222797927461139896373057",
+    "ipca_factor_2015": "1.775442790348217363673046162876780475714",
+    "ipca_factor_2025": "1.048149014782542195477462073436738458237",
+    "missing_2025": [
+      {
+        "code": "240020",
+        "name": "ASSU",
+        "uf": "RN"
+      },
+      {
+        "code": "240325",
+        "name": "PARNAMIRIM",
+        "uf": "RN"
+      },
+      {
+        "code": "330030",
+        "name": "BARRA DO PIRAI",
+        "uf": "RJ"
+      },
+      {
+        "code": "330360",
+        "name": "PARACAMBI",
+        "uf": "RJ"
+      },
+      {
+        "code": "355060",
+        "name": "SAO ROQUE",
+        "uf": "SP"
+      },
+      {
+        "code": "355070",
+        "name": "SAO SEBASTIAO",
+        "uf": "SP"
+      },
+      {
+        "code": "420900",
+        "name": "JOACABA",
+        "uf": "SC"
+      }
+    ],
+    "missing_2025_count": 7,
+    "missing_variations_are_null": true,
+    "observed_2025_count": 386
+  },
+  "dash_cells": {
+    "blind_sample": [
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "221060",
+        "municipality": "SAO RAIMUNDO NONATO",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "PI",
+        "year": "2020"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "320060",
+        "municipality": "ARACRUZ",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "ES",
+        "year": "2016"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "313520",
+        "municipality": "JANUARIA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "MG",
+        "year": "2019"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "291640",
+        "municipality": "ITAPETINGA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "BA",
+        "year": "2015"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "292990",
+        "municipality": "SEABRA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "BA",
+        "year": "2018"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "221060",
+        "municipality": "SAO RAIMUNDO NONATO",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "PI",
+        "year": "2022"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "352310",
+        "municipality": "ITAQUAQUECETUBA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "SP",
+        "year": "2015"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "351050",
+        "municipality": "CARAGUATATUBA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "SP",
+        "year": "2015"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "421003",
+        "municipality": "LUZERNA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "SC",
+        "year": "2019"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "351350",
+        "municipality": "CUBATAO",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "SP",
+        "year": "2018"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "314560",
+        "municipality": "OLIVEIRA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "MG",
+        "year": "2015"
+      },
+      {
+        "candidate_quantity": "",
+        "candidate_state": "sem_registro",
+        "candidate_value": "",
+        "checkout_quantity": "",
+        "checkout_state": "sem_registro",
+        "checkout_value": "",
+        "code": "231340",
+        "municipality": "TIANGUA",
+        "raw_quantity": "-",
+        "raw_value": "-",
+        "uf": "CE",
+        "year": "2016"
+      }
+    ],
+    "cells_per_file": 5478,
+    "masks_identical": true,
+    "municipality_count_quantity": 498,
+    "municipality_count_value": 498,
+    "quantity_dash_count": 673,
+    "share_pct": "12.28550565899963490324936108068638189120",
+    "value_dash_count": 673,
+    "years_count": 11
+  },
+  "generated_at_utc": "2026-09-17T02:46:11.785905+00:00",
+  "method": {
+    "blind_sample_seed": "contraprova-onda0-2-2026-09-16",
+    "blind_sample_size": 12,
+    "closed_period": "2015-2025",
+    "grain": "municipality-year",
+    "parser": "independent Python stdlib csv + Decimal; no production imports",
+    "source": "raw TabNet municipal CSVs plus raw SIDRA IPCA CSV"
+  },
+  "method_guard": {
+    "candidate": {
+      "treatment_dash_branch_returns_zero": false,
+      "treatment_fillna_zero_occurrences": 6,
+      "treatment_has_estado_registro": true,
+      "treatment_path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\scripts\\tratamento_municipio_dialise.py",
+      "treatment_sha256": "30fb714a754768f896d4f0986d2006b55bf7d3746cb29d4652de8af1c8e5707b",
+      "validator_checks_fabricated_zero": true,
+      "validator_checks_growth_guard": true,
+      "validator_checks_sem_registro": true,
+      "validator_path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\scripts\\validar_dados.py",
+      "validator_sha256": "dd8d52958996a6ae6ab56d4c6afcb8680c2190b57835f3735773c9eda25e6866"
+    },
+    "checkout": {
+      "treatment_dash_branch_returns_zero": false,
+      "treatment_fillna_zero_occurrences": 6,
+      "treatment_has_estado_registro": true,
+      "treatment_path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\scripts\\tratamento_municipio_dialise.py",
+      "treatment_sha256": "30fb714a754768f896d4f0986d2006b55bf7d3746cb29d4652de8af1c8e5707b",
+      "validator_checks_fabricated_zero": true,
+      "validator_checks_growth_guard": true,
+      "validator_checks_sem_registro": true,
+      "validator_path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\scripts\\validar_dados.py",
+      "validator_sha256": "dd8d52958996a6ae6ab56d4c6afcb8680c2190b57835f3735773c9eda25e6866"
+    }
+  },
+  "notorious_cases": {
+    "ESTRELA": {
+      "code": "430780",
+      "quantity_2026_base_jan_apr": "3353",
+      "quantity_2026_combined": "5092",
+      "quantity_2026_update_may_jun": "1739",
+      "quantity_raw": {
+        "2015": "2209",
+        "2016": "-",
+        "2017": "-",
+        "2018": "-",
+        "2019": "-",
+        "2020": "-",
+        "2021": "-",
+        "2022": "1464",
+        "2023": "10151",
+        "2024": "10201",
+        "2025": "10857",
+        "2026": "3353"
+      },
+      "uf": "RS",
+      "value_2026_base_jan_apr": "824188.97",
+      "value_2026_combined": "1263273.53",
+      "value_2026_update_may_jun": "439084.56",
+      "value_raw": {
+        "2015": "403102,13",
+        "2016": "-",
+        "2017": "-",
+        "2018": "-",
+        "2019": "-",
+        "2020": "-",
+        "2021": "-",
+        "2022": "320446,63",
+        "2023": "2323303,40",
+        "2024": "2469200,99",
+        "2025": "2587156,74",
+        "2026": "824188,97"
+      }
+    },
+    "MAUA": {
+      "code": "352940",
+      "quantity_2026_base_jan_apr": "3730",
+      "quantity_2026_combined": "6614",
+      "quantity_2026_update_may_jun": "2884",
+      "quantity_raw": {
+        "2015": "3046",
+        "2016": "-",
+        "2017": "-",
+        "2018": "-",
+        "2019": "-",
+        "2020": "-",
+        "2021": "-",
+        "2022": "-",
+        "2023": "-",
+        "2024": "1639",
+        "2025": "12955",
+        "2026": "3730"
+      },
+      "uf": "SP",
+      "value_2026_base_jan_apr": "915198.84",
+      "value_2026_combined": "1655099.60",
+      "value_2026_update_may_jun": "739900.76",
+      "value_raw": {
+        "2015": "546693,08",
+        "2016": "-",
+        "2017": "-",
+        "2018": "-",
+        "2019": "-",
+        "2020": "-",
+        "2021": "-",
+        "2022": "-",
+        "2023": "-",
+        "2024": "418152,66",
+        "2025": "3187746,21",
+        "2026": "915198,84"
+      }
+    },
+    "PARNAMIRIM": {
+      "code": "240325",
+      "quantity_2026_base_jan_apr": "1816",
+      "quantity_2026_combined": "5243",
+      "quantity_2026_update_may_jun": "3427",
+      "quantity_raw": {
+        "2015": "22398",
+        "2016": "21647",
+        "2017": "21220",
+        "2018": "23223",
+        "2019": "23225",
+        "2020": "27293",
+        "2021": "32229",
+        "2022": "10944",
+        "2023": "-",
+        "2024": "-",
+        "2025": "-",
+        "2026": "1816"
+      },
+      "uf": "RN",
+      "value_2026_base_jan_apr": "456884.01",
+      "value_2026_combined": "1317773.63",
+      "value_2026_update_may_jun": "860889.62",
+      "value_raw": {
+        "2015": "4039293,18",
+        "2016": "3932223,58",
+        "2017": "4150950,18",
+        "2018": "4538739,61",
+        "2019": "4531039,75",
+        "2020": "5282862,78",
+        "2021": "6264790,31",
+        "2022": "2377609,63",
+        "2023": "-",
+        "2024": "-",
+        "2025": "-",
+        "2026": "456884,01"
+      }
+    }
+  },
+  "raw_files": {
+    "ipca": {
+      "base_index": "7652.3700000000000",
+      "base_label": "junho 2026",
+      "hash_sha256": "79e82528b996ed3251aaab03560c85de2de1088a47b9710aa8d1e828ae3e8310",
+      "path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\dados_brutos\\ipca_ibge_indice_2015_2026_06.csv"
+    },
+    "quantity": {
+      "fields": [
+        "Município",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026",
+        "Total"
+      ],
+      "hash_sha256": "3f703ebf86c383a1bb42c7ecd6558b9f3e92711270b3d8c2832bd71d8d3b39a5",
+      "path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\dados_brutos\\qtd_municipio_dialise_brasil.csv"
+    },
+    "quantity_update": {
+      "fields": [
+        "Município",
+        "2026",
+        "Total"
+      ],
+      "hash_sha256": "51b16c787a3bc42d759ae92e222880d0164c784dec8f618b2f6f3a303f9af8d3",
+      "path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\dados_brutos\\atualizacao_2026_05_06_qtd_municipio.csv"
+    },
+    "value": {
+      "fields": [
+        "Município",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026",
+        "Total"
+      ],
+      "hash_sha256": "9b9b230d1500de7bba694e0877d898b7eee1ef90357f5167015715529a6a1860",
+      "path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\dados_brutos\\valor_municipio_dialise_brasil.csv"
+    },
+    "value_update": {
+      "fields": [
+        "Município",
+        "2026",
+        "Total"
+      ],
+      "hash_sha256": "98e2b3fea666529305ee8dde3fb2900b091149b697b055ed2b4834ba6fb23f9c",
+      "path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\dados_brutos\\atualizacao_2026_05_06_valor_municipio.csv"
+    }
+  },
+  "treated_reconciliation": {
+    "candidate": {
+      "exists": true,
+      "has_estado_registro": true,
+      "hash_sha256": "2ee5810f4f4246d8fe69f03bda29a7c7ae54a9669bc49ed2aec603bab51c65a9",
+      "path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\dados_tratados\\municipio_dialise_brasil_long.csv",
+      "raw_dash_rows_both_blank": 673,
+      "raw_dash_rows_both_zero": 0,
+      "raw_dash_rows_correct_state_and_null": 673,
+      "raw_dash_rows_found": 673,
+      "row_count_closed_years": 5478,
+      "sem_registro_count_closed_years": 673,
+      "sem_registro_mask_matches_raw": true
+    },
+    "checkout": {
+      "exists": true,
+      "has_estado_registro": true,
+      "hash_sha256": "2ee5810f4f4246d8fe69f03bda29a7c7ae54a9669bc49ed2aec603bab51c65a9",
+      "path": "C:\\Users\\Antonio\\Desktop\\dialisasus\\dados_tratados\\municipio_dialise_brasil_long.csv",
+      "raw_dash_rows_both_blank": 673,
+      "raw_dash_rows_both_zero": 0,
+      "raw_dash_rows_correct_state_and_null": 673,
+      "raw_dash_rows_found": 673,
+      "row_count_closed_years": 5478,
+      "sem_registro_count_closed_years": 673,
+      "sem_registro_mask_matches_raw": true
+    }
+  }
+}

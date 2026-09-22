@@ -1,0 +1,35 @@
+---
+import { readdirSync } from "node:fs";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import LineChart from "../../../components/LineChart.astro";
+import { ptInt, ptMoney, ptNumber, ptPercent, readDossie } from "../../../lib/dossie";
+export function getStaticPaths() {
+  return readdirSync(new URL("../../../dossie/territorio/", import.meta.url)).filter((name)=>/^uf-[A-Z]{2}\.json$/.test(name)).map((name)=>({params:{uf:name.slice(3,5).toLowerCase()},props:{file:name}}));
+}
+const { file } = Astro.props;
+const doc = readDossie(`territorio/${file}`);
+const years = [...new Set(doc.serie_valor_anual.map((p:any)=>p.periodo))] as string[];
+const nominal = years.map((year)=>doc.serie_valor_anual.find((p:any)=>p.periodo===year&&p.serie==="nominal").valor);
+const real = years.map((year)=>doc.serie_valor_anual.find((p:any)=>p.periodo===year&&p.serie==="real").valor);
+const mapIndex = readDossie("territorio/indice.json");
+const ufRows = mapIndex.mapa_por_ano.filter((p:any)=>p.uf===doc.uf.sigla);
+const currentYear = years.at(-1);
+const municipal = doc.municipios_por_ano.filter((p:any)=>p.periodo===currentYear);
+const change = doc.achados[0].valores[0].valor;
+const clientRows = doc.municipios_por_ano.map((p:any)=>({ano:p.periodo,codigo:p.cod_ibge,nome:p.nome,qtd:p.quantidade.valor,taxa:p.taxa_100_mil.valor,estado:p.quantidade.estado}));
+---
+<BaseLayout title={`${doc.uf.sigla} · ${doc.uf.nome}`}>
+  <p class="eyebrow">Território · {doc.uf.sigla}</p><h1 class="claim">{doc.uf.nome}: produção aprovada por <em>local de atendimento</em>.</h1><p class="standfirst">A série estadual cobre {years[0]}–{years.at(-1)}. A variação real entre os extremos foi {ptPercent(change)}.</p><p class="guard">Esta base conta procedimentos aprovados, não pessoas. A ficha não mede prevalência nem residência dos usuários atendidos.</p>
+  <form class="selector" id="uf-year-form" method="get"><label for="uf-year">Ano municipal</label><select id="uf-year" name="ano">{years.map((year)=><option value={year} selected={year===currentYear}>{year}</option>)}</select><button type="submit">Aplicar</button></form>
+  <figure><div class="figure-head"><span class="id">G5</span><h2 class="title">Valor aprovado em {doc.uf.nome}</h2><span class="meta">{years[0]}–{years.at(-1)} · nominal e real</span></div><div class="plot"><LineChart labels={years} series={[{label:"Real",className:"observed",values:real},{label:"Nominal",className:"nominal",values:nominal}]} ariaLabel={`Valor nominal e real em ${doc.uf.nome}`} /></div><figcaption>Todos os pontos são carregados do documento canônico <b>{file}</b>.</figcaption><details class="twin"><summary>Tabela gêmea — abrir série estadual</summary><div class="table-wrap"><table><thead><tr><th scope="col">Ano</th><th scope="col">Nominal</th><th scope="col">Real</th><th scope="col">Procedimentos</th><th scope="col">Taxa/100 mil</th></tr></thead><tbody>{years.map((year,i)=>{const row=ufRows.find((p:any)=>p.periodo===year); return <tr><th scope="row">{year}</th><td>{ptMoney(nominal[i])}</td><td>{ptMoney(real[i])}</td><td>{ptInt(row.quantidade.valor)}</td><td>{ptNumber(row.taxa_100_mil.valor,0)}</td></tr>})}</tbody></table></div></details></figure>
+  <section aria-labelledby="municipal-title"><h2 class="sect" id="municipal-title">Municípios em <span id="municipal-year-label">{currentYear}</span></h2><p class="calc">“Sem registro” permanece um estado explícito e nunca é convertido em zero.</p><div class="table-wrap"><table><thead><tr><th scope="col">Município</th><th scope="col">Quantidade</th><th scope="col">Taxa/100 mil</th><th scope="col">Estado</th></tr></thead><tbody id="municipal-body">{municipal.map((p:any)=><tr><th scope="row">{p.nome}</th><td>{ptInt(p.quantidade.valor)}</td><td>{ptNumber(p.taxa_100_mil.valor,0)}</td><td>{p.quantidade.estado}</td></tr>)}</tbody></table></div></section>
+  <h2 class="sect">Como foi calculada</h2><p class="calc">A UF é obtida pelo código IBGE do município. A taxa estadual divide procedimentos aprovados pela população estadual do mesmo ano; cada denominador conserva fonte e estado no dossiê.</p><div class="next"><a href="/evidencias/territorio/"><span class="q">Voltar ao mapa das 27 UFs</span><span class="path">/evidencias/territorio/</span></a></div>
+  <script type="application/json" id="municipal-data" set:html={JSON.stringify(clientRows).replaceAll("<","\\u003c")} />
+  <script>
+    const select = document.querySelector('#uf-year'); const body = document.querySelector('#municipal-body');
+    const rows = JSON.parse(document.querySelector('#municipal-data')?.textContent || '[]'); const format = new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0});
+    const requested = new URLSearchParams(location.search).get('ano'); if (requested && [...select.options].some((o)=>o.value===requested)) select.value=requested;
+    const render = (year) => { body.replaceChildren(...rows.filter((row)=>row.ano===year).map((row)=>{const tr=document.createElement('tr');const th=document.createElement('th');th.scope='row';th.textContent=row.nome;tr.append(th);for(const value of [row.qtd==null?'—':format.format(row.qtd),row.taxa==null?'—':format.format(row.taxa),row.estado]){const td=document.createElement('td');td.textContent=value;tr.append(td)}return tr;})); document.querySelector('#municipal-year-label').textContent=year; history.replaceState(null,'',`${location.pathname}?ano=${encodeURIComponent(year)}`); };
+    render(select.value); select.addEventListener('change',()=>render(select.value)); document.querySelector('#uf-year-form').addEventListener('submit',(event)=>{event.preventDefault();render(select.value)});
+  </script>
+</BaseLayout>

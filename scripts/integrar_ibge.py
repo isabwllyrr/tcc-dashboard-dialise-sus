@@ -159,14 +159,22 @@ def enriquecer_municipios(populacao, ipca):
     indicadores = pd.read_csv(MUNICIPIO_INDICADORES, dtype={"cod_municipio": str})
     remover_indicadores = [
         "populacao_2025", "qtd_por_100_mil_2025", "valor_real_por_habitante_2025",
+        "estado_registro_2025",
         "valor_real_periodo", "valor_real_anual_medio", "valor_real_por_habitante_ano",
         "qtd_por_100_mil_ano", "populacao_acumulada_2015_2025", "anos_populacao",
         "populacao_uf_acumulada_2015_2025",
     ]
     indicadores = indicadores.drop(columns=[col for col in remover_indicadores if col in indicadores.columns])
     completos = municipal[municipal["ano"].between(2015, 2025)].copy()
+    # min_count=1 em valor_aprovado_real: sem ele, um municipio com os onze
+    # anos em sem_registro/ausente (existem 6 no recorte atual) somaria para
+    # 0.0 em vez de NaN — reintroduzindo, aqui dentro de integrar_ibge.py, o
+    # mesmo zero fabricado que a Onda 0.1 corrigiu em build_indicators().
+    # populacao nunca e sem_registro (o IBGE cobre o municipio todo ano,
+    # independente de ter havido procedimento de dialise), entao sua soma
+    # pode seguir sem min_count.
     resumo = completos.groupby("cod_municipio", as_index=False).agg(
-        valor_real_periodo=("valor_aprovado_real", "sum"),
+        valor_real_periodo=("valor_aprovado_real", lambda s: s.sum(min_count=1)),
         populacao_acumulada_2015_2025=("populacao", "sum"),
         anos_populacao=("populacao", "count"),
     )
@@ -183,11 +191,12 @@ def enriquecer_municipios(populacao, ipca):
         .rename(columns={"populacao": "populacao_uf_acumulada_2015_2025"})
     )
     ano_2025 = completos[completos["ano"] == 2025][
-        ["cod_municipio", "populacao", "qtd_por_100_mil_habitantes", "valor_por_habitante_real"]
+        ["cod_municipio", "populacao", "qtd_por_100_mil_habitantes", "valor_por_habitante_real", "estado_registro"]
     ].rename(columns={
         "populacao": "populacao_2025",
         "qtd_por_100_mil_habitantes": "qtd_por_100_mil_2025",
         "valor_por_habitante_real": "valor_real_por_habitante_2025",
+        "estado_registro": "estado_registro_2025",
     })
     indicadores = indicadores.merge(
         resumo,

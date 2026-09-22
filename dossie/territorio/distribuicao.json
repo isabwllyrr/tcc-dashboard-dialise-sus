@@ -1,0 +1,483 @@
+{
+  "tipo_documento": "territorio_distribuicao",
+  "metadados": {
+    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "vintage": "2026-09-15",
+    "schema_version": "1.0.0"
+  },
+  "periodos": {
+    "inicio": 2015,
+    "fim": 2025
+  },
+  "trajetorias": [
+    {
+      "categoria": "queda",
+      "municipios": {
+        "valor": 164,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+        }
+      }
+    },
+    {
+      "categoria": "crescimento",
+      "municipios": {
+        "valor": 233,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+        }
+      }
+    },
+    {
+      "categoria": "estavel",
+      "municipios": {
+        "valor": 0,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+        }
+      }
+    },
+    {
+      "categoria": "novo_registro",
+      "municipios": {
+        "valor": 82,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+        }
+      }
+    },
+    {
+      "categoria": "sem_registro_final",
+      "municipios": {
+        "valor": 8,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+        }
+      }
+    },
+    {
+      "categoria": "excluido",
+      "municipios": {
+        "valor": 11,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+        }
+      }
+    }
+  ],
+  "estatisticas_taxa": [
+    {
+      "chave": "p25",
+      "periodo": "2025",
+      "valor": 12130.420117427504,
+      "estado": "observado",
+      "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/municipio_dialise_brasil_long.csv",
+          "dados_tratados/populacao_municipio_2015_2025.csv"
+        ],
+        "colunas": [
+          "ano",
+          "estado_registro",
+          "qtd_por_100_mil_habitantes",
+          "qtd_aprovada",
+          "populacao"
+        ],
+        "script": "scripts/gerar_dossie.py",
+        "transformacao": "estatisticas entre municipios com taxa observada em 2025; acima_3x_mediana e contagem, demais chaves sao taxas"
+      },
+      "procedencia_denominadores": {
+        "fonte": "IBGE - estimativa populacional municipal 2025",
+        "regra": "cada taxa municipal usa a populacao do proprio municipio no mesmo ano; nenhum denominador e agregado entre municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "populacao",
+            "fonte_populacao"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+        }
+      }
+    },
+    {
+      "chave": "mediana",
+      "periodo": "2025",
+      "valor": 19515.038895265163,
+      "estado": "observado",
+      "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/municipio_dialise_brasil_long.csv",
+          "dados_tratados/populacao_municipio_2015_2025.csv"
+        ],
+        "colunas": [
+          "ano",
+          "estado_registro",
+          "qtd_por_100_mil_habitantes",
+          "qtd_aprovada",
+          "populacao"
+        ],
+        "script": "scripts/gerar_dossie.py",
+        "transformacao": "estatisticas entre municipios com taxa observada em 2025; acima_3x_mediana e contagem, demais chaves sao taxas"
+      },
+      "procedencia_denominadores": {
+        "fonte": "IBGE - estimativa populacional municipal 2025",
+        "regra": "cada taxa municipal usa a populacao do proprio municipio no mesmo ano; nenhum denominador e agregado entre municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "populacao",
+            "fonte_populacao"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+        }
+      }
+    },
+    {
+      "chave": "p75",
+      "periodo": "2025",
+      "valor": 31721.324984380677,
+      "estado": "observado",
+      "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/municipio_dialise_brasil_long.csv",
+          "dados_tratados/populacao_municipio_2015_2025.csv"
+        ],
+        "colunas": [
+          "ano",
+          "estado_registro",
+          "qtd_por_100_mil_habitantes",
+          "qtd_aprovada",
+          "populacao"
+        ],
+        "script": "scripts/gerar_dossie.py",
+        "transformacao": "estatisticas entre municipios com taxa observada em 2025; acima_3x_mediana e contagem, demais chaves sao taxas"
+      },
+      "procedencia_denominadores": {
+        "fonte": "IBGE - estimativa populacional municipal 2025",
+        "regra": "cada taxa municipal usa a populacao do proprio municipio no mesmo ano; nenhum denominador e agregado entre municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "populacao",
+            "fonte_populacao"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+        }
+      }
+    },
+    {
+      "chave": "maximo",
+      "periodo": "2025",
+      "valor": 250831.79297597043,
+      "estado": "observado",
+      "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/municipio_dialise_brasil_long.csv",
+          "dados_tratados/populacao_municipio_2015_2025.csv"
+        ],
+        "colunas": [
+          "ano",
+          "estado_registro",
+          "qtd_por_100_mil_habitantes",
+          "qtd_aprovada",
+          "populacao"
+        ],
+        "script": "scripts/gerar_dossie.py",
+        "transformacao": "estatisticas entre municipios com taxa observada em 2025; acima_3x_mediana e contagem, demais chaves sao taxas"
+      },
+      "procedencia_denominadores": {
+        "fonte": "IBGE - estimativa populacional municipal 2025",
+        "regra": "cada taxa municipal usa a populacao do proprio municipio no mesmo ano; nenhum denominador e agregado entre municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "populacao",
+            "fonte_populacao"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+        }
+      }
+    },
+    {
+      "chave": "acima_3x_mediana",
+      "periodo": "2025",
+      "valor": 22,
+      "estado": "observado",
+      "unidade": "municipios",
+      "origem": {
+        "arquivos_csv": [
+          "dados_tratados/municipio_dialise_brasil_long.csv",
+          "dados_tratados/populacao_municipio_2015_2025.csv"
+        ],
+        "colunas": [
+          "ano",
+          "estado_registro",
+          "qtd_por_100_mil_habitantes",
+          "qtd_aprovada",
+          "populacao"
+        ],
+        "script": "scripts/gerar_dossie.py",
+        "transformacao": "estatisticas entre municipios com taxa observada em 2025; acima_3x_mediana e contagem, demais chaves sao taxas"
+      },
+      "procedencia_denominadores": {
+        "fonte": "IBGE - estimativa populacional municipal 2025",
+        "regra": "cada taxa municipal usa a populacao do proprio municipio no mesmo ano; nenhum denominador e agregado entre municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/municipio_dialise_brasil_long.csv",
+            "dados_tratados/populacao_municipio_2015_2025.csv"
+          ],
+          "colunas": [
+            "cod_ibge",
+            "ano",
+            "populacao",
+            "fonte_populacao"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "denominador populacional do ano e territorio correspondentes; soma municipal apenas no nivel UF"
+        }
+      }
+    }
+  ],
+  "achados": [
+    {
+      "id": "G7.achado.elegibilidade",
+      "texto": "A distribuicao de variacoes usa somente municipios com valor real registrado em 2015 e 2025; as exclusoes permanecem contabilizadas.",
+      "valores": [
+        {
+          "chave": "municipios_comparaveis",
+          "valor": 397,
+          "unidade": "municipios",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/distribuicao_trajetorias_municipais.csv",
+              "dados_tratados/municipio_dialise_brasil_long.csv"
+            ],
+            "colunas": [
+              "registro_tipo",
+              "faixa",
+              "municipios",
+              "periodo_inicio",
+              "periodo_fim",
+              "estado_registro",
+              "valor_aprovado_real"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          }
+        },
+        {
+          "chave": "municipios_excluidos",
+          "valor": 101,
+          "unidade": "municipios",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/distribuicao_trajetorias_municipais.csv",
+              "dados_tratados/municipio_dialise_brasil_long.csv"
+            ],
+            "colunas": [
+              "registro_tipo",
+              "faixa",
+              "municipios",
+              "periodo_inicio",
+              "periodo_fim",
+              "estado_registro",
+              "valor_aprovado_real"
+            ],
+            "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+            "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.sem_registro",
+        "r.atendimento"
+      ],
+      "periodos": {
+        "inicio": "2015",
+        "fim": "2025"
+      }
+    },
+    {
+      "id": "G7.achado.extremos_taxa",
+      "texto": "Os extremos municipais de 2025 usam taxas por 100 mil com denominador municipal do mesmo ano.",
+      "valores": [
+        {
+          "chave": "mediana_taxa_2025",
+          "valor": 19515.038895265163,
+          "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "ano",
+              "estado_registro",
+              "qtd_por_100_mil_habitantes",
+              "qtd_aprovada",
+              "populacao"
+            ],
+            "script": "scripts/gerar_dossie.py",
+            "transformacao": "estatisticas entre municipios com taxa observada em 2025; acima_3x_mediana e contagem, demais chaves sao taxas"
+          }
+        },
+        {
+          "chave": "municipios_acima_3x_mediana",
+          "valor": 22,
+          "unidade": "municipios",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/municipio_dialise_brasil_long.csv",
+              "dados_tratados/populacao_municipio_2015_2025.csv"
+            ],
+            "colunas": [
+              "ano",
+              "estado_registro",
+              "qtd_por_100_mil_habitantes",
+              "qtd_aprovada",
+              "populacao"
+            ],
+            "script": "scripts/gerar_dossie.py",
+            "transformacao": "estatisticas entre municipios com taxa observada em 2025; acima_3x_mediana e contagem, demais chaves sao taxas"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.procedimento_nao_pessoa",
+        "r.sem_registro"
+      ],
+      "periodos": {
+        "ano": "2025"
+      }
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "date": "2026-09-18",
+  "scope": "Ativo anterior; substituição bloqueada na aquisição",
+  "gzipMethod": "gzip nível 9 por arquivo; não é transferência HTTP medida",
+  "runtime": [
+    {
+      "path": "public/assets/kidney.js",
+      "bytes": 9223,
+      "gzip9": 3106,
+      "sha256": "917695fa239f3851631e6a1e86eadea9fb4fff72eb970e23875e6575a746a174"
+    },
+    {
+      "path": "public/assets/vendor/three.module.min.js",
+      "bytes": 338914,
+      "gzip9": 79154,
+      "sha256": "852c06b9fe936cf8ebc2870c86370d1015c310b04de98cdfc07f4efaf6afd2af"
+    },
+    {
+      "path": "public/assets/vendor/three.core.min.js",
+      "bytes": 381130,
+      "gzip9": 100915,
+      "sha256": "4183cee05f0aa093682fdf551363a16bb20bd92b68e14f7576905f45c461ba82"
+    },
+    {
+      "path": "public/assets/vendor/GLTFLoader.js",
+      "bytes": 119658,
+      "gzip9": 24982,
+      "sha256": "458d51d6c04c9416e853ea6298364c2af190b1ac2359ad74f07cf48b13d206b2"
+    },
+    {
+      "path": "public/assets/vendor/meshopt_decoder.module.js",
+      "bytes": 25043,
+      "gzip9": 6510,
+      "sha256": "3bbc229d8589db85d9c50c23821df2648f3c82c5c8b6428e6315d0b0da2a801d"
+    },
+    {
+      "path": "public/assets/utils/BufferGeometryUtils.js",
+      "bytes": 37003,
+      "gzip9": 8084,
+      "sha256": "cffff7bd151ba8899251ecc1e278fe755648136fc4f7a98d11675a2e71bd699d"
+    }
+  ],
+  "runtimeGzip9": 222751,
+  "original": {
+    "path": "docs/amostra/assets/source/VH_F_Kidney_L.glb",
+    "bytes": 1330900,
+    "gzip9": 1124354,
+    "sha256": "8ac1228e4db8c07cbf9f6c6dc7ca522c5b8d61f641927233a29ae6609b577403",
+    "asset": {
+      "version": "2.0",
+      "generator": "babylon.js glTF exporter for Autodesk MAYA 2022.2 v20211115.1"
+    },
+    "images": 0,
+    "nodes": [
+      "VH_F_left_kidney",
+      "VH_F_kidney_capsule_L",
+      "VH_F_hilum_of_kidney_L",
+      "VH_F_renal_medulla_L",
+      "VH_F_renal_pyramid_L",
+      "VH_F_renal_pyramid_L_a",
+      "VH_F_renal_pyramid_L_b",
+      "VH_F_renal_pyramid_L_c",
+      "VH_F_renal_pyramid_L_d",
+      "VH_F_renal_pyramid_L_e",
+      "VH_F_renal_pyramid_L_f",
+      "VH_F_renal_pyramid_L_g",
+      "VH_F_renal_pyramid_L_h",
+      "VH_F_renal_pyramid_L_i",
+      "VH_F_renal_pyramid_L_j",
+      "VH_F_renal_pyramid_L_k",
+      "VH_F_cortex_of_kidney_L",
+      "VH_F_renal_column_L",
+      "VH_F_outer_cortex_of_kidney_L"
+    ],
+    "meshes": 15,
+    "materials": [
+      {
+        "name": "kidney_capsule_mat",
+        "baseColor": null,
+        "metallicRoughness": null,
+        "normal": null,
+        "occlusion": null
+      },
+      {
+        "name": "kidney_Pyramids_mat",
+        "baseColor": null,
+        "metallicRoughness": null,
+        "normal": null,
+        "occlusion": null
+      },
+      {
+        "name": "kidney_CortexMedulla_mat",
+        "baseColor": null,
+        "metallicRoughness": null,
+        "normal": null,
+        "occlusion": null
+      }
+    ]
+  },
+  "published": {
+    "path": "public/assets/kidney.glb",
+    "bytes": 185656,
+    "gzip9": 143346,
+    "sha256": "111061cf801358ee3e28251dd01be3a98f1528aa729f1843e8eca2344653c4d5",
+    "asset": {
+      "generator": "glTF-Transform v4.5.0",
+      "version": "2.0"
+    },
+    "images": 0,
+    "nodes": [
+      "VH_F_kidney_capsule_L",
+      "VH_F_renal_pyramid_L_a",
+      "VH_F_renal_column_L"
+    ],
+    "meshes": 3,
+    "materials": [
+      {
+        "name": "kidney_capsule_mat",
+        "baseColor": null,
+        "metallicRoughness": null,
+        "normal": null,
+        "occlusion": null
+      },
+      {
+        "name": "kidney_Pyramids_mat",
+        "baseColor": null,
+        "metallicRoughness": null,
+        "normal": null,
+        "occlusion": null
+      },
+      {
+        "name": "kidney_CortexMedulla_mat",
+        "baseColor": null,
+        "metallicRoughness": null,
+        "normal": null,
+        "occlusion": null
+      }
+    ]
+  },
+  "fallbacks": [
+    {
+      "path": "public/assets/kidney-position.webp",
+      "bytes": 2712,
+      "gzip9": 2579,
+      "sha256": "70a014897da1d6a944843eb0a88d2cea40e9769cb0080b7ef36a84ddf16f50da"
+    },
+    {
+      "path": "public/assets/kidney-hilum.webp",
+      "bytes": 2702,
+      "gzip9": 2531,
+      "sha256": "3fe15c2c4e8944068a40478e2065b8c626935b2ae39727d0fd04fd5a20d65bce"
+    }
+  ],
+  "total3dGzip9": 366097
+}

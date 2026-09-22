@@ -1,0 +1,210 @@
+
+[1m[36m====================================================================[0m
+[1m[36m  DialisaSUS · Ferramenta de Auditoria Unificada de Rotas (Vistoria)  [0m
+[1m[36m====================================================================[0m
+
+[1m[1/5] Varredura de Design Tokens em Arquivos CSS[0m
+[2mProcurando cores em hexadecimal literal fora de :root (--token)...[0m
+Arquivos CSS examinados: 3
+[31m[1m[FAIL][0m Encontradas [1m[31m324[0m ocorrência(s) de cores hexadecimais literais fora de design tokens!
+  • [1mweb_dashboard/studio-theme.css[0m: 154 cores literais
+    - Linha 28: [31m#f8faff[0m → "background: linear-gradient(180deg, #f8faff 0%, #edf3ff 55%,"
+    - Linha 28: [31m#edf3ff[0m → "background: linear-gradient(180deg, #f8faff 0%, #edf3ff 55%,"
+    - Linha 28: [31m#eef9f6[0m → "background: linear-gradient(180deg, #f8faff 0%, #edf3ff 55%,"
+    [2m... e mais 151 ocorrências.[0m
+[31m[1m[FAIL][0m 154 cor(es) hexadecimal(is) literal(is) fora de :root
+    Linha 28: #f8faff; Linha 28: #edf3ff; Linha 28: #eef9f6
+  • [1mweb_dashboard/styles.css[0m: 170 cores literais
+    - Linha 46: [31m#0b1114[0m → "background-color: #0b1114;"
+    - Linha 47: [31m#080d10[0m → "background-image: radial-gradient(circle at 18% 0%, rgba(45,"
+    - Linha 47: [31m#0d1518[0m → "background-image: radial-gradient(circle at 18% 0%, rgba(45,"
+    [2m... e mais 167 ocorrências.[0m
+[31m[1m[FAIL][0m 170 cor(es) hexadecimal(is) literal(is) fora de :root
+    Linha 46: #0b1114; Linha 47: #080d10; Linha 47: #0d1518
+[33m→ Recomendação soberana do Vault: substituir cores literais por tokens formais var(--token) em variables.css.[0m
+
+[1m[2/5] Inicializando Navegador Headless (Playwright / Chromium)[0m
+
+[1m[36m--- Auditando URL: http://127.0.0.1:8766/ ---[0m
+
+[1m[3/5] Validação de Hierarquia de Cabeçalhos (Heading Order)[0m
+[32m[1m[PASS][0m <h1> único identificado: "Quando os rins param, o SUS assume a filtragem — e repete o tratamento."
+
+[1m[4/5] Integridade de Meta Tag Canonical e JSON-LD[0m
+[31m[1m[FAIL][0m Tag <link rel="canonical"> ausente.
+[33m[1m[WARN][0m Nenhum bloco de dados estruturados JSON-LD (<script type="application/ld+json">) encontrado.
+
+[1m[5a/5] Bateria Axe Core de Acessibilidade (WCAG 2.1 AA)[0m
+[2mExecutando varredura automatizada com AxeBuilder...[0m
+[31m[1m[FAIL][0m 1 regra(s) de acessibilidade violada(s), impactando 23 nós no DOM.
+  - Crítico: 0 | Grave (Serious): 23 | Moderado: 0 | Menor: 0
+  [31m[1m[FAIL][0m [1mcolor-contrast[0m (serious): Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds [23 nós afetados]
+
+[1m[5b/5] Homologação de Overflow Horizontal em Viewports Canônicos[0m
+[32m[1m[PASS][0m Viewport 320px (Mobile Mínimo)     : scrollWidth=320px == innerWidth=320px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 375px (Mobile Padrão)     : scrollWidth=375px == innerWidth=375px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 768px (Tablet Portrait)   : scrollWidth=768px == innerWidth=768px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1024px (Tablet / Laptop)  : scrollWidth=1024px == innerWidth=1024px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1440px (Desktop Padrão)   : scrollWidth=1440px == innerWidth=1440px (Δ = 0px)
+
+[1m[36m--- Auditando URL: http://127.0.0.1:8766/evidencias/valor/ ---[0m
+
+[1m[3/5] Validação de Hierarquia de Cabeçalhos (Heading Order)[0m
+[32m[1m[PASS][0m <h1> único identificado: "Corrigido pela inflação, o crescimento quase desaparece."
+
+[1m[4/5] Integridade de Meta Tag Canonical e JSON-LD[0m
+[31m[1m[FAIL][0m Tag <link rel="canonical"> ausente.
+[33m[1m[WARN][0m Nenhum bloco de dados estruturados JSON-LD (<script type="application/ld+json">) encontrado.
+
+[1m[5a/5] Bateria Axe Core de Acessibilidade (WCAG 2.1 AA)[0m
+[2mExecutando varredura automatizada com AxeBuilder...[0m
+[31m[1m[FAIL][0m 1 regra(s) de acessibilidade violada(s), impactando 24 nós no DOM.
+  - Crítico: 0 | Grave (Serious): 24 | Moderado: 0 | Menor: 0
+  [31m[1m[FAIL][0m [1mcolor-contrast[0m (serious): Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds [24 nós afetados]
+
+[1m[5b/5] Homologação de Overflow Horizontal em Viewports Canônicos[0m
+[32m[1m[PASS][0m Viewport 320px (Mobile Mínimo)     : scrollWidth=320px == innerWidth=320px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 375px (Mobile Padrão)     : scrollWidth=375px == innerWidth=375px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 768px (Tablet Portrait)   : scrollWidth=768px == innerWidth=768px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1024px (Tablet / Laptop)  : scrollWidth=1024px == innerWidth=1024px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1440px (Desktop Padrão)   : scrollWidth=1440px == innerWidth=1440px (Δ = 0px)
+
+[1m[36m--- Auditando URL: http://127.0.0.1:8766/evidencias/territorio/ ---[0m
+
+[1m[3/5] Validação de Hierarquia de Cabeçalhos (Heading Order)[0m
+[32m[1m[PASS][0m <h1> único identificado: "Taxa alta pode revelar um polo de atendimento."
+
+[1m[4/5] Integridade de Meta Tag Canonical e JSON-LD[0m
+[31m[1m[FAIL][0m Tag <link rel="canonical"> ausente.
+[33m[1m[WARN][0m Nenhum bloco de dados estruturados JSON-LD (<script type="application/ld+json">) encontrado.
+
+[1m[5a/5] Bateria Axe Core de Acessibilidade (WCAG 2.1 AA)[0m
+[2mExecutando varredura automatizada com AxeBuilder...[0m
+[31m[1m[FAIL][0m 3 regra(s) de acessibilidade violada(s), impactando 22 nós no DOM.
+  - Crítico: 0 | Grave (Serious): 22 | Moderado: 0 | Menor: 0
+  [31m[1m[FAIL][0m [1maria-prohibited-attr[0m (serious): Ensure ARIA attributes are not prohibited for an element's role [1 nós afetados]
+  [31m[1m[FAIL][0m [1mcolor-contrast[0m (serious): Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds [20 nós afetados]
+  [31m[1m[FAIL][0m [1mnested-interactive[0m (serious): Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies [1 nós afetados]
+
+[1m[5b/5] Homologação de Overflow Horizontal em Viewports Canônicos[0m
+[32m[1m[PASS][0m Viewport 320px (Mobile Mínimo)     : scrollWidth=320px == innerWidth=320px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 375px (Mobile Padrão)     : scrollWidth=375px == innerWidth=375px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 768px (Tablet Portrait)   : scrollWidth=768px == innerWidth=768px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1024px (Tablet / Laptop)  : scrollWidth=1024px == innerWidth=1024px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1440px (Desktop Padrão)   : scrollWidth=1440px == innerWidth=1440px (Δ = 0px)
+
+[1m[36m--- Auditando URL: http://127.0.0.1:8766/evidencias/contagem/ ---[0m
+
+[1m[3/5] Validação de Hierarquia de Cabeçalhos (Heading Order)[0m
+[32m[1m[PASS][0m <h1> único identificado: "A quantidade é uma série de eventos administrativos."
+
+[1m[4/5] Integridade de Meta Tag Canonical e JSON-LD[0m
+[31m[1m[FAIL][0m Tag <link rel="canonical"> ausente.
+[33m[1m[WARN][0m Nenhum bloco de dados estruturados JSON-LD (<script type="application/ld+json">) encontrado.
+
+[1m[5a/5] Bateria Axe Core de Acessibilidade (WCAG 2.1 AA)[0m
+[2mExecutando varredura automatizada com AxeBuilder...[0m
+[31m[1m[FAIL][0m 1 regra(s) de acessibilidade violada(s), impactando 14 nós no DOM.
+  - Crítico: 0 | Grave (Serious): 14 | Moderado: 0 | Menor: 0
+  [31m[1m[FAIL][0m [1mcolor-contrast[0m (serious): Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds [14 nós afetados]
+
+[1m[5b/5] Homologação de Overflow Horizontal em Viewports Canônicos[0m
+[32m[1m[PASS][0m Viewport 320px (Mobile Mínimo)     : scrollWidth=320px == innerWidth=320px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 375px (Mobile Padrão)     : scrollWidth=375px == innerWidth=375px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 768px (Tablet Portrait)   : scrollWidth=768px == innerWidth=768px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1024px (Tablet / Laptop)  : scrollWidth=1024px == innerWidth=1024px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1440px (Desktop Padrão)   : scrollWidth=1440px == innerWidth=1440px (Δ = 0px)
+
+[1m[36m--- Auditando URL: http://127.0.0.1:8766/evidencias/modelo/ ---[0m
+
+[1m[3/5] Validação de Hierarquia de Cabeçalhos (Heading Order)[0m
+[32m[1m[PASS][0m <h1> único identificado: "O erro médio é pequeno, mas o viés cresce com a distância."
+
+[1m[4/5] Integridade de Meta Tag Canonical e JSON-LD[0m
+[31m[1m[FAIL][0m Tag <link rel="canonical"> ausente.
+[33m[1m[WARN][0m Nenhum bloco de dados estruturados JSON-LD (<script type="application/ld+json">) encontrado.
+
+[1m[5a/5] Bateria Axe Core de Acessibilidade (WCAG 2.1 AA)[0m
+[2mExecutando varredura automatizada com AxeBuilder...[0m
+[31m[1m[FAIL][0m 1 regra(s) de acessibilidade violada(s), impactando 19 nós no DOM.
+  - Crítico: 0 | Grave (Serious): 19 | Moderado: 0 | Menor: 0
+  [31m[1m[FAIL][0m [1mcolor-contrast[0m (serious): Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds [19 nós afetados]
+
+[1m[5b/5] Homologação de Overflow Horizontal em Viewports Canônicos[0m
+[32m[1m[PASS][0m Viewport 320px (Mobile Mínimo)     : scrollWidth=320px == innerWidth=320px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 375px (Mobile Padrão)     : scrollWidth=375px == innerWidth=375px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 768px (Tablet Portrait)   : scrollWidth=768px == innerWidth=768px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1024px (Tablet / Laptop)  : scrollWidth=1024px == innerWidth=1024px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1440px (Desktop Padrão)   : scrollWidth=1440px == innerWidth=1440px (Δ = 0px)
+
+[1m[36m--- Auditando URL: http://127.0.0.1:8766/sobre-a-base/ ---[0m
+
+[1m[3/5] Validação de Hierarquia de Cabeçalhos (Heading Order)[0m
+[32m[1m[PASS][0m <h1> único identificado: "Uma publicação acadêmica com fontes abertas."
+
+[1m[4/5] Integridade de Meta Tag Canonical e JSON-LD[0m
+[31m[1m[FAIL][0m Tag <link rel="canonical"> ausente.
+[33m[1m[WARN][0m Nenhum bloco de dados estruturados JSON-LD (<script type="application/ld+json">) encontrado.
+
+[1m[5a/5] Bateria Axe Core de Acessibilidade (WCAG 2.1 AA)[0m
+[2mExecutando varredura automatizada com AxeBuilder...[0m
+[31m[1m[FAIL][0m 1 regra(s) de acessibilidade violada(s), impactando 14 nós no DOM.
+  - Crítico: 0 | Grave (Serious): 14 | Moderado: 0 | Menor: 0
+  [31m[1m[FAIL][0m [1mcolor-contrast[0m (serious): Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds [14 nós afetados]
+
+[1m[5b/5] Homologação de Overflow Horizontal em Viewports Canônicos[0m
+[32m[1m[PASS][0m Viewport 320px (Mobile Mínimo)     : scrollWidth=320px == innerWidth=320px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 375px (Mobile Padrão)     : scrollWidth=375px == innerWidth=375px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 768px (Tablet Portrait)   : scrollWidth=768px == innerWidth=768px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1024px (Tablet / Laptop)  : scrollWidth=1024px == innerWidth=1024px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1440px (Desktop Padrão)   : scrollWidth=1440px == innerWidth=1440px (Δ = 0px)
+
+[1m[36m--- Auditando URL: http://127.0.0.1:8766/assistente/ ---[0m
+
+[1m[3/5] Validação de Hierarquia de Cabeçalhos (Heading Order)[0m
+[32m[1m[PASS][0m <h1> único identificado: "Error response"
+
+[1m[4/5] Integridade de Meta Tag Canonical e JSON-LD[0m
+[31m[1m[FAIL][0m Tag <link rel="canonical"> ausente.
+[33m[1m[WARN][0m Nenhum bloco de dados estruturados JSON-LD (<script type="application/ld+json">) encontrado.
+
+[1m[5a/5] Bateria Axe Core de Acessibilidade (WCAG 2.1 AA)[0m
+[2mExecutando varredura automatizada com AxeBuilder...[0m
+[31m[1m[FAIL][0m 2 regra(s) de acessibilidade violada(s), impactando 5 nós no DOM.
+  - Crítico: 0 | Grave (Serious): 0 | Moderado: 5 | Menor: 0
+  [33m[1m[WARN][0m [1mlandmark-one-main[0m (moderate): Ensure the document has a main landmark [1 nós afetados]
+  [33m[1m[WARN][0m [1mregion[0m (moderate): Ensure all page content is contained by landmarks [4 nós afetados]
+
+[1m[5b/5] Homologação de Overflow Horizontal em Viewports Canônicos[0m
+[32m[1m[PASS][0m Viewport 320px (Mobile Mínimo)     : scrollWidth=320px == innerWidth=320px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 375px (Mobile Padrão)     : scrollWidth=375px == innerWidth=375px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 768px (Tablet Portrait)   : scrollWidth=768px == innerWidth=768px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1024px (Tablet / Laptop)  : scrollWidth=1024px == innerWidth=1024px (Δ = 0px)
+[32m[1m[PASS][0m Viewport 1440px (Desktop Padrão)   : scrollWidth=1440px == innerWidth=1440px (Δ = 0px)
+
+[1m[31m====================================================================[0m
+[1m[31m  Auditoria Finalizada com FALHAS! (FAIL: 338, PASS: 42)  [0m
+[1m[31m====================================================================[0m
+
+[1mResumo das Falhas Detectadas:[0m
+  1. [CSS_TOKENS] web_dashboard/studio-theme.css: 154 cor(es) hexadecimal(is) literal(is) fora de :root
+     [2mLinha 28: #f8faff; Linha 28: #edf3ff; Linha 28: #eef9f6[0m
+  2. [CSS_TOKENS] web_dashboard/styles.css: 170 cor(es) hexadecimal(is) literal(is) fora de :root
+     [2mLinha 46: #0b1114; Linha 47: #080d10; Linha 47: #0d1518[0m
+  3. [CANONICAL] http://127.0.0.1:8766/: Tag <link rel="canonical"> ausente.
+  4. [AXE_CORE] http://127.0.0.1:8766/: 1 regra(s) de acessibilidade violada(s), impactando 23 nós no DOM.
+  5. [CANONICAL] http://127.0.0.1:8766/evidencias/valor/: Tag <link rel="canonical"> ausente.
+  6. [AXE_CORE] http://127.0.0.1:8766/evidencias/valor/: 1 regra(s) de acessibilidade violada(s), impactando 24 nós no DOM.
+  7. [CANONICAL] http://127.0.0.1:8766/evidencias/territorio/: Tag <link rel="canonical"> ausente.
+  8. [AXE_CORE] http://127.0.0.1:8766/evidencias/territorio/: 3 regra(s) de acessibilidade violada(s), impactando 22 nós no DOM.
+  9. [CANONICAL] http://127.0.0.1:8766/evidencias/contagem/: Tag <link rel="canonical"> ausente.
+  10. [AXE_CORE] http://127.0.0.1:8766/evidencias/contagem/: 1 regra(s) de acessibilidade violada(s), impactando 14 nós no DOM.
+  11. [CANONICAL] http://127.0.0.1:8766/evidencias/modelo/: Tag <link rel="canonical"> ausente.
+  12. [AXE_CORE] http://127.0.0.1:8766/evidencias/modelo/: 1 regra(s) de acessibilidade violada(s), impactando 19 nós no DOM.
+  13. [CANONICAL] http://127.0.0.1:8766/sobre-a-base/: Tag <link rel="canonical"> ausente.
+  14. [AXE_CORE] http://127.0.0.1:8766/sobre-a-base/: 1 regra(s) de acessibilidade violada(s), impactando 14 nós no DOM.
+  15. [CANONICAL] http://127.0.0.1:8766/assistente/: Tag <link rel="canonical"> ausente.
+  16. [AXE_CORE] http://127.0.0.1:8766/assistente/: 2 regra(s) de acessibilidade violada(s), impactando 5 nós no DOM.
+
+[31mStatus: REPROVADO (Exit Code 1)[0m
+

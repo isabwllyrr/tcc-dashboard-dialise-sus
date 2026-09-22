@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
@@ -15,10 +15,26 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Node
+node_modules/
+.astro/
+npm-debug.log*
+
 # Saidas temporarias
 outputs/
 dist/
+scratch/
 *.tmp
 
 # Documentos pessoais de estudo
 docs/guia_defesa_tcc_i.md
+
+# Worktrees de agentes (copias inteiras do repositorio)
+.claude/
+
+# Cache de screenshots do Playwright CLI (evidencia canonica fica em docs/evidencias/)
+.playwright-cli/
+
+# Documentos pessoais da autora (ficam no disco, fora do repositorio publico)
+estrutura tcc - isabelly.docx
+docs/RELATORIO-V1-V2.docx

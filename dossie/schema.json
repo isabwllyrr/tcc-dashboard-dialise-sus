@@ -1,0 +1,538 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dialisasus.local/dossie/schema.json",
+  "title": "Contrato do dossiê DialisaSUS",
+  "description": "Valida manifesto, nacional, território, modelo, glossário e ressalvas. Todo valor estatístico carrega unidade, estado e origem; toda taxa carrega a procedência do denominador.",
+  "oneOf": [
+    { "$ref": "#/$defs/Manifesto" },
+    { "$ref": "#/$defs/Nacional" },
+    { "$ref": "#/$defs/TerritorioIndice" },
+    { "$ref": "#/$defs/TerritorioUF" },
+    { "$ref": "#/$defs/Distribuicao" },
+    { "$ref": "#/$defs/Modelo" },
+    { "$ref": "#/$defs/Glossario" },
+    { "$ref": "#/$defs/Ressalvas" }
+  ],
+  "$defs": {
+    "Estado": {
+      "type": "string",
+      "enum": ["observado", "provisorio", "estimado", "sem_registro", "ausente"]
+    },
+    "Origem": {
+      "type": "object",
+      "description": "Rota reproduzível do valor até CSV, colunas e script produtor.",
+      "required": ["arquivos_csv", "colunas", "script", "transformacao"],
+      "properties": {
+        "arquivos_csv": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "colunas": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "script": { "type": "string", "minLength": 1 },
+        "transformacao": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "MetadadosComuns": {
+      "type": "object",
+      "required": ["gerado_em", "vintage", "schema_version"],
+      "properties": {
+        "gerado_em": { "type": "string", "format": "date-time" },
+        "vintage": { "type": "string", "format": "date" },
+        "schema_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+      },
+      "additionalProperties": false
+    },
+    "PontoSerie": {
+      "type": "object",
+      "description": "Forma canônica de um ponto. valor é nulo somente para sem_registro ou ausente.",
+      "required": ["periodo", "valor", "estado", "unidade", "origem"],
+      "properties": {
+        "periodo": { "type": "string", "minLength": 1 },
+        "valor": { "type": ["number", "null"] },
+        "estado": { "$ref": "#/$defs/Estado" },
+        "unidade": { "type": "string", "minLength": 1 },
+        "origem": { "$ref": "#/$defs/Origem" },
+        "serie": { "enum": ["nominal", "real"] },
+        "metrica": { "enum": ["quantidade", "valor_real", "valor_real_por_procedimento", "variacao_quantidade", "variacao_valor_real_por_procedimento"] },
+        "modelo": { "type": "string", "minLength": 1 },
+        "alvo": { "enum": ["valor_nominal", "valor_real"] },
+        "horizonte_meses": { "type": "integer", "minimum": 1, "maximum": 12 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "estado": { "enum": ["sem_registro", "ausente"] } }, "required": ["estado"] },
+          "then": { "properties": { "valor": { "type": "null" } } },
+          "else": { "properties": { "valor": { "type": "number" } } }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "Denominador": {
+      "type": "object",
+      "required": ["valor", "estado", "unidade", "fonte", "origem"],
+      "properties": {
+        "valor": { "type": "number", "exclusiveMinimum": 0 },
+        "estado": { "$ref": "#/$defs/Estado" },
+        "unidade": { "const": "habitantes" },
+        "fonte": { "type": "string", "minLength": 1 },
+        "origem": { "$ref": "#/$defs/Origem" }
+      },
+      "additionalProperties": false
+    },
+    "PontoTaxa": {
+      "type": "object",
+      "description": "Forma canônica de uma taxa, com denominador reproduzível.",
+      "required": ["periodo", "valor", "estado", "unidade", "origem", "denominador", "quebra_denominador"],
+      "properties": {
+        "periodo": { "type": "string", "minLength": 1 },
+        "valor": { "type": ["number", "null"] },
+        "estado": { "$ref": "#/$defs/Estado" },
+        "unidade": { "type": "string", "minLength": 1 },
+        "origem": { "$ref": "#/$defs/Origem" },
+        "denominador": {
+          "oneOf": [
+            { "$ref": "#/$defs/Denominador" },
+            { "type": "null" }
+          ]
+        },
+        "quebra_denominador": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "estado": { "enum": ["sem_registro", "ausente"] } }, "required": ["estado"] },
+          "then": {
+            "properties": {
+              "valor": { "type": "null" },
+              "denominador": { "type": "null" }
+            }
+          },
+          "else": {
+            "properties": {
+              "valor": { "type": "number" },
+              "denominador": { "$ref": "#/$defs/Denominador" }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "MedidaEscalar": {
+      "type": "object",
+      "required": ["valor", "estado", "unidade", "origem"],
+      "properties": {
+        "valor": { "type": "number" },
+        "estado": { "$ref": "#/$defs/Estado" },
+        "unidade": { "type": "string", "minLength": 1 },
+        "origem": { "$ref": "#/$defs/Origem" }
+      },
+      "additionalProperties": false
+    },
+    "ValorAchado": {
+      "type": "object",
+      "required": ["chave", "valor", "unidade", "estado", "origem"],
+      "properties": {
+        "chave": { "type": "string", "minLength": 1 },
+        "valor": { "type": "number" },
+        "unidade": { "type": "string", "minLength": 1 },
+        "estado": { "$ref": "#/$defs/Estado" },
+        "origem": { "$ref": "#/$defs/Origem" }
+      },
+      "additionalProperties": false
+    },
+    "Achado": {
+      "type": "object",
+      "required": ["id", "texto", "valores", "ressalvas", "periodos"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^G[1-7]\\.achado(?:\\.[a-z0-9_-]+)?$" },
+        "texto": { "type": "string", "minLength": 1 },
+        "valores": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ValorAchado" } },
+        "ressalvas": { "type": "array", "items": { "type": "string", "pattern": "^r\\.[a-z0-9_]+$" }, "uniqueItems": true },
+        "periodos": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "PontoMonetario": {
+      "allOf": [
+        { "$ref": "#/$defs/PontoSerie" },
+        {
+          "type": "object",
+          "required": ["serie"],
+          "properties": {
+            "serie": { "enum": ["nominal", "real"] }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "PontoComparativo": {
+      "allOf": [
+        { "$ref": "#/$defs/PontoSerie" },
+        {
+          "type": "object",
+          "required": ["metrica"],
+          "properties": {
+            "metrica": { "enum": ["quantidade", "valor_real", "valor_real_por_procedimento", "variacao_quantidade", "variacao_valor_real_por_procedimento"] }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "Manifesto": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "versao_dossie", "extracao", "cobertura", "fontes", "escopo"],
+      "properties": {
+        "tipo_documento": { "const": "manifesto" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "versao_dossie": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "extracao": {
+          "type": "object",
+          "required": ["data", "vintage", "arquivos"],
+          "properties": {
+            "data": { "type": "string", "format": "date" },
+            "vintage": { "type": "string", "format": "date" },
+            "arquivos": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["caminho", "sha256"],
+                "properties": {
+                  "caminho": { "type": "string", "minLength": 1 },
+                  "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "cobertura": {
+          "type": "object",
+          "required": ["temporal", "territorial", "unidade_observacao"],
+          "properties": {
+            "temporal": { "type": "string", "minLength": 1 },
+            "territorial": { "type": "string", "minLength": 1 },
+            "unidade_observacao": { "const": "procedimentos aprovados por local de atendimento" }
+          },
+          "additionalProperties": false
+        },
+        "fontes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "nome", "tabela_ou_sistema", "arquivos_csv"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "nome": { "type": "string", "minLength": 1 },
+              "tabela_ou_sistema": { "type": "string", "minLength": 1 },
+              "arquivos_csv": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          }
+        },
+        "escopo": {
+          "type": "object",
+          "required": ["procedimentos_sigtap", "questoes_abertas", "ano_parcial"],
+          "properties": {
+            "procedimentos_sigtap": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[0-9]{10}$" }, "uniqueItems": true },
+            "questoes_abertas": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+            "ano_parcial": { "type": "integer", "const": 2026 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Nacional": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "series", "achados"],
+      "properties": {
+        "tipo_documento": { "const": "nacional" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "series": {
+          "type": "object",
+          "required": ["g1_valor_anual", "g2_medias_periodo", "g3_quantidade_mensal"],
+          "properties": {
+            "g1_valor_anual": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/PontoMonetario" } },
+            "g2_medias_periodo": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/PontoComparativo" } },
+            "g3_quantidade_mensal": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/PontoSerie" } },
+            "g3_media_movel_12m": { "type": "array", "items": { "$ref": "#/$defs/PontoSerie" } },
+            "g3_tendencia": { "type": "array", "items": { "$ref": "#/$defs/PontoSerie" } }
+          },
+          "additionalProperties": false
+        },
+        "achados": { "type": "array", "items": { "$ref": "#/$defs/Achado" } }
+      },
+      "additionalProperties": false
+    },
+    "UFResumo": {
+      "type": "object",
+      "required": ["sigla", "nome", "rota"],
+      "properties": {
+        "sigla": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "nome": { "type": "string", "minLength": 1 },
+        "rota": { "type": "string", "pattern": "^/evidencias/territorio/[a-z]{2}/$" }
+      },
+      "additionalProperties": false
+    },
+    "PontoMapaUF": {
+      "type": "object",
+      "required": ["periodo", "uf", "quantidade", "taxa_100_mil"],
+      "properties": {
+        "periodo": { "type": "string", "pattern": "^[0-9]{4}$" },
+        "uf": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "quantidade": { "$ref": "#/$defs/PontoSerie" },
+        "taxa_100_mil": { "$ref": "#/$defs/PontoTaxa" }
+      },
+      "additionalProperties": false
+    },
+    "TerritorioIndice": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "ano_corrente", "ufs", "mapa_por_ano", "metadados_mapa", "achados"],
+      "properties": {
+        "tipo_documento": { "const": "territorio_indice" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "ano_corrente": { "type": "integer", "minimum": 2015, "maximum": 2025 },
+        "ufs": { "type": "array", "minItems": 27, "maxItems": 27, "items": { "$ref": "#/$defs/UFResumo" } },
+        "mapa_por_ano": { "type": "array", "minItems": 27, "items": { "$ref": "#/$defs/PontoMapaUF" } },
+        "metadados_mapa": {
+          "type": "object",
+          "required": ["geometria", "classes_maximas", "origem"],
+          "properties": {
+            "geometria": { "type": "string", "minLength": 1 },
+            "classes_maximas": { "type": "integer", "minimum": 2, "maximum": 7 },
+            "origem": { "$ref": "#/$defs/Origem" }
+          },
+          "additionalProperties": false
+        },
+        "achados": { "type": "array", "items": { "$ref": "#/$defs/Achado" } }
+      },
+      "additionalProperties": false
+    },
+    "PontoMunicipio": {
+      "type": "object",
+      "required": ["periodo", "cod_ibge", "nome", "quantidade", "taxa_100_mil", "valor_real_por_habitante"],
+      "properties": {
+        "periodo": { "type": "string", "pattern": "^[0-9]{4}$" },
+        "cod_ibge": { "type": "string", "pattern": "^[0-9]{7}$" },
+        "nome": { "type": "string", "minLength": 1 },
+        "quantidade": { "$ref": "#/$defs/PontoSerie" },
+        "taxa_100_mil": { "$ref": "#/$defs/PontoTaxa" },
+        "valor_real_por_habitante": { "$ref": "#/$defs/PontoTaxa" }
+      },
+      "additionalProperties": false
+    },
+    "TerritorioUF": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "uf", "serie_valor_anual", "municipios_por_ano", "achados"],
+      "properties": {
+        "tipo_documento": { "const": "territorio_uf" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "uf": {
+          "type": "object",
+          "required": ["sigla", "nome"],
+          "properties": {
+            "sigla": { "type": "string", "pattern": "^[A-Z]{2}$" },
+            "nome": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "serie_valor_anual": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/PontoMonetario" } },
+        "municipios_por_ano": { "type": "array", "items": { "$ref": "#/$defs/PontoMunicipio" } },
+        "achados": { "type": "array", "items": { "$ref": "#/$defs/Achado" } }
+      },
+      "additionalProperties": false
+    },
+    "Trajetoria": {
+      "type": "object",
+      "required": ["categoria", "municipios"],
+      "properties": {
+        "categoria": { "enum": ["queda", "crescimento", "estavel", "novo_registro", "sem_registro_final", "excluido"] },
+        "municipios": { "$ref": "#/$defs/MedidaEscalar" }
+      },
+      "additionalProperties": false
+    },
+    "EstatisticaTaxa": {
+      "type": "object",
+      "required": ["chave", "periodo", "valor", "estado", "unidade", "origem", "procedencia_denominadores"],
+      "properties": {
+        "chave": { "enum": ["p25", "mediana", "p75", "maximo", "acima_3x_mediana"] },
+        "periodo": { "type": "string", "pattern": "^[0-9]{4}$" },
+        "valor": { "type": "number" },
+        "estado": { "$ref": "#/$defs/Estado" },
+        "unidade": { "type": "string", "minLength": 1 },
+        "origem": { "$ref": "#/$defs/Origem" },
+        "procedencia_denominadores": {
+          "type": "object",
+          "required": ["fonte", "regra", "origem"],
+          "properties": {
+            "fonte": { "type": "string", "minLength": 1 },
+            "regra": { "type": "string", "minLength": 1 },
+            "origem": { "$ref": "#/$defs/Origem" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Distribuicao": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "periodos", "trajetorias", "estatisticas_taxa", "achados"],
+      "properties": {
+        "tipo_documento": { "const": "territorio_distribuicao" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "periodos": {
+          "type": "object",
+          "required": ["inicio", "fim"],
+          "properties": {
+            "inicio": { "type": "integer", "const": 2015 },
+            "fim": { "type": "integer", "const": 2025 }
+          },
+          "additionalProperties": false
+        },
+        "trajetorias": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/Trajetoria" } },
+        "estatisticas_taxa": { "type": "array", "items": { "$ref": "#/$defs/EstatisticaTaxa" } },
+        "achados": { "type": "array", "items": { "$ref": "#/$defs/Achado" } }
+      },
+      "additionalProperties": false
+    },
+    "MetricasModelo": {
+      "type": "object",
+      "required": ["mape_medio", "mape_mediano", "mase", "vies"],
+      "properties": {
+        "mape_medio": { "$ref": "#/$defs/MedidaEscalar" },
+        "mape_mediano": { "$ref": "#/$defs/MedidaEscalar" },
+        "mase": { "$ref": "#/$defs/MedidaEscalar" },
+        "vies": { "$ref": "#/$defs/MedidaEscalar" }
+      },
+      "additionalProperties": false
+    },
+    "ComparacaoModelo": {
+      "type": "object",
+      "required": ["modelo", "alvo", "janelas", "metricas"],
+      "properties": {
+        "modelo": { "type": "string", "minLength": 1 },
+        "alvo": { "enum": ["valor_nominal", "valor_real"] },
+        "janelas": { "type": "integer", "minimum": 1 },
+        "metricas": { "$ref": "#/$defs/MetricasModelo" }
+      },
+      "additionalProperties": false
+    },
+    "ViesHorizonte": {
+      "allOf": [
+        { "$ref": "#/$defs/PontoSerie" },
+        {
+          "type": "object",
+          "required": ["modelo", "alvo", "horizonte_meses"],
+          "properties": {
+            "modelo": { "type": "string", "minLength": 1 },
+            "alvo": { "enum": ["valor_nominal", "valor_real"] },
+            "horizonte_meses": { "type": "integer", "minimum": 1, "maximum": 12 }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "PontoPrevisao": {
+      "type": "object",
+      "required": ["periodo", "modelo", "central", "limite_inferior_95", "limite_superior_95"],
+      "properties": {
+        "periodo": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+        "modelo": { "type": "string", "minLength": 1 },
+        "central": { "$ref": "#/$defs/PontoSerie" },
+        "limite_inferior_95": { "$ref": "#/$defs/PontoSerie" },
+        "limite_superior_95": { "$ref": "#/$defs/PontoSerie" }
+      },
+      "additionalProperties": false
+    },
+    "Modelo": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "protocolo", "comparacao_modelos", "vies_por_horizonte", "achados"],
+      "properties": {
+        "tipo_documento": { "const": "modelo" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "protocolo": {
+          "type": "object",
+          "required": ["frequencia", "horizonte_meses", "baseline", "origem_previsao", "meses_provisorios_na_origem"],
+          "properties": {
+            "frequencia": { "const": "mensal" },
+            "horizonte_meses": { "type": "integer", "const": 12 },
+            "baseline": { "const": "sazonal_ingenuo" },
+            "origem_previsao": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+            "meses_provisorios_na_origem": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        "comparacao_modelos": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/ComparacaoModelo" } },
+        "vies_por_horizonte": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ViesHorizonte" } },
+        "previsao_12m": { "type": "array", "minItems": 12, "maxItems": 12, "items": { "$ref": "#/$defs/PontoPrevisao" } },
+        "achados": { "type": "array", "items": { "$ref": "#/$defs/Achado" } }
+      },
+      "additionalProperties": false
+    },
+    "TermoGlossario": {
+      "type": "object",
+      "required": ["termo", "slug", "definicao", "fonte", "uso_na_interface", "obs"],
+      "properties": {
+        "termo": { "type": "string", "minLength": 1 },
+        "slug": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "definicao": { "type": "string", "minLength": 1 },
+        "fonte": { "type": "string", "minLength": 1 },
+        "uso_na_interface": { "type": "string", "minLength": 1 },
+        "obs": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "Glossario": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "versao", "data", "fonte", "termos"],
+      "properties": {
+        "tipo_documento": { "const": "glossario" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "versao": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "data": { "type": "string", "format": "date" },
+        "fonte": { "type": "string", "minLength": 1 },
+        "termos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/TermoGlossario" } }
+      },
+      "additionalProperties": false
+    },
+    "Ressalva": {
+      "type": "object",
+      "required": ["id", "texto", "fonte", "contexto", "obrigatoria"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^r\\.[a-z0-9_]+$" },
+        "texto": { "type": "string", "minLength": 1 },
+        "fonte": { "type": "string", "minLength": 1 },
+        "contexto": { "type": "string", "minLength": 1 },
+        "obrigatoria": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "Ressalvas": {
+      "type": "object",
+      "required": ["tipo_documento", "metadados", "versao", "data", "fonte", "ressalvas"],
+      "properties": {
+        "tipo_documento": { "const": "ressalvas" },
+        "metadados": { "$ref": "#/$defs/MetadadosComuns" },
+        "versao": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "data": { "type": "string", "format": "date" },
+        "fonte": { "type": "string", "minLength": 1 },
+        "ressalvas": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/Ressalva" } }
+      },
+      "additionalProperties": false
+    }
+  }
+}

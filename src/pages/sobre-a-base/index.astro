@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ptInt, readDossie } from "../../lib/dossie";
+const manifesto = readDossie("manifesto.json");
+const glossario = readDossie("glossario.json");
+const ressalvas = readDossie("ressalvas.json");
+---
+<BaseLayout title="Sobre a base">
+  <p class="eyebrow">Método</p><h1 class="claim">Uma base pública, com <em>limites declarados</em>.</h1><p class="standfirst">Este é o produto tecnológico de um trabalho de conclusão de curso. DATASUS e IBGE são fontes; não são identidade visual, autoria nem chancela.</p><p class="guard">{ressalvas.ressalvas.find((r:any)=>r.id==="r.procedimento_nao_pessoa").texto}</p>
+  <div class="scope"><section><h2>Cobertura</h2><ul><li>{manifesto.cobertura.temporal}</li><li>{manifesto.cobertura.territorial}</li><li>{manifesto.cobertura.unidade_observacao}</li></ul></section><section><h2>Fontes</h2><ul>{manifesto.fontes.map((fonte:any)=><li>{fonte.nome} · {fonte.tabela_ou_sistema}</li>)}</ul></section></div>
+  <h2 class="sect">Questões de escopo abertas</h2><ul class="method-list">{manifesto.escopo.questoes_abertas.map((questao:string)=><li>{questao}</li>)}</ul>
+  <h2 class="sect">Glossário canônico</h2><div class="weaks">{glossario.termos.map((item:any)=><details><summary>{item.uso_na_interface}</summary><p>{item.definicao}</p><p class="source-line">Fonte interna: {item.fonte}</p></details>)}</div>
+  <h2 class="sect">Ressalvas obrigatórias</h2><div class="weaks">{ressalvas.ressalvas.map((item:any)=><details><summary>{item.id}</summary><p>{item.texto}</p><p class="source-line">Uso: {item.contexto}</p></details>)}</div>
+  <h2 class="sect">Arquivos e integridade</h2><p class="calc">O manifesto registra <b>{ptInt(manifesto.extracao.arquivos.length)} arquivos de origem</b>, cada um com SHA-256. O dossiê segue JSON Schema Draft 2020-12 e é validado antes da publicação.</p><details class="twin"><summary>Inventário de arquivos de origem</summary><div class="table-wrap"><table><thead><tr><th scope="col">Arquivo</th><th scope="col">SHA-256</th></tr></thead><tbody>{manifesto.extracao.arquivos.map((item:any)=><tr><th scope="row">{item.caminho}</th><td><code>{item.sha256}</code></td></tr>)}</tbody></table></div></details>
+  <div class="next"><a href="/assistente/"><span class="q">Perguntar ao assistente sobre as evidências</span><span class="path">/assistente/</span></a></div>
+</BaseLayout>

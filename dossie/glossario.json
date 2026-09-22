@@ -1,0 +1,85 @@
+{
+  "tipo_documento": "glossario",
+  "metadados": {
+    "gerado_em": "2026-09-16T18:30:00-03:00",
+    "vintage": "2026-09-16",
+    "schema_version": "1.0.0"
+  },
+  "versao": "2.1.0",
+  "data": "2026-09-16",
+  "fonte": "AI-Vault/01-PROJETOS/DialisaSUS/TEXTO-GERAL-DO-PROJETO.md + docs/PLANO-V3-CONCEITO-C.md §8",
+  "termos": [
+    {
+      "termo": "procedimento aprovado",
+      "slug": "procedimento_aprovado",
+      "definicao": "Registro de um procedimento de diálise aprovado pelo SUS, contabilizado no SIA/SUS via TabNet/DATASUS. A unidade de análise é o procedimento aprovado, não o paciente. Uma pessoa em hemodiálise pode realizar várias sessões, então não é correto converter procedimentos em indivíduos.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Unidade de análise'",
+      "uso_na_interface": "procedimento aprovado",
+      "obs": "O recorte contempla um conjunto de procedimentos de diálise aprovados (listados na terceira linha de cabeçalho de cada extração nacional). Não inclui DPAC/DPA (fora do recorte). Inclui CICLODIALISE (provável falso positivo — prefixo cirúrgico, possivelmente capturado por busca textual). A quantidade exata e os códigos estão em RECORTE-SIGTAP.md."
+    },
+    {
+      "termo": "valor aprovado",
+      "slug": "valor_aprovado",
+      "definicao": "Valor monetário em reais aprovado pelo SUS para um procedimento de diálise. A base contém valor aprovado, quantidade aprovada e custo médio por procedimento.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Dados atualmente disponíveis'",
+      "uso_na_interface": "valor aprovado",
+      "obs": "Para comparações temporais, o valor aprovado nominal pode ser corrigido pelo IPCA (base: último mês da série). Os valores consolidados estão em nacional.json."
+    },
+    {
+      "termo": "competência",
+      "slug": "competencia",
+      "definicao": "Mês e ano de referência do atendimento, no formato 'Ano/m'. A competência define o período ao qual o procedimento é atribuído.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Dados atualmente disponíveis'",
+      "uso_na_interface": "competência",
+      "obs": "No TabNet, a competência aparece como coluna 'Ano/m'. A série é contínua do início ao fim da cobertura. Meses provisórios (atualização bimestral mais recente) são subestimados e nunca corrigidos automaticamente."
+    },
+    {
+      "termo": "sem registro no recorte",
+      "slug": "sem_registro",
+      "definicao": "Ausência de registro de um município na base territorial para um determinado período. O TabNet usa o traço '-' para indicar ausência de registro. Não é zero observado. Não entra em cálculo de variação percentual.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Dados atualmente disponíveis'; PLANO-V3-CONCEITO-C.md §3.2",
+      "uso_na_interface": "sem registro no recorte",
+      "obs": "A expressão na interface é SEMPRE 'sem registro no recorte' — nunca 'zero', 'fechou', 'encerrou' ou 'sem serviço'. Três estados são distintos: sem registro (traço do TabNet), zero observado e período ausente da extração. Exemplo documentado: PARNAMIRIM tem traço por vários anos e reaparece com volume consolidado — ver handoff para decomposição."
+    },
+    {
+      "termo": "dado provisório",
+      "slug": "dado_provisorio",
+      "definicao": "Dado medido mas que tende a ser revisto na próxima extração do TabNet. As competências mais recentes da atualização bimestral vêm com menos ciclos de processamento acumulados e são sistematicamente subestimadas.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Previsão'; PLANO-V3-CONCEITO-C.md §3.2",
+      "uso_na_interface": "dado provisório",
+      "obs": "Marcados com hachura e marca no eixo. Nunca corrigidos automaticamente. A ressalva de subestimação acompanha sempre o dado provisório."
+    },
+    {
+      "termo": "estimativa",
+      "slug": "estimativa",
+      "definicao": "Dado produzido por modelo estatístico ou interpolação, não medido diretamente no SIA/SUS. Inclui projeções futuras e interpolações de dados auxiliares (como população em anos sem publicação do IBGE).",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Previsão' e § 'Novas bases recomendadas'; PLANO-V3-CONCEITO-C.md §3.2",
+      "uso_na_interface": "estimativa",
+      "obs": "Na interface, séries estimadas aparecem com tracejado (exclusivo deste estado). A faixa de confiança é calculada a partir dos erros do backtesting. É uma previsão exploratória, não uma determinação exata."
+    },
+    {
+      "termo": "taxa por cem mil habitantes",
+      "slug": "taxa_por_100_mil_habitantes",
+      "definicao": "Quantidade de procedimentos aprovados dividida pela população do IBGE, convertida para taxa por cem mil habitantes. População: estimativas anuais do IBGE, censo demográfico e interpolação geométrica para anos sem estimativa municipal.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Novas bases recomendadas'; CONTEXTO.md § 'População IBGE e IPCA já integrados'",
+      "uso_na_interface": "taxa por 100 mil hab.",
+      "obs": "O denominador (população) muda de base ao longo da série, causando artefatos em pontos de quebra. Além disso, o dado é por local de atendimento, não residência: polos regionais têm taxa inflada por atender pessoas de outros municípios."
+    },
+    {
+      "termo": "valor real (IPCA)",
+      "slug": "valor_real",
+      "definicao": "Valor aprovado corrigido pelo Índice Nacional de Preços ao Consumidor Amplo (IPCA), com base em mês de referência fixo. Permite comparar poder de compra ao longo do tempo, descontando a inflação.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Novas bases recomendadas'; CONTEXTO.md § 'IPCA com base em jun/2026'",
+      "uso_na_interface": "valor real",
+      "obs": "O IPCA é obtido do SIDRA (série de referência). Séries mensais usam o índice do mês; base territorial anual usa a média anual. valor real = nominal × fator_correcao. valores consolidados em nacional.json."
+    },
+    {
+      "termo": "local de atendimento",
+      "slug": "local_de_atendimento",
+      "definicao": "O local onde o procedimento de diálise foi realizado e registrado no SIA/SUS, e não o município de residência do paciente. Esta distinção está declarada na primeira linha de toda extração nacional do TabNet.",
+      "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Dados atualmente disponíveis'; CONTEXTO.md § 'Território é por local de ATENDIMENTO'",
+      "uso_na_interface": "local de atendimento",
+      "obs": "Consequência prática: polos regionais apresentam taxa por habitante elevada por atender pessoas de outros municípios. A taxa por cem mil habitantes não reflete prevalência local, mas volume de atendimento. Essa é ressalva obrigatória na UI."
+    }
+  ]
+}

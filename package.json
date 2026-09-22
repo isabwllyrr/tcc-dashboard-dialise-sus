@@ -1,0 +1,45 @@
+{
+  "name": "dialisasus",
+  "version": "1.0.0",
+  "description": "Este repositorio reune os arquivos do TCC sobre analise dos procedimentos de dialise aprovados no SUS, com foco em evolucao temporal, distribuicao territorial, impacto pre e pos-pandemia e previsao exploratoria para apoio a gestao em saude.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "check:dossie": "python scripts/validar_schema_dossie.py",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isabwllyrr/tcc-dashboard-dialise-sus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/isabwllyrr/tcc-dashboard-dialise-sus/issues"
+  },
+  "homepage": "https://github.com/isabwllyrr/tcc-dashboard-dialise-sus#readme",
+  "dependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@fontsource/archivo": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/newsreader": "^5.3.0",
+    "astro": "7.3.2",
+    "playwright": "^1.63.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "4.2.1",
+    "@gltf-transform/extensions": "4.2.1",
+    "@gltf-transform/functions": "4.2.1",
+    "meshoptimizer": "0.22.0",
+    "sharp": "0.35.4",
+    "three": "0.180.0"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "note": "Testes funcionais com relógio rAF injetado; estes valores NÃO são benchmarks de FPS.",
+  "singleSpike": {
+    "windows": [
+      {
+        "frames": 90,
+        "fps": 15,
+        "dpr": 1,
+        "at": "2026-09-18T18:17:49.004Z"
+      }
+    ],
+    "mode": "interactive",
+    "assetLoaded": true,
+    "paintedPixels": 30391,
+    "renderCount": 93
+  },
+  "reduced": {
+    "windows": [
+      {
+        "frames": 90,
+        "fps": 15,
+        "dpr": 1,
+        "at": "2026-09-18T18:17:49.004Z"
+      },
+      {
+        "frames": 90,
+        "fps": 12.6,
+        "dpr": 1,
+        "at": "2026-09-18T18:17:50.603Z"
+      },
+      {
+        "frames": 90,
+        "fps": 12.5,
+        "dpr": 1,
+        "at": "2026-09-18T18:17:52.103Z"
+      }
+    ],
+    "mode": "reduced-pixels-fixed-view",
+    "assetLoaded": true,
+    "paintedPixels": 30391,
+    "renderCount": 275
+  },
+  "static": {
+    "windows": [
+      {
+        "frames": 90,
+        "fps": 15,
+        "dpr": 1,
+        "at": "2026-09-18T18:17:49.004Z"
+      },
+      {
+        "frames": 90,
+        "fps": 12.6,
+        "dpr": 1,
+        "at": "2026-09-18T18:17:50.603Z"
+      },
+      {
+        "frames": 90,
+        "fps": 12.5,
+        "dpr": 1,
+        "at": "2026-09-18T18:17:52.103Z"
+      },
+      {
+        "frames": 90,
+        "fps": 12.5,
+        "dpr": 0.75,
+        "at": "2026-09-18T18:17:53.604Z"
+      },
+      {
+        "frames": 90,
+        "fps": 12.5,
+        "dpr": 0.75,
+        "at": "2026-09-18T18:17:55.103Z"
+      },
+      {
+        "frames": 90,
+        "fps": 12.5,
+        "dpr": 0.75,
+        "at": "2026-09-18T18:17:56.603Z"
+      }
+    ],
+    "mode": "static-fallback",
+    "assetLoaded": true,
+    "paintedPixels": 30391,
+    "renderCount": 545
+  },
+  "staticStatesReachable": true,
+  "realVisibilityState": "visible",
+  "hiddenTest": "getter hidden injetado: headless não ocultou a aba real",
+  "hiddenFrames": 0,
+  "contextReleased": true,
+  "noWebGL": true
+}
