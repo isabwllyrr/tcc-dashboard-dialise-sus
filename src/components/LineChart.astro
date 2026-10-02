@@ -2,8 +2,8 @@
 import { pointSegments } from "../lib/dossie";
 
 interface Series { label: string; className: string; values: number[]; }
-interface Props { labels: string[]; series: Series[]; ariaLabel: string; }
-const { labels, series, ariaLabel } = Astro.props;
+interface Props { labels: string[]; series: Series[]; ariaLabel: string; valueFormat?: "currency" | "integer" | "percent" | "decimal"; }
+const { labels, series, ariaLabel, valueFormat = "decimal" } = Astro.props;
 const all = series.flatMap((item) => item.values.filter(Number.isFinite));
 const globalMin = Math.min(...all);
 const globalMax = Math.max(...all);
@@ -20,17 +20,37 @@ const tickIndexes = new Set(Array.from({ length: Math.min(6, labels.length) }, (
   Math.round(index * ((labels.length - 1) / Math.max(1, Math.min(6, labels.length) - 1)))
 ));
 const ticks = labels.map((label, index) => ({ label, index })).filter(({ index }) => tickIndexes.has(index));
+const xFor = (index: number) => 70 + index * (846 / Math.max(1, labels.length - 1));
+const yFor = (value: number) => 26 + (globalMax - value) * (316 / (globalMax - globalMin || 1));
+const hitWidth = 846 / Math.max(1, labels.length - 1);
+const payload = JSON.stringify({
+  labels,
+  series: series.map(({ label, className, values }, index) => ({ label, className, values, index })),
+  valueFormat,
+});
 ---
-<svg class="fig" viewBox="0 0 940 390" role="img" aria-label={ariaLabel}>
-  {[0, 1, 2, 3, 4].map((step) => {
-    const y = 26 + step * 79;
-    return <line class="grid" x1="70" x2="916" y1={y} y2={y} />;
-  })}
-  {ticks.map(({ label, index }) => {
-    const x = 70 + index * (846 / Math.max(1, labels.length - 1));
-    return <text class="axis" x={x} y="374" text-anchor="middle">{label}</text>;
-  })}
-  {normalized.map((item) => item.segments.map((points) =>
-    <polyline class={`series ${item.className}`} points={points} />
-  ))}
-</svg>
+<div class="interactive-chart" data-chart={payload} data-chart-kind="line">
+  <div class="chart-series-controls" aria-label="Séries visíveis">
+    {series.map((item, index) => <button type="button" class="chart-series-toggle" data-series-toggle={index} aria-pressed="true"><i class={item.className}></i>{item.label}</button>)}
+  </div>
+  <svg class="fig" viewBox="0 0 940 390" role="img" aria-label={ariaLabel}>
+    {[0, 1, 2, 3, 4].map((step) => {
+      const y = 26 + step * 79;
+      return <line class="grid" x1="70" x2="916" y1={y} y2={y} />;
+    })}
+    {ticks.map(({ label, index }) => <text class="axis" x={xFor(index)} y="374" text-anchor="middle">{label}</text>)}
+    {normalized.map((item, seriesIndex) => item.segments.map((points) =>
+      <polyline class={`series ${item.className}`} data-series-index={seriesIndex} points={points} />
+    ))}
+    {labels.map((label, index) => {
+      const x = xFor(index);
+      const readable = series.filter((item) => Number.isFinite(item.values[index])).map((item) => `${item.label}: ${item.values[index]}`).join(", ");
+      return <g class="chart-inspector" data-chart-index={index} data-chart-x={x} tabindex={index === 0 ? "0" : "-1"} aria-label={`${label}. ${readable}`}>
+        <rect class="chart-hit" x={Math.max(70, x - hitWidth / 2)} y="26" width={Math.min(hitWidth, 916 - Math.max(70, x - hitWidth / 2))} height="316" />
+        <line class="chart-crosshair" x1={x} x2={x} y1="26" y2="342" />
+        {series.map((item, seriesIndex) => Number.isFinite(item.values[index]) ? <circle class={`chart-focus-dot ${item.className}`} data-series-index={seriesIndex} cx={x} cy={yFor(item.values[index])} r="5" /> : null)}
+      </g>;
+    })}
+  </svg>
+  <div class="chart-tooltip" role="status" aria-live="polite" hidden></div>
+</div>

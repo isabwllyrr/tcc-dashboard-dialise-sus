@@ -54,15 +54,14 @@ const extractionLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", year: 
       <header class="head">
         <div class="head-row">
           <span class="mark">Dialisa<i>SUS</i></span>
-          <span class="stamp">produto acadêmico de TCC · SIA/SUS via TabNet</span>
+          <span class="stamp">inteligência para gestão · SIA/SUS + IBGE</span>
         </div>
         <nav aria-label="Rotas">
-          <a href="/" aria-current={isHome ? "page" : undefined}>Início</a>
-          <a href="/evidencias/valor/" aria-current={isValor ? "page" : undefined}>Valor</a>
+          <a href="/" aria-current={isHome ? "page" : undefined}>Visão geral</a>
+          <a href="/evidencias/valor/" aria-current={isValor ? "page" : undefined}>Custos</a>
           <a href="/evidencias/territorio/" aria-current={isTerritorio ? "page" : undefined}>Território</a>
-          <a href="/evidencias/contagem/" aria-current={isContagem ? "page" : undefined}>Contagem</a>
+          <a href="/evidencias/contagem/" aria-current={isContagem ? "page" : undefined}>Produção</a>
           <a href="/evidencias/modelo/" aria-current={isModelo ? "page" : undefined}>Previsão</a>
-          <a href="/sobre-a-base/" aria-current={isBase ? "page" : undefined}>Sobre a base</a>
           <a href="/assistente/" aria-current={isAssistant ? "page" : undefined}>Assistente</a>
         </nav>
       </header>
@@ -71,9 +70,10 @@ const extractionLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", year: 
       </main>
       <footer class="colophon">
         <p><b>DialisaSUS é um produto acadêmico de TCC.</b> Ministério da Saúde, DATASUS e IBGE são fontes; não chancelam esta publicação.</p>
-        <p>Dados por local de atendimento. Extração registrada em {extractionLabel}.</p>
+        <p>Dados por local de atendimento. Extração registrada em {extractionLabel}. <a href="/sobre-a-base/" aria-current={isBase ? "page" : undefined}>Metodologia e fontes</a>.</p>
       </footer>
     </div>
+    <script src="/assets/charts.js" defer></script>
     <slot name="scripts" />
   </body>
 </html>

@@ -1,59 +1,67 @@
 ---
-interface ForecastPoint {
-  periodo: string;
-  central: { valor: number };
-  limite_inferior_95: { valor: number };
-  limite_superior_95: { valor: number };
-}
+interface ForecastPoint { periodo: string; central: { valor: number }; limite_inferior_95: { valor: number }; limite_superior_95: { valor: number }; }
+interface HistoryPoint { periodo: string; valor: number; provisorio?: boolean; }
+interface Props { points: ForecastPoint[]; history?: HistoryPoint[]; ariaLabel: string; }
 
-interface Props {
-  points: ForecastPoint[];
-  ariaLabel: string;
-}
-
-const { points, ariaLabel } = Astro.props;
-const width = 940;
-const height = 430;
-const left = 86;
-const right = 24;
-const top = 36;
-const bottom = 62;
+const { points, history = [], ariaLabel } = Astro.props;
+const width = 1040;
+const height = 460;
+const left = 92;
+const right = 28;
+const top = 38;
+const bottom = 68;
 const plotWidth = width - left - right;
 const plotHeight = height - top - bottom;
-const values = points.flatMap((point) => [point.limite_inferior_95.valor, point.limite_superior_95.valor]);
+const timelineLength = history.length + points.length;
+const values = [...history.map((point) => point.valor), ...points.flatMap((point) => [point.limite_inferior_95.valor, point.limite_superior_95.valor])];
 const rawMin = Math.min(...values);
 const rawMax = Math.max(...values);
 const padding = (rawMax - rawMin) * 0.08;
 const min = rawMin - padding;
 const max = rawMax + padding;
-const x = (index: number) => left + index * (plotWidth / Math.max(1, points.length - 1));
+const x = (index: number) => left + index * (plotWidth / Math.max(1, timelineLength - 1));
 const y = (value: number) => top + ((max - value) / (max - min || 1)) * plotHeight;
-const upper = points.map((point, index) => `${x(index).toFixed(1)},${y(point.limite_superior_95.valor).toFixed(1)}`);
-const lower = points.map((point, index) => `${x(index).toFixed(1)},${y(point.limite_inferior_95.valor).toFixed(1)}`).reverse();
-const central = points.map((point, index) => `${x(index).toFixed(1)},${y(point.central.valor).toFixed(1)}`).join(" ");
+const forecastOffset = history.length;
+const upper = points.map((point, index) => `${x(forecastOffset + index).toFixed(1)},${y(point.limite_superior_95.valor).toFixed(1)}`);
+const lower = points.map((point, index) => `${x(forecastOffset + index).toFixed(1)},${y(point.limite_inferior_95.valor).toFixed(1)}`).reverse();
+const historical = history.map((point, index) => `${x(index).toFixed(1)},${y(point.valor).toFixed(1)}`).join(" ");
+const forecastLinePoints = history.length ? [{ central: { valor: history.at(-1)!.valor } }, ...points] : points;
+const forecastLine = forecastLinePoints.map((point: any, index) => `${x(forecastOffset - (history.length ? 1 : 0) + index).toFixed(1)},${y(point.central.valor).toFixed(1)}`).join(" ");
 const compactMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", notation: "compact", maximumFractionDigits: 0 });
 const exactMoney = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-const ticks = [0, 1, 2, 3, 4].map((step) => {
-  const value = max - (step / 4) * (max - min);
-  return { value, y: top + (step / 4) * plotHeight };
-});
+const ticks = [0, 1, 2, 3, 4].map((step) => ({ value: max - (step / 4) * (max - min), y: top + (step / 4) * plotHeight }));
+const timeline = [...history.map((point) => point.periodo), ...points.map((point) => point.periodo)];
+const labelStep = Math.max(1, Math.ceil(timeline.length / 8));
+const dividerX = history.length ? (x(history.length - 1) + x(history.length)) / 2 : left;
+const entries = [
+  ...history.map((point) => ({ periodo: point.periodo, values: [{ label: point.provisorio ? "Histórico provisório" : "Histórico", value: point.valor }] })),
+  ...points.map((point) => ({ periodo: point.periodo, values: [
+    { label: "Estimativa central", value: point.central.valor },
+    { label: "Limite inferior 95%", value: point.limite_inferior_95.valor },
+    { label: "Limite superior 95%", value: point.limite_superior_95.valor },
+  ] })),
+];
+const payload = JSON.stringify({ entries, valueFormat: "currency" });
+const hitWidth = plotWidth / Math.max(1, timelineLength - 1);
 ---
+<div class="interactive-chart forecast-interactive" data-chart={payload} data-chart-kind="forecast">
 <svg class="fig forecast-figure" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={ariaLabel}>
-  {ticks.map((tick) => (
-    <g>
-      <line class="grid" x1={left} x2={width - right} y1={tick.y} y2={tick.y} />
-      <text class="axis forecast-axis" x={left - 14} y={tick.y + 4} text-anchor="end">{compactMoney.format(tick.value)}</text>
-    </g>
-  ))}
-  <polygon class="forecast-band" points={[...upper, ...lower].join(" ")} />
-  <polyline class="series forecast-line" points={central} />
-  {points.map((point, index) => (
-    <g class="forecast-point" tabindex="0">
-      <circle cx={x(index)} cy={y(point.central.valor)} r="5" />
-      <title>{point.periodo}: {exactMoney.format(point.central.valor)}; intervalo de 95% entre {exactMoney.format(point.limite_inferior_95.valor)} e {exactMoney.format(point.limite_superior_95.valor)}</title>
-    </g>
-  ))}
-  {points.map((point, index) => index % 2 === 0 || index === points.length - 1 ? (
-    <text class="axis forecast-month" x={x(index)} y={height - 24} text-anchor="middle">{point.periodo}</text>
-  ) : null)}
+  {ticks.map((tick) => <g><line class="grid" x1={left} x2={width-right} y1={tick.y} y2={tick.y}/><text class="axis forecast-axis" x={left-14} y={tick.y+4} text-anchor="end">{compactMoney.format(tick.value)}</text></g>)}
+  {history.length > 0 && <><rect class="forecast-zone" x={dividerX} y={top} width={width-right-dividerX} height={plotHeight}/><line class="forecast-divider" x1={dividerX} x2={dividerX} y1={top} y2={top+plotHeight}/><text class="phase-label" x={left+10} y={top+18}>OBSERVADO</text><text class="phase-label estimate-label" x={dividerX+12} y={top+18}>PREVISTO</text></>}
+  <polygon class="forecast-band" points={[...upper, ...lower].join(" ")}/>
+  {history.length > 0 && <polyline class="series forecast-history" points={historical}/>}<polyline class="series forecast-line" points={forecastLine}/>
+  {points.map((point, index) => <g class="forecast-point" tabindex="0"><circle cx={x(forecastOffset+index)} cy={y(point.central.valor)} r="4"/><title>{point.periodo}: {exactMoney.format(point.central.valor)}; intervalo de 95% entre {exactMoney.format(point.limite_inferior_95.valor)} e {exactMoney.format(point.limite_superior_95.valor)}</title></g>)}
+  {timeline.map((periodo, index) => index % labelStep === 0 || index === timeline.length-1 ? <text class="axis forecast-month" x={x(index)} y={height-24} text-anchor="middle">{periodo}</text> : null)}
+  {entries.map((entry, index) => {
+    const pointValue = entry.values[0].value;
+    const pointY = y(pointValue);
+    const pointX = x(index);
+    return <g class="chart-inspector" data-chart-index={index} data-chart-x={pointX} tabindex={index === 0 ? "0" : "-1"} aria-label={`${entry.periodo}. ${entry.values.map((item) => `${item.label}: ${exactMoney.format(item.value)}`).join(", ")}`}>
+      <rect class="chart-hit" x={Math.max(left, pointX-hitWidth/2)} y={top} width={Math.min(hitWidth, width-right-Math.max(left, pointX-hitWidth/2))} height={plotHeight}/>
+      <line class="chart-crosshair" x1={pointX} x2={pointX} y1={top} y2={top+plotHeight}/>
+      <circle class={index < history.length ? "chart-focus-dot observed" : "chart-focus-dot estimated"} cx={pointX} cy={pointY} r="5"/>
+    </g>;
+  })}
 </svg>
+<div class="chart-tooltip" role="status" aria-live="polite" hidden></div>
+</div>

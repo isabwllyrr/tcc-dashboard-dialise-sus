@@ -1,12 +1,15 @@
 ---
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import ForecastChart from "../../../components/ForecastChart.astro";
 import LineChart from "../../../components/LineChart.astro";
 import { labelModel, ptMoney, ptNumber, readDossie } from "../../../lib/dossie";
+
 const doc = readDossie("modelo.json");
 const nominal = doc.comparacao_modelos.filter((p: any) => p.alvo === "valor_nominal").sort((a: any,b: any) => a.metricas.mape_medio.valor-b.metricas.mape_medio.valor);
 const real = doc.comparacao_modelos.filter((p: any) => p.alvo === "valor_real").sort((a: any,b: any) => a.metricas.mape_medio.valor-b.metricas.mape_medio.valor);
-const nominalWinner = nominal[0]; const realWinner = real[0];
+const nominalWinner = nominal[0];
 const forecast = doc.previsao_12m;
 const forecastModel = forecast[0]?.modelo;
 const selectedNominal = nominal.find((item: any) => item.modelo === forecastModel);
@@ -16,46 +19,64 @@ const firstForecast = forecast[0];
 const lastForecast = forecast.at(-1);
 const averageForecast = forecast.reduce((sum: number, point: any) => sum + point.central.valor, 0) / forecast.length;
 const forecastChange = (lastForecast.central.valor / firstForecast.central.valor - 1) * 100;
+const csv = readFileSync(resolve(process.cwd(), "dados_tratados/dialise_mensal_brasil_total.csv"), "utf8").trim().split(/\r?\n/);
+const headers = csv[0].split(",");
+const indexOf = (name: string) => headers.indexOf(name);
+const history = csv.slice(1).map((line) => {
+  const cells = line.split(",");
+  return { periodo: cells[indexOf("data")].slice(0, 7), valor: Number(cells[indexOf("valor_aprovado")]), provisorio: cells[indexOf("provisorio")].toLowerCase() === "true" };
+}).slice(-24);
+const intervalAtEnd = ((lastForecast.limite_superior_95.valor - lastForecast.limite_inferior_95.valor) / lastForecast.central.valor) * 100;
+const projectedTotals = {
+  inferior: forecast.reduce((sum: number, point: any) => sum + point.limite_inferior_95.valor, 0),
+  central: forecast.reduce((sum: number, point: any) => sum + point.central.valor, 0),
+  superior: forecast.reduce((sum: number, point: any) => sum + point.limite_superior_95.valor, 0),
+};
+const previous12Total = history.slice(-12).reduce((sum: number, point: any) => sum + point.valor, 0);
+const projectedAnnualChange = (projectedTotals.central / previous12Total - 1) * 100;
 ---
 <BaseLayout title="Previsão">
-  <p class="eyebrow">Planejamento</p>
-  <h1 class="claim">Previsão de valor para os <em>próximos 12 meses</em>.</h1>
-  <p class="standfirst">Cenário nominal mensal com intervalo de 95%, iniciado em {doc.protocolo.origem_previsao}.</p>
+  <header class="forecast-command-head">
+    <div><p class="eyebrow">Planejamento</p><h1>Previsão de valor aprovado</h1><p>Histórico recente e projeção nominal para os próximos 12 meses.</p></div>
+    <div class="forecast-status"><span>Modelo em produção</span><strong>{labelModel(forecastModel)}</strong><small>origem {doc.protocolo.origem_previsao}</small></div>
+  </header>
 
-  <div class="readouts forecast-readouts">
-    <div class="readout"><p class="label">Modelo aplicado</p><p class="value model-name">{labelModel(forecastModel)}</p><p class="sub">projeção publicada</p></div>
-    <div class="readout"><p class="label">MAPE nominal</p><p class="value">{ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%</p><p class="sub">backtest temporal</p></div>
-    <div class="readout"><p class="label">Média prevista</p><p class="value">{ptMoney(averageForecast, true)}</p><p class="sub">por mês</p></div>
-    <div class="readout"><p class="label">Variação central</p><p class="value">{forecastChange >= 0 ? "+" : ""}{ptNumber(forecastChange, 2)}%</p><p class="sub">{firstForecast.periodo} a {lastForecast.periodo}</p></div>
-  </div>
+  <section class="command-kpis forecast-command-kpis" aria-label="Resumo da previsão">
+    <article class="kpi-card primary"><p>Média mensal prevista</p><strong>{ptMoney(averageForecast, true)}</strong><span>{firstForecast.periodo} a {lastForecast.periodo}</span></article>
+    <article class="kpi-card"><p>Variação central</p><strong>{forecastChange >= 0 ? "+" : ""}{ptNumber(forecastChange, 2)}%</strong><span>primeiro ao último mês</span></article>
+    <article class="kpi-card"><p>MAPE nominal</p><strong>{ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%</strong><span>{selectedNominal.janelas} janelas de backtest</span></article>
+    <article class="kpi-card"><p>Amplitude ao final</p><strong>{ptNumber(intervalAtEnd, 1)}%</strong><span>intervalo de 95% relativo à central</span></article>
+  </section>
 
-  <figure class="forecast-hero">
-    <div class="figure-head"><span class="id">PREVISÃO</span><h2 class="title">Valor aprovado mensal estimado</h2><span class="meta">faixa de 95%</span></div>
-    <div class="plot"><ForecastChart points={forecast} ariaLabel="Previsão mensal de valor aprovado com intervalo de 95 por cento" /></div>
-    <div class="forecast-legend"><span class="central">Estimativa central</span><span class="interval">Intervalo de 95%</span></div>
-    <figcaption>Valores nominais. A faixa aumenta com o horizonte porque a incerteza se acumula.</figcaption>
+  <figure class="forecast-hero forecast-combined">
+    <div class="panel-head"><div><span>Histórico + previsão</span><h2>Valor aprovado mensal</h2></div><span class="chart-meta">24 meses observados · 12 previstos</span></div>
+    <div class="plot"><ForecastChart points={forecast} history={history} ariaLabel="Histórico de 24 meses e previsão de 12 meses do valor aprovado com intervalo de 95 por cento" /></div>
+    <div class="forecast-legend"><span class="history">Histórico</span><span class="central">Estimativa central</span><span class="interval">Intervalo de 95%</span></div>
+    <figcaption>A faixa representa incerteza estatística e aumenta conforme o horizonte. Os valores não constituem orçamento autorizado.</figcaption>
   </figure>
 
-  <div class="forecast-diagnostics">
-    <figure>
-      <div class="figure-head"><span class="id">DIAGNÓSTICO</span><h2 class="title">Viés por horizonte</h2><span class="meta">{labelModel(forecastModel)} · %</span></div>
-      <div class="plot"><LineChart labels={bias.map((p:any)=>p.periodo)} series={[{label:"Viés",className:"observed",values:bias.map((p:any)=>p.valor)}]} ariaLabel={`Viés de ${labelModel(forecastModel)} por horizonte`} /></div>
-      <figcaption>Valores abaixo de zero indicam tendência de subestimação.</figcaption>
-    </figure>
-    <aside class="model-card">
-      <p class="eyebrow">Validação</p>
-      <h2>Desempenho do modelo aplicado</h2>
-      <dl><div><dt>MAPE real</dt><dd>{ptNumber(selectedReal.metricas.mape_medio.valor, 2)}%</dd></div><div><dt>MASE nominal</dt><dd>{ptNumber(selectedNominal.metricas.mase.valor, 2)}</dd></div><div><dt>Viés nominal</dt><dd>{ptNumber(selectedNominal.metricas.vies.valor, 2)}%</dd></div></dl>
-      <p>Previsão exploratória; não representa orçamento autorizado.</p>
+  <section class="scenario-strip" aria-labelledby="scenario-title">
+    <div class="scenario-intro"><span>Planejamento anual</span><h2 id="scenario-title">Faixa acumulada para 12 meses</h2><p>A comparação usa os limites mensais do intervalo de 95%; não representa três previsões independentes.</p></div>
+    <div class="scenario-values"><article><span>Limite inferior</span><strong>{ptMoney(projectedTotals.inferior, true)}</strong></article><article class="selected"><span>Estimativa central</span><strong>{ptMoney(projectedTotals.central, true)}</strong><small>{projectedAnnualChange >= 0 ? "+" : ""}{ptNumber(projectedAnnualChange, 1)}% ante os 12 meses anteriores</small></article><article><span>Limite superior</span><strong>{ptMoney(projectedTotals.superior, true)}</strong></article></div>
+  </section>
+
+  <section class="forecast-summary-grid" aria-label="Diagnóstico do modelo">
+    <aside class="panel model-health">
+      <div class="panel-head"><div><span>Qualidade</span><h2>Diagnóstico do modelo aplicado</h2></div></div>
+      <dl><div><dt>MAPE em valores reais</dt><dd>{ptNumber(selectedReal.metricas.mape_medio.valor, 2)}%</dd></div><div><dt>MASE nominal</dt><dd>{ptNumber(selectedNominal.metricas.mase.valor, 2)}</dd></div><div><dt>Viés nominal médio</dt><dd>{ptNumber(selectedNominal.metricas.vies.valor, 2)}%</dd></div></dl>
+      <p>Quanto menores MAPE e MASE, melhor o ajuste. Viés negativo indica tendência média de subestimação.</p>
     </aside>
-  </div>
+    <figure class="panel bias-panel">
+      <div class="panel-head"><div><span>Estabilidade</span><h2>Viés por horizonte</h2></div><span class="chart-meta">%</span></div>
+      <div class="plot"><LineChart labels={bias.map((p:any)=>`${p.horizonte_meses}m`)} series={[{label:"Viés",className:"estimated",values:bias.map((p:any)=>p.valor)}]} valueFormat="percent" ariaLabel={`Viés de ${labelModel(forecastModel)} por horizonte`} /></div>
+    </figure>
+  </section>
 
   <details class="model-details">
-    <summary>Comparar todos os modelos e consultar valores mensais</summary>
-    {nominalWinner.modelo !== forecastModel && <p class="model-alert">Holt–Winters apresentou o menor MAPE nominal ({ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%); a projeção publicada utiliza {labelModel(forecastModel)}.</p>}
+    <summary>Metodologia, comparação de modelos e valores mensais</summary>
+    {nominalWinner.modelo !== forecastModel && <p class="model-alert">{labelModel(nominalWinner.modelo)} apresentou o menor MAPE nominal ({ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%); a projeção publicada utiliza {labelModel(forecastModel)}.</p>}
     <div class="table-wrap"><table><thead><tr><th scope="col">Alvo</th><th scope="col">Modelo</th><th scope="col">MAPE médio</th><th scope="col">MASE</th><th scope="col">Viés</th></tr></thead><tbody>{[...nominal,...real].map((p:any)=><tr><th scope="row">{p.alvo}</th><td>{labelModel(p.modelo)}</td><td>{ptNumber(p.metricas.mape_medio.valor,2)}%</td><td>{ptNumber(p.metricas.mase.valor,2)}</td><td>{ptNumber(p.metricas.vies.valor,2)}%</td></tr>)}</tbody></table></div>
     <div class="table-wrap"><table><thead><tr><th scope="col">Mês</th><th scope="col">Central</th><th scope="col">Inferior 95%</th><th scope="col">Superior 95%</th></tr></thead><tbody>{forecast.map((p:any)=><tr><th scope="row">{p.periodo}</th><td>{ptMoney(p.central.valor)}</td><td>{ptMoney(p.limite_inferior_95.valor)}</td><td>{ptMoney(p.limite_superior_95.valor)}</td></tr>)}</tbody></table></div>
   </details>
-
-  <p class="forecast-caveat">A origem inclui competências provisórias sem correção automática. MAPE baixo não elimina viés, incerteza ou mudanças futuras no padrão da série.</p>
+  <p class="forecast-caveat">A origem inclui competências provisórias sem correção automática. Mudanças futuras no padrão da série podem reduzir o desempenho observado no backtest.</p>
 </BaseLayout>
