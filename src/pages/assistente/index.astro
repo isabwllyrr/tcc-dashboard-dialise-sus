@@ -1,17 +1,54 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Assistente">
-  <p class="eyebrow">Assistente</p><h1 class="claim">Em qual evidência encontro <em>resposta sustentada</em>?</h1><p class="standfirst">O assistente localiza indicadores já existentes no dossiê. Não cria dados, não faz diagnóstico e não substitui análise técnica.</p><p class="guard">Esta base conta procedimentos aprovados, não pessoas. Uma pessoa pode realizar vários procedimentos.</p>
-  <div class="scope"><section><h2>O que demonstra</h2><ul><li>Contexto montado no servidor a partir dos documentos canônicos.</li><li>Citação da rota dona da evidência.</li></ul></section><section class="limits"><h2>O que não faz</h2><ul><li>Não busca números na internet.</li><li>Não aceita contexto numérico enviado pelo navegador.</li><li>Não dá conselho médico.</li></ul></section></div>
-  <section class="agent-panel" aria-labelledby="agent-label"><form method="POST" action="/api/agent" class="agent-form" id="agent-form"><label for="pergunta" id="agent-label">Faça uma pergunta sobre as evidências do DialisaSUS</label><textarea id="pergunta" name="pergunta" rows="4" maxlength="500" placeholder="Ex.: Qual foi a variação real no período completo?" required></textarea><div class="form-controls"><button type="submit">Consultar assistente</button><span class="form-hint">Funciona também sem JavaScript por POST HTML.</span></div></form><div id="agent-answer" class="agent-answer" aria-live="polite" hidden></div></section>
-  <h2 class="sect">Segurança e procedência</h2><p class="calc">A função carrega o dossiê no servidor, recusa perguntas clínicas antes de chamar qualquer provedor e não devolve detalhes internos de falha. Toda resposta aponta para <code>/evidencias/valor/</code>, <code>/evidencias/contagem/</code>, <code>/evidencias/territorio/</code>, <code>/evidencias/modelo/</code> ou <code>/sobre-a-base/</code>.</p>
-  <div class="next"><a href="/"><span class="q">Voltar ao começo</span><span class="path">/</span></a></div>
-  <script>
-    const form = document.querySelector('#agent-form'); const output = document.querySelector('#agent-answer'); const button = form.querySelector('button');
-    form.addEventListener('submit', async (event) => { event.preventDefault(); button.disabled=true; output.hidden=false; output.textContent='Consultando o dossiê…';
-      try { const response=await fetch(form.action,{method:'POST',headers:{'content-type':'application/json','accept':'application/json'},body:JSON.stringify({question:new FormData(form).get('pergunta')})}); const data=await response.json(); if(!response.ok) throw new Error(data.detail||'Consulta indisponível.'); output.replaceChildren(document.createTextNode(data.answer||data.detail)); if(data.route){output.append(document.createTextNode(' ')); const link=document.createElement('a');link.href=data.route;link.textContent='Abrir evidência';output.append(link);} }
-      catch(error){output.textContent=error.message||'Consulta indisponível.';} finally {button.disabled=false;}
-    });
-  </script>
+<BaseLayout title="Assistente" description="Assistente do DialisaSUS para consultar evidências agregadas do SIA/SUS e do IBGE.">
+  <section class="assistant-intro">
+    <div>
+      <p class="eyebrow">Assistente de evidências</p>
+      <h1 class="claim">Pergunte aos <em>dados do painel</em>.</h1>
+      <p class="standfirst">Respostas curtas, baseadas no dossiê validado e acompanhadas da fonte para conferência.</p>
+    </div>
+    <dl class="assistant-status" aria-label="Escopo do assistente">
+      <div><dt>Fontes</dt><dd>SIA/SUS + IBGE</dd></div>
+      <div><dt>Cobertura</dt><dd>Dados agregados</dd></div>
+      <div><dt>Uso</dt><dd>Apoio à gestão</dd></div>
+    </dl>
+  </section>
+
+  <section class="assistant-workspace" aria-labelledby="agent-label">
+    <div class="assistant-prompts" aria-label="Perguntas sugeridas">
+      <span>Experimente</span>
+      <button type="button" class="prompt-chip" data-question="Como os valores aprovados mudaram após a pandemia?">Custos pós-pandemia</button>
+      <button type="button" class="prompt-chip" data-question="Qual é a principal cautela na comparação entre estados?">Comparação territorial</button>
+      <button type="button" class="prompt-chip" data-question="Qual modelo apresentou o menor MAPE no backtest?">Desempenho dos modelos</button>
+    </div>
+
+    <form method="POST" action="/api/agent" class="agent-form" id="agent-form">
+      <label for="pergunta" id="agent-label">Sua pergunta</label>
+      <div class="agent-composer">
+        <textarea id="pergunta" name="pergunta" rows="3" maxlength="500" placeholder="Pergunte sobre custos, produção, território ou previsão..." required></textarea>
+        <button type="submit" aria-label="Consultar assistente">
+          <span>Consultar</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+      <p class="form-hint">O assistente analisa procedimentos aprovados, não pessoas ou casos clínicos.</p>
+    </form>
+
+    <article id="agent-answer" class="agent-answer" aria-live="polite" tabindex="-1" hidden>
+      <div class="answer-head">
+        <span class="answer-status">Resposta</span>
+        <span class="answer-source" id="agent-source"></span>
+      </div>
+      <p id="agent-answer-text"></p>
+      <p class="answer-warning" id="agent-warning" hidden></p>
+      <a id="agent-route" class="answer-route" href="/sobre-a-base/">Ver evidência completa <span aria-hidden="true">↗</span></a>
+    </article>
+  </section>
+
+  <p class="assistant-note">O agente não busca dados externos nem substitui avaliação clínica. Cada resposta é limitada às evidências já publicadas no DialisaSUS.</p>
+
+  <Fragment slot="scripts">
+    <script src="/assets/assistant.js" defer></script>
+  </Fragment>
 </BaseLayout>

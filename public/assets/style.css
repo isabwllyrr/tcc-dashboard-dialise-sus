@@ -25,6 +25,26 @@ figure{margin:var(--gap) 0 0}.figure-head{display:flex;gap:14px;align-items:base
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 .territory-selector,.agent-panel{margin-top:var(--gap)}.selector{flex-wrap:wrap}button,textarea,select{font:inherit}button{min-height:44px;padding:9px 16px;border:1px solid var(--accent);background:var(--accent);color:var(--light-main);cursor:pointer}button:disabled{opacity:.6;cursor:wait}.agent-form{max-width:760px}.agent-form label{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:9px}.agent-form textarea{display:block;width:100%;resize:vertical;background:var(--bg);color:var(--ink);border:1px solid var(--rule-2);padding:12px}.form-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}.form-hint,.source-line{font:.72rem var(--mono);color:var(--ink3)}.agent-answer{max-width:760px;margin-top:20px;padding-left:16px;border-left:2px solid var(--accent);color:var(--ink2)}.agent-answer a{color:var(--link);font-weight:500}.method-list{max-width:var(--measure);color:var(--ink2)}code{white-space:normal;overflow-wrap:anywhere}
 
+/* ---------- assistente: consulta e resposta na mesma tela ---------- */
+.assistant-intro{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:56px;align-items:end}
+.assistant-intro .standfirst{max-width:620px}.assistant-status{margin:0;display:grid;gap:1px;background:var(--rule)}
+.assistant-status div{display:flex;justify-content:space-between;gap:20px;padding:11px 0;background:var(--bg)}
+.assistant-status dt{font:.68rem var(--mono);text-transform:uppercase;color:var(--ink3)}.assistant-status dd{margin:0;font-size:.82rem;color:var(--ink2);text-align:right}
+.assistant-workspace{margin-top:var(--gap);border-block:1px solid var(--rule);padding-block:28px;max-width:920px}
+.assistant-prompts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.assistant-prompts>span{font:.68rem var(--mono);text-transform:uppercase;color:var(--ink3);margin-right:4px}
+.prompt-chip{min-height:34px;padding:6px 11px;border:1px solid var(--rule-2);border-radius:999px;background:transparent;color:var(--ink2);font-size:.78rem}
+.prompt-chip:hover,.prompt-chip:focus-visible{border-color:var(--accent);color:var(--ink);background:var(--tint)}
+.assistant-workspace .agent-form{max-width:none}.assistant-workspace .agent-form label{font:.68rem var(--mono);color:var(--ink3)}
+.agent-composer{display:grid;grid-template-columns:minmax(0,1fr) auto;border:1px solid var(--rule-2);background:var(--bg);align-items:end;transition:border-color .18s ease,box-shadow .18s ease}
+.agent-composer:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}
+.agent-composer textarea{border:0;min-height:118px;padding:18px;resize:vertical;outline:0}.agent-composer button{margin:12px;display:flex;align-items:center;gap:28px;justify-content:space-between;min-width:142px}
+.assistant-workspace .form-hint{margin-top:9px}.assistant-workspace .agent-answer{max-width:none;margin-top:28px;padding:24px;border:1px solid var(--rule-2);border-left:3px solid var(--accent);background:var(--tint);color:var(--ink)}
+.answer-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:14px}.answer-status{font:.68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.answer-source{font:.68rem var(--mono);color:var(--ink3)}.agent-answer>p{max-width:70ch}.answer-warning{margin-top:12px;color:var(--ink3);font-size:.78rem}.answer-route{display:inline-flex;gap:8px;margin-top:18px;text-decoration:none;font-size:.82rem}
+.agent-answer.is-loading{opacity:.72}.assistant-note{margin-top:22px;max-width:820px;color:var(--ink3);font-size:.78rem}
+@media(max-width:760px){.assistant-intro{grid-template-columns:1fr;gap:30px}.agent-composer{grid-template-columns:1fr}.agent-composer button{margin:0 12px 12px;width:calc(100% - 24px)}.assistant-prompts>span{width:100%}}
+
 /* Enquadramento estático do módulo renal após escolha explícita. */
 .fallback[data-static-view]{grid-template-columns:1fr}.fallback[data-static-view] img{max-height:340px;object-fit:contain}
 

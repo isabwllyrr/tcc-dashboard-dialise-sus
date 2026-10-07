@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 
 const APP_NAME = "Agente DialisaSUS";
-const APP_VERSION = "3.0.0";
-const DEFAULT_MODEL = "gemini-3.6-flash";
+const APP_VERSION = "3.1.0";
+const DEFAULT_MODEL = "gemini-2.5-flash-lite";
 const MAX_QUESTION_CHARS = 500;
 const MAX_CONTEXT_CHARS = 30_000;
 const DOSSIER_ROOT = new URL("../../dossie/", import.meta.url);
@@ -25,7 +25,9 @@ const SYSTEM_INSTRUCTION = [
   "Produção por local de atendimento não é prevalência nem local de residência.",
   "2026 é parcial; maio e junho são provisórios e não foram corrigidos automaticamente.",
   "Diferencie observado, provisório e estimado. Não faça diagnóstico, prescrição ou triagem clínica.",
-  "Responda em português, de forma curta, e mencione a rota_dona fornecida.",
+  "Comece pela resposta direta e use no máximo três parágrafos curtos.",
+  "Apresente somente números presentes no CONTEXTO_JSON e explicite a cautela metodológica relevante.",
+  "Não use Markdown, títulos ou listas. Mencione a rota_dona fornecida ao final.",
 ].join("\n");
 
 let dossierCache;
@@ -104,8 +106,10 @@ export default async function handler(request){
   const context=buildServerContext(question,filters);const route=context.rota_dona;
   if(isClinicalQuestion(question)){const answer=clinicalRefusal();return parsed.html?htmlResponse(answer,"/sobre-a-base/"):jsonResponse({answer,source:"safety_rule",route:"/sobre-a-base/"});}
   const apiKey=(process.env.GEMINI_API_KEY||"").trim();let answer;let source="local_fallback";
-  if(!apiKey)answer=fallbackAnswer(context);else try{answer=await callGemini(question,serializeContext(context),apiKey,(process.env.GEMINI_MODEL||DEFAULT_MODEL).trim());source="gemini";}catch{return parsed.html?htmlResponse("O provedor está temporariamente indisponível. Consulte a evidência diretamente.",route,502):jsonResponse({detail:"Não foi possível concluir a consulta ao provedor.",route},502);}
-  return parsed.html?htmlResponse(answer,route):jsonResponse({answer,source,route});
+  let warning;
+  if(!apiKey)answer=fallbackAnswer(context);else try{answer=await callGemini(question,serializeContext(context),apiKey,(process.env.GEMINI_MODEL||DEFAULT_MODEL).trim());source="gemini";}catch{answer=fallbackAnswer(context);warning="O Gemini ficou indisponível; esta resposta foi gerada diretamente do dossiê validado.";}
+  if(!answer.includes(route))answer=`${answer} Consulte ${route}`;
+  return parsed.html?htmlResponse(answer,route):jsonResponse({answer,source,route,category:context.categoria,...(warning?{warning}:{})});
 }
 
 export const config={path:"/api/agent",method:["GET","POST"],rateLimit:{action:"rate_limit",aggregateBy:["domain","ip"],windowSize:60,windowLimit:10}};
