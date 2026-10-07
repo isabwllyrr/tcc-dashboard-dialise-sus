@@ -12,198 +12,185 @@ const modelo = readDossie("modelo.json");
 const meses = nacional.series.g3_quantidade_mensal;
 const inicio = meses[0].periodo;
 const fim = meses.at(-1).periodo;
+const lastObservedIndex = meses.findLastIndex((p: any) => p.estado === "observado");
+const observedValues = meses.map((p: any, index: number) => index <= lastObservedIndex ? p.valor : Number.NaN);
+const provisionalValues = meses.map((p: any, index: number) => index >= lastObservedIndex ? p.valor : Number.NaN);
 const provisorios = meses.filter((p: any) => p.estado === "provisorio");
 const provisionalLabel = new Intl.ListFormat("pt-BR", { style: "long", type: "conjunction" }).format(
   provisorios.map((p: any) => new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${p.periodo}-01T00:00:00Z`)))
 );
 
-const total = nacional.achados.find((a: any) => a.id === "G3.achado.total_procedimentos").valores[0].valor;
-const anual = nacional.series.g1_valor_anual;
-const nominais = anual.filter((p: any) => p.unidade === "reais_correntes");
-const valorAcumulado = nominais.reduce((sum: number, point: any) => sum + point.valor, 0);
-const variacaoReal = nacional.achados.find((a: any) => a.id === "G1.achado.variacao_real").valores[0].valor;
-const porProcedimento = nacional.achados.find((a: any) => a.id === "G2.achado.periodos").valores.find((v: any) => v.chave === "variacao_valor_real_por_procedimento").valor;
-const latest12 = meses.slice(-12);
-const previous12 = meses.slice(-24, -12);
-const latest12Total = latest12.reduce((sum: number, point: any) => sum + point.valor, 0);
-const previous12Total = previous12.reduce((sum: number, point: any) => sum + point.valor, 0);
-const latest12Change = (latest12Total / previous12Total - 1) * 100;
-const lastObservedIndex = meses.findLastIndex((p: any) => p.estado === "observado");
-const observedValues = meses.map((p: any, index: number) => index <= lastObservedIndex ? p.valor : Number.NaN);
-const provisionalValues = meses.map((p: any, index: number) => index >= lastObservedIndex ? p.valor : Number.NaN);
+const readCsv = (path: string) => {
+  const lines = readFileSync(resolve(process.cwd(), path), "utf8").trim().split(/\r?\n/);
+  const headers = lines[0].split(",");
+  return { headers, rows: lines.slice(1).map((line) => line.split(",")) };
+};
 
+const ufCsv = readCsv("dados_tratados/dialise_uf_total_anual.csv");
+const ufAt = (name: string) => ufCsv.headers.indexOf(name);
+const ufAnnualRows = ufCsv.rows.map((cells) => ({
+  uf: cells[ufAt("uf")], ano: cells[ufAt("ano")],
+  qtd_aprovada: Number(cells[ufAt("qtd_aprovada")]),
+  valor_aprovado_nominal: Number(cells[ufAt("valor_aprovado_nominal")]),
+  valor_aprovado_real: Number(cells[ufAt("valor_aprovado_real")]),
+  populacao: Number(cells[ufAt("populacao")]),
+  taxa_qtd_100k: Number(cells[ufAt("taxa_qtd_100k")]),
+  valor_real_per_capita: Number(cells[ufAt("valor_real_per_capita")]),
+}));
+const territoryYears = [...new Set(ufAnnualRows.map((row) => row.ano))];
 const currentYear = String(territorio.ano_corrente);
-const currentTerritory = territorio.mapa_por_ano.filter((p: any) => p.periodo === currentYear);
-const values = currentTerritory.map((p: any) => p.taxa_100_mil.valor).sort((a: number, b: number) => a - b);
-const thresholds = [1, 2, 3, 4, 5, 6].map((n) => values[Math.floor((values.length - 1) * n / 7)]);
+const currentTerritory = ufAnnualRows.filter((row) => row.ano === currentYear);
+const currentValues = currentTerritory.map((row) => row.taxa_qtd_100k).sort((a, b) => a - b);
+const thresholds = [1,2,3,4,5,6].map((n) => currentValues[Math.floor((currentValues.length - 1) * n / 7)]);
 const classFor = (value: number) => 1 + thresholds.filter((threshold) => value > threshold).length;
-const territoryByUf = Object.fromEntries(currentTerritory.map((p: any) => [p.uf, p]));
-const topRate = [...currentTerritory].sort((a: any, b: any) => b.taxa_100_mil.valor - a.taxa_100_mil.valor).slice(0, 5);
+const currentByUf = Object.fromEntries(currentTerritory.map((row) => [row.uf, row]));
+const topRate = [...currentTerritory].sort((a, b) => b.taxa_qtd_100k - a.taxa_qtd_100k).slice(0, 5);
 const ufMeta = Object.fromEntries(territorio.ufs.map((uf: any) => [uf.sigla, uf]));
 
-const forecast = modelo.previsao_12m;
-const forecastModel = forecast[0].modelo;
+const ibgeUf: Record<string, string> = {"11":"RO","12":"AC","13":"AM","14":"RR","15":"PA","16":"AP","17":"TO","21":"MA","22":"PI","23":"CE","24":"RN","25":"PB","26":"PE","27":"AL","28":"SE","29":"BA","31":"MG","32":"ES","33":"RJ","35":"SP","41":"PR","42":"SC","43":"RS","50":"MS","51":"MT","52":"GO","53":"DF"};
+const municipalityCsv = readCsv("dados_tratados/municipio_dialise_brasil_long.csv");
+const munAt = (name: string) => municipalityCsv.headers.indexOf(name);
+const municipalityMap = new Map<string, any>();
+for (const cells of municipalityCsv.rows) {
+  const ano = cells[munAt("ano")];
+  if (!territoryYears.includes(ano)) continue;
+  const code = cells[munAt("cod_municipio")];
+  const uf = ibgeUf[String(cells[munAt("uf_ibge")]).padStart(2, "0")];
+  if (!uf) continue;
+  if (!municipalityMap.has(code)) municipalityMap.set(code, { code, nome: cells[munAt("municipio")], uf, annual: [] });
+  municipalityMap.get(code).annual.push({
+    ano,
+    qtd_aprovada: Number(cells[munAt("qtd_aprovada")]),
+    valor_aprovado_nominal: Number(cells[munAt("valor_aprovado")]),
+    valor_aprovado_real: Number(cells[munAt("valor_aprovado_real")]),
+    populacao: Number(cells[munAt("populacao")]),
+    taxa_qtd_100k: Number(cells[munAt("qtd_por_100_mil_habitantes")]),
+    valor_real_per_capita: Number(cells[munAt("valor_por_habitante_real")]),
+  });
+}
+const municipalities = [...municipalityMap.values()].map((item) => ({ ...item, annual: item.annual.sort((a: any,b: any) => a.ano.localeCompare(b.ano)) })).sort((a,b) => a.nome.localeCompare(b.nome, "pt-BR"));
+
+const aggregate = (rows: any[]) => {
+  const qtd = rows.reduce((sum, row) => sum + row.qtd_aprovada, 0);
+  const nominal = rows.reduce((sum, row) => sum + row.valor_aprovado_nominal, 0);
+  const real = rows.reduce((sum, row) => sum + row.valor_aprovado_real, 0);
+  const pop = rows.reduce((sum, row) => sum + row.populacao, 0);
+  return { qtd_aprovada: qtd, valor_aprovado_nominal: nominal, valor_aprovado_real: real, populacao: pop, taxa_qtd_100k: qtd / pop * 100000, valor_real_per_capita: real / pop };
+};
+const initial = aggregate(currentTerritory);
+const forecastModel = modelo.previsao_12m[0].modelo;
 const selectedNominal = modelo.comparacao_modelos.find((item: any) => item.alvo === "valor_nominal" && item.modelo === forecastModel);
-const ufLines = readFileSync(resolve(process.cwd(), "dados_tratados/dialise_uf_total_anual.csv"), "utf8").trim().split(/\r?\n/);
-const ufHeaders = ufLines[0].split(",");
-const ufIndex = (name: string) => ufHeaders.indexOf(name);
-const ufAnnualRows = ufLines.slice(1).map((line) => {
-  const cells = line.split(",");
-  return {
-    uf: cells[ufIndex("uf")], ano: cells[ufIndex("ano")],
-    qtd_aprovada: Number(cells[ufIndex("qtd_aprovada")]),
-    valor_aprovado_real: Number(cells[ufIndex("valor_aprovado_real")]),
-    taxa_qtd_100k: Number(cells[ufIndex("taxa_qtd_100k")]),
-    valor_real_per_capita: Number(cells[ufIndex("valor_real_per_capita")]),
-  };
-});
-const territoryYears = [...new Set(ufAnnualRows.map((row) => row.ano))];
+const nominalWinner = modelo.comparacao_modelos.filter((item: any) => item.alvo === "valor_nominal").sort((a: any,b: any) => a.metricas.mape_medio.valor - b.metricas.mape_medio.valor)[0];
+const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, ufs: territorio.ufs, years: territoryYears }).replaceAll("<", "\\u003c");
 ---
 <BaseLayout title="Início">
-  <header class="command-head">
-    <div>
-      <p class="eyebrow">Visão nacional</p>
-      <h1>Painel de gestão da diálise no SUS</h1>
-      <p>Produção, valor, território e previsão em uma leitura integrada.</p>
+  <header class="platform-intro">
+    <div class="platform-intro-copy">
+      <p class="eyebrow">Inteligência pública em saúde renal</p>
+      <h1>DialisaSUS</h1>
+      <p class="intro-statement">Uma plataforma para compreender a produção de diálise no SUS.</p>
+      <p class="intro-detail">Integra dados do SIA/SUS e do IBGE para acompanhar procedimentos, custos, diferenças territoriais e cenários futuros em uma única leitura gerencial.</p>
+      <div class="intro-actions"><a href="#dashboard-controls">Explorar indicadores <span aria-hidden="true">↓</span></a><button class="ghost-button" type="button" id="export-dashboard">Exportar PDF</button></div>
     </div>
-    <div class="command-tools"><div class="scope-chips" aria-label="Escopo atual"><span>Brasil</span><span>{inicio} — {fim}</span><span>SIA/SUS + IBGE</span></div><button class="ghost-button" type="button" id="export-dashboard" title="Abrir a impressão para salvar o painel em PDF">Exportar PDF</button></div>
+    <div class="intro-capabilities" aria-label="Principais usos da plataforma">
+      <article><span>01</span><div><b>Monitorar</b><p>Evolução assistencial e financeira.</p></div></article>
+      <article><span>02</span><div><b>Comparar</b><p>Estados, municípios e taxas populacionais.</p></div></article>
+      <article><span>03</span><div><b>Antecipar</b><p>Tendências para apoiar o planejamento.</p></div></article>
+      <div class="intro-scope"><span id="scope-chip">Brasil</span><span id="period-chip">{currentYear}</span><span>SIA/SUS + IBGE</span></div>
+    </div>
   </header>
 
-  <section class="command-kpis" aria-label="Indicadores nacionais">
-    <article class="kpi-card primary"><p>Procedimentos acumulados</p><strong>{ptNumber(total / 1_000_000, 2)} mi</strong><span>{inicio} a {fim}</span></article>
-    <article class="kpi-card"><p>Produção em 12 meses</p><strong>{ptNumber(latest12Total / 1_000_000, 2)} mi</strong><span class={latest12Change >= 0 ? "delta up" : "delta down"}>{latest12Change >= 0 ? "+" : ""}{ptNumber(latest12Change, 2)}% ante os 12 meses anteriores</span></article>
-    <article class="kpi-card"><p>Valor nominal acumulado</p><strong>{ptMoney(valorAcumulado, true)}</strong><span>valores aprovados</span></article>
-    <article class="kpi-card"><p>Crescimento real</p><strong>{variacaoReal >= 0 ? "+" : ""}{ptNumber(variacaoReal, 2)}%</strong><span>corrigido pelo IPCA</span></article>
-  </section>
-
-  <section class="operations-grid" aria-label="Monitoramento nacional">
-    <figure class="panel trend-panel">
-      <div class="panel-head"><div><span>Produção mensal</span><h2>Trajetória nacional</h2></div><a href="/evidencias/contagem/">Abrir análise →</a></div>
-      <div class="plot"><LineChart labels={meses.map((p: any) => p.periodo)} series={[{ label: "Observado", className: "observed", values: observedValues }, { label: "Provisório", className: "provisional", values: provisionalValues }]} valueFormat="integer" ariaLabel="Evolução mensal dos procedimentos de diálise aprovados no SUS" /></div>
-      <figcaption>Competências provisórias aparecem em linha tracejada.</figcaption>
-    </figure>
-
-    <aside class="panel signal-panel" aria-labelledby="signals-title">
-      <div class="panel-head"><div><span>Leitura rápida</span><h2 id="signals-title">Sinais para acompanhamento</h2></div></div>
-      <ol class="signal-list">
-        <li><span>01</span><div><b>{topRate[0].uf} lidera a taxa estadual</b><p>{ptNumber(topRate[0].taxa_100_mil.valor, 0)} procedimentos por 100 mil em {currentYear}.</p></div></li>
-        <li><span>02</span><div><b>Valor real por procedimento</b><p>{ptNumber(porProcedimento, 2)}% na comparação pré e pós-pandemia.</p></div></li>
-        <li><span>03</span><div><b>Previsão monitorada</b><p>{labelModel(forecastModel)} com MAPE nominal de {ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%.</p></div></li>
-        <li class="warning"><span>!</span><div><b>Dados ainda provisórios</b><p>{provisionalLabel} podem sofrer revisão.</p></div></li>
-      </ol>
-    </aside>
+  <section class="dashboard-controls" id="dashboard-controls" aria-label="Controles do dashboard">
+    <div class="view-switch" role="group" aria-label="Modo de visualização">
+      <button type="button" data-dashboard-view="executive" aria-pressed="true">Executiva</button>
+      <button type="button" data-dashboard-view="analytical" aria-pressed="false">Analítica</button>
+      <button type="button" data-dashboard-view="method" aria-pressed="false">Metodológica</button>
+    </div>
+    <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="true" aria-controls="dashboard-filter-fields">Filtros</button>
+    <form class="dashboard-filter-fields" id="dashboard-filter-fields">
+      <label>Ano<select id="dashboard-year">{territoryYears.map((year) => <option value={year} selected={year === currentYear}>{year}</option>)}</select></label>
+      <label>Território<select id="dashboard-uf"><option value="BR">Brasil</option>{territorio.ufs.map((uf: any) => <option value={uf.sigla}>{uf.sigla} · {uf.nome}</option>)}</select></label>
+      <label>Município<select id="dashboard-municipality" disabled><option value="">Todos os municípios</option></select></label>
+      <label>Métrica<select id="dashboard-metric"><option value="taxa_qtd_100k">Procedimentos/100 mil</option><option value="qtd_aprovada">Quantidade aprovada</option><option value="valor_aprovado_real">Valor corrigido pelo IPCA</option><option value="valor_aprovado_nominal">Valor nominal</option><option value="valor_real_per_capita">Valor real por habitante</option></select></label>
+      <button type="button" class="ghost-button" id="reset-dashboard">Restaurar</button>
+    </form>
   </section>
 
   <section class="territory-command" aria-labelledby="territory-title">
     <figure class="panel map-panel">
-      <div class="panel-head"><div><span>Explorador territorial</span><h2 id="territory-title">Comparação por Unidade da Federação</h2></div><a href="/evidencias/territorio/">Análise completa →</a></div>
-      <form class="territory-toolbar" id="territory-toolbar">
-        <label>Ano<select id="command-year">{territoryYears.map((year) => <option value={year} selected={year === currentYear}>{year}</option>)}</select></label>
-        <label>Métrica<select id="command-metric"><option value="taxa_qtd_100k">Procedimentos/100 mil</option><option value="valor_real_per_capita">Valor real por habitante</option><option value="qtd_aprovada">Quantidade aprovada</option><option value="valor_aprovado_real">Valor real aprovado</option></select></label>
-        <button type="button" class="ghost-button" id="reset-territory">Restaurar</button>
-      </form>
-      <svg class="command-map" id="command-map" viewBox="0 0 650 580" role="group" aria-label={`Mapa do Brasil com taxas estaduais em ${currentYear}`}>
-        {territorio.ufs.map((uf: any) => { const row = territoryByUf[uf.sigla]; return <a href={uf.rota} data-map-link={uf.sigla}><path data-map-uf={uf.sigla} class={`state seq-${classFor(row.taxa_100_mil.valor)}`} d={mapPaths[uf.sigla]}><title>{uf.nome}: {ptNumber(row.taxa_100_mil.valor, 0)} por 100 mil</title></path></a>; })}
+      <div class="panel-head"><div><span>Explorador territorial</span><h2 id="territory-title">Escolha uma UF para atualizar a leitura</h2></div><a href="/evidencias/territorio/">Análise completa →</a></div>
+      <svg class="command-map" id="command-map" viewBox="0 0 650 580" role="group" aria-label={`Mapa do Brasil em ${currentYear}`}>
+        {territorio.ufs.map((uf: any) => { const row = currentByUf[uf.sigla]; return <a href={uf.rota} data-map-link={uf.sigla}><path data-map-uf={uf.sigla} class={`state seq-${classFor(row.taxa_qtd_100k)}`} d={mapPaths[uf.sigla]}><title>{uf.nome}: {ptNumber(row.taxa_qtd_100k, 0)} por 100 mil</title></path></a>; })}
       </svg>
-      <div class="map-scale"><span>menor</span><div class="legend-ramp command-legend" role="img" aria-label="Escala da menor para a maior taxa">{[1,2,3,4,5,6,7].map(() => <i></i>)}</div><span>maior</span></div>
+      <div class="map-scale"><span>menor</span><div class="legend-ramp command-legend" role="img" aria-label="Escala da menor para a maior ocorrência">{[1,2,3,4,5,6,7].map(() => <i></i>)}</div><span>maior</span></div>
     </figure>
-
     <aside class="panel ranking-panel">
-      <div class="panel-head"><div><span id="ranking-kicker">Ranking proporcional</span><h2 id="ranking-title">Maiores taxas estaduais</h2></div></div>
-      <ol class="ranking-list" id="territory-ranking">
-        {topRate.map((row: any, index: number) => <li><span>{String(index + 1).padStart(2, "0")}</span><button type="button" data-pick-uf={row.uf}><b>{row.uf}</b><small>{ufMeta[row.uf].nome}</small></button><strong>{ptNumber(row.taxa_100_mil.valor, 0)}</strong></li>)}
-      </ol>
-      <div class="territory-alert" aria-live="polite"><span>Sinal territorial</span><b id="territory-signal">PI apresenta a maior taxa em {currentYear}</b><p id="territory-signal-detail">Compare com outra UF para contextualizar a diferença.</p></div>
-      <p class="panel-note" id="territory-note">Taxa de produção por local de atendimento; não representa prevalência.</p>
+      <div class="panel-head"><div><span>Ranking estadual</span><h2 id="ranking-title">Maiores taxas estaduais</h2></div></div>
+      <ol class="ranking-list" id="territory-ranking">{topRate.map((row: any, index: number) => <li><span>{String(index + 1).padStart(2, "0")}</span><button type="button" data-pick-uf={row.uf}><b>{row.uf}</b><small>{ufMeta[row.uf].nome}</small></button><strong>{ptNumber(row.taxa_qtd_100k, 0)}</strong></li>)}</ol>
+      <div class="territory-alert"><span>Recorte selecionado</span><b id="territory-signal">Brasil · {currentYear}</b><p id="territory-signal-detail">Clique em uma UF para atualizar os indicadores abaixo.</p></div>
+      <p class="panel-note" id="territory-note">Produção por local de atendimento; não representa prevalência.</p>
     </aside>
   </section>
 
-  <section class="comparison-panel panel" aria-labelledby="comparison-title">
+  <section class="command-kpis dashboard-kpis" aria-label="Indicadores do recorte selecionado">
+    <article class="kpi-card primary"><p>Procedimentos</p><strong id="kpi-quantity">{ptNumber(initial.qtd_aprovada, 0)}</strong><span id="kpi-quantity-delta">Brasil · {currentYear}</span></article>
+    <article class="kpi-card"><p>Valor real aprovado</p><strong id="kpi-real-value">{ptMoney(initial.valor_aprovado_real, true)}</strong><span>reais de junho de 2026</span></article>
+    <article class="kpi-card"><p>Taxa assistencial</p><strong id="kpi-rate">{ptNumber(initial.taxa_qtd_100k, 0)}</strong><span>procedimentos por 100 mil</span></article>
+    <article class="kpi-card"><p>Valor por habitante</p><strong id="kpi-per-capita">{ptMoney(initial.valor_real_per_capita)}</strong><span>valor real per capita</span></article>
+  </section>
+
+  <section class="operations-grid" aria-label="Monitoramento do recorte">
+    <figure class="panel trend-panel dashboard-trend-panel">
+      <div class="panel-head"><div><span>Tendência anual</span><h2 id="scope-trend-title">Brasil · procedimentos/100 mil</h2></div><span class="chart-meta" id="scope-trend-period">2015–2025</span></div>
+      <div class="dynamic-chart" id="scope-trend-chart">
+        <svg viewBox="0 0 940 390" role="img" aria-label="Tendência anual do recorte selecionado"><g id="scope-trend-grid"></g><polyline id="scope-trend-line" class="series observed"></polyline><g id="scope-trend-points"></g><g id="scope-trend-labels"></g></svg>
+        <div class="chart-tooltip" id="scope-trend-tooltip" role="status" hidden></div>
+      </div>
+      <figcaption id="scope-trend-caption">Série anual calculada com a mesma população e métrica dos indicadores.</figcaption>
+    </figure>
+    <aside class="panel signal-panel" aria-labelledby="signals-title">
+      <div class="panel-head"><div><span>Alertas do recorte</span><h2 id="signals-title">Pontos para acompanhamento</h2></div></div>
+      <ol class="signal-list" id="dynamic-signals" aria-live="polite"></ol>
+    </aside>
+  </section>
+
+  <section class="comparison-panel panel analytical-only" aria-labelledby="comparison-title">
     <div class="panel-head"><div><span>Comparador</span><h2 id="comparison-title">Duas UFs, mesma métrica e mesmo ano</h2></div><span class="chart-meta" id="comparison-meta">{currentYear} · procedimentos/100 mil</span></div>
-    <div class="comparison-selectors">
-      <label>UF A<select id="compare-a">{territorio.ufs.map((uf: any) => <option value={uf.sigla} selected={uf.sigla === "PI"}>{uf.sigla} · {uf.nome}</option>)}</select></label>
-      <span aria-hidden="true">versus</span>
-      <label>UF B<select id="compare-b">{territorio.ufs.map((uf: any) => <option value={uf.sigla} selected={uf.sigla === "SP"}>{uf.sigla} · {uf.nome}</option>)}</select></label>
-    </div>
-    <div class="comparison-cards"><article><p id="compare-a-name">PI · Piauí</p><strong id="compare-a-value">{ptNumber(territoryByUf.PI.taxa_100_mil.valor, 0)}</strong><span id="compare-a-change">evolução desde 2015</span><i id="compare-a-bar"></i></article><article><p id="compare-b-name">SP · São Paulo</p><strong id="compare-b-value">{ptNumber(territoryByUf.SP.taxa_100_mil.valor, 0)}</strong><span id="compare-b-change">evolução desde 2015</span><i id="compare-b-bar"></i></article></div>
+    <div class="comparison-selectors"><label>UF A<select id="compare-a">{territorio.ufs.map((uf: any) => <option value={uf.sigla} selected={uf.sigla === "PI"}>{uf.sigla} · {uf.nome}</option>)}</select></label><span aria-hidden="true">versus</span><label>UF B<select id="compare-b">{territorio.ufs.map((uf: any) => <option value={uf.sigla} selected={uf.sigla === "SP"}>{uf.sigla} · {uf.nome}</option>)}</select></label></div>
+    <div class="comparison-cards"><article><p id="compare-a-name">PI · Piauí</p><strong id="compare-a-value">—</strong><span id="compare-a-change">—</span><i id="compare-a-bar"></i></article><article><p id="compare-b-name">SP · São Paulo</p><strong id="compare-b-value">—</strong><span id="compare-b-change">—</span><i id="compare-b-bar"></i></article></div>
     <p class="comparison-reading" id="comparison-reading" aria-live="polite"></p>
   </section>
 
-  <section class="renal-compact" aria-labelledby="renal-title">
-    <div class="renal-copy"><p class="eyebrow">Sistema renal</p><h2 id="renal-title">Entenda o objeto monitorado</h2><p>O modelo anatômico conecta a leitura gerencial ao procedimento. Arraste o rim para explorar sua estrutura.</p><a href="/sobre-a-base/">Como os registros são produzidos →</a></div>
-    <section class="stage" id="kidney-stage" aria-label="Rim humano em três dimensões">
-      <div class="fallback" id="kidney-fallback"><figure><img src="/assets/kidney-position.webp" width="560" height="420" alt="Rim humano ilustrado em três dimensões" /><figcaption>Posição</figcaption></figure><figure><img src="/assets/kidney-hilum.webp" width="560" height="420" alt="Vista do hilo do rim esquerdo" /><figcaption>Entrada do sangue</figcaption></figure></div>
-      <div class="kidney-controls"><button type="button" data-view="position" aria-pressed="true">Posição</button><button type="button" data-view="hilum" aria-pressed="false">Entrada do sangue</button><button type="button" id="enable-3d">Carregando 3D</button><span class="kidney-hint">arraste diretamente sobre o rim</span></div>
-    </section>
+  <section class="analytics-secondary analytical-only">
+    <figure class="panel monthly-national-panel">
+      <div class="panel-head"><div><span>Série mensal nacional</span><h2>Produção aprovada no Brasil</h2></div><span class="chart-meta">{inicio}–{fim}</span></div>
+      <div class="plot"><LineChart labels={meses.map((p: any) => p.periodo)} series={[{ label: "Observado", className: "observed", values: observedValues }, { label: "Provisório", className: "provisional", values: provisionalValues }]} valueFormat="integer" ariaLabel="Evolução mensal nacional dos procedimentos aprovados" /></div>
+      <figcaption>Esta série é nacional e não responde ao filtro territorial. {provisionalLabel} permanecem provisórios.</figcaption>
+    </figure>
   </section>
 
-  <div class="home-actions" aria-label="Análises disponíveis"><a href="/evidencias/valor/"><span>Valor</span><b>Nominal x corrigido</b></a><a href="/evidencias/territorio/"><span>Território</span><b>Estados e municípios</b></a><a href="/evidencias/modelo/"><span>Previsão</span><b>Histórico e próximos 12 meses</b></a></div>
+  <section class="panel detail-panel analytical-only" aria-labelledby="detail-title">
+    <div class="panel-head"><div><span>Detalhamento operacional</span><h2 id="detail-title">Registros do recorte</h2></div><button type="button" class="ghost-button" id="export-table">Exportar CSV</button></div>
+    <div class="table-controls"><label>Pesquisar<input type="search" id="table-search" placeholder="UF ou município" /></label><label>Ordenar<select id="table-sort"><option value="metric-desc">Maior valor da métrica</option><option value="name-asc">Nome</option><option value="growth-desc">Maior crescimento anual</option></select></label><span id="table-count"></span></div>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Território</th><th scope="col">Procedimentos</th><th scope="col">Taxa/100 mil</th><th scope="col">Valor real</th><th scope="col">R$/habitante</th><th scope="col">Variação anual</th></tr></thead><tbody id="detail-table-body"></tbody></table></div>
+  </section>
+
+  <section class="method-dashboard method-only" aria-labelledby="method-dashboard-title">
+    <div class="panel-head"><div><span>Governança analítica</span><h2 id="method-dashboard-title">Modelo, cobertura e limitações</h2></div><a href="/sobre-a-base/">Metodologia completa →</a></div>
+    <div class="method-dashboard-grid">
+      <article><span>Projeção publicada</span><strong>{labelModel(forecastModel)}</strong><p>MAPE nominal de {ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%.</p></article>
+      <article class="method-warning"><span>Menor MAPE nominal</span><strong>{labelModel(nominalWinner.modelo)}</strong><p>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%. A divergência deve ser justificada ou corrigida antes da defesa.</p></article>
+      <article><span>Cobertura temporal</span><strong>2015–2026</strong><p>Território comparável até 2025; série nacional mensal até junho de 2026.</p></article>
+      <article><span>Unidade observada</span><strong>Procedimentos</strong><p>Os registros não representam pacientes únicos nem prevalência da doença.</p></article>
+    </div>
+  </section>
+
+  <section class="renal-compact analytical-only" aria-labelledby="renal-title">
+    <div class="renal-copy"><p class="eyebrow">Sistema renal</p><h2 id="renal-title">Entenda o objeto monitorado</h2><p>Modelo anatômico complementar à leitura gerencial.</p><a href="/sobre-a-base/">Como os registros são produzidos →</a></div>
+    <section class="stage" id="kidney-stage" aria-label="Rim humano em três dimensões"><div class="fallback" id="kidney-fallback"><figure><img src="/assets/kidney-position.webp" width="560" height="420" alt="Rim humano ilustrado em três dimensões" /><figcaption>Posição</figcaption></figure><figure><img src="/assets/kidney-hilum.webp" width="560" height="420" alt="Vista do hilo do rim esquerdo" /><figcaption>Entrada do sangue</figcaption></figure></div><div class="kidney-controls"><button type="button" data-view="position" aria-pressed="true">Posição</button><button type="button" data-view="hilum" aria-pressed="false">Entrada do sangue</button><button type="button" id="enable-3d">Carregando 3D</button><span class="kidney-hint">arraste diretamente sobre o rim</span></div></section>
+  </section>
+
   <p class="home-disclaimer">A base representa procedimentos aprovados, não pessoas. Dados por local de atendimento.</p>
-  <script type="application/json" id="command-territory-data" set:html={JSON.stringify({ rows: ufAnnualRows, ufs: territorio.ufs }).replaceAll("<", "\\u003c")} />
-  <script>
-    const payload = JSON.parse(document.querySelector('#command-territory-data')?.textContent || '{"rows":[],"ufs":[]}');
-    const yearSelect = document.querySelector('#command-year');
-    const metricSelect = document.querySelector('#command-metric');
-    const compareA = document.querySelector('#compare-a');
-    const compareB = document.querySelector('#compare-b');
-    const ufNames = Object.fromEntries(payload.ufs.map((uf) => [uf.sigla, uf.nome]));
-    const metricConfig = {
-      taxa_qtd_100k: { label: 'procedimentos/100 mil', title: 'Maiores taxas estaduais', note: 'Taxa de produção por local de atendimento; não representa prevalência.', format: (value) => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(value) },
-      valor_real_per_capita: { label: 'R$ reais por habitante', title: 'Maior valor real por habitante', note: 'Valores corrigidos para reais de junho de 2026.', format: (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }).format(value) },
-      qtd_aprovada: { label: 'procedimentos aprovados', title: 'Maior quantidade aprovada', note: 'Totais absolutos refletem também o porte populacional e a concentração da oferta.', format: (value) => new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 2 }).format(value) },
-      valor_aprovado_real: { label: 'valor real aprovado', title: 'Maior valor real aprovado', note: 'Valores corrigidos para reais de junho de 2026.', format: (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', notation: 'compact', maximumFractionDigits: 2 }).format(value) },
-    };
-    const rowFor = (uf, year) => payload.rows.find((row) => row.uf === uf && row.ano === year);
-    const changeSinceStart = (uf, year, metric) => {
-      const first = rowFor(uf, '2015'); const current = rowFor(uf, year);
-      if (!first || !current || !first[metric]) return null;
-      return (current[metric] / first[metric] - 1) * 100;
-    };
-    const renderComparison = (selected, metric, config) => {
-      const a = rowFor(compareA.value, yearSelect.value); const b = rowFor(compareB.value, yearSelect.value);
-      if (!a || !b) return;
-      const max = Math.max(a[metric], b[metric]) || 1;
-      [['a', a], ['b', b]].forEach(([key, row]) => {
-        document.querySelector(`#compare-${key}-name`).textContent = `${row.uf} · ${ufNames[row.uf]}`;
-        document.querySelector(`#compare-${key}-value`).textContent = config.format(row[metric]);
-        const change = changeSinceStart(row.uf, yearSelect.value, metric);
-        document.querySelector(`#compare-${key}-change`).textContent = change == null ? 'sem comparação histórica' : `${change >= 0 ? '+' : ''}${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 }).format(change)}% desde 2015`;
-        document.querySelector(`#compare-${key}-bar`).style.setProperty('--bar', `${Math.max(4, row[metric] / max * 100)}%`);
-      });
-      const delta = a[metric] / b[metric] - 1;
-      const leader = delta >= 0 ? a : b; const base = delta >= 0 ? b : a;
-      document.querySelector('#comparison-reading').textContent = `${leader.uf} registra ${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 }).format(Math.abs(delta) * 100)}% a mais que ${base.uf} em ${config.label}. A diferença é descritiva e não demonstra causalidade.`;
-      document.querySelector('#comparison-meta').textContent = `${yearSelect.value} · ${config.label}`;
-      document.querySelectorAll('[data-map-uf]').forEach((path) => path.classList.toggle('selected', path.dataset.mapUf === compareA.value || path.dataset.mapUf === compareB.value));
-    };
-    const renderTerritory = () => {
-      const year = yearSelect.value; const metric = metricSelect.value; const config = metricConfig[metric];
-      const selected = payload.rows.filter((row) => row.ano === year).sort((a, b) => b[metric] - a[metric]);
-      const values = selected.map((row) => row[metric]).sort((a, b) => a - b);
-      const thresholds = [1,2,3,4,5,6].map((n) => values[Math.floor((values.length - 1) * n / 7)]);
-      selected.forEach((row) => {
-        const level = 1 + thresholds.filter((value) => row[metric] > value).length;
-        const path = document.querySelector(`[data-map-uf="${row.uf}"]`);
-        path?.setAttribute('class', `state seq-${level}`);
-        path?.querySelector('title')?.replaceChildren(`${ufNames[row.uf]}: ${config.format(row[metric])}`);
-      });
-      document.querySelector('#ranking-title').textContent = config.title;
-      document.querySelector('#territory-note').textContent = config.note;
-      document.querySelector('#territory-ranking').innerHTML = selected.slice(0, 5).map((row, index) => `<li><span>${String(index + 1).padStart(2, '0')}</span><button type="button" data-pick-uf="${row.uf}"><b>${row.uf}</b><small>${ufNames[row.uf]}</small></button><strong>${config.format(row[metric])}</strong></li>`).join('');
-      const median = values[Math.floor(values.length / 2)];
-      document.querySelector('#territory-signal').textContent = `${selected[0].uf} lidera em ${year}`;
-      document.querySelector('#territory-signal-detail').textContent = `${config.format(selected[0][metric])}; mediana estadual de ${config.format(median)}.`;
-      renderComparison(selected, metric, config);
-    };
-    yearSelect?.addEventListener('change', renderTerritory);
-    metricSelect?.addEventListener('change', renderTerritory);
-    compareA?.addEventListener('change', renderTerritory);
-    compareB?.addEventListener('change', renderTerritory);
-    document.querySelector('#territory-ranking')?.addEventListener('click', (event) => { const button = event.target.closest('[data-pick-uf]'); if (button) { compareA.value = button.dataset.pickUf; renderTerritory(); document.querySelector('#comparison-title')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
-    document.querySelectorAll('[data-map-link]').forEach((link) => link.addEventListener('click', (event) => { event.preventDefault(); compareA.value = link.dataset.mapLink; renderTerritory(); document.querySelector('#comparison-title')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
-    document.querySelector('#reset-territory')?.addEventListener('click', () => { yearSelect.value = '2025'; metricSelect.value = 'taxa_qtd_100k'; compareA.value = 'PI'; compareB.value = 'SP'; renderTerritory(); });
-    document.querySelector('#export-dashboard')?.addEventListener('click', () => window.print());
-    renderTerritory();
-  </script>
-  <Fragment slot="scripts"><script type="module" src="/assets/kidney.js"></script></Fragment>
+  <script type="application/json" id="dashboard-data" set:html={dashboardPayload} />
+  <Fragment slot="scripts"><script src="/assets/dashboard.js" defer></script><script type="module" src="/assets/kidney.js"></script></Fragment>
 </BaseLayout>
