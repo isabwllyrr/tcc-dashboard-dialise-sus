@@ -1,8 +1,9 @@
 import { readFileSync } from "node:fs";
 
 const APP_NAME = "Agente DialisaSUS";
-const APP_VERSION = "3.1.1";
-const DEFAULT_MODEL = "gemini-3.5-flash-lite";
+const APP_VERSION = "3.2.0";
+const DEFAULT_MODEL = "gemini-3.6-flash";
+const FALLBACK_MODEL = "gemini-3.5-flash-lite";
 const MAX_QUESTION_CHARS = 500;
 const MAX_CONTEXT_CHARS = 30_000;
 const DOSSIER_ROOT = new URL("../../dossie/", import.meta.url);
@@ -108,7 +109,7 @@ export default async function handler(request){
   if(isClinicalQuestion(question)){const answer=clinicalRefusal();return parsed.html?htmlResponse(answer,"/sobre-a-base/"):jsonResponse({answer,source:"safety_rule",route:"/sobre-a-base/"});}
   const apiKey=(process.env.GEMINI_API_KEY||"").trim();let answer;let source="local_fallback";
   let warning;let providerIssue;
-  if(!apiKey)answer=fallbackAnswer(context);else try{answer=await callGemini(question,serializeContext(context),apiKey,(process.env.GEMINI_MODEL||DEFAULT_MODEL).trim());source="gemini";}catch(error){answer=fallbackAnswer(context);providerIssue=error.issue||"unknown";warning="O Gemini ficou indisponível; esta resposta foi gerada diretamente do dossiê validado.";}
+  if(!apiKey)answer=fallbackAnswer(context);else{const models=[...new Set([(process.env.GEMINI_MODEL||"").trim(),DEFAULT_MODEL,FALLBACK_MODEL].filter(Boolean))];const serializedContext=serializeContext(context);for(const model of models){try{answer=await callGemini(question,serializedContext,apiKey,model);source="gemini";providerIssue=undefined;break;}catch(error){providerIssue=error.issue||"unknown";}}if(!answer){answer=fallbackAnswer(context);warning="O Gemini ficou indisponível; esta resposta foi gerada diretamente do dossiê validado.";}}
   if(!answer.includes(route))answer=`${answer} Consulte ${route}`;
   return parsed.html?htmlResponse(answer,route):jsonResponse({answer,source,route,category:context.categoria,...(warning?{warning,providerIssue}:{})});
 }

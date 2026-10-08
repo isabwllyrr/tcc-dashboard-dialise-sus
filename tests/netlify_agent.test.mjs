@@ -39,5 +39,11 @@ test("erro do provedor usa fallback local sem expor detalhes internos", async ()
   try {const response=await handler(jsonRequest({question:"Explique o valor real."}));const body=await response.json();const text=JSON.stringify(body);assert.equal(response.status,200);assert.equal(body.source,"local_fallback");assert.equal(body.providerIssue,"provider_unavailable");assert.match(body.warning,/Gemini ficou indisponível/);assert.match(body.answer,/\/evidencias\/valor\//);assert.doesNotMatch(text,/SEGREDO|503|provider_status|model/);} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;}
 });
 
+test("modelo alternativo responde quando o principal está indisponível", async () => {
+  const original=process.env.GEMINI_API_KEY;const originalModel=process.env.GEMINI_MODEL;const oldFetch=globalThis.fetch;process.env.GEMINI_API_KEY="chave-teste";delete process.env.GEMINI_MODEL;let calls=0;
+  globalThis.fetch=async()=>{calls+=1;if(calls===1)return new Response("indisponível",{status:503});return Response.json({candidates:[{content:{parts:[{text:"Resposta pelo modelo alternativo em /evidencias/valor/."}]}}]});};
+  try {const response=await handler(jsonRequest({question:"Explique o valor real."}));const body=await response.json();assert.equal(body.source,"gemini");assert.equal(body.warning,undefined);assert.equal(calls,2);} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;if(originalModel===undefined)delete process.env.GEMINI_MODEL;else process.env.GEMINI_MODEL=originalModel;}
+});
+
 test("filtros territoriais são enums validados", async () => {const response=await handler(jsonRequest({question:"Mostre a taxa por UF",uf:"SÃO PAULO",ano:"2026"}));assert.equal(response.status,422);});
 test("serialização limita o contexto já selecionado",()=>assert.throws(()=>serializeContext({data:"x".repeat(30_001)}),RangeError));
