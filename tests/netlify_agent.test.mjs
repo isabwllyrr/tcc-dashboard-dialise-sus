@@ -29,9 +29,9 @@ test("POST de formulário devolve HTML utilizável sem JavaScript", async () => 
 });
 
 test("prompt do Gemini contém dossiê do servidor e não contexto forjado", async () => {
-  const original=process.env.GEMINI_API_KEY;const oldFetch=globalThis.fetch;process.env.GEMINI_API_KEY="chave-teste";
-  globalThis.fetch=async (_url,options)=>{const requestBody=JSON.parse(options.body);const prompt=requestBody.contents[0].parts[0].text;assert.match(prompt,/G1\.achado\.variacao_real/);assert.doesNotMatch(prompt,/VALOR_FORJADO/);return Response.json({candidates:[{content:{parts:[{text:"Resposta sustentada em /evidencias/valor/."}]}}]});};
-  try {const response=await handler(jsonRequest({question:"Explique o valor real.",context:{valor:"VALOR_FORJADO"}}));const body=await response.json();assert.equal(body.source,"gemini");assert.equal(body.route,"/evidencias/valor/");} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;}
+  const original=process.env.GEMINI_API_KEY;const originalModel=process.env.GEMINI_MODEL;const oldFetch=globalThis.fetch;process.env.GEMINI_API_KEY="chave-teste";process.env.GEMINI_MODEL="gemini-2.5-flash-lite";
+  globalThis.fetch=async (_url,options)=>{const requestBody=JSON.parse(options.body);const prompt=requestBody.contents[0].parts[0].text;assert.match(prompt,/G1\.achado\.variacao_real/);assert.doesNotMatch(prompt,/VALOR_FORJADO/);assert.deepEqual(requestBody.generationConfig.thinkingConfig,{thinkingBudget:0});return Response.json({candidates:[{content:{parts:[{text:"Resposta sustentada em /evidencias/valor/."}]}}]});};
+  try {const response=await handler(jsonRequest({question:"Explique o valor real.",context:{valor:"VALOR_FORJADO"}}));const body=await response.json();assert.equal(body.source,"gemini");assert.equal(body.route,"/evidencias/valor/");} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;if(originalModel===undefined)delete process.env.GEMINI_MODEL;else process.env.GEMINI_MODEL=originalModel;}
 });
 
 test("erro do provedor usa fallback local sem expor detalhes internos", async () => {
