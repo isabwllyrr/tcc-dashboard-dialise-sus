@@ -36,7 +36,7 @@ test("prompt do Gemini contém dossiê do servidor e não contexto forjado", asy
 
 test("erro do provedor usa fallback local sem expor detalhes internos", async () => {
   const original=process.env.GEMINI_API_KEY;const oldFetch=globalThis.fetch;process.env.GEMINI_API_KEY="chave-teste";globalThis.fetch=async()=>new Response("SEGREDO DO PROVEDOR",{status:503});
-  try {const response=await handler(jsonRequest({question:"Explique o valor real."}));const body=await response.json();const text=JSON.stringify(body);assert.equal(response.status,200);assert.equal(body.source,"local_fallback");assert.match(body.warning,/Gemini ficou indisponível/);assert.match(body.answer,/\/evidencias\/valor\//);assert.doesNotMatch(text,/SEGREDO|503|provider_status|model/);} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;}
+  try {const response=await handler(jsonRequest({question:"Explique o valor real."}));const body=await response.json();const text=JSON.stringify(body);assert.equal(response.status,200);assert.equal(body.source,"local_fallback");assert.equal(body.providerIssue,"provider_unavailable");assert.match(body.warning,/Gemini ficou indisponível/);assert.match(body.answer,/\/evidencias\/valor\//);assert.doesNotMatch(text,/SEGREDO|503|provider_status|model/);} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;}
 });
 
 test("filtros territoriais são enums validados", async () => {const response=await handler(jsonRequest({question:"Mostre a taxa por UF",uf:"SÃO PAULO",ano:"2026"}));assert.equal(response.status,422);});

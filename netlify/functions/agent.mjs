@@ -94,7 +94,7 @@ async function parsePayload(request){const type=request.headers.get("content-typ
 
 function thinkingConfigFor(model){return model.startsWith("gemini-2.5-")?{thinkingBudget:0}:{thinkingLevel:"minimal"};}
 async function callGemini(question,serializedContext,apiKey,model){const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:"POST",headers:{"content-type":"application/json","x-goog-api-key":apiKey},signal:AbortSignal.timeout(25_000),body:JSON.stringify({systemInstruction:{parts:[{text:SYSTEM_INSTRUCTION}]},contents:[{role:"user",parts:[{text:`CONTEXTO_JSON:\n${serializedContext}\n\nPERGUNTA:\n${question}`}]}],generationConfig:{maxOutputTokens:800,thinkingConfig:thinkingConfigFor(model)}})});
-  if(!response.ok){console.error("Gemini API error",response.status);throw new Error("provider_error");}const data=await response.json();const answer=(data.candidates||[]).flatMap((c)=>c.content?.parts||[]).map((p)=>p.text).filter(Boolean).join("\n").trim();if(!answer)throw new Error("empty_response");return answer;}
+  if(!response.ok){const issues={400:"invalid_request",401:"authentication",403:"authorization",404:"model_unavailable",429:"quota_exceeded"};const error=new Error("provider_error");error.issue=issues[response.status]||(response.status>=500?"provider_unavailable":"unknown");console.error("Gemini API error",response.status,error.issue);throw error;}const data=await response.json();const answer=(data.candidates||[]).flatMap((c)=>c.content?.parts||[]).map((p)=>p.text).filter(Boolean).join("\n").trim();if(!answer){const error=new Error("empty_response");error.issue="empty_response";throw error;}return answer;}
 
 export default async function handler(request){
   if(request.method==="GET")return jsonResponse({status:"ok",app:APP_NAME,version:APP_VERSION});
@@ -107,10 +107,10 @@ export default async function handler(request){
   const context=buildServerContext(question,filters);const route=context.rota_dona;
   if(isClinicalQuestion(question)){const answer=clinicalRefusal();return parsed.html?htmlResponse(answer,"/sobre-a-base/"):jsonResponse({answer,source:"safety_rule",route:"/sobre-a-base/"});}
   const apiKey=(process.env.GEMINI_API_KEY||"").trim();let answer;let source="local_fallback";
-  let warning;
-  if(!apiKey)answer=fallbackAnswer(context);else try{answer=await callGemini(question,serializeContext(context),apiKey,(process.env.GEMINI_MODEL||DEFAULT_MODEL).trim());source="gemini";}catch{answer=fallbackAnswer(context);warning="O Gemini ficou indisponível; esta resposta foi gerada diretamente do dossiê validado.";}
+  let warning;let providerIssue;
+  if(!apiKey)answer=fallbackAnswer(context);else try{answer=await callGemini(question,serializeContext(context),apiKey,(process.env.GEMINI_MODEL||DEFAULT_MODEL).trim());source="gemini";}catch(error){answer=fallbackAnswer(context);providerIssue=error.issue||"unknown";warning="O Gemini ficou indisponível; esta resposta foi gerada diretamente do dossiê validado.";}
   if(!answer.includes(route))answer=`${answer} Consulte ${route}`;
-  return parsed.html?htmlResponse(answer,route):jsonResponse({answer,source,route,category:context.categoria,...(warning?{warning}:{})});
+  return parsed.html?htmlResponse(answer,route):jsonResponse({answer,source,route,category:context.categoria,...(warning?{warning,providerIssue}:{})});
 }
 
 export const config={path:"/api/agent",method:["GET","POST"],rateLimit:{action:"rate_limit",aggregateBy:["domain","ip"],windowSize:60,windowLimit:10}};
