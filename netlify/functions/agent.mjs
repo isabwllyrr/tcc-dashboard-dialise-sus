@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 
 const APP_NAME = "Agente DialisaSUS";
-const APP_VERSION = "3.1.0";
-const DEFAULT_MODEL = "gemini-2.5-flash-lite";
+const APP_VERSION = "3.1.1";
+const DEFAULT_MODEL = "gemini-3.5-flash-lite";
 const MAX_QUESTION_CHARS = 500;
 const MAX_CONTEXT_CHARS = 30_000;
 const DOSSIER_ROOT = new URL("../../dossie/", import.meta.url);
