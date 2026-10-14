@@ -24,14 +24,13 @@ let target = { ...views.position };
 let rotation = { ...target };
 let sample = [];
 let low35Windows = 0;
-let low30Windows = 0;
 let activeView = 'position';
 let environment;
 let resizeObserver;
 let intersectionObserver;
 const events = new AbortController();
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let autoRotate = !reduceMotion;
+let autoRotate = true;
 
 window.__kidneyMetrics = { windows: [], mode: "static", assetLoaded: false, paintedPixels: 0, renderCount: 0 };
 
@@ -73,22 +72,17 @@ function recordFrame(time) {
   low35Windows = fps < 35 ? low35Windows + 1 : 0;
   if (low35Windows >= 3 && !fixedView) {
     fixedView = true;
-    window.__kidneyMetrics.mode = "reduced-pixels-fixed-view";
-    target = { ...views[activeView] };
-    rotation = { ...target };
-    low30Windows = 0;
+    window.__kidneyMetrics.mode = "reduced-pixels";
     resize();
     return;
   }
-  low30Windows = fixedView && fps < 30 ? low30Windows + 1 : 0;
-  if (low30Windows >= 3) useStaticFallback();
 }
 
 function render(time = performance.now()) {
   frameId = null;
   if (!renderer || !visible || document.hidden || disposed) return;
-  if (autoRotate && !dragging && !fixedView) target.y += .007;
-  const easing = reduceMotion || fixedView ? 1 : .15;
+  if (autoRotate && !dragging) target.y += .007;
+  const easing = fixedView ? 1 : .15;
   rotation.x += (target.x - rotation.x) * easing;
   rotation.y += (target.y - rotation.y) * easing;
   organ.rotation.set(rotation.x, rotation.y, -.12);
@@ -217,7 +211,7 @@ async function activate() {
     });
     const stop = (event) => {
       dragging = false;
-      autoRotate = !reduceMotion;
+      autoRotate = true;
       try { canvas.releasePointerCapture(event.pointerId); } catch {}
       requestFrame();
     };
