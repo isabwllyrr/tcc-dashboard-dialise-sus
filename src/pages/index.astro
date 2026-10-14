@@ -105,7 +105,7 @@ const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, uf
         <button type="button" data-view="position" aria-pressed="true">Exterior</button>
         <button type="button" data-view="hilum" aria-pressed="false">Hilo renal</button>
         <button type="button" id="enable-3d">Carregando 3D</button>
-        <span class="kidney-hint">Arraste para girar</span>
+        <span class="kidney-hint">Giro automático · arraste para controlar</span>
       </div>
     </section>
 
@@ -204,5 +204,5 @@ const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, uf
 
   <p class="home-disclaimer">A base representa procedimentos aprovados, não pessoas. Dados por local de atendimento.</p>
   <script type="application/json" id="dashboard-data" set:html={dashboardPayload} />
-  <Fragment slot="scripts"><script src="/assets/dashboard.js" defer></script><script type="module" src="/assets/kidney.js"></script></Fragment>
+  <Fragment slot="scripts"><script src="/assets/dashboard.js" defer></script><script type="module" src="/assets/kidney.js?v=20261014-autospin"></script></Fragment>
 </BaseLayout>

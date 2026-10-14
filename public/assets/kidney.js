@@ -31,6 +31,7 @@ let resizeObserver;
 let intersectionObserver;
 const events = new AbortController();
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let autoRotate = !reduceMotion;
 
 window.__kidneyMetrics = { windows: [], mode: "static", assetLoaded: false, paintedPixels: 0, renderCount: 0 };
 
@@ -86,6 +87,7 @@ function recordFrame(time) {
 function render(time = performance.now()) {
   frameId = null;
   if (!renderer || !visible || document.hidden || disposed) return;
+  if (autoRotate && !dragging && !fixedView) target.y += .0025;
   const easing = reduceMotion || fixedView ? 1 : .15;
   rotation.x += (target.x - rotation.x) * easing;
   rotation.y += (target.y - rotation.y) * easing;
@@ -101,7 +103,7 @@ function render(time = performance.now()) {
     window.__kidneyMetrics.paintedPixels = painted;
   }
   recordFrame(time);
-  const moving = dragging || Math.abs(target.x - rotation.x) > .002 || Math.abs(target.y - rotation.y) > .002;
+  const moving = autoRotate || dragging || Math.abs(target.x - rotation.x) > .002 || Math.abs(target.y - rotation.y) > .002;
   if (moving) requestFrame();
   else lastTime = 0;
 }
@@ -203,6 +205,7 @@ async function activate() {
 
     let px = 0, py = 0;
     canvas.addEventListener("pointerdown", (event) => {
+      autoRotate = false;
       dragging = true; lastTime = 0; sample = []; px = event.clientX; py = event.clientY;
       canvas.setPointerCapture(event.pointerId); requestFrame();
     });
@@ -234,7 +237,7 @@ async function activate() {
 }
 
 if (stage && enable && fallback) {
-  viewButtons.forEach((button) => button.addEventListener("click", () => chooseView(button.dataset.view)));
+  viewButtons.forEach((button) => button.addEventListener("click", () => { autoRotate = false; chooseView(button.dataset.view); }));
   enable.addEventListener("click", activate, { once: true });
   resizeObserver = new ResizeObserver(() => { resize(); requestFrame(); }); resizeObserver.observe(stage);
   intersectionObserver = new IntersectionObserver(([entry]) => {
