@@ -87,7 +87,7 @@ function recordFrame(time) {
 function render(time = performance.now()) {
   frameId = null;
   if (!renderer || !visible || document.hidden || disposed) return;
-  if (autoRotate && !dragging && !fixedView) target.y += .0025;
+  if (autoRotate && !dragging && !fixedView) target.y += .007;
   const easing = reduceMotion || fixedView ? 1 : .15;
   rotation.x += (target.x - rotation.x) * easing;
   rotation.y += (target.y - rotation.y) * easing;
@@ -215,7 +215,12 @@ async function activate() {
       target.x = Math.max(-.7, Math.min(.7, target.x + (event.clientY - py) * .010));
       px = event.clientX; py = event.clientY; requestFrame();
     });
-    const stop = (event) => { dragging = false; try { canvas.releasePointerCapture(event.pointerId); } catch {} };
+    const stop = (event) => {
+      dragging = false;
+      autoRotate = !reduceMotion;
+      try { canvas.releasePointerCapture(event.pointerId); } catch {}
+      requestFrame();
+    };
     canvas.addEventListener("pointerup", stop); canvas.addEventListener("pointercancel", stop);
     canvas.addEventListener("keydown", (event) => {
       if (event.key === '1' || event.key === '2') { chooseView(event.key === '1' ? 'position' : 'hilum'); event.preventDefault(); return; }
@@ -237,7 +242,7 @@ async function activate() {
 }
 
 if (stage && enable && fallback) {
-  viewButtons.forEach((button) => button.addEventListener("click", () => { autoRotate = false; chooseView(button.dataset.view); }));
+  viewButtons.forEach((button) => button.addEventListener("click", () => chooseView(button.dataset.view)));
   enable.addEventListener("click", activate, { once: true });
   resizeObserver = new ResizeObserver(() => { resize(); requestFrame(); }); resizeObserver.observe(stage);
   intersectionObserver = new IntersectionObserver(([entry]) => {
