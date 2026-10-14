@@ -1,30 +1,54 @@
 (() => {
   const form = document.querySelector("#agent-form");
-  const output = document.querySelector("#agent-answer");
-  if (!form || !output) return;
+  const thread = document.querySelector("#assistant-thread");
+  if (!form || !thread) return;
 
   const textarea = form.querySelector("textarea");
   const button = form.querySelector("button[type='submit']");
   const buttonLabel = button.querySelector("span");
-  const answerText = output.querySelector("#agent-answer-text");
-  const answerSource = output.querySelector("#agent-source");
-  const warning = output.querySelector("#agent-warning");
-  const route = output.querySelector("#agent-route");
   const defaultButtonLabel = buttonLabel.textContent;
+  const count = document.querySelector("#conversation-count");
+  const followups = document.querySelector("#assistant-followups");
+  let consultations = 0;
+
+  const followupByCategory = {
+    valor: ["Qual a diferença entre valor nominal e valor corrigido?", "O custo cresceu mais que a produção?"],
+    contagem: ["A produção aumentou após a pandemia?", "Esses procedimentos representam pacientes?"],
+    territorio: ["Por que não posso interpretar o mapa como prevalência?", "Qual indicador permite comparar UFs de tamanhos diferentes?"],
+    modelo: ["Por que a projeção usa Gradient Boosting?", "O que o MAPE informa sobre a previsão?"],
+    base: ["Quais são as limitações da base?", "Quais meses de 2026 são provisórios?"],
+  };
 
   function setLoading(loading) {
     form.setAttribute("aria-busy", String(loading));
     button.disabled = loading;
     buttonLabel.textContent = loading ? "Analisando" : defaultButtonLabel;
-    output.classList.toggle("is-loading", loading);
+    form.classList.toggle("is-loading", loading);
   }
 
-  function showPending() {
-    output.hidden = false;
-    answerSource.textContent = "Dossiê DialisaSUS";
-    answerText.textContent = "Consultando as evidências...";
-    warning.hidden = true;
-    route.hidden = true;
+  function message(role, text, meta = {}) {
+    const article = document.createElement("article");
+    article.className = `thread-message ${role === "user" ? "user-message" : "assistant-message"}`;
+    const label = document.createElement("span");
+    label.textContent = role === "user" ? "Você" : (meta.source || "DialisaSUS");
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    article.append(label, paragraph);
+    if (meta.warning) {
+      const warning = document.createElement("small");
+      warning.className = "thread-warning";
+      warning.textContent = meta.warning;
+      article.append(warning);
+    }
+    if (meta.route) {
+      const link = document.createElement("a");
+      link.href = meta.route;
+      link.textContent = "Conferir evidência ↗";
+      article.append(link);
+    }
+    thread.append(article);
+    article.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return article;
   }
 
   function showAnswer(data) {
@@ -33,23 +57,26 @@
       local_fallback: "Dossiê local",
       safety_rule: "Regra de segurança",
     };
-    answerSource.textContent = labels[data.source] || "Dossiê DialisaSUS";
-    answerText.textContent = data.answer || "Não foi possível gerar uma resposta.";
-    warning.textContent = data.warning || "";
-    warning.hidden = !data.warning;
-    route.href = data.route || "/sobre-a-base/";
-    route.hidden = false;
-    output.focus({ preventScroll: true });
-    output.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    message("assistant", data.answer || "Não foi possível gerar uma resposta.", { source: labels[data.source] || "Dossiê DialisaSUS", warning: data.warning, route: data.route || "/sobre-a-base/" });
+    consultations += 1;
+    count.textContent = `${consultations} ${consultations === 1 ? "consulta" : "consultas"}`;
+    renderFollowups(data.category);
   }
 
   function showError(message) {
-    answerSource.textContent = "Consulta indisponível";
-    answerText.textContent = message || "Não foi possível consultar o assistente agora.";
-    warning.hidden = true;
-    route.href = "/sobre-a-base/";
-    route.hidden = false;
-    output.focus({ preventScroll: true });
+    message("assistant", message || "Não foi possível consultar o assistente agora.", { source: "Consulta indisponível", route: "/sobre-a-base/" });
+  }
+
+  function renderFollowups(category) {
+    const options = followupByCategory[category] || followupByCategory.base;
+    followups.replaceChildren();
+    const label = document.createElement("span"); label.textContent = "Continue explorando"; followups.append(label);
+    options.forEach((question) => {
+      const item = document.createElement("button"); item.type = "button"; item.textContent = question;
+      item.addEventListener("click", () => { textarea.value = question; form.requestSubmit(); });
+      followups.append(item);
+    });
+    followups.hidden = false;
   }
 
   form.addEventListener("submit", async (event) => {
@@ -60,7 +87,8 @@
       return;
     }
 
-    showPending();
+    message("user", question);
+    textarea.value = "";
     setLoading(true);
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 30_000);
@@ -93,5 +121,10 @@
       textarea.focus();
       form.requestSubmit();
     });
+  });
+
+  document.querySelector("#clear-conversation")?.addEventListener("click", () => {
+    thread.innerHTML = '<article class="thread-message assistant-message"><span>DialisaSUS</span><p>Conversa limpa. Faça uma nova pergunta sobre as evidências do painel.</p></article>';
+    consultations = 0; count.textContent = "0 consultas"; followups.hidden = true; textarea.focus();
   });
 })();

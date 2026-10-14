@@ -34,6 +34,11 @@ const projectedTotals = {
 };
 const previous12Total = history.slice(-12).reduce((sum: number, point: any) => sum + point.valor, 0);
 const projectedAnnualChange = (projectedTotals.central / previous12Total - 1) * 100;
+const horizonCsv = readFileSync(resolve(process.cwd(), "dados_tratados/evidencia_modelos_horizonte.csv"), "utf8").trim().split(/\r?\n/);
+const horizonHeaders = horizonCsv[0].split(",");
+const horizonAt = (name: string) => horizonHeaders.indexOf(name);
+const horizonPerformance = horizonCsv.slice(1).map((line) => line.split(",")).filter((cells) => cells[horizonAt("escala")] === "nominal" && cells[horizonAt("modelo")] === forecastModel).map((cells) => ({ horizonte: Number(cells[horizonAt("horizonte")]), mape: Number(cells[horizonAt("MAPE_pct")]), vies: Number(cells[horizonAt("vies_pct")]) })).sort((a,b)=>a.horizonte-b.horizonte);
+const selectedIsLearningWinner = nominal.filter((item:any)=>item.modelo !== "holt_winters").sort((a:any,b:any)=>a.metricas.mape_medio.valor-b.metricas.mape_medio.valor)[0]?.modelo === forecastModel;
 ---
 <BaseLayout title="Previsão">
   <header class="forecast-command-head">
@@ -60,6 +65,14 @@ const projectedAnnualChange = (projectedTotals.central / previous12Total - 1) * 
     <div class="scenario-values"><article><span>Limite inferior</span><strong>{ptMoney(projectedTotals.inferior, true)}</strong></article><article class="selected"><span>Estimativa central</span><strong>{ptMoney(projectedTotals.central, true)}</strong><small>{projectedAnnualChange >= 0 ? "+" : ""}{ptNumber(projectedAnnualChange, 1)}% ante os 12 meses anteriores</small></article><article><span>Limite superior</span><strong>{ptMoney(projectedTotals.superior, true)}</strong></article></div>
   </section>
 
+  <section class="model-decision" aria-labelledby="model-decision-title">
+    <div class="model-decision-copy"><span>Decisão metodológica</span><h2 id="model-decision-title">Dois resultados, duas perguntas diferentes</h2><p>O ranking geral identifica o menor erro entre todos os candidatos. A projeção publicada mantém o melhor modelo de aprendizagem testado.</p></div>
+    <div class="model-decision-cards">
+      <article><span>Menor MAPE geral</span><strong>{labelModel(nominalWinner.modelo)}</strong><b>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%</b><p>Referência estatística no alvo nominal.</p></article>
+      <article class="selected"><span>Modelo publicado</span><strong>{labelModel(forecastModel)}</strong><b>{ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%</b><p>{selectedIsLearningWinner ? "Melhor desempenho entre os modelos de aprendizagem testados." : "Escolha operacional registrada no dossiê."}</p></article>
+    </div>
+  </section>
+
   <section class="forecast-summary-grid" aria-label="Diagnóstico do modelo">
     <aside class="panel model-health">
       <div class="panel-head"><div><span>Qualidade</span><h2>Diagnóstico do modelo aplicado</h2></div></div>
@@ -70,6 +83,14 @@ const projectedAnnualChange = (projectedTotals.central / previous12Total - 1) * 
       <div class="panel-head"><div><span>Estabilidade</span><h2>Viés por horizonte</h2></div><span class="chart-meta">%</span></div>
       <div class="plot"><LineChart labels={bias.map((p:any)=>`${p.horizonte_meses}m`)} series={[{label:"Viés",className:"estimated",values:bias.map((p:any)=>p.valor)}]} valueFormat="percent" ariaLabel={`Viés de ${labelModel(forecastModel)} por horizonte`} /></div>
     </figure>
+  </section>
+
+  <section class="horizon-performance panel" aria-labelledby="horizon-performance-title">
+    <div class="panel-head"><div><span>Erro por distância</span><h2 id="horizon-performance-title">Como a precisão muda ao longo dos 12 meses</h2></div><span class="chart-meta">Backtest recursivo · 43 janelas</span></div>
+    <div class="horizon-layout">
+      <div class="plot"><LineChart labels={horizonPerformance.map((p)=>`${p.horizonte}m`)} series={[{label:"MAPE",className:"estimated",values:horizonPerformance.map((p)=>p.mape)}]} valueFormat="percent" ariaLabel={`MAPE de ${labelModel(forecastModel)} por horizonte de previsão`} /></div>
+      <aside><span>Leitura</span><strong>{ptNumber(horizonPerformance[0]?.mape, 2)}% → {ptNumber(horizonPerformance.at(-1)?.mape, 2)}%</strong><p>Erro no primeiro e no décimo segundo mês. A previsão fica menos precisa à medida que se afasta do último dado observado.</p><small>MAPE não é “acurácia”. Ele representa o erro percentual absoluto médio.</small></aside>
+    </div>
   </section>
 
   <details class="model-details">

@@ -147,18 +147,21 @@
   };
 
   const renderSignals = () => {
-    const config = metrics[state.metric]; const current = scopeRow(state.year); const first = scopeRow(data.years[0]);
+    const config = metrics[state.metric]; const current = scopeRow(state.year); const first = scopeRow(data.years[0]); const previous = scopeRow(String(Number(state.year)-1));
     const growth = first ? change(current[state.metric], first[state.metric]) : null;
+    const annual = previous ? change(current[state.metric], previous[state.metric]) : null;
     const ufRows = data.rows.filter((row) => row.ano === state.year).sort((a,b) => b[state.metric] - a[state.metric]);
     const selectedUf = state.uf === "BR" ? ufRows[0] : ufRows.find((row) => row.uf === state.uf);
     const rank = selectedUf ? ufRows.findIndex((row) => row.uf === selectedUf.uf) + 1 : null;
+    const proportional = state.metric.includes("taxa") || state.metric.includes("capita");
     const messages = [
-      { n: "01", title: `${scopeName()} desde ${data.years[0]}`, text: `${signed(growth)} em ${config.label}.` },
-      { n: "02", title: state.uf === "BR" ? `${ufRows[0].uf} lidera o ranking` : `${state.uf} ocupa a ${rank}ª posição`, text: `${config.format(selectedUf[state.metric])} em ${state.year}.` },
-      { n: "03", title: "Leitura proporcional", text: state.metric.includes("taxa") || state.metric.includes("capita") ? "Indicador ajustado pela população estimada." : "O total absoluto também reflete porte e concentração da oferta." },
-      { n: "!", title: "Competências provisórias", text: "Maio e junho de 2026 podem sofrer revisão.", warning: true },
+      { n: "01", level: Math.abs(annual ?? 0) >= 10 ? "attention" : "monitor", tag: "Tendência", title: `${signed(annual)} no último ano`, text: `${scopeName()} em ${config.label}; ${signed(growth)} desde ${data.years[0]}.` },
+      { n: "02", level: "monitor", tag: "Território", title: state.uf === "BR" ? `${ufRows[0].uf} lidera o ranking` : `${state.uf} ocupa a ${rank}ª posição`, text: `${config.format(selectedUf[state.metric])} em ${state.year}.` },
+      { n: "03", level: "context", tag: "Contexto", title: proportional ? "Comparação ajustada pela população" : "Indicador sensível ao porte", text: proportional ? "Adequado para comparar territórios de tamanhos diferentes." : "Use taxa ou valor por habitante antes de concluir sobre pressão relativa." },
+      { n: "!", level: "warning", tag: "Qualidade", title: "Competências provisórias", text: "Maio e junho de 2026 podem sofrer revisão." },
     ];
-    $("#dynamic-signals").innerHTML = messages.map((item) => `<li class="${item.warning ? "warning" : ""}"><span>${item.n}</span><div><b>${item.title}</b><p>${item.text}</p></div></li>`).join("");
+    $("#dynamic-signals").innerHTML = messages.map((item) => `<li class="signal-${item.level}"><span>${item.n}</span><div><small>${item.tag}</small><b>${item.title}</b><p>${item.text}</p></div></li>`).join("");
+    $("#signal-summary").textContent = `${messages.filter((item)=>item.level === "attention" || item.level === "warning").length} requerem atenção`;
   };
 
   const tableSource = () => {
@@ -196,7 +199,7 @@
   $("#reset-dashboard").addEventListener("click", () => { state.year = data.years.at(-1); state.uf = "BR"; state.municipality = ""; state.metric = "taxa_qtd_100k"; controls.year.value = state.year; controls.uf.value = "BR"; controls.metric.value = state.metric; controls.search.value = ""; populateMunicipalities(); renderAll(); });
   $("#filter-toggle").addEventListener("click", () => { const expanded = $("#filter-toggle").getAttribute("aria-expanded") === "true"; $("#filter-toggle").setAttribute("aria-expanded", String(!expanded)); $("#dashboard-filter-fields").hidden = expanded; });
   $$('[data-dashboard-view]').forEach((button) => button.addEventListener("click", () => { state.view = button.dataset.dashboardView; document.body.dataset.dashboardMode = state.view; $$('[data-dashboard-view]').forEach((item) => item.setAttribute("aria-pressed", String(item === button))); }));
-  $("#export-dashboard").addEventListener("click", () => window.print());
+  $("#export-dashboard")?.addEventListener("click", () => window.print());
   $("#export-table").addEventListener("click", () => {
     const header = ["territorio","procedimentos","taxa_100_mil","valor_real","valor_real_por_habitante","variacao_anual_pct"];
     const lines = state.tableRows.map((row) => [row.name,row.qtd_aprovada,row.taxa_qtd_100k,row.valor_aprovado_real,row.valor_real_per_capita,row.growth ?? ""].map((value) => `"${String(value).replaceAll('"','""')}"`).join(","));
@@ -204,5 +207,9 @@
   });
 
   document.body.dataset.dashboardMode = "executive";
+  if (window.matchMedia("(max-width: 620px)").matches) {
+    $("#filter-toggle").setAttribute("aria-expanded", "false");
+    $("#dashboard-filter-fields").hidden = true;
+  }
   populateMunicipalities(); renderAll();
 })();

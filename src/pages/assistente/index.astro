@@ -23,6 +23,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <button type="button" class="prompt-chip" data-question="Qual modelo apresentou o menor MAPE no backtest?">Desempenho dos modelos</button>
     </div>
 
+    <div class="assistant-thread" id="assistant-thread" aria-live="polite">
+      <article class="thread-message assistant-message">
+        <span>DialisaSUS</span>
+        <p>Posso comparar territórios, explicar custos, produção e previsão usando somente as evidências validadas da plataforma.</p>
+      </article>
+    </div>
+
     <form method="POST" action="/api/agent" class="agent-form" id="agent-form">
       <label for="pergunta" id="agent-label">Sua pergunta</label>
       <div class="agent-composer">
@@ -34,16 +41,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       </div>
       <p class="form-hint">O assistente analisa procedimentos aprovados, não pessoas ou casos clínicos.</p>
     </form>
-
-    <article id="agent-answer" class="agent-answer" aria-live="polite" tabindex="-1" hidden>
-      <div class="answer-head">
-        <span class="answer-status">Resposta</span>
-        <span class="answer-source" id="agent-source"></span>
-      </div>
-      <p id="agent-answer-text"></p>
-      <p class="answer-warning" id="agent-warning" hidden></p>
-      <a id="agent-route" class="answer-route" href="/sobre-a-base/">Ver evidência completa <span aria-hidden="true">↗</span></a>
-    </article>
+    <div class="assistant-actions"><button type="button" class="text-button" id="clear-conversation">Limpar conversa</button><span id="conversation-count">0 consultas</span></div>
+    <div class="assistant-followups" id="assistant-followups" hidden></div>
   </section>
 
   <p class="assistant-note">O agente não busca dados externos nem substitui avaliação clínica. Cada resposta é limitada às evidências já publicadas no DialisaSUS.</p>

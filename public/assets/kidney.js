@@ -50,8 +50,7 @@ function chooseView(name) {
 function resize() {
   if (!renderer) return;
   const width = Math.max(stage.clientWidth, 280);
-  // Match the CSS viewport breakpoint, not the narrower grid column width.
-  const height = matchMedia('(max-width: 620px)').matches ? 270 : 340;
+  const height = Math.max(stage.clientHeight, matchMedia('(max-width: 620px)').matches ? 300 : 420);
   renderer.setPixelRatio(fixedView ? .75 : Math.min(devicePixelRatio || 1, 1.5));
   renderer.setSize(width, height, false);
   camera.aspect = width / height;

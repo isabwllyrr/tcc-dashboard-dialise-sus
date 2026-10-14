@@ -30,6 +30,22 @@ const trajectoryPeriod = distribuicao.periodos;
       <div class="table-wrap"><table class="uf-table"><thead><tr><th scope="col">UF</th><th scope="col">Taxa/100 mil</th><th scope="col">Procedimentos</th><th scope="col">População</th></tr></thead><tbody>{doc.ufs.map((uf:any)=>{const row=byUf[uf.sigla];return <tr data-table-uf={uf.sigla}><th scope="row"><a href={uf.rota}>{uf.sigla} · {uf.nome}</a></th><td data-field="taxa">{ptNumber(row.taxa_100_mil.valor,0)}</td><td data-field="qtd">{ptInt(row.quantidade.valor)}</td><td data-field="pop">{ptInt(row.taxa_100_mil.denominador.valor)}</td></tr>})}</tbody></table></div></div>
     <figcaption id="territory-caption">Taxa = procedimentos aprovados ÷ população do mesmo ano × 100 mil. A procedência e o estado do denominador acompanham cada ponto no dossiê.</figcaption>
   </figure>
+  <section class="territory-compare" aria-labelledby="territory-compare-title">
+    <div class="figure-head"><span class="id">G5</span><h2 class="title" id="territory-compare-title">Compare duas UFs ao longo do tempo</h2><span class="meta" id="territory-compare-meta">{years[0]}–{years.at(-1)}</span></div>
+    <div class="territory-compare-controls">
+      <label>UF A<select id="territory-compare-a">{doc.ufs.map((uf:any)=><option value={uf.sigla} selected={uf.sigla === "PI"}>{uf.sigla} · {uf.nome}</option>)}</select></label>
+      <label>UF B<select id="territory-compare-b">{doc.ufs.map((uf:any)=><option value={uf.sigla} selected={uf.sigla === "SP"}>{uf.sigla} · {uf.nome}</option>)}</select></label>
+      <label>Indicador<select id="territory-compare-metric"><option value="taxa">Procedimentos/100 mil</option><option value="qtd">Quantidade aprovada</option></select></label>
+    </div>
+    <div class="territory-compare-layout">
+      <div class="territory-compare-chart">
+        <svg viewBox="0 0 900 340" role="img" aria-label="Comparação temporal entre duas unidades da federação">
+          <g id="territory-compare-grid"></g><polyline id="territory-line-a" class="territory-line line-a"></polyline><polyline id="territory-line-b" class="territory-line line-b"></polyline><g id="territory-compare-points"></g><g id="territory-compare-labels"></g>
+        </svg>
+      </div>
+      <aside class="territory-compare-reading" id="territory-compare-reading" aria-live="polite"></aside>
+    </div>
+  </section>
   <section aria-labelledby="distribution-title"><h2 class="sect" id="distribution-title">G7 · Distribuição municipal, sem transformar ausência em zero</h2><p class="calc">A comparação de {trajectoryPeriod.inicio} a {trajectoryPeriod.fim} inclui <b>{ptInt(comparable)} municípios</b> com registro nos dois extremos e exclui, de forma explícita, <b>{ptInt(excluded)}</b> municípios com “sem registro” ou ausentes em pelo menos um extremo.</p><details class="twin"><summary>Tabela — categorias de trajetória</summary><div class="table-wrap"><table><thead><tr><th scope="col">Categoria</th><th scope="col">Municípios</th><th scope="col">Estado</th></tr></thead><tbody>{distribuicao.trajetorias.map((p:any)=><tr><th scope="row">{p.categoria.replaceAll("_"," ")}</th><td>{ptInt(p.municipios.valor)}</td><td>{p.municipios.estado}</td></tr>)}</tbody></table></div></details></section>
   <h2 class="sect">Limites</h2><p class="calc">Polos de atendimento podem receber pessoas de outros municípios e estados. Um valor alto descreve concentração de produção aprovada, não prevalência de doença renal.</p><div class="next"><a href="/evidencias/valor/"><span class="q">Como inflação muda a leitura nacional?</span><span class="path">/evidencias/valor/</span></a></div>
   <script type="application/json" id="territory-data" set:html={JSON.stringify(clientRows).replaceAll("<","\\u003c")} />
@@ -40,6 +56,10 @@ const trajectoryPeriod = distribuicao.periodos;
     const rows = JSON.parse(document.querySelector('#territory-data')?.textContent || '[]');
     const format = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
     const params = new URLSearchParams(location.search);
+    const compareA = document.querySelector('#territory-compare-a');
+    const compareB = document.querySelector('#territory-compare-b');
+    const compareMetric = document.querySelector('#territory-compare-metric');
+    const svgNS = 'http://www.w3.org/2000/svg';
     const initialYear = params.get('ano');
     if (initialYear && [...yearSelect.options].some((option) => option.value === initialYear)) yearSelect.value = initialYear;
     const render = (year) => {
@@ -59,8 +79,30 @@ const trajectoryPeriod = distribuicao.periodos;
       document.querySelector('#territory-meta')?.replaceChildren(`${year} · por 100 mil`);
       history.replaceState(null, '', `${location.pathname}?ano=${encodeURIComponent(year)}`);
     };
+    const change = (current, first) => first ? (current / first - 1) * 100 : 0;
+    const renderCompare = () => {
+      const metric = compareMetric.value;
+      const a = rows.filter((row) => row.uf === compareA.value).sort((x,y)=>x.ano.localeCompare(y.ano));
+      const b = rows.filter((row) => row.uf === compareB.value).sort((x,y)=>x.ano.localeCompare(y.ano));
+      const all = [...a,...b].map((row)=>row[metric]);
+      const minRaw=Math.min(...all), maxRaw=Math.max(...all), pad=(maxRaw-minRaw||maxRaw||1)*.08, min=minRaw-pad, max=maxRaw+pad;
+      const x=(index)=>58+index*(806/Math.max(1,a.length-1)); const y=(value)=>24+(max-value)*(260/(max-min||1));
+      document.querySelector('#territory-line-a').setAttribute('points',a.map((row,index)=>`${x(index)},${y(row[metric])}`).join(' '));
+      document.querySelector('#territory-line-b').setAttribute('points',b.map((row,index)=>`${x(index)},${y(row[metric])}`).join(' '));
+      const grid=document.querySelector('#territory-compare-grid'); const labels=document.querySelector('#territory-compare-labels'); const points=document.querySelector('#territory-compare-points');
+      grid.replaceChildren(); labels.replaceChildren(); points.replaceChildren();
+      for(let step=0;step<4;step+=1){const gy=24+step*(260/3);const line=document.createElementNS(svgNS,'line');line.setAttribute('x1','58');line.setAttribute('x2','864');line.setAttribute('y1',gy);line.setAttribute('y2',gy);line.setAttribute('class','grid');grid.append(line);}
+      a.forEach((row,index)=>{if(index===0||index===a.length-1||index%2===0){const t=document.createElementNS(svgNS,'text');t.setAttribute('x',x(index));t.setAttribute('y','322');t.setAttribute('text-anchor','middle');t.setAttribute('class','axis');t.textContent=row.ano;labels.append(t);}});
+      [[a,'a'],[b,'b']].forEach(([series,key])=>series.forEach((row,index)=>{const c=document.createElementNS(svgNS,'circle');c.setAttribute('cx',x(index));c.setAttribute('cy',y(row[metric]));c.setAttribute('r','4');c.setAttribute('class',`territory-dot dot-${key}`);const title=document.createElementNS(svgNS,'title');title.textContent=`${row.uf} · ${row.ano}: ${format.format(row[metric])}`;c.append(title);points.append(c);}));
+      const aLast=a.at(-1),bLast=b.at(-1),aGrowth=change(aLast[metric],a[0][metric]),bGrowth=change(bLast[metric],b[0][metric]);
+      const leader=aLast[metric]>=bLast[metric]?aLast:bLast; const other=leader===aLast?bLast:aLast; const gap=change(leader[metric],other[metric]);
+      document.querySelector('#territory-compare-reading').innerHTML=`<span>Leitura comparativa</span><h3>${leader.uf} apresenta o maior valor em ${leader.ano}</h3><p><b>${leader.uf}</b> registra ${format.format(Math.abs(gap))}% acima de ${other.uf} no último ano. No período, ${aLast.uf} variou ${aGrowth>=0?'+':''}${format.format(aGrowth)}% e ${bLast.uf}, ${bGrowth>=0?'+':''}${format.format(bGrowth)}%.</p><div class="compare-key"><i class="key-a"></i>${aLast.uf}<i class="key-b"></i>${bLast.uf}</div><small>Comparação descritiva; produção por local de atendimento não mede prevalência.</small>`;
+      document.querySelector('#territory-compare-meta').textContent=`${a[0].ano}–${aLast.ano} · ${metric==='taxa'?'por 100 mil':'procedimentos'}`;
+    };
     render(yearSelect.value);
+    renderCompare();
     yearSelect.addEventListener('change', () => render(yearSelect.value));
+    compareA.addEventListener('change', renderCompare); compareB.addEventListener('change', renderCompare); compareMetric.addEventListener('change', renderCompare);
     form.addEventListener('submit', (event) => {
       if (ufSelect.value) { event.preventDefault(); location.href = `/evidencias/territorio/${ufSelect.value}/?ano=${encodeURIComponent(yearSelect.value)}`; }
     });

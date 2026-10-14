@@ -84,30 +84,47 @@ const nominalWinner = modelo.comparacao_modelos.filter((item: any) => item.alvo 
 const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, ufs: territorio.ufs, years: territoryYears }).replaceAll("<", "\\u003c");
 ---
 <BaseLayout title="Início">
-  <header class="platform-intro">
-    <div class="platform-intro-copy">
+  <header class="product-hero">
+    <div class="product-hero-copy">
       <p class="eyebrow">Inteligência pública em saúde renal</p>
       <h1>DialisaSUS</h1>
-      <p class="intro-statement">Uma plataforma para compreender a produção de diálise no SUS.</p>
-      <p class="intro-detail">Integra dados do SIA/SUS e do IBGE para acompanhar procedimentos, custos, diferenças territoriais e cenários futuros em uma única leitura gerencial.</p>
-      <div class="intro-actions"><a href="#dashboard-controls">Explorar indicadores <span aria-hidden="true">↓</span></a><button class="ghost-button" type="button" id="export-dashboard">Exportar PDF</button></div>
+      <p class="product-hero-statement">Um panorama vivo da diálise no SUS.</p>
+      <p class="product-hero-detail">Produção, custos, desigualdades territoriais e cenários futuros em uma única leitura.</p>
+      <div class="product-hero-actions">
+        <a href="#dashboard-controls">Explorar indicadores <span aria-hidden="true">↓</span></a>
+        <a class="hero-text-link" href="/sobre-a-base/">Conhecer a base</a>
+      </div>
     </div>
-    <div class="intro-capabilities" aria-label="Principais usos da plataforma">
-      <article><span>01</span><div><b>Monitorar</b><p>Evolução assistencial e financeira.</p></div></article>
-      <article><span>02</span><div><b>Comparar</b><p>Estados, municípios e taxas populacionais.</p></div></article>
-      <article><span>03</span><div><b>Antecipar</b><p>Tendências para apoiar o planejamento.</p></div></article>
-      <div class="intro-scope"><span id="scope-chip">Brasil</span><span id="period-chip">{currentYear}</span><span>SIA/SUS + IBGE</span></div>
+
+    <section class="product-hero-visual stage" id="kidney-stage" aria-label="Rim humano interativo em três dimensões">
+      <div class="fallback" id="kidney-fallback">
+        <figure><img src="/assets/kidney-position.webp" width="560" height="420" alt="Rim humano ilustrado em três dimensões" /></figure>
+        <figure><img src="/assets/kidney-hilum.webp" width="560" height="420" alt="Vista do hilo do rim esquerdo" /></figure>
+      </div>
+      <div class="kidney-controls hero-kidney-controls">
+        <button type="button" data-view="position" aria-pressed="true">Exterior</button>
+        <button type="button" data-view="hilum" aria-pressed="false">Hilo renal</button>
+        <button type="button" id="enable-3d">Carregando 3D</button>
+        <span class="kidney-hint">Arraste para girar</span>
+      </div>
+    </section>
+
+    <div class="product-hero-data" aria-label="Cobertura da plataforma">
+      <article><span>Série nacional</span><strong>2015–2026</strong><small>138 meses</small></article>
+      <article><span>Território</span><strong>27 UFs</strong><small>municípios e taxas</small></article>
+      <article><span>Última competência</span><strong>jun/2026</strong><small>dado provisório</small></article>
     </div>
   </header>
 
   <section class="dashboard-controls" id="dashboard-controls" aria-label="Controles do dashboard">
+    <div class="dashboard-controls-label"><span>Recorte ativo</span><b id="scope-chip">Brasil</b><small id="period-chip">{currentYear}</small></div>
     <div class="view-switch" role="group" aria-label="Modo de visualização">
       <button type="button" data-dashboard-view="executive" aria-pressed="true">Executiva</button>
       <button type="button" data-dashboard-view="analytical" aria-pressed="false">Analítica</button>
       <button type="button" data-dashboard-view="method" aria-pressed="false">Metodológica</button>
     </div>
-    <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="true" aria-controls="dashboard-filter-fields">Filtros</button>
-    <form class="dashboard-filter-fields" id="dashboard-filter-fields">
+    <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="dashboard-filter-fields">Filtros</button>
+    <form class="dashboard-filter-fields" id="dashboard-filter-fields" hidden>
       <label>Ano<select id="dashboard-year">{territoryYears.map((year) => <option value={year} selected={year === currentYear}>{year}</option>)}</select></label>
       <label>Território<select id="dashboard-uf"><option value="BR">Brasil</option>{territorio.ufs.map((uf: any) => <option value={uf.sigla}>{uf.sigla} · {uf.nome}</option>)}</select></label>
       <label>Município<select id="dashboard-municipality" disabled><option value="">Todos os municípios</option></select></label>
@@ -149,7 +166,7 @@ const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, uf
       <figcaption id="scope-trend-caption">Série anual calculada com a mesma população e métrica dos indicadores.</figcaption>
     </figure>
     <aside class="panel signal-panel" aria-labelledby="signals-title">
-      <div class="panel-head"><div><span>Alertas do recorte</span><h2 id="signals-title">Pontos para acompanhamento</h2></div></div>
+      <div class="panel-head"><div><span>Alertas do recorte</span><h2 id="signals-title">Pontos para acompanhamento</h2></div><span class="signal-summary" id="signal-summary">4 sinais</span></div>
       <ol class="signal-list" id="dynamic-signals" aria-live="polite"></ol>
     </aside>
   </section>
@@ -183,11 +200,6 @@ const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, uf
       <article><span>Cobertura temporal</span><strong>2015–2026</strong><p>Território comparável até 2025; série nacional mensal até junho de 2026.</p></article>
       <article><span>Unidade observada</span><strong>Procedimentos</strong><p>Os registros não representam pacientes únicos nem prevalência da doença.</p></article>
     </div>
-  </section>
-
-  <section class="renal-compact analytical-only" aria-labelledby="renal-title">
-    <div class="renal-copy"><p class="eyebrow">Sistema renal</p><h2 id="renal-title">Entenda o objeto monitorado</h2><p>Modelo anatômico complementar à leitura gerencial.</p><a href="/sobre-a-base/">Como os registros são produzidos →</a></div>
-    <section class="stage" id="kidney-stage" aria-label="Rim humano em três dimensões"><div class="fallback" id="kidney-fallback"><figure><img src="/assets/kidney-position.webp" width="560" height="420" alt="Rim humano ilustrado em três dimensões" /><figcaption>Posição</figcaption></figure><figure><img src="/assets/kidney-hilum.webp" width="560" height="420" alt="Vista do hilo do rim esquerdo" /><figcaption>Entrada do sangue</figcaption></figure></div><div class="kidney-controls"><button type="button" data-view="position" aria-pressed="true">Posição</button><button type="button" data-view="hilum" aria-pressed="false">Entrada do sangue</button><button type="button" id="enable-3d">Carregando 3D</button><span class="kidney-hint">arraste diretamente sobre o rim</span></div></section>
   </section>
 
   <p class="home-disclaimer">A base representa procedimentos aprovados, não pessoas. Dados por local de atendimento.</p>

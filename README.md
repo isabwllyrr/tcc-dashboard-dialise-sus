@@ -182,7 +182,7 @@ As interfaces permitem visualizar:
 
 ## Observacao metodologica
 
-Foram testados Regressao Linear, Ridge, Random Forest e Gradient Boosting. A validacao usa 43 janelas temporais moveis: em cada uma, o modelo recebe somente os dados anteriores ao corte e projeta os 12 meses seguintes sem acessar valores reais intermediarios. O Gradient Boosting apresentou o menor MAPE medio. A previsao inclui uma faixa empirica de 95% derivada dos erros historicos por horizonte e deve ser apresentada como apoio exploratorio, nao como estimativa deterministica do gasto futuro.
+Foram testados Holt-Winters, Regressao Linear, Ridge, Random Forest e Gradient Boosting. A validacao usa 43 janelas temporais moveis: em cada uma, o modelo recebe somente os dados anteriores ao corte e projeta os 12 meses seguintes sem acessar valores reais intermediarios. Holt-Winters apresentou o menor MAPE nominal geral (4,44%); Gradient Boosting foi o melhor entre os modelos de aprendizagem testados (5,35%) e permanece como o modelo publicado. A previsao inclui uma faixa empirica de 95% derivada dos erros historicos por horizonte e deve ser apresentada como apoio exploratorio, nao como estimativa deterministica do gasto futuro.
 
 ## Triagem demonstrativa
 

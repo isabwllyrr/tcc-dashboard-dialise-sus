@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 
 const APP_NAME = "Agente DialisaSUS";
-const APP_VERSION = "3.2.0";
+const APP_VERSION = "3.3.0";
 const DEFAULT_MODEL = "gemini-3.6-flash";
 const FALLBACK_MODEL = "gemini-3.5-flash-lite";
 const MAX_QUESTION_CHARS = 500;
@@ -27,6 +27,9 @@ const SYSTEM_INSTRUCTION = [
   "2026 é parcial; maio e junho são provisórios e não foram corrigidos automaticamente.",
   "Diferencie observado, provisório e estimado. Não faça diagnóstico, prescrição ou triagem clínica.",
   "Comece pela resposta direta e use no máximo três parágrafos curtos.",
+  "Escreva os nomes dos modelos de forma amigável: Gradient Boosting, Holt-Winters, Random Forest, Regressão linear e Ridge.",
+  "Formate percentuais e números em português do Brasil, com no máximo duas casas decimais; nunca exponha identificadores internos com sublinhado.",
+  "Quando houver comparação, diga primeiro o resultado e depois a cautela necessária para interpretá-lo.",
   "Apresente somente números presentes no CONTEXTO_JSON e explicite a cautela metodológica relevante.",
   "Não use Markdown, títulos ou listas. Mencione a rota_dona fornecida ao final.",
 ].join("\n");
@@ -76,11 +79,12 @@ export function serializeContext(context) {
   return serialized;
 }
 const pt = (value, digits=1) => new Intl.NumberFormat("pt-BR",{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(value);
+const modelLabel=(value)=>({holt_winters:"Holt-Winters",gradient_boosting:"Gradient Boosting",random_forest:"Random Forest",regressao_linear:"Regressão linear",ridge:"Ridge",sazonal_ingenuo:"Sazonal ingênuo"}[value]||String(value).replaceAll("_"," "));
 export function fallbackAnswer(context) {
   const route = context.rota_dona; const data=context.dados;
   if (context.categoria === "valor") { const finding=data.achados.find((x)=>x.id==="G1.achado.variacao_real");const a=finding.valores[0].valor;return `Entre ${finding.periodos.inicio} e ${finding.periodos.fim}, a variação do valor anual real foi ${a>=0?"+":""}${pt(a)}%. Consulte ${route}`; }
   if (context.categoria === "contagem") { const value=data.achado.valores[0].valor; return `O dossiê acumula ${new Intl.NumberFormat("pt-BR").format(value)} procedimentos aprovados, não pessoas. Consulte ${route}`; }
-  if (context.categoria === "modelo") { const nominal=[...data.comparacao].filter((p)=>p.alvo==="valor_nominal").sort((a,b)=>a.metricas.mape_medio-b.metricas.mape_medio)[0]; const real=[...data.comparacao].filter((p)=>p.alvo==="valor_real").sort((a,b)=>a.metricas.mape_medio-b.metricas.mape_medio)[0]; return `No backtest, ${nominal.modelo} tem o menor MAPE nominal (${pt(nominal.metricas.mape_medio,2)}%) e ${real.modelo} o menor MAPE real (${pt(real.metricas.mape_medio,2)}%). Consulte ${route}`; }
+  if (context.categoria === "modelo") { const nominal=[...data.comparacao].filter((p)=>p.alvo==="valor_nominal").sort((a,b)=>a.metricas.mape_medio-b.metricas.mape_medio)[0]; const real=[...data.comparacao].filter((p)=>p.alvo==="valor_real").sort((a,b)=>a.metricas.mape_medio-b.metricas.mape_medio)[0]; return `No backtest, ${modelLabel(nominal.modelo)} apresentou o menor MAPE nominal (${pt(nominal.metricas.mape_medio,2)}%) e ${modelLabel(real.modelo)} o menor MAPE em valores corrigidos (${pt(real.metricas.mape_medio,2)}%). Consulte ${route}`; }
   if (context.categoria === "territorio") return `A leitura territorial de ${data.ano} usa produção por local de atendimento e população residente no denominador; não mede prevalência. Consulte ${route}`;
   return `Fontes, escopo, glossário e ressalvas metodológicas estão documentados em ${route}`;
 }
