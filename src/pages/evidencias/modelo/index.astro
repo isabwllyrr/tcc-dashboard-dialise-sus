@@ -66,10 +66,10 @@ const selectedIsLearningWinner = nominal.filter((item:any)=>item.modelo !== "hol
   </section>
 
   <section class="model-decision" aria-labelledby="model-decision-title">
-    <div class="model-decision-copy"><span>Decisão metodológica</span><h2 id="model-decision-title">Dois resultados, duas perguntas diferentes</h2><p>O ranking geral identifica o menor erro entre todos os candidatos. A projeção publicada mantém o melhor modelo de aprendizagem testado.</p></div>
+    <div class="model-decision-copy"><span>Decisão metodológica</span><h2 id="model-decision-title">Dois resultados, duas perguntas diferentes</h2><p>{labelModel(nominalWinner.modelo)} obteve o menor erro geral. Como a proposta exige aprendizagem de máquina, a projeção publicada utiliza {labelModel(forecastModel)}, o melhor modelo de aprendizagem testado.</p></div>
     <div class="model-decision-cards">
-      <article><span>Menor MAPE geral</span><strong>{labelModel(nominalWinner.modelo)}</strong><b>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%</b><p>Referência estatística no alvo nominal.</p></article>
-      <article class="selected"><span>Modelo publicado</span><strong>{labelModel(forecastModel)}</strong><b>{ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%</b><p>{selectedIsLearningWinner ? "Melhor desempenho entre os modelos de aprendizagem testados." : "Escolha operacional registrada no dossiê."}</p></article>
+      <article><span>Menor MAPE entre todos</span><strong>{labelModel(nominalWinner.modelo)}</strong><b>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%</b><p>Referência estatística geral no alvo nominal.</p></article>
+      <article class="selected"><span>Modelo de aprendizagem publicado</span><strong>{labelModel(forecastModel)}</strong><b>{ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%</b><p>{selectedIsLearningWinner ? "Melhor desempenho entre os modelos de aprendizagem testados." : "Escolha operacional registrada no dossiê."}</p></article>
     </div>
   </section>
 

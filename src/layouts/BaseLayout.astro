@@ -55,8 +55,11 @@ const extractionLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", year: 
         <div class="head-row">
           <span class="mark">Dialisa<i>SUS</i></span>
           <span class="stamp">inteligência para gestão · SIA/SUS + IBGE</span>
+          <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menu de navegação">
+            <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+          </button>
         </div>
-        <nav aria-label="Rotas">
+        <nav id="primary-nav" aria-label="Rotas">
           <a href="/" aria-current={isHome ? "page" : undefined}>Visão geral</a>
           <a href="/evidencias/valor/" aria-current={isValor ? "page" : undefined}>Custos</a>
           <a href="/evidencias/territorio/" aria-current={isTerritorio ? "page" : undefined}>Território</a>
@@ -74,6 +77,7 @@ const extractionLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", year: 
       </footer>
     </div>
     <script src="/assets/charts.js" defer></script>
+    <script src="/assets/navigation.js" defer></script>
     <slot name="scripts" />
   </body>
 </html>

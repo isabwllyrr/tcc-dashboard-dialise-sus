@@ -49,6 +49,14 @@ function serveDist(port = 4188) {
   });
 }
 
+async function launchBrowser() {
+  try { return await chromium.launch({ headless: true }); }
+  catch (error) {
+    if (process.platform === 'win32') return chromium.launch({ headless: true, channel: 'msedge' });
+    throw error;
+  }
+}
+
 async function runAudit() {
   console.log('=== 1. VERIFICANDO ARQUIVOS GERADOS EM DIST ===');
   
@@ -73,11 +81,12 @@ async function runAudit() {
 
   // Check that index.html has kidney scripts and 33 other pages have 0 KB of 3D runtime
   const homeHtml = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf8');
+  const kidneySource = fs.readFileSync(path.join(DIST_DIR, 'assets', 'kidney.js'), 'utf8');
   if (!homeHtml.includes('/assets/kidney.js')) {
     throw new Error('Home (dist/index.html) não inclui /assets/kidney.js');
   }
-  if (!homeHtml.includes('three.module.min.js')) {
-    throw new Error('Home (dist/index.html) não inclui importmap com three.module.min.js');
+  if (!kidneySource.includes('import("/assets/vendor/three.module.min.js")')) {
+    throw new Error('Módulo renal não importa a versão local do Three.js');
   }
   if (!homeHtml.includes('/assets/kidney-position.webp') || !homeHtml.includes('/assets/kidney-hilum.webp')) {
     throw new Error('Home não inclui vistas estáticas WebP no HTML inicial');
@@ -85,7 +94,7 @@ async function runAudit() {
   if (!homeHtml.includes('id="enable-3d"')) {
     throw new Error('Home não possui botão #enable-3d');
   }
-  console.log('✔ Home possui importmap, script do rim, vistas WebP e botão #enable-3d');
+  console.log('✔ Home possui script do rim, vistas WebP e carregamento local do Three.js');
 
   let otherPagesWith3D = 0;
   for (const file of htmlFiles) {
@@ -127,7 +136,7 @@ async function runAudit() {
   const serverInstance = await serveDist(4188);
   console.log(`Servidor HTTP ativo em ${serverInstance.url}`);
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchBrowser();
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
   const networkRequests = [];
@@ -144,45 +153,14 @@ async function runAudit() {
     throw new Error(`Erros na página ao carregar: ${pageErrors.join(', ')}`);
   }
 
-  // 2.1 Verificação antes do clique
-  console.log('\n--- 2.1 Verificações Antes do Clique (#enable-3d) ---');
-  const threeLoadedBefore = networkRequests.some(url => url.includes('three') || url.includes('GLTF') || url.includes('meshopt') || url.includes('kidney.glb'));
-  console.log(`Recursos 3D (Three/GLTF/Meshopt/GLB) carregados antes do clique: ${threeLoadedBefore ? 'SIM ❌' : 'NÃO ✔ (0 KB transferidos)'}`);
-  if (threeLoadedBefore) {
-    throw new Error('Recursos 3D foram carregados antes da solicitação explícita do usuário!');
-  }
-
-  // Fallback figures
-  const fallbackVisible = await page.$eval('#kidney-fallback', el => !el.hidden && getComputedStyle(el).display !== 'none');
-  console.log(`Vistas estáticas visíveis no DOM: ${fallbackVisible ? 'SIM ✔' : 'NÃO ❌'}`);
-  if (!fallbackVisible) throw new Error('Fallback estático não está visível antes da ativação');
-
-  const metricsBefore = await page.evaluate(() => window.__kidneyMetrics);
-  console.log('Métricas iniciais:', JSON.stringify(metricsBefore));
-  if (metricsBefore.mode !== 'static' || metricsBefore.assetLoaded !== false) {
-    throw new Error('Estado inicial não está em modo estático');
-  }
-
-  // Test static view toggle
-  await page.click('button[data-view="hilum"]');
-  const hilumPressed = await page.$eval('button[data-view="hilum"]', el => el.getAttribute('aria-pressed'));
-  const fig1Hidden = await page.$eval('#kidney-fallback figure:first-child', el => el.hidden);
-  const fig2Hidden = await page.$eval('#kidney-fallback figure:last-child', el => el.hidden);
-  console.log(`Alternância estática para Hilo: pressed=${hilumPressed}, fig1Hidden=${fig1Hidden}, fig2Hidden=${fig2Hidden}`);
-  if (hilumPressed !== 'true' || !fig1Hidden || fig2Hidden) {
-    throw new Error('Alternância de vistas estáticas falhou');
-  }
-
-  // 2.2 Clique em Explorar em 3D
-  console.log('\n--- 2.2 Ativação Sob Demanda (#enable-3d) ---');
-  await page.click('#enable-3d');
-
-  // Wait for canvas to appear and loaded
+  console.log('\n--- 2.1 Ativação automática e fallback resiliente ---');
+  // O fallback permanece no HTML e cobre a janela anterior à ativação ociosa.
+  if (!homeHtml.includes('id="kidney-fallback"')) throw new Error('Fallback estático não está presente no HTML');
   await page.waitForSelector('#kidney-stage canvas', { state: 'visible', timeout: 10000 });
   await page.waitForFunction(() => window.__kidneyMetrics.assetLoaded === true && window.__kidneyMetrics.paintedPixels > 0, { timeout: 10000 });
 
   const threeRequestsAfter = networkRequests.filter(url => url.includes('three') || url.includes('GLTF') || url.includes('meshopt') || url.includes('kidney.glb'));
-  console.log(`Recursos 3D carregados após clique (${threeRequestsAfter.length} recursos):`);
+  console.log(`Recursos 3D carregados automaticamente (${threeRequestsAfter.length} recursos):`);
   threeRequestsAfter.forEach(u => console.log('  ->', u));
 
   const metricsAfter = await page.evaluate(() => window.__kidneyMetrics);

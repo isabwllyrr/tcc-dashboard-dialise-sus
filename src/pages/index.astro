@@ -196,7 +196,7 @@ const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, uf
     <div class="panel-head"><div><span>Governança analítica</span><h2 id="method-dashboard-title">Modelo, cobertura e limitações</h2></div><a href="/sobre-a-base/">Metodologia completa →</a></div>
     <div class="method-dashboard-grid">
       <article><span>Projeção publicada</span><strong>{labelModel(forecastModel)}</strong><p>MAPE nominal de {ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%.</p></article>
-      <article class="method-warning"><span>Menor MAPE nominal</span><strong>{labelModel(nominalWinner.modelo)}</strong><p>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%. A divergência deve ser justificada ou corrigida antes da defesa.</p></article>
+      <article class="method-warning"><span>Menor MAPE entre todos</span><strong>{labelModel(nominalWinner.modelo)}</strong><p>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%. Referência estatística geral; não é um modelo de aprendizagem.</p></article>
       <article><span>Cobertura temporal</span><strong>2015–2026</strong><p>Território comparável até 2025; série nacional mensal até junho de 2026.</p></article>
       <article><span>Unidade observada</span><strong>Procedimentos</strong><p>Os registros não representam pacientes únicos nem prevalência da doença.</p></article>
     </div>

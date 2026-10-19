@@ -18,7 +18,10 @@ const excluded = eligibility.find((v:any)=>v.chave === "municipios_excluidos").v
 const trajectoryPeriod = distribuicao.periodos;
 ---
 <BaseLayout title="Território">
-  <p class="eyebrow">Evidência · Território</p><h1 class="claim">Produção por local de atendimento <em>não é prevalência</em>.</h1><p class="standfirst">O mapa compara procedimentos aprovados por 100 mil habitantes nas {ptInt(doc.ufs.length)} UFs, de {years[0]} a {years.at(-1)}.</p><p class="guard">Esta base conta procedimentos aprovados, não pessoas. O numerador é produção por local de atendimento; o denominador é população residente estimada ou censitária.</p>
+  <header class="evidence-intro">
+    <div><p class="eyebrow">Evidência · Território</p><h1 class="claim">Produção por local de atendimento <em>não é prevalência</em>.</h1></div>
+    <div><p class="standfirst">O mapa compara procedimentos aprovados por 100 mil habitantes nas {ptInt(doc.ufs.length)} UFs, de {years[0]} a {years.at(-1)}.</p><p class="guard">Esta base conta procedimentos aprovados, não pessoas. O numerador é produção por local de atendimento; o denominador é população residente estimada ou censitária.</p></div>
+  </header>
   <form class="selector territory-selector" id="territory-selector" method="get">
     <label for="territory-year">Ano</label><select id="territory-year" name="ano">{years.map((year)=><option value={year} selected={year===currentYear}>{year}</option>)}</select>
     <label for="territory-uf">UF</label><select id="territory-uf" name="uf"><option value="">Todas</option>{doc.ufs.map((uf:any)=><option value={uf.sigla.toLowerCase()}>{uf.sigla} · {uf.nome}</option>)}</select>

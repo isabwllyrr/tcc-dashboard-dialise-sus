@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-18T04:14:35.578Z",
+  "generated_at": "2026-10-19T12:10:33.487Z",
   "routes": [
     {
       "route": "/",
@@ -796,12 +796,12 @@
       "url": "http://127.0.0.1:4322/evidencias/territorio/sp/?ano=2017"
     },
     "kidney": {
-      "loaded_before_click": false,
-      "loaded_after_click": true,
-      "mode": "interactive"
+      "asset_loaded": true,
+      "mode": "interactive",
+      "painted_pixels": 34431
     },
     "assistant": {
-      "answer": "Resposta de teste baseada no dossiê. Abrir evidência",
+      "answer": "DOSSIÊ DIALISASUS\n\nResposta de teste baseada no dossiê.i\n\nConferir evidência ↗",
       "href": "/evidencias/valor/"
     }
   },

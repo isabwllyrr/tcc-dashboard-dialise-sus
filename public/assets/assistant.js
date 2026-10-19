@@ -57,7 +57,13 @@
       local_fallback: "Dossiê local",
       safety_rule: "Regra de segurança",
     };
-    message("assistant", data.answer || "Não foi possível gerar uma resposta.", { source: labels[data.source] || "Dossiê DialisaSUS", warning: data.warning, route: data.route || "/sobre-a-base/" });
+    const route = data.route || "/sobre-a-base/";
+    const rawAnswer = data.answer || "Não foi possível gerar uma resposta.";
+    const cleanAnswer = rawAnswer
+      .replace(new RegExp(`\\s*${route.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}\\s*$`), "i")
+      .replace(/\s*\/evidencias\/[a-z0-9-]+\/?\s*$/i, "")
+      .trim();
+    message("assistant", cleanAnswer, { source: labels[data.source] || "Dossiê DialisaSUS", warning: data.warning, route });
     consultations += 1;
     count.textContent = `${consultations} ${consultations === 1 ? "consulta" : "consultas"}`;
     renderFollowups(data.category);

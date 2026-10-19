@@ -31,8 +31,16 @@ function routesFromDist(directory=dist,prefix=""){
 const screenshots={"/":"inicio","/evidencias/valor/":"valor","/evidencias/contagem/":"contagem","/evidencias/territorio/":"territorio","/evidencias/modelo/":"modelo","/sobre-a-base/":"base","/assistente/":"assistente"};
 const report={generated_at:new Date().toISOString(),routes:[],interactions:{},summary:{}};
 
+async function launchBrowser() {
+  try { return await chromium.launch({ headless: true }); }
+  catch (error) {
+    if (process.platform === "win32") return chromium.launch({ headless: true, channel: "msedge" });
+    throw error;
+  }
+}
+
 await new Promise((resolve)=>server.listen(port,"127.0.0.1",resolve));
-const browser=await chromium.launch({headless:true});
+const browser=await launchBrowser();
 try{
   const routes=routesFromDist();
   for(const route of routes){
@@ -54,9 +62,9 @@ try{
 
   const uf=await browser.newPage({viewport:{width:390,height:900}});await uf.goto(`http://127.0.0.1:${port}/evidencias/territorio/sp/`);await uf.selectOption("#uf-year","2017");report.interactions.uf_year={label:await uf.locator("#municipal-year-label").textContent(),url:uf.url()};if(report.interactions.uf_year.label!=="2017"||!uf.url().includes("ano=2017"))throw new Error("Seletor municipal não atualizou estado/URL");await uf.close();
 
-  const home=await browser.newPage({viewport:{width:390,height:900}});const requested=[];home.on("request",(request)=>requested.push(new URL(request.url()).pathname));await home.goto(`http://127.0.0.1:${port}/`);const beforeClick=requested.includes("/assets/kidney.glb");await home.click("#enable-3d");await home.waitForFunction(()=>window.__kidneyMetrics?.assetLoaded===true,{timeout:20000});report.interactions.kidney={loaded_before_click:beforeClick,loaded_after_click:requested.includes("/assets/kidney.glb"),mode:await home.evaluate(()=>window.__kidneyMetrics.mode)};if(beforeClick||!report.interactions.kidney.loaded_after_click)throw new Error("Cena 3D não respeitou carregamento sob demanda");await home.close();
+  const home=await browser.newPage({viewport:{width:390,height:900}});const requested=[];home.on("request",(request)=>requested.push(new URL(request.url()).pathname));await home.goto(`http://127.0.0.1:${port}/`);await home.waitForFunction(()=>window.__kidneyMetrics?.assetLoaded===true,{timeout:20000});report.interactions.kidney={asset_loaded:requested.includes("/assets/kidney.glb"),mode:await home.evaluate(()=>window.__kidneyMetrics.mode),painted_pixels:await home.evaluate(()=>window.__kidneyMetrics.paintedPixels)};if(!report.interactions.kidney.asset_loaded||report.interactions.kidney.painted_pixels<=0)throw new Error("Cena 3D automática não foi carregada ou renderizada");await home.close();
 
-  const assistant=await browser.newPage({viewport:{width:390,height:900}});await assistant.route("**/api/agent",(route)=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({answer:"Resposta de teste baseada no dossiê.",route:"/evidencias/valor/"})}));await assistant.goto(`http://127.0.0.1:${port}/assistente/`);await assistant.fill("#pergunta","Qual foi a variação real?");await assistant.click("#agent-form button");await assistant.locator("#agent-answer a").waitFor();report.interactions.assistant={answer:await assistant.locator("#agent-answer").innerText(),href:await assistant.locator("#agent-answer a").getAttribute("href")};if(report.interactions.assistant.href!=="/evidencias/valor/")throw new Error("Assistente não exibiu rota dona");await assistant.close();
+  const assistant=await browser.newPage({viewport:{width:390,height:900}});await assistant.route("**/api/agent",(route)=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({answer:"Resposta de teste baseada no dossiê. /evidencias/valor/",route:"/evidencias/valor/"})}));await assistant.goto(`http://127.0.0.1:${port}/assistente/`);await assistant.fill("#pergunta","Qual foi a variação real?");await assistant.click("#agent-form button");const lastAnswer=assistant.locator("#assistant-thread .assistant-message").last();await lastAnswer.locator("a").waitFor();report.interactions.assistant={answer:await lastAnswer.innerText(),href:await lastAnswer.locator("a").getAttribute("href")};if(report.interactions.assistant.href!=="/evidencias/valor/"||report.interactions.assistant.answer.includes("/evidencias/valor/"))throw new Error("Assistente não exibiu a evidência sem repetir a rota crua");await assistant.close();
 
   report.summary={pages:report.routes.length,viewport_checks:report.routes.length*2,overflows:0,h1_errors:0,console_errors:0,interactions:Object.keys(report.interactions).length};
   fs.writeFileSync(path.join(evidence,"auditoria-final.json"),JSON.stringify(report,null,2)+"\n");

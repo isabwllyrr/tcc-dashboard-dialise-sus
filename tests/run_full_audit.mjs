@@ -59,6 +59,14 @@ const CANONICAL_ROUTES = [
 
 const SAMPLE_UFS = ['sp', 'rj', 'mg', 'ba', 'am', 'rs', 'pe'];
 
+async function launchBrowser() {
+  try { return await chromium.launch({ headless: true }); }
+  catch (error) {
+    if (process.platform === 'win32') return chromium.launch({ headless: true, channel: 'msedge' });
+    throw error;
+  }
+}
+
 async function run() {
   const distDir = path.resolve('dist');
   if (!fs.existsSync(distDir)) {
@@ -76,7 +84,7 @@ async function run() {
   await new Promise(resolve => server.listen(PORT, HOST, resolve));
   console.log(`[HTTP Server] Ativo em ${BASE_URL} sobre ${distDir}`);
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchBrowser();
   const results = {
     canonicalRoutes: [],
     ufSampleRoutes: [],
