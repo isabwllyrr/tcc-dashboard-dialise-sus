@@ -161,7 +161,7 @@ Estão em `src/lib/dossie.ts` e já cuidam do padrão brasileiro:
 | `ptNumber(n, casas)` | decimal | `11,34` |
 | `ptPercent(n, casas)` | percentual com sinal | `+11,3%` |
 | `ptMoney(n)` | dinheiro | `R$ 4.948.321.232` |
-| `labelModel(s)` | nome do modelo | `Holt–Winters` |
+| `labelModel(s)` | nome do modelo | `Holt–Winters log` |
 
 ### O que tem dentro do dossiê
 

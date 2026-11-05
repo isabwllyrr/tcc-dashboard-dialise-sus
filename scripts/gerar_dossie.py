@@ -599,6 +599,7 @@ def gerar_modelo(meta: dict[str, str]) -> dict[str, object]:
         comparacao.append(
             {
                 "modelo": row.modelo,
+                "tipo": row.tipo,
                 "alvo": alvo,
                 "janelas": numero(row.recortes),
                 "metricas": {
@@ -632,7 +633,7 @@ def gerar_modelo(meta: dict[str, str]) -> dict[str, object]:
         [ARQ_PREVISAO],
         ["data", "previsao_valor_aprovado", "limite_inferior_95", "limite_superior_95", "modelo_usado"],
         "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
-        "previsao mensal nominal e limites de 95%; meses provisorios da origem sao mantidos sem correcao automatica",
+        "previsao mensal nominal e faixa empirica de 95% dos erros de backtest por horizonte; meses provisorios da origem sao mantidos sem correcao automatica",
     )
     previsao_12m = []
     for row in previsao.itertuples(index=False):
@@ -666,7 +667,7 @@ def gerar_modelo(meta: dict[str, str]) -> dict[str, object]:
         "achados": [
             {
                 "id": "G6.achado.modelo_nominal",
-                "texto": "No alvo nominal, o menor MAPE medio pertence ao primeiro colocado do backtest; a escolha operacional permanece separada da decisao metodologica da autora e do orientador.",
+                "texto": "No alvo nominal, o primeiro colocado pelo MAPE medio e adotado como modelo oficial da previsao, conforme o criterio metodologico declarado.",
                 "valores": [valor_achado("menor_mape_nominal", nominal.iloc[0]["MAPE_pct"], "percentual", origem_resumo)],
                 "ressalvas": ["r.mape", "r.provisorio"],
                 "periodos": {"backtest": "janelas temporais mensais", "origem_previsao": origem_previsao_data},

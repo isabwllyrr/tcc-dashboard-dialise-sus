@@ -1,7 +1,7 @@
 {
   "tipo_documento": "nacional",
   "metadados": {
-    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "gerado_em": "2026-11-05T11:13:27-03:00",
     "vintage": "2026-09-15",
     "schema_version": "1.0.0"
   },
@@ -123,7 +123,7 @@
       },
       {
         "periodo": "2018",
-        "valor": 2996360541,
+        "valor": 2996360541.0000005,
         "estado": "observado",
         "unidade": "reais_correntes",
         "origem": {
@@ -161,7 +161,7 @@
       },
       {
         "periodo": "2019",
-        "valor": 3129327970.86,
+        "valor": 3129327970.8599997,
         "estado": "observado",
         "unidade": "reais_correntes",
         "origem": {
@@ -237,7 +237,7 @@
       },
       {
         "periodo": "2021",
-        "valor": 3226651873.1,
+        "valor": 3226651873.1000004,
         "estado": "observado",
         "unidade": "reais_correntes",
         "origem": {
@@ -275,7 +275,7 @@
       },
       {
         "periodo": "2022",
-        "valor": 3708411468.85,
+        "valor": 3708411468.8500004,
         "estado": "observado",
         "unidade": "reais_correntes",
         "origem": {
@@ -351,7 +351,7 @@
       },
       {
         "periodo": "2024",
-        "valor": 4543024146.71,
+        "valor": 4543024146.709999,
         "estado": "observado",
         "unidade": "reais_correntes",
         "origem": {

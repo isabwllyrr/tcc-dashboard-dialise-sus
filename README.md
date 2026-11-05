@@ -153,9 +153,9 @@ preencha a chave somente no arquivo `.env` ignorado pelo Git e abra
 - Valor aprovado total no periodo: aproximadamente R$ 40,03 bilhoes.
 - Crescimento do valor aprovado entre 2015 e 2025, ultimo ano fechado: aproximadamente 88,61%.
 - Unidade de analise: procedimentos aprovados, nao pacientes unicos.
-- Modelo de aprendizagem selecionado: Gradient Boosting.
-- MAPE medio em 43 janelas moveis de 12 meses: aproximadamente 5,35%.
-- Desvio-padrao do MAPE entre janelas: aproximadamente 2,82 pontos percentuais.
+- Modelo oficial da previsao nominal: Holt-Winters log-aditivo.
+- MAPE medio em 43 janelas moveis de 12 meses: aproximadamente 3,56%.
+- Desvio-padrao do MAPE entre janelas: aproximadamente 2,25 pontos percentuais.
 - Previsao exploratoria: julho de 2026 a junho de 2027, a partir do ultimo mes real disponivel.
 
 ## Dashboards
@@ -182,7 +182,7 @@ As interfaces permitem visualizar:
 
 ## Observacao metodologica
 
-Foram testados Holt-Winters, Regressao Linear, Ridge, Random Forest e Gradient Boosting. A validacao usa 43 janelas temporais moveis: em cada uma, o modelo recebe somente os dados anteriores ao corte e projeta os 12 meses seguintes sem acessar valores reais intermediarios. Holt-Winters apresentou o menor MAPE nominal geral (4,44%); Gradient Boosting foi o melhor entre os modelos de aprendizagem testados (5,35%) e permanece como o modelo publicado. A previsao inclui uma faixa empirica de 95% derivada dos erros historicos por horizonte e deve ser apresentada como apoio exploratorio, nao como estimativa deterministica do gasto futuro.
+Foram comparados o sazonal ingenuo, Holt-Winters aditivo, Holt-Winters log-aditivo, Regressao Linear, Ridge, Random Forest e Gradient Boosting. A validacao usa 43 janelas temporais moveis: em cada uma, o modelo recebe somente os dados anteriores ao corte e projeta os 12 meses seguintes sem acessar valores reais intermediarios. O Holt-Winters log-aditivo apresentou o menor MAPE nominal geral (3,56%), MASE de 0,82 e vies medio de -1,40%, sendo adotado como modelo oficial. O Gradient Boosting permaneceu como o melhor modelo de aprendizagem no alvo nominal (5,35%) e venceu por pequena margem no alvo corrigido pelo IPCA (3,92% contra 4,01%). A previsao inclui uma faixa empirica de 95% derivada dos erros historicos por horizonte e deve ser apresentada como apoio exploratorio, nao como intervalo probabilistico nem estimativa deterministica do gasto futuro.
 
 ## Triagem demonstrativa
 

@@ -1,7 +1,7 @@
 {
   "tipo_documento": "territorio_uf",
   "metadados": {
-    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "gerado_em": "2026-11-05T11:13:27-03:00",
     "vintage": "2026-09-15",
     "schema_version": "1.0.0"
   },
@@ -774,7 +774,7 @@
       },
       "valor_real_por_habitante": {
         "periodo": "2015",
-        "valor": 27.23316332087581,
+        "valor": 27.233163320875814,
         "estado": "observado",
         "unidade": "reais_jun_2026_por_habitante",
         "origem": {
@@ -913,7 +913,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2015",
-        "valor": 11367.27053821698,
+        "valor": 11367.270538216979,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -1023,7 +1023,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2015",
-        "valor": 23822.324256778356,
+        "valor": 23822.324256778353,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -2268,7 +2268,7 @@
       },
       "valor_real_por_habitante": {
         "periodo": "2017",
-        "valor": 38.22514752342354,
+        "valor": 38.225147523423544,
         "estado": "observado",
         "unidade": "reais_jun_2026_por_habitante",
         "origem": {
@@ -2488,7 +2488,7 @@
       },
       "valor_real_por_habitante": {
         "periodo": "2018",
-        "valor": 9.877823603727895,
+        "valor": 9.877823603727897,
         "estado": "observado",
         "unidade": "reais_jun_2026_por_habitante",
         "origem": {
@@ -3507,7 +3507,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2019",
-        "valor": 12899.019177641949,
+        "valor": 12899.019177641947,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -3732,7 +3732,7 @@
       },
       "valor_real_por_habitante": {
         "periodo": "2019",
-        "valor": 60.46863916373837,
+        "valor": 60.468639163738374,
         "estado": "observado",
         "unidade": "reais_jun_2026_por_habitante",
         "origem": {
@@ -3909,7 +3909,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2020",
-        "valor": 24140.69899982341,
+        "valor": 24140.698999823406,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -4531,7 +4531,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2020",
-        "valor": 26004.33142578489,
+        "valor": 26004.331425784894,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -4971,7 +4971,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2021",
-        "valor": 13070.056042896796,
+        "valor": 13070.056042896795,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -5373,7 +5373,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2022",
-        "valor": 28365.40742263477,
+        "valor": 28365.407422634766,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -5483,7 +5483,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2022",
-        "valor": 25970.78060656352,
+        "valor": 25970.780606563516,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -6435,7 +6435,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2023",
-        "valor": 14353.38669020874,
+        "valor": 14353.386690208741,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -6837,7 +6837,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2024",
-        "valor": 30723.42869232745,
+        "valor": 30723.428692327452,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -7430,7 +7430,7 @@
       },
       "valor_real_por_habitante": {
         "periodo": "2024",
-        "valor": 96.05113332624676,
+        "valor": 96.05113332624677,
         "estado": "observado",
         "unidade": "reais_jun_2026_por_habitante",
         "origem": {
@@ -7497,7 +7497,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2024",
-        "valor": 28387.42916022669,
+        "valor": 28387.429160226686,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -7937,7 +7937,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2025",
-        "valor": 14542.691723677715,
+        "valor": 14542.691723677717,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {
@@ -8200,7 +8200,7 @@
       },
       "valor_real_por_habitante": {
         "periodo": "2025",
-        "valor": 92.69679447529064,
+        "valor": 92.69679447529063,
         "estado": "observado",
         "unidade": "reais_jun_2026_por_habitante",
         "origem": {

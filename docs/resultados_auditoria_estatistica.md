@@ -16,6 +16,10 @@ Esses resultados demonstram crescimento dos procedimentos aprovados, nao do nume
 
 ## Modelagem
 
-O Gradient Boosting permaneceu vencedor no backtesting alinhado ao horizonte real de 12 meses, com MAPE medio de 5,35%, desvio-padrao de 2,82 pontos percentuais, mediana de 4,42% e vies medio de -4,98%. O vies negativo indica que, em media, as previsoes ficaram abaixo dos valores observados nas janelas historicas.
+No alvo nominal publicado, o Holt-Winters log-aditivo venceu o backtesting multietapas com MAPE medio de 3,56%, desvio-padrao de 2,25 pontos percentuais, mediana de 2,35%, MASE de 0,82 e vies medio de -1,40%. O Gradient Boosting obteve MAPE de 5,35%, MASE de 1,23 e vies de -4,98%; portanto, nao foi mantido como modelo oficial. No alvo corrigido pelo IPCA, o Gradient Boosting apresentou o menor MAPE (3,92%), seguido de perto pelo Holt-Winters log-aditivo (4,01%).
+
+O resultado mostra que o Gradient Boosting modela melhor a serie quando a tendencia inflacionaria e removida, mas tende a achatar e subestimar a projecao nominal. O Holt-Winters log-aditivo representa explicitamente tendencia e sazonalidade e estabiliza a variancia por transformacao logaritmica, sendo mais adequado ao objetivo publicado.
 
 Foram usadas 43 janelas moveis de 12 meses. Em cada janela, o treinamento termina antes do primeiro mes previsto e nenhum valor real intermediario do periodo de teste e fornecido ao modelo.
+
+O sazonal ingenuo foi avaliado explicitamente no teste e obteve MAPE nominal de 8,45%. O MASE continua sendo calculado com a escala sazonal interna de cada treino; por isso, ele nao deve ser interpretado isoladamente como o resultado do benchmark fora da amostra.

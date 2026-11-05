@@ -1,7 +1,7 @@
 {
   "tipo_documento": "territorio_uf",
   "metadados": {
-    "gerado_em": "2026-09-21T10:18:13-03:00",
+    "gerado_em": "2026-11-05T11:13:27-03:00",
     "vintage": "2026-09-15",
     "schema_version": "1.0.0"
   },
@@ -850,7 +850,7 @@
       },
       "valor_real_por_habitante": {
         "periodo": "2018",
-        "valor": 14.744513411268224,
+        "valor": 14.744513411268223,
         "estado": "observado",
         "unidade": "reais_jun_2026_por_habitante",
         "origem": {
@@ -917,7 +917,7 @@
       },
       "taxa_100_mil": {
         "periodo": "2019",
-        "valor": 5992.601652655751,
+        "valor": 5992.6016526557505,
         "estado": "observado",
         "unidade": "procedimentos_aprovados_por_100_mil_habitantes",
         "origem": {

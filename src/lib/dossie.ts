@@ -29,6 +29,7 @@ export const ptMoney = (value: number | null | undefined, compact = false) => {
 
 export const labelModel = (value: string) => ({
   holt_winters: "Holt–Winters",
+  holt_winters_log: "Holt–Winters log",
   gradient_boosting: "Gradient Boosting",
   random_forest: "Random Forest",
   regressao_linear: "Regressão linear",

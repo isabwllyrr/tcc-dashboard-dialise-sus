@@ -33,5 +33,5 @@ Desenvolver um prototipo web para analisar a evolucao temporal, territorial e pr
 - O estudo mede procedimentos aprovados, nao quantidade de pacientes.
 - O ano de 2026 esta parcial e deve ser interpretado separadamente.
 - A previsao e exploratoria e nao determina o gasto futuro de forma exata.
-- O modelo selecionado foi Gradient Boosting, escolhido pelo menor MAPE medio no backtesting temporal apos a atualizacao da base ate junho de 2026.
+- O modelo oficial da previsao nominal e o Holt-Winters log-aditivo, escolhido pelo menor MAPE medio (3,56%) no backtesting multietapas com 43 janelas de 12 meses. O Gradient Boosting permanece como o melhor modelo de aprendizagem testado no alvo nominal, mas apresentou erro e vies de subestimacao maiores.
 - A aba de triagem renal e demonstrativa e representa uma possibilidade de expansao futura da plataforma.

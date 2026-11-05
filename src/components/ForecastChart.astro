@@ -50,7 +50,7 @@ const hitWidth = plotWidth / Math.max(1, timelineLength - 1);
   {history.length > 0 && <><rect class="forecast-zone" x={dividerX} y={top} width={width-right-dividerX} height={plotHeight}/><line class="forecast-divider" x1={dividerX} x2={dividerX} y1={top} y2={top+plotHeight}/><text class="phase-label" x={left+10} y={top+18}>OBSERVADO</text><text class="phase-label estimate-label" x={dividerX+12} y={top+18}>PREVISTO</text></>}
   <polygon class="forecast-band" points={[...upper, ...lower].join(" ")}/>
   {history.length > 0 && <polyline class="series forecast-history" points={historical}/>}<polyline class="series forecast-line" points={forecastLine}/>
-  {points.map((point, index) => <g class="forecast-point" tabindex="0"><circle cx={x(forecastOffset+index)} cy={y(point.central.valor)} r="4"/><title>{point.periodo}: {exactMoney.format(point.central.valor)}; intervalo de 95% entre {exactMoney.format(point.limite_inferior_95.valor)} e {exactMoney.format(point.limite_superior_95.valor)}</title></g>)}
+  {points.map((point, index) => <g class="forecast-point" tabindex="0"><circle cx={x(forecastOffset+index)} cy={y(point.central.valor)} r="4"/><title>{point.periodo}: {exactMoney.format(point.central.valor)}; faixa empírica de 95% entre {exactMoney.format(point.limite_inferior_95.valor)} e {exactMoney.format(point.limite_superior_95.valor)}</title></g>)}
   {timeline.map((periodo, index) => index % labelStep === 0 || index === timeline.length-1 ? <text class="axis forecast-month" x={x(index)} y={height-24} text-anchor="middle">{periodo}</text> : null)}
   {entries.map((entry, index) => {
     const pointValue = entry.values[0].value;

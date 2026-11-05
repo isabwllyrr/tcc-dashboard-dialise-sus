@@ -13,7 +13,16 @@ DOSSIE = ROOT / "dossie"
 # Constants for backtest window derivation
 HORIZON = 12
 FIRST_BACKTEST = pd.Timestamp("2022-01-01")
-OFFICIAL_MODEL = "gradient_boosting"
+OFFICIAL_MODEL = "holt_winters_log"
+EXPECTED_MODELS = {
+    "sazonal_ingenuo",
+    "holt_winters",
+    "holt_winters_log",
+    "regressao_linear",
+    "ridge",
+    "random_forest",
+    "gradient_boosting",
+}
 EVIDENCE_TARGETS = {"valor_aprovado", "valor_aprovado_real"}
 
 # Onda 0.1 (docs/tarefas/aferidor-onda0-1.md, docs/PLANO-V3-CONCEITO-C.md §3.2):
@@ -319,12 +328,16 @@ def validar():
     n_janelas_esperado = len(pd.date_range(FIRST_BACKTEST, ultimo_inicio, freq="MS"))
     assert metricas["recortes"].eq(n_janelas_esperado).all(), \
         f"Quantidade inesperada de janelas: {metricas['recortes'].unique()} vs esperado {n_janelas_esperado}"
+    assert set(metricas["modelo"]) == EXPECTED_MODELS, \
+        "A comparacao operacional deve incluir benchmark, modelos estatisticos e de aprendizagem"
     assert metricas.iloc[0]["modelo"] == previsao.iloc[0]["modelo_usado"], "Modelo divergente"
     assert previsao["modelo_usado"].eq(OFFICIAL_MODEL).all(), \
-        "Modelo oficial mudou sem gate academico"
+        "Modelo oficial divergente da decisao metodologica"
+    assert metricas.iloc[0]["modelo"] == OFFICIAL_MODEL, \
+        "O modelo oficial nao possui o menor MAPE nominal"
 
-    # --- 16. Evidencia comparativa: Holt-Winters, dois alvos e horizonte ---
-    modelos_evidencia = set(metricas["modelo"]) | {"holt_winters"}
+    # --- 16. Evidencia comparativa: benchmarks, dois alvos e horizonte ---
+    modelos_evidencia = set(metricas["modelo"])
     assert set(evidencia_resumo["alvo"]) == EVIDENCE_TARGETS, \
         "A evidencia deve cobrir os alvos nominal e real"
     assert set(evidencia_resumo["modelo"]) == modelos_evidencia, \
@@ -407,7 +420,6 @@ def validar():
     operacional_conferido = metricas.merge(
         evidencia_resumo[
             (evidencia_resumo["alvo"] == "valor_aprovado")
-            & (evidencia_resumo["tipo"] == "aprendizagem")
         ],
         on=["modelo", "tipo"],
         how="inner",

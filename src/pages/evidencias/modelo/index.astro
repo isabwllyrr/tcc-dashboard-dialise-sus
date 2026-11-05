@@ -10,6 +10,7 @@ const doc = readDossie("modelo.json");
 const nominal = doc.comparacao_modelos.filter((p: any) => p.alvo === "valor_nominal").sort((a: any,b: any) => a.metricas.mape_medio.valor-b.metricas.mape_medio.valor);
 const real = doc.comparacao_modelos.filter((p: any) => p.alvo === "valor_real").sort((a: any,b: any) => a.metricas.mape_medio.valor-b.metricas.mape_medio.valor);
 const nominalWinner = nominal[0];
+const learningWinner = nominal.filter((item: any) => item.tipo === "aprendizagem")[0];
 const forecast = doc.previsao_12m;
 const forecastModel = forecast[0]?.modelo;
 const selectedNominal = nominal.find((item: any) => item.modelo === forecastModel);
@@ -38,7 +39,6 @@ const horizonCsv = readFileSync(resolve(process.cwd(), "dados_tratados/evidencia
 const horizonHeaders = horizonCsv[0].split(",");
 const horizonAt = (name: string) => horizonHeaders.indexOf(name);
 const horizonPerformance = horizonCsv.slice(1).map((line) => line.split(",")).filter((cells) => cells[horizonAt("escala")] === "nominal" && cells[horizonAt("modelo")] === forecastModel).map((cells) => ({ horizonte: Number(cells[horizonAt("horizonte")]), mape: Number(cells[horizonAt("MAPE_pct")]), vies: Number(cells[horizonAt("vies_pct")]) })).sort((a,b)=>a.horizonte-b.horizonte);
-const selectedIsLearningWinner = nominal.filter((item:any)=>item.modelo !== "holt_winters").sort((a:any,b:any)=>a.metricas.mape_medio.valor-b.metricas.mape_medio.valor)[0]?.modelo === forecastModel;
 ---
 <BaseLayout title="Previsão">
   <header class="forecast-command-head">
@@ -50,26 +50,26 @@ const selectedIsLearningWinner = nominal.filter((item:any)=>item.modelo !== "hol
     <article class="kpi-card primary"><p>Média mensal prevista</p><strong>{ptMoney(averageForecast, true)}</strong><span>{firstForecast.periodo} a {lastForecast.periodo}</span></article>
     <article class="kpi-card"><p>Variação central</p><strong>{forecastChange >= 0 ? "+" : ""}{ptNumber(forecastChange, 2)}%</strong><span>primeiro ao último mês</span></article>
     <article class="kpi-card"><p>MAPE nominal</p><strong>{ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%</strong><span>{selectedNominal.janelas} janelas de backtest</span></article>
-    <article class="kpi-card"><p>Amplitude ao final</p><strong>{ptNumber(intervalAtEnd, 1)}%</strong><span>intervalo de 95% relativo à central</span></article>
+    <article class="kpi-card"><p>Amplitude ao final</p><strong>{ptNumber(intervalAtEnd, 1)}%</strong><span>faixa empírica de 95% relativa à central</span></article>
   </section>
 
   <figure class="forecast-hero forecast-combined">
     <div class="panel-head"><div><span>Histórico + previsão</span><h2>Valor aprovado mensal</h2></div><span class="chart-meta">24 meses observados · 12 previstos</span></div>
-    <div class="plot"><ForecastChart points={forecast} history={history} ariaLabel="Histórico de 24 meses e previsão de 12 meses do valor aprovado com intervalo de 95 por cento" /></div>
-    <div class="forecast-legend"><span class="history">Histórico</span><span class="central">Estimativa central</span><span class="interval">Intervalo de 95%</span></div>
-    <figcaption>A faixa representa incerteza estatística e aumenta conforme o horizonte. Os valores não constituem orçamento autorizado.</figcaption>
+    <div class="plot"><ForecastChart points={forecast} history={history} ariaLabel="Histórico de 24 meses e previsão de 12 meses do valor aprovado com faixa empírica de 95 por cento" /></div>
+    <div class="forecast-legend"><span class="history">Histórico</span><span class="central">Estimativa central</span><span class="interval">Faixa empírica de 95%</span></div>
+    <figcaption>A faixa deriva dos erros históricos do backtest por horizonte e aumenta conforme a distância da origem. Não é um intervalo probabilístico nem orçamento autorizado.</figcaption>
   </figure>
 
   <section class="scenario-strip" aria-labelledby="scenario-title">
-    <div class="scenario-intro"><span>Planejamento anual</span><h2 id="scenario-title">Faixa acumulada para 12 meses</h2><p>A comparação usa os limites mensais do intervalo de 95%; não representa três previsões independentes.</p></div>
+    <div class="scenario-intro"><span>Planejamento anual</span><h2 id="scenario-title">Faixa acumulada para 12 meses</h2><p>A comparação soma os limites mensais da faixa empírica; não representa três previsões independentes.</p></div>
     <div class="scenario-values"><article><span>Limite inferior</span><strong>{ptMoney(projectedTotals.inferior, true)}</strong></article><article class="selected"><span>Estimativa central</span><strong>{ptMoney(projectedTotals.central, true)}</strong><small>{projectedAnnualChange >= 0 ? "+" : ""}{ptNumber(projectedAnnualChange, 1)}% ante os 12 meses anteriores</small></article><article><span>Limite superior</span><strong>{ptMoney(projectedTotals.superior, true)}</strong></article></div>
   </section>
 
   <section class="model-decision" aria-labelledby="model-decision-title">
-    <div class="model-decision-copy"><span>Decisão metodológica</span><h2 id="model-decision-title">Dois resultados, duas perguntas diferentes</h2><p>{labelModel(nominalWinner.modelo)} obteve o menor erro geral. Como a proposta exige aprendizagem de máquina, a projeção publicada utiliza {labelModel(forecastModel)}, o melhor modelo de aprendizagem testado.</p></div>
+    <div class="model-decision-copy"><span>Decisão metodológica</span><h2 id="model-decision-title">O desempenho define o modelo publicado</h2><p>A projeção nominal utiliza {labelModel(forecastModel)}, vencedor pelo menor MAPE médio no protocolo de 43 janelas. {labelModel(learningWinner.modelo)} permanece como o melhor modelo de aprendizagem testado e como comparação secundária.</p></div>
     <div class="model-decision-cards">
-      <article><span>Menor MAPE entre todos</span><strong>{labelModel(nominalWinner.modelo)}</strong><b>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%</b><p>Referência estatística geral no alvo nominal.</p></article>
-      <article class="selected"><span>Modelo de aprendizagem publicado</span><strong>{labelModel(forecastModel)}</strong><b>{ptNumber(selectedNominal.metricas.mape_medio.valor, 2)}%</b><p>{selectedIsLearningWinner ? "Melhor desempenho entre os modelos de aprendizagem testados." : "Escolha operacional registrada no dossiê."}</p></article>
+      <article class="selected"><span>Modelo oficial</span><strong>{labelModel(nominalWinner.modelo)}</strong><b>{ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%</b><p>Menor erro percentual médio no alvo nominal.</p></article>
+      <article><span>Melhor aprendizagem de máquina</span><strong>{labelModel(learningWinner.modelo)}</strong><b>{ptNumber(learningWinner.metricas.mape_medio.valor, 2)}%</b><p>Comparação complementar, sem prevalecer sobre o vencedor geral.</p></article>
     </div>
   </section>
 
@@ -86,7 +86,7 @@ const selectedIsLearningWinner = nominal.filter((item:any)=>item.modelo !== "hol
   </section>
 
   <section class="horizon-performance panel" aria-labelledby="horizon-performance-title">
-    <div class="panel-head"><div><span>Erro por distância</span><h2 id="horizon-performance-title">Como a precisão muda ao longo dos 12 meses</h2></div><span class="chart-meta">Backtest recursivo · 43 janelas</span></div>
+    <div class="panel-head"><div><span>Erro por distância</span><h2 id="horizon-performance-title">Como a precisão muda ao longo dos 12 meses</h2></div><span class="chart-meta">Backtest multietapas · 43 janelas</span></div>
     <div class="horizon-layout">
       <div class="plot"><LineChart labels={horizonPerformance.map((p)=>`${p.horizonte}m`)} series={[{label:"MAPE",className:"estimated",values:horizonPerformance.map((p)=>p.mape)}]} valueFormat="percent" ariaLabel={`MAPE de ${labelModel(forecastModel)} por horizonte de previsão`} /></div>
       <aside><span>Leitura</span><strong>{ptNumber(horizonPerformance[0]?.mape, 2)}% → {ptNumber(horizonPerformance.at(-1)?.mape, 2)}%</strong><p>Erro no primeiro e no décimo segundo mês. A previsão fica menos precisa à medida que se afasta do último dado observado.</p><small>MAPE não é “acurácia”. Ele representa o erro percentual absoluto médio.</small></aside>
@@ -95,9 +95,8 @@ const selectedIsLearningWinner = nominal.filter((item:any)=>item.modelo !== "hol
 
   <details class="model-details">
     <summary>Metodologia, comparação de modelos e valores mensais</summary>
-    {nominalWinner.modelo !== forecastModel && <p class="model-alert">{labelModel(nominalWinner.modelo)} apresentou o menor MAPE nominal ({ptNumber(nominalWinner.metricas.mape_medio.valor, 2)}%); a projeção publicada utiliza {labelModel(forecastModel)}.</p>}
     <div class="table-wrap"><table><thead><tr><th scope="col">Alvo</th><th scope="col">Modelo</th><th scope="col">MAPE médio</th><th scope="col">MASE</th><th scope="col">Viés</th></tr></thead><tbody>{[...nominal,...real].map((p:any)=><tr><th scope="row">{p.alvo}</th><td>{labelModel(p.modelo)}</td><td>{ptNumber(p.metricas.mape_medio.valor,2)}%</td><td>{ptNumber(p.metricas.mase.valor,2)}</td><td>{ptNumber(p.metricas.vies.valor,2)}%</td></tr>)}</tbody></table></div>
-    <div class="table-wrap"><table><thead><tr><th scope="col">Mês</th><th scope="col">Central</th><th scope="col">Inferior 95%</th><th scope="col">Superior 95%</th></tr></thead><tbody>{forecast.map((p:any)=><tr><th scope="row">{p.periodo}</th><td>{ptMoney(p.central.valor)}</td><td>{ptMoney(p.limite_inferior_95.valor)}</td><td>{ptMoney(p.limite_superior_95.valor)}</td></tr>)}</tbody></table></div>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Mês</th><th scope="col">Central</th><th scope="col">Limite empírico inferior</th><th scope="col">Limite empírico superior</th></tr></thead><tbody>{forecast.map((p:any)=><tr><th scope="row">{p.periodo}</th><td>{ptMoney(p.central.valor)}</td><td>{ptMoney(p.limite_inferior_95.valor)}</td><td>{ptMoney(p.limite_superior_95.valor)}</td></tr>)}</tbody></table></div>
   </details>
   <p class="forecast-caveat">A origem inclui competências provisórias sem correção automática. Mudanças futuras no padrão da série podem reduzir o desempenho observado no backtest.</p>
 </BaseLayout>

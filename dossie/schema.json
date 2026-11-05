@@ -422,9 +422,10 @@
     },
     "ComparacaoModelo": {
       "type": "object",
-      "required": ["modelo", "alvo", "janelas", "metricas"],
+      "required": ["modelo", "tipo", "alvo", "janelas", "metricas"],
       "properties": {
         "modelo": { "type": "string", "minLength": 1 },
+        "tipo": { "enum": ["baseline", "estatistico", "aprendizagem"] },
         "alvo": { "enum": ["valor_nominal", "valor_real"] },
         "janelas": { "type": "integer", "minimum": 1 },
         "metricas": { "$ref": "#/$defs/MetricasModelo" }

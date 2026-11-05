@@ -21,7 +21,7 @@ TARGET_NOMINAL = "valor_aprovado"
 TARGET_REAL = "valor_aprovado_real"
 HORIZON = 12
 FIRST_BACKTEST = pd.Timestamp("2022-01-01")
-OFFICIAL_MODEL = "gradient_boosting"
+OFFICIAL_MODEL = "holt_winters_log"
 TARGETS = {
     TARGET_NOMINAL: "nominal",
     TARGET_REAL: "real_jun_2026",
@@ -81,7 +81,16 @@ def prever_aprendizagem(modelo, treino, datas_previsao, origem, target):
     return np.maximum(previsao.astype(float), 0)
 
 
-def prever_holt_winters(treino, passos, target):
+def prever_sazonal_ingenuo(treino, passos, target):
+    if passos > 12:
+        raise ValueError("O benchmark sazonal atual suporta no maximo 12 passos.")
+    valores = treino[target].astype(float).to_numpy()
+    if len(valores) < 12:
+        raise ValueError("O benchmark sazonal exige pelo menos 12 meses de treino.")
+    return valores[-12:][:passos].copy()
+
+
+def prever_holt_winters(treino, passos, target, use_boxcox=False):
     serie = treino.set_index("data")[target].astype(float).asfreq("MS")
     with warnings.catch_warnings(record=True) as avisos:
         warnings.simplefilter("always", ConvergenceWarning)
@@ -92,6 +101,7 @@ def prever_holt_winters(treino, passos, target):
             seasonal="add",
             seasonal_periods=12,
             initialization_method="estimated",
+            use_boxcox=use_boxcox,
         ).fit(optimized=True, remove_bias=False)
     convergiu = bool(modelo.mle_retvals.get("success", True)) and not any(
         issubclass(aviso.category, ConvergenceWarning) for aviso in avisos
@@ -100,15 +110,19 @@ def prever_holt_winters(treino, passos, target):
     return previsao, convergiu
 
 
-def executar_backtest(df, target, incluir_holt_winters=True):
+def executar_backtest(df, target, incluir_estatisticos=True):
     origem_serie = df["data"].min()
     ultimo_inicio = df["data"].max() - pd.DateOffset(months=HORIZON - 1)
     inicios = pd.date_range(FIRST_BACKTEST, ultimo_inicio, freq="MS")
     janelas = []
     detalhes = []
     modelos = list(modelos_aprendizagem().items())
-    if incluir_holt_winters:
-        modelos.append(("holt_winters", None))
+    if incluir_estatisticos:
+        modelos.extend([
+            ("sazonal_ingenuo", None),
+            ("holt_winters", None),
+            ("holt_winters_log", None),
+        ])
 
     for nome, modelo in modelos:
         for inicio in inicios:
@@ -119,9 +133,18 @@ def executar_backtest(df, target, incluir_holt_winters=True):
             ].copy()
             if len(treino) < 36 or len(teste) != HORIZON:
                 continue
-            if nome == "holt_winters":
-                pred, convergiu = prever_holt_winters(treino, HORIZON, target)
+            if nome == "sazonal_ingenuo":
+                pred = prever_sazonal_ingenuo(treino, HORIZON, target)
                 tipo = "baseline"
+                convergiu = True
+            elif nome in {"holt_winters", "holt_winters_log"}:
+                pred, convergiu = prever_holt_winters(
+                    treino,
+                    HORIZON,
+                    target,
+                    use_boxcox=0.0 if nome == "holt_winters_log" else False,
+                )
+                tipo = "estatistico"
             else:
                 pred = prever_aprendizagem(
                     modelo, treino, teste["data"], origem_serie, target
@@ -186,13 +209,29 @@ def resumir_por_horizonte(detalhes):
     )
 
 
-def comparacao_ultimo_holdout(df, inicio, origem_serie):
+def prever_modelo(nome, treino, datas_previsao, origem_serie, target):
+    if nome == "sazonal_ingenuo":
+        return prever_sazonal_ingenuo(treino, len(datas_previsao), target)
+    if nome in {"holt_winters", "holt_winters_log"}:
+        previsao, _ = prever_holt_winters(
+            treino,
+            len(datas_previsao),
+            target,
+            use_boxcox=0.0 if nome == "holt_winters_log" else False,
+        )
+        return previsao
+    return prever_aprendizagem(
+        modelos_aprendizagem()[nome], treino, datas_previsao, origem_serie, target
+    )
+
+
+def comparacao_ultimo_holdout(df, inicio, origem_serie, nomes_modelos):
     treino = df[df["data"] < inicio].copy()
     teste = df[df["data"] >= inicio].head(HORIZON).copy()
     comparacao = teste[["data", TARGET_NOMINAL]].copy()
-    for nome, modelo in modelos_aprendizagem().items():
-        comparacao[nome] = prever_aprendizagem(
-            modelo, treino, teste["data"], origem_serie, TARGET_NOMINAL
+    for nome in nomes_modelos:
+        comparacao[nome] = prever_modelo(
+            nome, treino, teste["data"], origem_serie, TARGET_NOMINAL
         )
     return comparacao
 
@@ -217,146 +256,66 @@ def tabela_resumo(resumo, target):
     return linhas
 
 
-def tabela_horizonte(horizontes, target):
-    linhas = [
-        "| Horizonte | Holt-Winters MAPE | Holt-Winters vies | Gradient Boosting MAPE | Gradient Boosting vies |",
-        "| ---: | ---: | ---: | ---: | ---: |",
-    ]
-    recorte = horizontes[
-        (horizontes["alvo"] == target)
-        & (horizontes["modelo"].isin(["holt_winters", "gradient_boosting"]))
-    ]
-    for horizonte in range(1, HORIZON + 1):
-        hw = recorte[
-            (recorte["modelo"] == "holt_winters")
-            & (recorte["horizonte"] == horizonte)
-        ].iloc[0]
-        gb = recorte[
-            (recorte["modelo"] == "gradient_boosting")
-            & (recorte["horizonte"] == horizonte)
-        ].iloc[0]
-        linhas.append(
-            f"| {horizonte} | {formatar_decimal(hw['MAPE_pct'])}% | "
-            f"{formatar_decimal(hw['vies_pct'])}% | {formatar_decimal(gb['MAPE_pct'])}% | "
-            f"{formatar_decimal(gb['vies_pct'])}% |"
-        )
-    return linhas
-
-
 def gerar_handoff(
     df,
     resumo_evidencia,
     horizonte_evidencia,
     detalhes_operacionais,
 ):
-    nominal = resumo_evidencia[resumo_evidencia["alvo"] == TARGET_NOMINAL]
-    real = resumo_evidencia[resumo_evidencia["alvo"] == TARGET_REAL]
-    hw_nominal = nominal[nominal["modelo"] == "holt_winters"].iloc[0]
-    gb_nominal = nominal[nominal["modelo"] == "gradient_boosting"].iloc[0]
-    gb_real = real[real["modelo"] == "gradient_boosting"].iloc[0]
-    hw_real = real[real["modelo"] == "holt_winters"].iloc[0]
+    nominal = resumo_evidencia[resumo_evidencia["alvo"] == TARGET_NOMINAL].sort_values("MAPE_pct")
+    real = resumo_evidencia[resumo_evidencia["alvo"] == TARGET_REAL].sort_values("MAPE_pct")
+    oficial = nominal[nominal["modelo"] == OFFICIAL_MODEL].iloc[0]
+    melhor_ml = nominal[nominal["tipo"] == "aprendizagem"].iloc[0]
+    baseline = nominal[nominal["modelo"] == "sazonal_ingenuo"].iloc[0]
     provisórios = ", ".join(
         df.loc[df["provisorio"], "data"].dt.strftime("%Y-%m").tolist()
     )
     linhas = [
-        "# Handoff — Bussola · Onda 1.3 — evidencia de modelo", "",
-        "**Status:** pronto no escopo revisado, com ressalvas metodologicas.", "",
+        "# Handoff — evidencia de modelo", "",
+        "**Status:** modelo nominal selecionado por menor MAPE medio no protocolo congelado.", "",
         "Este arquivo e gerado por `python scripts/modelagem_preditiva.py`; os numeros abaixo "
         "sao lidos da serie nacional e dos resultados do proprio backtest, nao digitados manualmente.", "",
-        "## DECLARADO — protocolo e limites", "",
+        "## Protocolo", "",
         f"- Entrada: `dados_tratados/{INPUT.name}`, serie mensal nacional continua de "
         f"{df['data'].min():%Y-%m} a {df['data'].max():%Y-%m}, com {len(df)} competencias.",
         f"- Alvos: `{TARGET_NOMINAL}` (R$ nominais) e `{TARGET_REAL}` "
         "(R$ corrigidos pelo IPCA para junho de 2026).",
         f"- Origem de avaliacao: {FIRST_BACKTEST:%Y-%m}; horizonte: {HORIZON} meses; "
-        f"{int(hw_nominal['recortes'])} janelas moveis mensais. Em cada origem, o treino "
+        f"{int(oficial['recortes'])} janelas moveis mensais. Em cada origem, o treino "
         "usa apenas competencias anteriores e os 12 passos sao previstos sem incorporar "
         "observacoes intermediarias.",
-        "- Holt-Winters: ETS com tendencia aditiva, sazonalidade aditiva, periodo sazonal 12, "
-        "tendencia nao amortecida, inicializacao estimada e otimizacao numerica do statsmodels.",
+        "- Benchmark: sazonal ingenuo, repetindo os 12 ultimos meses do treino.",
+        "- Holt-Winters log: transformacao Box-Cox lambda 0, tendencia aditiva, sazonalidade "
+        "aditiva, periodo 12, tendencia nao amortecida e inicializacao estimada.",
         "- Modelos supervisionados: regressao linear, Ridge, Random Forest e Gradient Boosting "
         "com as features temporais do pipeline (`indice_tempo`, `mes`, `mes_sin`, `mes_cos`).",
-        "- MAPE da janela: media de `abs(real - previsto) / real`; MAPE geral: media entre "
-        "janelas. Vies da janela: `sum(previsto) / sum(real) - 1`; vies geral: media entre janelas.",
-        "- Por horizonte, MAPE e a media do erro percentual absoluto das 43 previsoes; vies e "
-        "a media de `(previsto / real - 1)` no mesmo horizonte. Valor negativo indica subestimacao.",
         "- MASE: MAE da janela dividido pelo MAE sazonal ingenuo de periodo 12, calculado "
-        "somente dentro do respectivo treino. Menor que 1 supera essa referencia na metrica.",
-        f"- MAPE nao e intervalo de confianca. Em particular, um MAPE de "
-        f"{formatar_decimal(gb_nominal['MAPE_pct'])}% nao expressa "
-        f"{formatar_decimal(100 - gb_nominal['MAPE_pct'])}% de certeza. A faixa empirica "
-        "de 95% do pipeline e outro objeto: percentil 95 "
-        "do erro absoluto historico por horizonte.",
+        "somente dentro do respectivo treino. Ele nao substitui a comparacao explicita do benchmark no teste.",
+        "- A faixa empirica de 95% usa o percentil 95 do erro absoluto historico por horizonte; "
+        "nao e intervalo de confianca parametrico nem garantia de cobertura futura.",
         f"- Ambiente reproduzido: pandas {pd.__version__}, NumPy {np.__version__}, "
         f"scikit-learn {sklearn.__version__}, SciPy {scipy.__version__}, "
         f"statsmodels {statsmodels.__version__}; versoes fixadas em `requirements.txt`.", "",
-        "## OBSERVADO — estado do repositorio", "",
-        f"- `dados_tratados/metricas_modelos_preditivos_corrigido.csv` continua contendo "
-        f"somente os quatro modelos supervisionados e preserva `{OFFICIAL_MODEL}` como primeiro colocado operacional.",
-        f"- `dados_tratados/backtest_horizonte_12m_detalhado.csv` continua com "
-        f"{len(detalhes_operacionais)} linhas: {nominal[nominal['tipo'] == 'aprendizagem']['modelo'].nunique()} "
-        f"modelos x {int(hw_nominal['recortes'])} janelas x {HORIZON} horizontes.",
-        f"- A previsao oficial permanece travada em `{OFFICIAL_MODEL}` por `OFFICIAL_MODEL` no script. "
-        "O vencedor das tabelas de evidencia nao e promovido automaticamente.",
+        "## Decisao", "",
+        f"- Modelo nominal oficial: `{OFFICIAL_MODEL}`; MAPE medio "
+        f"{formatar_decimal(oficial['MAPE_pct'], 4)}%, MASE {formatar_decimal(oficial['MASE'], 4)} "
+        f"e vies {formatar_decimal(oficial['vies_pct'], 4)}%.",
+        f"- Melhor modelo de aprendizagem nominal: `{melhor_ml['modelo']}`; MAPE medio "
+        f"{formatar_decimal(melhor_ml['MAPE_pct'], 4)}%.",
+        f"- Benchmark sazonal explicito: MAPE medio {formatar_decimal(baseline['MAPE_pct'], 4)}%.",
+        f"- Detalhe operacional: {len(detalhes_operacionais)} previsoes fora da amostra.",
         f"- A serie marca {provisórios} como competencias provisorias. Elas permanecem sem correcao "
         "automatica e entram nas ultimas janelas conforme o arquivo-fonte.", "",
-        "## MEDIDO — primeiro, a derrota nominal", "",
-        f"No alvo nominal, Holt-Winters obteve MAPE medio de {formatar_decimal(hw_nominal['MAPE_pct'], 4)}% "
-        f"e vies de {formatar_decimal(hw_nominal['vies_pct'], 4)}%, contra "
-        f"{formatar_decimal(gb_nominal['MAPE_pct'], 4)}% e "
-        f"{formatar_decimal(gb_nominal['vies_pct'], 4)}% do Gradient Boosting. "
-        "Logo, o Gradient Boosting perde nominalmente em MAPE. A ressalva e decisiva: o "
-        f"MASE do Holt-Winters foi {formatar_decimal(hw_nominal['MASE'], 4)}, ainda acima de 1.", "",
-        "Fonte: `dados_tratados/evidencia_modelos_resumo.csv`.", "",
+        "## Alvo nominal", "",
         *tabela_resumo(resumo_evidencia, TARGET_NOMINAL), "",
-        "### Erro e vies nominal por horizonte", "",
-        "Fonte: `dados_tratados/evidencia_modelos_horizonte.csv`.", "",
-        *tabela_horizonte(horizonte_evidencia, TARGET_NOMINAL), "",
-        "## MEDIDO — depois, a vitoria no alvo real", "",
-        f"No alvo real, o Gradient Boosting obteve o menor MAPE medio: "
-        f"{formatar_decimal(gb_real['MAPE_pct'], 4)}%, com MASE "
-        f"{formatar_decimal(gb_real['MASE'], 4)} e vies "
-        f"{formatar_decimal(gb_real['vies_pct'], 4)}%. O Holt-Winters ficou em "
-        f"{formatar_decimal(hw_real['MAPE_pct'], 4)}% de MAPE, MASE "
-        f"{formatar_decimal(hw_real['MASE'], 4)} e vies "
-        f"{formatar_decimal(hw_real['vies_pct'], 4)}%. Nesta comparacao informada, o "
-        "Gradient Boosting vence quando a tendencia inflacionaria e removida do alvo.", "",
-        "Fonte: `dados_tratados/evidencia_modelos_resumo.csv`.", "",
+        "## Alvo real", "",
         *tabela_resumo(resumo_evidencia, TARGET_REAL), "",
-        "### Erro e vies real por horizonte", "",
-        "Fonte: `dados_tratados/evidencia_modelos_horizonte.csv`.", "",
-        *tabela_horizonte(horizonte_evidencia, TARGET_REAL), "",
-        "## Ressalvas que bloqueiam uma troca automatica", "",
-        f"- O otimizador do Holt-Winters nao declarou convergencia em "
-        f"{int(hw_nominal['ajustes_nao_convergentes'])} das {int(hw_nominal['recortes'])} janelas nominais "
-        f"e {int(hw_real['ajustes_nao_convergentes'])} das {int(hw_real['recortes'])} janelas reais. "
-        "As previsoes foram mantidas para reproduzir o protocolo avulso; a contagem esta materializada no CSV.",
+        "## Ressalvas", "",
         "- As 43 janelas se sobrepoem e nao sao observacoes independentes.",
-        "- Nao existe subconjunto final intocado e pre-registrado: os mesmos 43 recortes ja foram "
-        "vistos na comparacao historica. Portanto, esta e evidencia comparativa/descritiva, nao "
-        "confirmacao independente de um novo vencedor.",
-        "- Maio e junho de 2026 sao provisorios e aproximadamente 1% subestimados segundo a regra "
-        "do projeto; nenhuma correcao automatica foi aplicada.",
-        "- Trocar o modelo oficial, o alvo publicado ou a origem que exclui meses provisorios pertence "
-        "ao Gate G-A e depende da autora e do orientador.", "",
-        "## Artefatos e verificacao", "",
-        "- `scripts/modelagem_preditiva.py`: executa os dois alvos, inclui Holt-Winters e preserva o modelo oficial.",
-        "- `dados_tratados/evidencia_modelos_resumo.csv`: metricas agregadas por alvo e modelo.",
-        "- `dados_tratados/evidencia_modelos_janelas.csv`: uma linha por alvo, modelo e origem.",
-        "- `dados_tratados/evidencia_modelos_detalhado.csv`: uma linha por previsao e horizonte.",
-        "- `dados_tratados/evidencia_modelos_horizonte.csv`: erro e vies agregados por horizonte.",
-        "- `python scripts/modelagem_preditiva.py`: reproduziu os artefatos.",
-        "- `python scripts/validar_dados.py`: concluiu sem erros e conferiu alvos, modelos, janelas, "
-        "horizontes, cardinalidades e preservacao do Gradient Boosting.",
-        "- `python -m compileall scripts`: deve encerrar sem erro de sintaxe.", "",
-        "## Gate", "",
-        "Nenhuma troca de modelo foi feita. A decisao metodologica continua com a autora e o orientador.", "",
-        "VAULT: C:\\Users\\Antonio\\AI-Vault\\00-SISTEMA\\MEMORY_PROTOCOL.md -> codigo e CSVs sao a verdade operacional; o handoff guarda decisao, procedencia e limites, nao logs brutos.",
-        "VAULT: C:\\Users\\Antonio\\AI-Vault\\04-DECISOES-GLOBAIS\\DECISAO-OBSIDIAN-OBRIGATORIO-PARA-TODO-AGENTE.md -> Vault consultado antes da implementacao e regras aplicadas declaradas na entrega.",
-        "VAULT: C:\\Users\\Antonio\\AI-Vault\\01-PROJETOS\\DialisaSUS\\DECISOES.md -> MASE contra sazonal ingenuo, erro por horizonte e gate academico preservados; modelo oficial nao foi trocado.",
-        "VAULT: C:\\Users\\Antonio\\AI-Vault\\01-PROJETOS\\DialisaSUS\\ROADMAP.md -> tarefa 1.3 e Gate G-A respeitados; derrota nominal vem antes da vitoria no alvo real.",
-        "VAULT: C:\\Users\\Antonio\\AI-Vault\\01-PROJETOS\\DialisaSUS\\BENCHMARKS.md -> benchmark reproduzivel devolvido ao Vault com condicoes, limites e decisao sustentada.",
-        "VAULT: C:\\Users\\Antonio\\AI-Vault\\02-CONHECIMENTO\\ANTI-PADROES\\ANTI-PADRAO-PROVAS-FALSAS-OU-INVENTADAS.md -> nenhuma metrica foi publicada sem fonte reproduzivel; limitacoes e falhas de convergencia foram explicitadas.",
+        "- A selecao e comparativa e descritiva; nao existe holdout final pre-registrado.",
+        "- Maio e junho de 2026 sao provisorios e nao receberam correcao automatica.",
+        "- MAPE mede erro percentual medio; nao representa acuracia ou certeza.",
+        "- O procedimento supervisionado atual e multietapas direto, nao recursivo.",
     ]
     (ROOT_DIR / "docs" / "handoffs" / "bussola-modelo.md").write_text(
         "\n".join(linhas) + "\n", encoding="utf-8"
@@ -380,29 +339,20 @@ def main():
     horizonte_evidencia = resumir_por_horizonte(detalhes_evidencia)
 
     resumo_operacional = (
-        resumo_evidencia[
-            (resumo_evidencia["alvo"] == TARGET_NOMINAL)
-            & (resumo_evidencia["tipo"] == "aprendizagem")
-        ]
+        resumo_evidencia[resumo_evidencia["alvo"] == TARGET_NOMINAL]
         .drop(columns=["alvo", "escala", "MASE", "ajustes_nao_convergentes"])
         .sort_values(["MAPE_pct", "RMSE"])
         .reset_index(drop=True)
     )
     janelas_operacionais = (
-        janelas_evidencia[
-            (janelas_evidencia["alvo"] == TARGET_NOMINAL)
-            & (janelas_evidencia["tipo"] == "aprendizagem")
-        ][
+        janelas_evidencia[janelas_evidencia["alvo"] == TARGET_NOMINAL][
             ["modelo", "tipo", "inicio_teste", "fim_teste", "meses_teste",
              "MAE", "RMSE", "MAPE_pct", "vies_pct"]
         ]
         .reset_index(drop=True)
     )
     detalhes_operacionais = (
-        detalhes_evidencia[
-            (detalhes_evidencia["alvo"] == TARGET_NOMINAL)
-            & (detalhes_evidencia["tipo"] == "aprendizagem")
-        ][
+        detalhes_evidencia[detalhes_evidencia["alvo"] == TARGET_NOMINAL][
             ["modelo", "inicio_teste", "horizonte", "data", "valor_real",
              "valor_previsto", "residuo", "erro_absoluto_pct"]
         ]
@@ -411,13 +361,24 @@ def main():
 
     if OFFICIAL_MODEL not in set(resumo_operacional["modelo"]):
         raise ValueError(f"Modelo oficial ausente do backtest: {OFFICIAL_MODEL}")
+    vencedor_nominal = resumo_operacional.iloc[0]["modelo"]
+    if OFFICIAL_MODEL != vencedor_nominal:
+        raise ValueError(
+            "O modelo oficial deve ser o menor MAPE nominal no protocolo vigente: "
+            f"esperado {vencedor_nominal}, configurado {OFFICIAL_MODEL}."
+        )
     origem_serie = df["data"].min()
     ultimo_inicio = pd.Timestamp(janelas_operacionais["inicio_teste"].max() + "-01")
-    comparacao = comparacao_ultimo_holdout(df, ultimo_inicio, origem_serie)
+    comparacao = comparacao_ultimo_holdout(
+        df,
+        ultimo_inicio,
+        origem_serie,
+        resumo_operacional["modelo"].tolist(),
+    )
 
     datas_futuras = pd.date_range(df["data"].max() + pd.DateOffset(months=1), periods=HORIZON, freq="MS")
-    previsao = prever_aprendizagem(
-        modelos_aprendizagem()[OFFICIAL_MODEL],
+    previsao = prever_modelo(
+        OFFICIAL_MODEL,
         df,
         datas_futuras,
         origem_serie,
@@ -456,22 +417,22 @@ def main():
         f"Serie mensal nacional de {df['data'].min():%Y-%m} a {df['data'].max():%Y-%m}.",
         f"Validacao temporal com {int(resumo_operacional.iloc[0]['recortes'])} janelas moveis de 12 meses.",
         "Em cada janela, o modelo usa somente observacoes anteriores ao teste e projeta os 12 meses sem acessar valores reais intermediarios.",
-        "Evidencia comparativa: Regressao Linear, Ridge, Random Forest, Gradient Boosting e Holt-Winters aditivo (tendencia e sazonalidade, periodo 12).",
-        "As entradas representam tendencia temporal e sazonalidade mensal (mes, seno e cosseno do mes).",
-        "O MASE usa como escala o erro sazonal ingenuo de 12 meses calculado somente dentro de cada treino.",
+        "Evidencia comparativa: sazonal ingenuo, Holt-Winters aditivo, Holt-Winters log-aditivo, Regressao Linear, Ridge, Random Forest e Gradient Boosting.",
+        "Os modelos supervisionados usam tendencia temporal e sazonalidade mensal (mes, seno e cosseno do mes).",
+        "O MASE usa como escala o erro sazonal ingenuo de 12 meses calculado somente dentro de cada treino; o benchmark tambem e avaliado explicitamente no teste.",
         "A faixa empirica de 95% usa o percentil 95 do erro absoluto de backtesting, separado por horizonte; ela nao e derivada do MAPE.", "",
         "## Primeiro: alvo nominal", "",
         "| modelo | tipo | MAPE medio | MAPE mediano | MASE | vies | janelas | ajustes sem convergencia |",
         "| --- | --- | --- | --- | --- | --- | --- | --- |",
         *[f"| {r.modelo} | {r.tipo} | {r.MAPE_pct:.2f}% | {r.MAPE_mediana_pct:.2f}% | {r.MASE:.2f} | {r.vies_pct:.2f}% | {int(r.recortes)} | {int(r.ajustes_nao_convergentes)} |" for r in nominal.sort_values('MAPE_pct').itertuples(index=False)],
-        "", "No alvo nominal, o Gradient Boosting perde nominalmente para o Holt-Winters.", "",
+        "", f"No alvo nominal, o modelo selecionado por menor MAPE medio e `{OFFICIAL_MODEL}`.", "",
         "## Depois: alvo real", "",
         "| modelo | tipo | MAPE medio | MAPE mediano | MASE | vies | janelas | ajustes sem convergencia |",
         "| --- | --- | --- | --- | --- | --- | --- | --- |",
         *[f"| {r.modelo} | {r.tipo} | {r.MAPE_pct:.2f}% | {r.MAPE_mediana_pct:.2f}% | {r.MASE:.2f} | {r.vies_pct:.2f}% | {int(r.recortes)} | {int(r.ajustes_nao_convergentes)} |" for r in real.sort_values('MAPE_pct').itertuples(index=False)],
         "", "No alvo real, o Gradient Boosting e comparado sem a tendencia inflacionaria embutida no alvo.", "",
-        f"Modelo oficial preservado por gate academico: `{OFFICIAL_MODEL}`.",
-        "O script nao promove automaticamente o vencedor da tabela comparativa.", "",
+        f"Modelo oficial selecionado pelo desempenho nominal: `{OFFICIAL_MODEL}`.",
+        "O Gradient Boosting permanece como comparacao de aprendizagem de maquina.", "",
         f"MAPE e erro medio, nao intervalo de confianca: {formatar_decimal(mape_oficial)}% "
         f"nao significa {formatar_decimal(100 - mape_oficial)}% de certeza.",
         "A projecao e exploratoria e nao determina o gasto futuro. Choques de politica, tabela SUS, demanda ou capacidade assistencial podem alterar os valores.",
@@ -486,7 +447,7 @@ def main():
         detalhes_operacionais,
     )
     print(resumo_evidencia.to_string(index=False))
-    print(f"\nModelo oficial preservado: {OFFICIAL_MODEL}")
+    print(f"\nModelo oficial selecionado: {OFFICIAL_MODEL}")
 
 
 if __name__ == "__main__":

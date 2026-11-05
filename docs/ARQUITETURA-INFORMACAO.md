@@ -86,7 +86,7 @@ A página inicial segue o fluxo canônico de conversão do conhecimento (`PADRAO
 
 ### Capítulo 5: O Horizonte Preditivo (A Projeção Consciente de Erro)
 - **Função:** Apresentar a previsão dos próximos 12 meses como estimativa instrumentada, não verdade consumada.
-- **Conteúdo Analítico:** Backtest em 43 janelas móveis com Gradient Boosting (MAPE 5,35%, viés −4,98%) e Holt-Winters (MAPE 4,44%, viés −0,89%).
+- **Conteúdo Analítico:** Backtest multietapas em 43 janelas móveis. O Holt-Winters log-aditivo é o modelo nominal oficial (MAPE 3,56%, MASE 0,82 e viés −1,40%); o Gradient Boosting é o melhor modelo de aprendizagem no alvo nominal (MAPE 5,35%, viés −4,98%).
 - **Artefato Visual:** Gráfico 4 (Previsão Nacional 12m com Faixa Empírica de Incerteza de 95% e linha vertical marcando o início da estimativa).
 
 ### Capítulo 6: Limites Metodológicos & Chamada à Ação Primária
@@ -111,7 +111,7 @@ Conforme determinado pela auditoria (`CRITICA-V1.md`), **nenhum componente de da
 | **G-06** | Tabela Matriz Interativa dos 498 Municípios | `/explorar/` | Painel Inferior | Instrumento de busca e ordenação por colunas (Atendimento, Taxa/100k, Valor Real). Incompatível com o ritmo de leitura da home. |
 | **G-07** | Série Temporal Anual da UF Selecionada (2015–2025) | `/explorar/uf/:uf` | Ficha da UF | Gráfico local renderizado exclusivamente quando uma UF específica está ativa no explorador. |
 | **G-08** | Gráfico de Erro por Horizonte de Previsão (Meses 1 a 12) | `/previsao/` | Seção Auditoria | Gráfico técnico que exibe a progressão do MAPE e viés por horizonte de projeção. Exclusivo de `/previsao/`. |
-| **G-09** | Comparativo de Modelos: Gradient Boosting × Baselines | `/previsao/` | Seção Benchmarks | Comparação de barras pareadas de MAPE e viés entre os 4 modelos. Exclusivo de `/previsao/`. |
+| **G-09** | Comparativo de modelos estatísticos, benchmark e aprendizagem | `/previsao/` | Seção Benchmarks | Comparação de MAPE, MASE e viés entre os 7 modelos. Exclusivo de `/previsao/`. |
 | **G-10** | Diagrama de Linhagem e Regimes de Dados (Pipeline) | `/metodologia/` | Seção Fontes | Diagrama de blocos documentando a transição Censo 2010 → Censo 2022 e a exclusão do grupo 08 (transporte). Exclusivo de `/metodologia/`. |
 
 ---
