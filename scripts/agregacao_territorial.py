@@ -31,6 +31,7 @@ SAIDA_TRAJETORIAS = DATA / "distribuicao_trajetorias_municipais.csv"
 
 ANO_INICIO = 2015
 ANO_FIM = 2025
+LIMITE_ESTABILIDADE_PCT = 5.0
 ESTADOS_COM_NUMERO = {"observado", "provisorio", "estimado"}
 ESTADOS_SEM_NUMERO = {"sem_registro", "ausente"}
 
@@ -216,9 +217,9 @@ def classificar_faixa(variacao: pd.Series) -> pd.Series:
     condicoes = [
         variacao < -50,
         (variacao >= -50) & (variacao < -25),
-        (variacao >= -25) & (variacao < 0),
-        variacao == 0,
-        (variacao > 0) & (variacao <= 25),
+        (variacao >= -25) & (variacao < -LIMITE_ESTABILIDADE_PCT),
+        variacao.between(-LIMITE_ESTABILIDADE_PCT, LIMITE_ESTABILIDADE_PCT, inclusive="both"),
+        (variacao > LIMITE_ESTABILIDADE_PCT) & (variacao <= 25),
         (variacao > 25) & (variacao <= 50),
         variacao > 50,
     ]
@@ -273,9 +274,9 @@ def distribuir_trajetorias() -> pd.DataFrame:
     especificacao = [
         ("queda_maior_50", 1, None, -50.0),
         ("queda_25_a_50", 2, -50.0, -25.0),
-        ("queda_ate_25", 3, -25.0, 0.0),
-        ("sem_variacao", 4, 0.0, 0.0),
-        ("crescimento_ate_25", 5, 0.0, 25.0),
+        ("queda_ate_25", 3, -25.0, -LIMITE_ESTABILIDADE_PCT),
+        ("sem_variacao", 4, -LIMITE_ESTABILIDADE_PCT, LIMITE_ESTABILIDADE_PCT),
+        ("crescimento_ate_25", 5, LIMITE_ESTABILIDADE_PCT, 25.0),
         ("crescimento_25_a_50", 6, 25.0, 50.0),
         ("crescimento_maior_50", 7, 50.0, None),
     ]
@@ -343,21 +344,21 @@ def distribuir_trajetorias() -> pd.DataFrame:
             }
         )
 
-    excluidos_total = int((~comparaveis).sum())
+    nao_incluidos_total = int((~comparaveis).sum())
     linhas.append(
         {
             "registro_tipo": "resumo_exclusao",
-            "faixa": "excluido_total",
+            "faixa": "nao_incluido_total",
             "ordem": 12,
             "limite_inferior_pct": None,
             "limite_superior_pct": None,
-            "municipios": excluidos_total,
+            "municipios": nao_incluidos_total,
             "percentual_validos": None,
             "periodo_inicio": ANO_INICIO,
             "periodo_fim": ANO_FIM,
             "metrica": "variacao_valor_aprovado_real_pct",
             "incluido_na_distribuicao": False,
-            "motivo_exclusao": "total de municípios fora da variação por estado sem_registro/ausente ou base zero",
+            "motivo_exclusao": "total de municípios não incluídos na comparação por estado sem_registro/ausente ou base zero",
         }
     )
 
@@ -365,10 +366,10 @@ def distribuir_trajetorias() -> pd.DataFrame:
     if int(distribuicao.loc[distribuicao["registro_tipo"] == "faixa_variacao", "municipios"].sum()) != total_validos:
         raise ValueError("Faixas de variação não fecham com municípios comparáveis.")
     detalhe_excluidos = int(distribuicao.loc[distribuicao["registro_tipo"] == "exclusao", "municipios"].sum())
-    if detalhe_excluidos != excluidos_total:
-        raise ValueError("Detalhamento das exclusões não fecha com o total excluído.")
-    if total_validos + excluidos_total != len(pares):
-        raise ValueError("Municípios válidos + excluídos não fecham com o universo.")
+    if detalhe_excluidos != nao_incluidos_total:
+        raise ValueError("Detalhamento dos não incluídos não fecha com o total reportado.")
+    if total_validos + nao_incluidos_total != len(pares):
+        raise ValueError("Municípios comparáveis + não incluídos não fecham com o universo.")
     if (pares.loc[~comparaveis, "variacao_pct"].notna()).any():
         raise ValueError("Variação calculada para município não comparável.")
 
@@ -386,12 +387,12 @@ def main() -> None:
     validos = int(
         trajetorias.loc[trajetorias["registro_tipo"] == "faixa_variacao", "municipios"].sum()
     )
-    excluidos = int(
-        trajetorias.loc[trajetorias["faixa"] == "excluido_total", "municipios"].iloc[0]
+    nao_incluidos = int(
+        trajetorias.loc[trajetorias["faixa"] == "nao_incluido_total", "municipios"].iloc[0]
     )
     print(f"Agregado UF: {len(agregado_uf)} linhas, {agregado_uf['uf'].nunique()} UFs, {agregado_uf['ano'].nunique()} anos")
     print("Reconciliacao UF -> nacional: 100% em quantidade e valor nominal, 2015-2025")
-    print(f"Trajetorias municipais: {validos} comparaveis; {excluidos} excluidas e reportadas")
+    print(f"Trajetorias municipais: {validos} comparaveis; {nao_incluidos} nao incluidas e reportadas")
 
 
 if __name__ == "__main__":

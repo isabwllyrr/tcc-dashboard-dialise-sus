@@ -14,8 +14,20 @@ const byUf = Object.fromEntries(current.map((p:any)=>[p.uf,p]));
 const clientRows = doc.mapa_por_ano.map((p:any)=>({ano:p.periodo,uf:p.uf,qtd:p.quantidade.valor,taxa:p.taxa_100_mil.valor,pop:p.taxa_100_mil.denominador.valor}));
 const eligibility = distribuicao.achados.find((a:any)=>a.id === "G7.achado.elegibilidade").valores;
 const comparable = eligibility.find((v:any)=>v.chave === "municipios_comparaveis").valor;
-const excluded = eligibility.find((v:any)=>v.chave === "municipios_excluidos").valor;
+const notIncluded = eligibility.find((v:any)=>v.chave === "municipios_nao_incluidos").valor;
 const trajectoryPeriod = distribuicao.periodos;
+const trajectoryLabels: Record<string, string> = {
+  queda_maior_50: "Queda superior a 50%",
+  queda_25_a_50: "Queda entre 25% e 50%",
+  queda_5_a_25: "Queda entre 5% e 25%",
+  estavel_menos_5_a_mais_5: "Estável (−5% a +5%)",
+  crescimento_5_a_25: "Crescimento entre 5% e 25%",
+  crescimento_25_a_50: "Crescimento entre 25% e 50%",
+  crescimento_maior_50: "Crescimento superior a 50%",
+  novo_registro: "Sem registro em 2015 e com registro em 2025",
+  sem_registro_final: "Com registro em 2015 e sem registro em 2025",
+  sem_registro_2015_2025: "Sem registro em 2015 e 2025",
+};
 ---
 <BaseLayout title="Território">
   <header class="evidence-intro">
@@ -49,7 +61,7 @@ const trajectoryPeriod = distribuicao.periodos;
       <aside class="territory-compare-reading" id="territory-compare-reading" aria-live="polite"></aside>
     </div>
   </section>
-  <section aria-labelledby="distribution-title"><h2 class="sect" id="distribution-title">G7 · Distribuição municipal, sem transformar ausência em zero</h2><p class="calc">A comparação de {trajectoryPeriod.inicio} a {trajectoryPeriod.fim} inclui <b>{ptInt(comparable)} municípios</b> com registro nos dois extremos e exclui, de forma explícita, <b>{ptInt(excluded)}</b> municípios com “sem registro” ou ausentes em pelo menos um extremo.</p><details class="twin"><summary>Tabela — categorias de trajetória</summary><div class="table-wrap"><table><thead><tr><th scope="col">Categoria</th><th scope="col">Municípios</th><th scope="col">Estado</th></tr></thead><tbody>{distribuicao.trajetorias.map((p:any)=><tr><th scope="row">{p.categoria.replaceAll("_"," ")}</th><td>{ptInt(p.municipios.valor)}</td><td>{p.municipios.estado}</td></tr>)}</tbody></table></div></details></section>
+  <section aria-labelledby="distribution-title"><h2 class="sect" id="distribution-title">G7 · Distribuição municipal, sem transformar ausência em zero</h2><p class="calc">A comparação de {trajectoryPeriod.inicio} a {trajectoryPeriod.fim} inclui <b>{ptInt(comparable)} municípios</b> com valores reais comparáveis. A estabilidade corresponde à variação entre <b>−5% e +5%</b>. Outros <b>{ptInt(notIncluded)} municípios não foram incluídos</b> no cálculo percentual e permanecem discriminados na tabela.</p><details class="twin" open><summary>Tabela — sete faixas de trajetória e casos não incluídos</summary><div class="table-wrap"><table><thead><tr><th scope="col">Categoria</th><th scope="col">Municípios</th><th scope="col">Estado</th></tr></thead><tbody>{distribuicao.trajetorias.map((p:any)=><tr><th scope="row">{trajectoryLabels[p.categoria] ?? p.categoria.replaceAll("_"," ")}</th><td>{ptInt(p.municipios.valor)}</td><td>{p.municipios.estado}</td></tr>)}</tbody></table></div></details></section>
   <h2 class="sect">Limites</h2><p class="calc">Polos de atendimento podem receber pessoas de outros municípios e estados. Um valor alto descreve concentração de produção aprovada, não prevalência de doença renal.</p><div class="next"><a href="/evidencias/valor/"><span class="q">Como inflação muda a leitura nacional?</span><span class="path">/evidencias/valor/</span></a></div>
   <script type="application/json" id="territory-data" set:html={JSON.stringify(clientRows).replaceAll("<","\\u003c")} />
   <script src="/assets/territory.js" defer></script>

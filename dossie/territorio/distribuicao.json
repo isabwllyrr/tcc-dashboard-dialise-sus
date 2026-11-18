@@ -1,7 +1,7 @@
 {
   "tipo_documento": "territorio_distribuicao",
   "metadados": {
-    "gerado_em": "2026-11-05T11:13:27-03:00",
+    "gerado_em": "2026-11-18T14:21:04-03:00",
     "vintage": "2026-09-15",
     "schema_version": "1.0.0"
   },
@@ -11,9 +11,9 @@
   },
   "trajetorias": [
     {
-      "categoria": "queda",
+      "categoria": "queda_maior_50",
       "municipios": {
-        "valor": 164,
+        "valor": 6,
         "estado": "observado",
         "unidade": "municipios",
         "origem": {
@@ -31,14 +31,14 @@
             "valor_aprovado_real"
           ],
           "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
         }
       }
     },
     {
-      "categoria": "crescimento",
+      "categoria": "queda_25_a_50",
       "municipios": {
-        "valor": 233,
+        "valor": 31,
         "estado": "observado",
         "unidade": "municipios",
         "origem": {
@@ -56,14 +56,14 @@
             "valor_aprovado_real"
           ],
           "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
         }
       }
     },
     {
-      "categoria": "estavel",
+      "categoria": "queda_5_a_25",
       "municipios": {
-        "valor": 0,
+        "valor": 98,
         "estado": "observado",
         "unidade": "municipios",
         "origem": {
@@ -81,7 +81,107 @@
             "valor_aprovado_real"
           ],
           "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
+        }
+      }
+    },
+    {
+      "categoria": "estavel_menos_5_a_mais_5",
+      "municipios": {
+        "valor": 58,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
+        }
+      }
+    },
+    {
+      "categoria": "crescimento_5_a_25",
+      "municipios": {
+        "valor": 95,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
+        }
+      }
+    },
+    {
+      "categoria": "crescimento_25_a_50",
+      "municipios": {
+        "valor": 58,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
+        }
+      }
+    },
+    {
+      "categoria": "crescimento_maior_50",
+      "municipios": {
+        "valor": 51,
+        "estado": "observado",
+        "unidade": "municipios",
+        "origem": {
+          "arquivos_csv": [
+            "dados_tratados/distribuicao_trajetorias_municipais.csv",
+            "dados_tratados/municipio_dialise_brasil_long.csv"
+          ],
+          "colunas": [
+            "registro_tipo",
+            "faixa",
+            "municipios",
+            "periodo_inicio",
+            "periodo_fim",
+            "estado_registro",
+            "valor_aprovado_real"
+          ],
+          "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
         }
       }
     },
@@ -106,7 +206,7 @@
             "valor_aprovado_real"
           ],
           "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
         }
       }
     },
@@ -131,12 +231,12 @@
             "valor_aprovado_real"
           ],
           "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
         }
       }
     },
     {
-      "categoria": "excluido",
+      "categoria": "sem_registro_2015_2025",
       "municipios": {
         "valor": 11,
         "estado": "observado",
@@ -156,7 +256,7 @@
             "valor_aprovado_real"
           ],
           "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-          "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+          "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
         }
       }
     }
@@ -366,7 +466,7 @@
   "achados": [
     {
       "id": "G7.achado.elegibilidade",
-      "texto": "A distribuicao de variacoes usa somente municipios com valor real registrado em 2015 e 2025; as exclusoes permanecem contabilizadas.",
+      "texto": "A distribuicao usa sete faixas e considera estaveis as variacoes reais entre -5% e +5%; municipios sem valores comparaveis permanecem contabilizados como nao incluidos.",
       "valores": [
         {
           "chave": "municipios_comparaveis",
@@ -388,11 +488,11 @@
               "valor_aprovado_real"
             ],
             "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-            "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+            "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
           }
         },
         {
-          "chave": "municipios_excluidos",
+          "chave": "municipios_nao_incluidos",
           "valor": 101,
           "unidade": "municipios",
           "estado": "observado",
@@ -411,7 +511,7 @@
               "valor_aprovado_real"
             ],
             "script": "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-            "transformacao": "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas"
+            "transformacao": "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente"
           }
         }
       ],

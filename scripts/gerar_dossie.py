@@ -501,17 +501,21 @@ def gerar_distribuicao(meta: dict[str, str]) -> dict[str, object]:
         [ARQ_DISTRIBUICAO, ARQ_MUNICIPIO],
         ["registro_tipo", "faixa", "municipios", "periodo_inicio", "periodo_fim", "estado_registro", "valor_aprovado_real"],
         "scripts/agregacao_territorial.py -> scripts/gerar_dossie.py",
-        "variacao percentual 2015-2025 apenas com valores presentes nos dois extremos; agregacao das faixas em categorias narrativas",
+        "variacao percentual do valor aprovado real entre 2015 e 2025; estabilidade operacional entre -5% e +5%; sete faixas publicadas separadamente",
     )
     faixas = distribuicao[distribuicao["registro_tipo"] == "faixa_variacao"].set_index("faixa")["municipios"]
     exclusoes = distribuicao[distribuicao["registro_tipo"] == "exclusao"].set_index("faixa")["municipios"]
     categorias = {
-        "queda": faixas[["queda_maior_50", "queda_25_a_50", "queda_ate_25"]].sum(),
-        "crescimento": faixas[["crescimento_ate_25", "crescimento_25_a_50", "crescimento_maior_50"]].sum(),
-        "estavel": faixas["sem_variacao"],
+        "queda_maior_50": faixas["queda_maior_50"],
+        "queda_25_a_50": faixas["queda_25_a_50"],
+        "queda_5_a_25": faixas["queda_ate_25"],
+        "estavel_menos_5_a_mais_5": faixas["sem_variacao"],
+        "crescimento_5_a_25": faixas["crescimento_ate_25"],
+        "crescimento_25_a_50": faixas["crescimento_25_a_50"],
+        "crescimento_maior_50": faixas["crescimento_maior_50"],
         "novo_registro": exclusoes["novo_registro"],
         "sem_registro_final": exclusoes["sem_registro_final"],
-        "excluido": exclusoes[["sem_registro_ambos", "excluido_base_zero"]].sum(),
+        "sem_registro_2015_2025": exclusoes[["sem_registro_ambos", "excluido_base_zero"]].sum(),
     }
     trajetorias = [
         {"categoria": categoria, "municipios": medida(valor, "municipios", origem_traj)}
@@ -551,7 +555,7 @@ def gerar_distribuicao(meta: dict[str, str]) -> dict[str, object]:
         for chave, valor in estatisticas.items()
     ]
     validos = sum(numero(faixas[item]) for item in faixas.index)
-    excluidos = numero(distribuicao.loc[distribuicao["registro_tipo"] == "resumo_exclusao", "municipios"].iloc[0])
+    nao_incluidos = numero(distribuicao.loc[distribuicao["registro_tipo"] == "resumo_exclusao", "municipios"].iloc[0])
     return {
         "tipo_documento": "territorio_distribuicao",
         "metadados": meta,
@@ -561,10 +565,10 @@ def gerar_distribuicao(meta: dict[str, str]) -> dict[str, object]:
         "achados": [
             {
                 "id": "G7.achado.elegibilidade",
-                "texto": "A distribuicao de variacoes usa somente municipios com valor real registrado em 2015 e 2025; as exclusoes permanecem contabilizadas.",
+                "texto": "A distribuicao usa sete faixas e considera estaveis as variacoes reais entre -5% e +5%; municipios sem valores comparaveis permanecem contabilizados como nao incluidos.",
                 "valores": [
                     valor_achado("municipios_comparaveis", validos, "municipios", origem_traj),
-                    valor_achado("municipios_excluidos", excluidos, "municipios", origem_traj),
+                    valor_achado("municipios_nao_incluidos", nao_incluidos, "municipios", origem_traj),
                 ],
                 "ressalvas": ["r.sem_registro", "r.atendimento"],
                 "periodos": {"inicio": "2015", "fim": "2025"},
