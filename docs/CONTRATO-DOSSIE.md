@@ -348,7 +348,7 @@ Assim, nenhuma figura do inventário exige série ausente do contrato. G7 perman
 9. Território usa apenas 2015–2025. O ano parcial de 2026 não entra em G4, G5 ou G7.
 10. Mai e jun/2026 permanecem `provisorio`, sem correção automática.
 11. `Achado.texto` não autoriza conclusão nova: copy e números devem ser aprovados e reconciliados.
-12. `0405050054 CICLODIALISE` permanece no escopo atual e DPAC/DPA permanecem fora até decisão da autora/orientador; o manifesto registra ambas as questões.
+12. `0405050054 CICLODIALISE` permanece no escopo atual. As sessões regulares de DPAC/DPA não integram a extração original, enquanto o treinamento `0305010182` está incluído; o manifesto registra ambas as questões.
 
 ## 8. Validação por máquina
 

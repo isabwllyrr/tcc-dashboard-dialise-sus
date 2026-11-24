@@ -15,7 +15,7 @@
       "definicao": "Registro de um procedimento de diálise aprovado pelo SUS, contabilizado no SIA/SUS via TabNet/DATASUS. A unidade de análise é o procedimento aprovado, não o paciente. Uma pessoa em hemodiálise pode realizar várias sessões, então não é correto converter procedimentos em indivíduos.",
       "fonte": "TEXTO-GERAL-DO-PROJETO.md § 'Unidade de análise'",
       "uso_na_interface": "procedimento aprovado",
-      "obs": "O recorte contempla um conjunto de procedimentos de diálise aprovados (listados na terceira linha de cabeçalho de cada extração nacional). Não inclui DPAC/DPA (fora do recorte). Inclui CICLODIALISE (provável falso positivo — prefixo cirúrgico, possivelmente capturado por busca textual). A quantidade exata e os códigos estão em RECORTE-SIGTAP.md."
+      "obs": "O recorte contempla um conjunto de procedimentos de diálise aprovados (listados na terceira linha de cabeçalho de cada extração nacional). Inclui procedimentos de diálise peritoneal intermitente, diálise peritoneal para pacientes renais agudos e o treinamento de paciente submetido a DPAC/DPA (0305010182). As sessões regulares de DPAC e DPA não integram a extração original do TabNet. Inclui CICLODIALISE (provável falso positivo — prefixo cirúrgico, possivelmente capturado por busca textual). A quantidade exata e os códigos estão em RECORTE-SIGTAP.md."
     },
     {
       "termo": "valor aprovado",

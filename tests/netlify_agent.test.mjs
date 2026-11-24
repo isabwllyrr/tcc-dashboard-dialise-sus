@@ -45,5 +45,11 @@ test("modelo alternativo responde quando o principal está indisponível", async
   try {const response=await handler(jsonRequest({question:"Explique o valor real."}));const body=await response.json();assert.equal(body.source,"gemini");assert.equal(body.warning,undefined);assert.equal(calls,2);} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;if(originalModel===undefined)delete process.env.GEMINI_MODEL;else process.env.GEMINI_MODEL=originalModel;}
 });
 
+test("modelo alternativo não é consultado quando o principal responde", async () => {
+  const original=process.env.GEMINI_API_KEY;const originalModel=process.env.GEMINI_MODEL;const oldFetch=globalThis.fetch;process.env.GEMINI_API_KEY="chave-teste";delete process.env.GEMINI_MODEL;let calls=0;
+  globalThis.fetch=async()=>{calls+=1;return Response.json({candidates:[{content:{parts:[{text:"Resposta pelo modelo principal em /evidencias/valor/."}]}}]});};
+  try {const response=await handler(jsonRequest({question:"Como os custos mudaram?"}));const payload=await response.json();assert.equal(response.status,200);assert.equal(payload.source,"gemini");assert.equal(calls,1);} finally {globalThis.fetch=oldFetch;if(original===undefined)delete process.env.GEMINI_API_KEY;else process.env.GEMINI_API_KEY=original;if(originalModel===undefined)delete process.env.GEMINI_MODEL;else process.env.GEMINI_MODEL=originalModel;}
+});
+
 test("filtros territoriais são enums validados", async () => {const response=await handler(jsonRequest({question:"Mostre a taxa por UF",uf:"SÃO PAULO",ano:"2026"}));assert.equal(response.status,422);});
 test("serialização limita o contexto já selecionado",()=>assert.throws(()=>serializeContext({data:"x".repeat(30_001)}),RangeError));

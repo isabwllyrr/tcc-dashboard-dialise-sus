@@ -351,7 +351,7 @@ Documentação de cada etapa:
 - `r.atendimento`: dado é por local de atendimento, não residência.
 - `r.sem_registro`: ausência de registro em município não é fechamento.
 - `r.provisorio`: meses mais recentes são provisórios.
-- **DPAC/DPA fora do recorte** e **0405050054 CICLODIALISE dentro** — questões de escopo abertas.
+- **Sessões regulares de DPAC/DPA fora da extração original**, embora o treinamento `0305010182` esteja incluído, e **0405050054 CICLODIALISE dentro** — questões de escopo abertas.
 - Sem dados de CNES (capacidade instalada), SIGTAP (reajuste de tabela), Censo SBN (pacientes), PNS/SIH/SIM.
 
 ### 7. O que o produto não pode responder

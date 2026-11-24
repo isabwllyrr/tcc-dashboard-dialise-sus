@@ -252,7 +252,7 @@ def gerar_manifesto(meta: dict[str, str]) -> dict[str, object]:
         "escopo": {
             "procedimentos_sigtap": procedimentos,
             "questoes_abertas": [
-                "DPAC/DPA permanece fora do recorte metodologico.",
+                "As sessoes regulares de DPAC e DPA nao integram a extracao original do TabNet; o treinamento (0305010182) esta incluido. Sua incorporacao exigiria nova extracao e reprocessamento integral da serie.",
                 "0405050054 CICLODIALISE permanece dentro do recorte metodologico.",
             ],
             "ano_parcial": 2026,

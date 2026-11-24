@@ -80,7 +80,7 @@ A página inicial segue o fluxo canônico de conversão do conhecimento (`PADRAO
 
 ### Capítulo 4: A Geografia da Assistência (Concentração vs Pressão)
 - **Função:** Diferenciar volume financeiro absoluto de pressão assistencial proporcional.
-- **Conteúdo Analítico:** 10 municípios concentram 21,01% de todos os recursos (R$ 7,90 bi de R$ 37,61 bi do território). Porém, as maiores taxas de procedimentos por 100 mil habitantes ocorrem em polos microrregionais.
+- **Conteúdo Analítico:** em valores corrigidos para reais de junho de 2026, 10 municípios concentram 21,21% dos recursos territoriais acumulados entre 2015 e 2025 (R$ 10,67 bi de R$ 50,29 bi). Porém, as maiores taxas de procedimentos por 100 mil habitantes ocorrem em polos microrregionais.
 - **Ressalva obrigatória:** *"Os dados refletem o município onde o atendimento ocorreu, não onde o paciente reside."*
 - **Artefato Visual:** Gráfico 3 (Gráfico de Área/Distribuição do Top 10 vs Restante do Brasil).
 

@@ -10,7 +10,7 @@
 
 Na comparacao pos-pandemia versus pre-pandemia, o valor medio mensal aumentou 51,27%, a quantidade media mensal aumentou 23,71% e o valor aprovado por procedimento aumentou 22,28%. Como os valores sao nominais, essa diferenca financeira nao deve ser interpretada integralmente como aumento real de custo.
 
-Entre 2015 e 2025, ambos anos completos, o valor anual aprovado cresceu 88,61% e a quantidade anual cresceu 40,46%. Os dez municipios com maior valor aprovado concentraram 21,01% do valor territorial de 2015 a 2025.
+Entre 2015 e 2025, ambos anos completos, o valor anual aprovado cresceu 88,61% e a quantidade anual cresceu 40,46%. Em valores corrigidos para reais de junho de 2026, os dez municipios com maior valor aprovado concentraram 21,21% do valor territorial acumulado no periodo (R$ 10,67 bilhoes de R$ 50,29 bilhoes). O percentual nominal anteriormente divulgado, de 21,01%, somava valores correntes de anos distintos e foi substituido nesta leitura economica acumulada.
 
 Esses resultados demonstram crescimento dos procedimentos aprovados, nao do numero de pacientes. Tambem nao permitem atribuir causalidade a pandemia; sustentam apenas uma comparacao temporal entre periodos.
 

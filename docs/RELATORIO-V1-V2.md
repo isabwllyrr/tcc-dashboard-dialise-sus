@@ -230,7 +230,7 @@ Registradas porque resultado negativo também é resultado.
 
 *Limite desta verificação:* ela só alcança os três grupos que a série traz. A composição **dentro** do grupo 03 — hemodiálise comum contra pediátrica, sorologia positiva, pré-dialítico — não é testável sem re-extração por procedimento.
 
-**A soma territorial fecha com a nacional.** Diferença exatamente zero em valor e em quantidade, 2015–2025. Isso valida o denominador do "top 10 = 21,01%".
+**A soma territorial fecha com a nacional.** Diferença exatamente zero em valor e em quantidade, 2015–2025. A concentração acumulada dos dez maiores municípios é 21,21% quando calculada com valores corrigidos para reais de junho de 2026. O resultado nominal de 21,01% permanece apenas como registro da auditoria anterior e não deve fundamentar comparação econômica acumulada.
 
 ---
 

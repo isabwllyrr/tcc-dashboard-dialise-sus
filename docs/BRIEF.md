@@ -50,7 +50,7 @@ O que sustenta cada afirmação, e onde ela pode ser conferida:
 | Parte do crescimento é inflação | IPCA mensal, base junho de 2026. Nominal R$ 40,03 bi = R$ 52,74 bi em reais de jun/2026 | Capítulo 2 e 3 |
 | SP concentra o maior valor | Base territorial anual, 498 municípios, 2015–2025. Apresentado **junto** da taxa por 100 mil habitantes, porque concentração absoluta e pressão proporcional não são a mesma coisa | Capítulo 4 e `/explorar/` |
 | A previsão tem erro conhecido | Backtest em janelas móveis de 12 meses, MAPE médio e mediano, MASE contra o sazonal ingênuo, erro por horizonte e faixa empírica de 95% | `/previsao/` |
-| O recorte tem limites | Os 24 códigos do recorte, transcritos do cabeçalho do TabNet em `docs/RECORTE-SIGTAP.md`. O pré-dialítico entra; DPAC e DPA não; o território é por local de atendimento | `/metodologia/`, como ressalva declarada |
+| O recorte tem limites | Os 24 códigos do recorte, transcritos do cabeçalho do TabNet em `docs/RECORTE-SIGTAP.md`. O pré-dialítico entra; o treinamento de DPAC/DPA entra, mas as sessões regulares de DPAC/DPA não integram a extração original; o território é por local de atendimento | `/metodologia/`, como ressalva declarada |
 
 **Regra de origem:** nenhum número é digitado na copy. Todo número vem do `dossie.json` gerado pelo pipeline. Se um número não está no dossiê, ele não é dito.
 
