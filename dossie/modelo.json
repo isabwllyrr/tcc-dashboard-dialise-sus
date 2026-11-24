@@ -5997,7 +5997,7 @@
   "achados": [
     {
       "id": "G6.achado.modelo_nominal",
-      "texto": "No alvo nominal, o primeiro colocado pelo MAPE medio e adotado como modelo oficial da previsao, conforme o criterio metodologico declarado.",
+      "texto": "No alvo nominal, o primeiro colocado pelo MAPE médio é adotado como modelo oficial da previsão, conforme o critério metodológico declarado.",
       "valores": [
         {
           "chave": "menor_mape_nominal",
@@ -6034,7 +6034,7 @@
     },
     {
       "id": "G6.achado.modelo_real",
-      "texto": "No alvo real, o menor MAPE medio pertence ao primeiro colocado do backtest em reais de jun/2026.",
+      "texto": "No alvo real, o menor MAPE médio pertence ao primeiro colocado do backtest em reais de jun/2026.",
       "valores": [
         {
           "chave": "menor_mape_real",
@@ -6063,6 +6063,41 @@
       "ressalvas": [
         "r.mape",
         "r.mix"
+      ],
+      "periodos": {
+        "backtest": "janelas temporais mensais"
+      }
+    },
+    {
+      "id": "G6.achado.cautela_gradient_real",
+      "texto": "No alvo real, a vantagem do Gradient Boosting sobre o Holt-Winters log-aditivo foi de 0,09 ponto percentual de MAPE. Os hiperparâmetros do Gradient Boosting foram ajustados com o mesmo backtest usado na comparação, sem holdout final independente; a diferença deve ser interpretada com cautela e não altera o modelo oficial da projeção nominal.",
+      "valores": [
+        {
+          "chave": "vantagem_gradient_boosting_real",
+          "valor": 0.0860013104848556,
+          "unidade": "ponto_percentual",
+          "estado": "observado",
+          "origem": {
+            "arquivos_csv": [
+              "dados_tratados/evidencia_modelos_resumo.csv"
+            ],
+            "colunas": [
+              "alvo",
+              "escala",
+              "modelo",
+              "MAPE_pct",
+              "MAPE_mediana_pct",
+              "MASE",
+              "vies_pct",
+              "recortes"
+            ],
+            "script": "scripts/modelagem_preditiva.py -> scripts/gerar_dossie.py",
+            "transformacao": "transcricao das metricas de backtest temporal por alvo e modelo; sem reestimacao"
+          }
+        }
+      ],
+      "ressalvas": [
+        "r.mape"
       ],
       "periodos": {
         "backtest": "janelas temporais mensais"

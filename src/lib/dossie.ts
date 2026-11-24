@@ -28,12 +28,12 @@ export const ptMoney = (value: number | null | undefined, compact = false) => {
 };
 
 export const labelModel = (value: string) => ({
-  holt_winters: "Holt–Winters",
-  holt_winters_log: "Holt–Winters log",
+  holt_winters: "Holt–Winters aditivo",
+  holt_winters_log: "Holt–Winters log-aditivo",
   gradient_boosting: "Gradient Boosting",
   random_forest: "Random Forest",
   regressao_linear: "Regressão linear",
-  ridge: "Ridge",
+  ridge: "Regressão Ridge",
   sazonal_ingenuo: "Sazonal ingênuo",
 }[value] || value.replaceAll("_", " "));
 

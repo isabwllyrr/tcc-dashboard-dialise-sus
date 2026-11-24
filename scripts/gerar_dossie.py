@@ -655,6 +655,9 @@ def gerar_modelo(meta: dict[str, str]) -> dict[str, object]:
     origem_previsao_data = mensal["data"].max().strftime("%Y-%m")
     nominal = resumo[resumo["escala"] == "nominal"].sort_values("MAPE_pct")
     real = resumo[resumo["escala"] == "real_jun_2026"].sort_values("MAPE_pct")
+    gradient_real = real[real["modelo"] == "gradient_boosting"].iloc[0]
+    holt_log_real = real[real["modelo"] == "holt_winters_log"].iloc[0]
+    vantagem_gradient_real = holt_log_real["MAPE_pct"] - gradient_real["MAPE_pct"]
     return {
         "tipo_documento": "modelo",
         "metadados": meta,
@@ -671,16 +674,23 @@ def gerar_modelo(meta: dict[str, str]) -> dict[str, object]:
         "achados": [
             {
                 "id": "G6.achado.modelo_nominal",
-                "texto": "No alvo nominal, o primeiro colocado pelo MAPE medio e adotado como modelo oficial da previsao, conforme o criterio metodologico declarado.",
+                "texto": "No alvo nominal, o primeiro colocado pelo MAPE médio é adotado como modelo oficial da previsão, conforme o critério metodológico declarado.",
                 "valores": [valor_achado("menor_mape_nominal", nominal.iloc[0]["MAPE_pct"], "percentual", origem_resumo)],
                 "ressalvas": ["r.mape", "r.provisorio"],
                 "periodos": {"backtest": "janelas temporais mensais", "origem_previsao": origem_previsao_data},
             },
             {
                 "id": "G6.achado.modelo_real",
-                "texto": "No alvo real, o menor MAPE medio pertence ao primeiro colocado do backtest em reais de jun/2026.",
+                "texto": "No alvo real, o menor MAPE médio pertence ao primeiro colocado do backtest em reais de jun/2026.",
                 "valores": [valor_achado("menor_mape_real", real.iloc[0]["MAPE_pct"], "percentual", origem_resumo)],
                 "ressalvas": ["r.mape", "r.mix"],
+                "periodos": {"backtest": "janelas temporais mensais"},
+            },
+            {
+                "id": "G6.achado.cautela_gradient_real",
+                "texto": "No alvo real, a vantagem do Gradient Boosting sobre o Holt-Winters log-aditivo foi de 0,09 ponto percentual de MAPE. Os hiperparâmetros do Gradient Boosting foram ajustados com o mesmo backtest usado na comparação, sem holdout final independente; a diferença deve ser interpretada com cautela e não altera o modelo oficial da projeção nominal.",
+                "valores": [valor_achado("vantagem_gradient_boosting_real", vantagem_gradient_real, "ponto_percentual", origem_resumo)],
+                "ressalvas": ["r.mape"],
                 "periodos": {"backtest": "janelas temporais mensais"},
             },
         ],

@@ -432,3 +432,10 @@ main{padding-top:clamp(42px,6vw,74px)}
   .assistant-status{grid-template-columns:repeat(3,1fr)}.assistant-status div{padding:10px 8px}.assistant-status dd{font-size:.72rem}
   .assistant-workspace{margin-top:18px;padding-top:18px}
 }
+
+@media(min-width:821px){
+  .assistant-thread{padding-bottom:88px;scroll-padding-bottom:88px}
+  .thread-message{scroll-margin-bottom:88px}
+  .thread-message p{overflow-wrap:anywhere}
+  .assistant-workspace .agent-form{z-index:2;padding:22px 0 4px;background:linear-gradient(to bottom,transparent 0,var(--bg) 22px,var(--bg) 100%)}
+}

@@ -15,7 +15,7 @@
     valor: ["Qual a diferença entre valor nominal e valor corrigido?", "O custo cresceu mais que a produção?"],
     contagem: ["A produção aumentou após a pandemia?", "Esses procedimentos representam pacientes?"],
     territorio: ["Por que não posso interpretar o mapa como prevalência?", "Qual indicador permite comparar UFs de tamanhos diferentes?"],
-    modelo: ["Por que a projeção usa Gradient Boosting?", "O que o MAPE informa sobre a previsão?"],
+    modelo: ["Por que a projeção usa Holt-Winters log-aditivo?", "O que o MAPE informa sobre a previsão?"],
     base: ["Quais são as limitações da base?", "Quais meses de 2026 são provisórios?"],
   };
 
@@ -47,7 +47,7 @@
       article.append(link);
     }
     thread.append(article);
-    article.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    window.requestAnimationFrame(() => thread.scrollTo({ top: thread.scrollHeight, behavior: "smooth" }));
     return article;
   }
 
@@ -56,12 +56,16 @@
       gemini: "Gemini + dossiê",
       local_fallback: "Dossiê local",
       safety_rule: "Regra de segurança",
+      local_rule: "DialisaSUS",
+      scope_rule: "Limite de escopo",
     };
     const route = data.route || "/sobre-a-base/";
-    const rawAnswer = data.answer || "Não foi possível gerar uma resposta.";
-    const cleanAnswer = rawAnswer
-      .replace(new RegExp(`\\s*${route.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}\\s*$`), "i")
-      .replace(/\s*\/evidencias\/[a-z0-9-]+\/?\s*$/i, "")
+    const cleanAnswer = (data.answer || "Não foi possível gerar uma resposta.")
+      .replace(/^\s*Fonte da informa(?:ç|c)[aã]o:\s*.*$/gim, "")
+      .replace(/\/?evidencias\/[a-z0-9/-]+/gi, "")
+      .replace(/\/sobre-a-base\/?/gi, "")
+      .replace(/([.:])i(?=\s|$)/g, "$1")
+      .replace(/(\p{L})\s+\/\s+(\p{L})/gu, "$1$2")
       .trim();
     message("assistant", cleanAnswer, { source: labels[data.source] || "Dossiê DialisaSUS", warning: data.warning, route });
     consultations += 1;
@@ -131,6 +135,7 @@
 
   document.querySelector("#clear-conversation")?.addEventListener("click", () => {
     thread.innerHTML = '<article class="thread-message assistant-message"><span>DialisaSUS</span><p>Conversa limpa. Faça uma nova pergunta sobre as evidências do painel.</p></article>';
+    thread.scrollTop = 0;
     consultations = 0; count.textContent = "0 consultas"; followups.hidden = true; textarea.focus();
   });
 })();
