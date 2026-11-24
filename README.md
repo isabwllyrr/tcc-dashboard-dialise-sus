@@ -1,6 +1,6 @@
-# DialisaSUS - analise temporal, territorial e preditiva dos procedimentos de dialise no SUS
+# DialisaSUS: integração de dados públicos para análise e previsão dos procedimentos de diálise aprovados no SUS
 
-Este repositorio reune os arquivos do TCC sobre analise dos procedimentos de dialise aprovados no SUS, com foco em evolucao temporal, distribuicao territorial, impacto pre e pos-pandemia e previsao exploratoria para apoio a gestao em saude.
+Este repositório reúne o código, os dados e a documentação do artigo tecnológico DialisaSUS. A plataforma integra dados públicos do SIA/SUS e do IBGE para analisar a evolução temporal, os custos, a distribuição territorial e a previsão dos procedimentos de diálise aprovados no SUS.
 
 ## Comece por aqui
 
@@ -13,7 +13,7 @@ npm run dev     # http://localhost:4321
 
 ## Tema
 
-Analise temporal, territorial e preditiva dos procedimentos de dialise no SUS: desenvolvimento da plataforma web DialisaSUS para apoio a gestao em saude.
+**DialisaSUS: integração de dados públicos para análise e previsão dos procedimentos de diálise aprovados no SUS.**
 
 ## Recorte do estudo
 

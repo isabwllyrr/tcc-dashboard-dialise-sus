@@ -1,7 +1,7 @@
 {
   "name": "dialisasus",
   "version": "1.0.0",
-  "description": "Este repositorio reune os arquivos do TCC sobre analise dos procedimentos de dialise aprovados no SUS, com foco em evolucao temporal, distribuicao territorial, impacto pre e pos-pandemia e previsao exploratoria para apoio a gestao em saude.",
+  "description": "DialisaSUS: integração de dados públicos para análise e previsão dos procedimentos de diálise aprovados no SUS.",
   "main": "index.js",
   "directories": {
     "doc": "docs",

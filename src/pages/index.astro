@@ -83,10 +83,10 @@ const selectedNominal = modelo.comparacao_modelos.find((item: any) => item.alvo 
 const nominalWinner = modelo.comparacao_modelos.filter((item: any) => item.alvo === "valor_nominal").sort((a: any,b: any) => a.metricas.mape_medio.valor - b.metricas.mape_medio.valor)[0];
 const dashboardPayload = JSON.stringify({ rows: ufAnnualRows, municipalities, ufs: territorio.ufs, years: territoryYears }).replaceAll("<", "\\u003c");
 ---
-<BaseLayout title="Início">
+<BaseLayout title="DialisaSUS: integração de dados públicos para análise e previsão dos procedimentos de diálise aprovados no SUS">
   <header class="product-hero">
     <div class="product-hero-copy">
-      <p class="eyebrow">Inteligência pública em saúde renal</p>
+      <p class="eyebrow">Integração de dados públicos sobre diálise no SUS</p>
       <h1>DialisaSUS</h1>
       <p class="product-hero-statement">Um panorama vivo da diálise no SUS.</p>
       <p class="product-hero-detail">Produção, custos, desigualdades territoriais e cenários futuros em uma única leitura.</p>

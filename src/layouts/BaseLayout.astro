@@ -12,7 +12,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Caderno aberto de evidências sobre procedimentos de diálise aprovados no SUS." } = Astro.props;
+const { title, description = "DialisaSUS: integração de dados públicos para análise e previsão dos procedimentos de diálise aprovados no SUS." } = Astro.props;
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === "/" || currentPath === "";
 const isValor = currentPath.startsWith("/evidencias/valor");
@@ -54,7 +54,7 @@ const extractionLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", year: 
       <header class="head">
         <div class="head-row">
           <span class="mark">Dialisa<i>SUS</i></span>
-          <span class="stamp">inteligência para gestão · SIA/SUS + IBGE</span>
+          <span class="stamp">procedimentos aprovados · SIA/SUS + IBGE</span>
           <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menu de navegação">
             <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
           </button>
